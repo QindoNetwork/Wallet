@@ -183,15 +183,15 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.11+commit.c082d0b4\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getApproved\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"who\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"ID\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"mintExternal\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/germaindacunha/Desktop/App_Togethers/contracts/main/Administration.sol\":\"External2\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/germaindacunha/Desktop/App_Togethers/contracts/main/Administration.sol\":{\"keccak256\":\"0x72ce3c36a53d8c7c604887dbc100b229e89d16c71c0a815f85a011144e67f357\",\"urls\":[\"bzz-raw://226de5a665785a5d493acff5d7320a9c8e36e168eb4feb4be2242d09dc7f41c5\",\"dweb:/ipfs/Qmdty94QPRk1BeQVnAs9nqgRiwLvwyCKWAjMGvvaGNJ7fD\"]},\"/Users/germaindacunha/Desktop/App_Togethers/contracts/owner/Ownable.sol\":{\"keccak256\":\"0xaf07400d5ad68707fdc3be6adaac197fde28449af28eb7b384f9d6b1c88c56f0\",\"urls\":[\"bzz-raw://febeb00a1edcbcc3f6007358f691da92795f0d37669b0e939fcb1ebef8684dd0\",\"dweb:/ipfs/QmPRdy4t48Mtc1Mm63Soi4RywpnUNcqwjvwKdUd7tn1WxM\"]},\"/Users/germaindacunha/Desktop/App_Togethers/contracts/technical/SafeMath.sol\":{\"keccak256\":\"0x640b6dee7a4b830bdfd52b5031a07fc2b12209f5b2e29e5d364a7d37f69d8076\",\"urls\":[\"bzz-raw://31113152e1ddb78fe7a4197f247591ca894e93f916867beb708d8e747b6cc74f\",\"dweb:/ipfs/QmbZaJyXdpsYGykVhHH9qpVGQg9DGCxE2QufbCUy3daTgq\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.11+commit.c082d0b4\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getApproved\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"who\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"ID\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"mintExternal\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/main/Administration.sol\":\"External2\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/main/Administration.sol\":{\"keccak256\":\"0x72ce3c36a53d8c7c604887dbc100b229e89d16c71c0a815f85a011144e67f357\",\"urls\":[\"bzz-raw://226de5a665785a5d493acff5d7320a9c8e36e168eb4feb4be2242d09dc7f41c5\",\"dweb:/ipfs/Qmdty94QPRk1BeQVnAs9nqgRiwLvwyCKWAjMGvvaGNJ7fD\"]},\"/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/owner/Ownable.sol\":{\"keccak256\":\"0xaf07400d5ad68707fdc3be6adaac197fde28449af28eb7b384f9d6b1c88c56f0\",\"urls\":[\"bzz-raw://febeb00a1edcbcc3f6007358f691da92795f0d37669b0e939fcb1ebef8684dd0\",\"dweb:/ipfs/QmPRdy4t48Mtc1Mm63Soi4RywpnUNcqwjvwKdUd7tn1WxM\"]},\"/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/technical/SafeMath.sol\":{\"keccak256\":\"0x640b6dee7a4b830bdfd52b5031a07fc2b12209f5b2e29e5d364a7d37f69d8076\",\"urls\":[\"bzz-raw://31113152e1ddb78fe7a4197f247591ca894e93f916867beb708d8e747b6cc74f\",\"dweb:/ipfs/QmbZaJyXdpsYGykVhHH9qpVGQg9DGCxE2QufbCUy3daTgq\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.5.0;\n\nimport \"../owner/Ownable.sol\";\nimport \"../technical/SafeMath.sol\";\n\ninterface External2 {\n  function totalSupply() external view returns (uint256);\n  function balanceOf(address who) external view returns (uint256);\n  function mintExternal(address account, uint256 value) external returns (bool);\n  function transferFrom(address from, address to, uint256 value) external returns (bool);\n  function transfer(address to, uint256 value) external returns (bool);\n  function approve(address spender, uint256 value) external returns (bool);\n  function getApproved(uint256 tokenId) external view returns (address);\n  function ID() external view returns (uint);\n}\n\ncontract Administration is Ownable {\n\n  External2 public TGTCToken;\n  External2 public TGTSToken;\n\n  using SafeMath for uint256;\n\n  uint public ID;\n\n  uint constant public tgtcAmount = 1000000000000000000;\n\n  mapping (uint => bool) public disableCrypto;\n  mapping (uint => bool) public stopCrypto;\n\n  Token[] list;\n\n  struct Token\n  {\n    string name;\n    string symbol;\n    address ID;\n    uint decimal;\n  }\n\n  function useNewToken(string memory name, string memory symbol, address _address, uint decimal) public onlyOwner\n  {\n    require(_address != address(0));\n    list.push(Token(name,symbol,_address,decimal));\n  }\n\n  function getTokenAddress(uint256 index) public view returns (address)\n  {\n    return list[index].ID;\n  }\n\n  function getTokenDecimal(uint256 index) public view returns (uint)\n  {\n    return list[index].decimal;\n  }\n\n  function getTokenSymbol(uint256 index) public view returns (string memory)\n  {\n    return list[index].symbol;\n  }\n\n  function getTokenName(uint256 index) public view returns (string memory)\n  {\n    return list[index].name;\n  }\n\n  function getSize() public view returns (uint)\n  {\n    return list.length;\n  }\n\n  function enableCrypto(uint _index) public onlyOwner\n  {\n    if (disableCrypto[_index] == false)\n    {\n      disableCrypto[_index] = true;\n    }\n    else\n    {\n      disableCrypto[_index] = false;\n      stopCrypto[_index] = false;\n    }\n  }\n\n  function switchReward() internal view returns (uint)\n  {\n    uint tgtcReward;\n    if (ID < 100)\n    {\n      tgtcReward = tgtcAmount.mul(10000);\n    }\n    if (100 >= ID && ID < 1000)\n    {\n      tgtcReward = tgtcAmount.mul(1000);\n    }\n    if (1000 >= ID && ID < 10000)\n    {\n      tgtcReward = tgtcAmount.mul(100);\n    }\n    if (10000 >= ID && ID < 100000)\n    {\n      tgtcReward = tgtcAmount.mul(10);\n    }\n    else\n    {\n      tgtcReward = tgtcAmount;\n    }\n    return tgtcReward;\n  }\n\n  function protectCrypto(uint _index) public onlyOwner\n  {\n    if (stopCrypto[_index] == false && disableCrypto[_index] == true)\n    {\n      stopCrypto[_index] = true;\n    }\n    else stopCrypto[_index] = false;\n  }\n\n}\n",
-  "sourcePath": "/Users/germaindacunha/Desktop/App_Togethers/contracts/main/Administration.sol",
+  "sourcePath": "/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/main/Administration.sol",
   "ast": {
-    "absolutePath": "/Users/germaindacunha/Desktop/App_Togethers/contracts/main/Administration.sol",
+    "absolutePath": "/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/main/Administration.sol",
     "exportedSymbols": {
       "Administration": [
         338
@@ -215,7 +215,7 @@
         "src": "0:23:0"
       },
       {
-        "absolutePath": "/Users/germaindacunha/Desktop/App_Togethers/contracts/owner/Ownable.sol",
+        "absolutePath": "/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/owner/Ownable.sol",
         "file": "../owner/Ownable.sol",
         "id": 2,
         "nodeType": "ImportDirective",
@@ -226,7 +226,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/germaindacunha/Desktop/App_Togethers/contracts/technical/SafeMath.sol",
+        "absolutePath": "/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/technical/SafeMath.sol",
         "file": "../technical/SafeMath.sol",
         "id": 3,
         "nodeType": "ImportDirective",
@@ -4433,7 +4433,7 @@
     "src": "0:2783:0"
   },
   "legacyAST": {
-    "absolutePath": "/Users/germaindacunha/Desktop/App_Togethers/contracts/main/Administration.sol",
+    "absolutePath": "/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/main/Administration.sol",
     "exportedSymbols": {
       "Administration": [
         338
@@ -4457,7 +4457,7 @@
         "src": "0:23:0"
       },
       {
-        "absolutePath": "/Users/germaindacunha/Desktop/App_Togethers/contracts/owner/Ownable.sol",
+        "absolutePath": "/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/owner/Ownable.sol",
         "file": "../owner/Ownable.sol",
         "id": 2,
         "nodeType": "ImportDirective",
@@ -4468,7 +4468,7 @@
         "unitAlias": ""
       },
       {
-        "absolutePath": "/Users/germaindacunha/Desktop/App_Togethers/contracts/technical/SafeMath.sol",
+        "absolutePath": "/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/technical/SafeMath.sol",
         "file": "../technical/SafeMath.sol",
         "id": 3,
         "nodeType": "ImportDirective",
@@ -8680,7 +8680,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-11-19T11:25:15.148Z",
+  "updatedAt": "2019-11-19T14:34:30.607Z",
   "devdoc": {
     "methods": {}
   },

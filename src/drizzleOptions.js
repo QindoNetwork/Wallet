@@ -1,15 +1,12 @@
 import Togethers from "./contracts/Togethers.json";
 import TogethersCoin from "./contracts/TogethersCoin.json";
 import SpaceManager from "./contracts/SpaceManager.json";
+import Web3 from "web3";
 
 const options = {
   web3: {
     block: false,
-
-    fallback: {
-      type: "ws",
-        url: "ws://localhost:8545"
-    },
+    customProvider: new Web3("ws://localhost:8545"),
   },
   contracts: [Togethers, TogethersCoin, SpaceManager],
   events: {

@@ -63,15 +63,15 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.11+commit.c082d0b4\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getApproved\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"getLastSpaceID\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/germaindacunha/Desktop/App_Togethers/contracts/main/SpaceOperator.sol\":\"External3\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/germaindacunha/Desktop/App_Togethers/contracts/main/SpaceOperator.sol\":{\"keccak256\":\"0xd7222392cefc19f1eabb779d3287c7c551111c49c16948f419ffb8e8204a67c2\",\"urls\":[\"bzz-raw://e9fb19657d4f1663beee7bbc77f034f56666e76b2376344d0be250cb85964355\",\"dweb:/ipfs/Qma1ngzYCTZhC2UVa37cdW2f4TtJR1TagBPuPX1Krxd8PX\"]},\"/Users/germaindacunha/Desktop/App_Togethers/contracts/owner/Ownable.sol\":{\"keccak256\":\"0xaf07400d5ad68707fdc3be6adaac197fde28449af28eb7b384f9d6b1c88c56f0\",\"urls\":[\"bzz-raw://febeb00a1edcbcc3f6007358f691da92795f0d37669b0e939fcb1ebef8684dd0\",\"dweb:/ipfs/QmPRdy4t48Mtc1Mm63Soi4RywpnUNcqwjvwKdUd7tn1WxM\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.11+commit.c082d0b4\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"getApproved\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"getLastSpaceID\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/main/SpaceOperator.sol\":\"External3\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/main/SpaceOperator.sol\":{\"keccak256\":\"0xd7222392cefc19f1eabb779d3287c7c551111c49c16948f419ffb8e8204a67c2\",\"urls\":[\"bzz-raw://e9fb19657d4f1663beee7bbc77f034f56666e76b2376344d0be250cb85964355\",\"dweb:/ipfs/Qma1ngzYCTZhC2UVa37cdW2f4TtJR1TagBPuPX1Krxd8PX\"]},\"/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/owner/Ownable.sol\":{\"keccak256\":\"0xaf07400d5ad68707fdc3be6adaac197fde28449af28eb7b384f9d6b1c88c56f0\",\"urls\":[\"bzz-raw://febeb00a1edcbcc3f6007358f691da92795f0d37669b0e939fcb1ebef8684dd0\",\"dweb:/ipfs/QmPRdy4t48Mtc1Mm63Soi4RywpnUNcqwjvwKdUd7tn1WxM\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.5.0;\n\nimport \"../owner/Ownable.sol\";\n\ninterface External3 {\n  function transferFrom(address from, address to, uint256 tokenId) external;\n  function getLastSpaceID() external returns (uint);\n  function getApproved(uint256 tokenId) external view returns (address);\n}\n\ninterface External4 {\n  function transferFrom(address from, address to, uint256 value) external returns (bool);\n}\n\ncontract SpaceOperator is Ownable {\n\n  event swapDemand(uint indexed a, uint indexed b, address from, address indexed to, uint offer);\n  event onSale(uint indexed spaceFrom, uint TGTCPrice);\n\n  mapping (uint => option) public swapOption;\n  mapping (uint => uint) public mappSpacePrice;\n\n  struct option\n  {\n    uint spaceID;\n    uint offer;\n  }\n\n  External4 public TGTCToken;\n  External3 public TGTSToken;\n\n  constructor(address tgts, address tgtc) public {\n    owner = msg.sender;\n    TGTSToken = External3(tgts);\n    TGTCToken = External4(tgtc);\n  }\n\n  function exchangeSpace(uint spaceFrom, uint spaceTo, uint optionalTGTCOffer) public\n  {\n    address addressTo = TGTSToken.getApproved(spaceTo);\n    uint spaceID = TGTSToken.getLastSpaceID();\n    require(spaceFrom > spaceID && spaceTo > spaceID);\n    require(TGTSToken.getApproved(spaceFrom) == msg.sender\n            && addressTo != address(0) && addressTo != msg.sender);\n    if (swapOption[spaceTo].spaceID == spaceFrom)\n    {\n      TGTSToken.transferFrom(msg.sender,addressTo,spaceFrom);\n      TGTSToken.transferFrom(addressTo,msg.sender,spaceTo);\n      if (swapOption[spaceTo].offer != 0)\n      {\n        TGTCToken.transferFrom(msg.sender,addressTo,swapOption[spaceTo].offer);\n      }\n    }\n    else\n    {\n      if (optionalTGTCOffer != 0)\n      {\n        swapOption[spaceTo].offer = optionalTGTCOffer;\n      }\n      swapOption[spaceFrom].spaceID = spaceTo;\n      emit swapDemand(spaceFrom,spaceTo,msg.sender,addressTo,optionalTGTCOffer);\n    }\n  }\n\n  function sellSpace(uint spaceFrom, uint TGTCPrice) public\n  {\n    require(TGTSToken.getApproved(spaceFrom) == msg.sender);\n    mappSpacePrice[spaceFrom] = TGTCPrice;\n    emit onSale(spaceFrom,TGTCPrice);\n  }\n\n  function buySpace(uint spaceFrom, uint TGTCAmount) public\n  {\n    require(TGTCAmount == mappSpacePrice[spaceFrom]);\n    address target = TGTSToken.getApproved(spaceFrom);\n    TGTCToken.transferFrom(msg.sender,target,TGTCAmount); // faire balance/approve dans app\n    TGTSToken.transferFrom(target,msg.sender,spaceFrom);\n  }\n\n}\n",
-  "sourcePath": "/Users/germaindacunha/Desktop/App_Togethers/contracts/main/SpaceOperator.sol",
+  "sourcePath": "/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/main/SpaceOperator.sol",
   "ast": {
-    "absolutePath": "/Users/germaindacunha/Desktop/App_Togethers/contracts/main/SpaceOperator.sol",
+    "absolutePath": "/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/main/SpaceOperator.sol",
     "exportedSymbols": {
       "External3": [
         1244
@@ -98,7 +98,7 @@
         "src": "0:23:2"
       },
       {
-        "absolutePath": "/Users/germaindacunha/Desktop/App_Togethers/contracts/owner/Ownable.sol",
+        "absolutePath": "/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/owner/Ownable.sol",
         "file": "../owner/Ownable.sol",
         "id": 1222,
         "nodeType": "ImportDirective",
@@ -4029,7 +4029,7 @@
     "src": "0:2449:2"
   },
   "legacyAST": {
-    "absolutePath": "/Users/germaindacunha/Desktop/App_Togethers/contracts/main/SpaceOperator.sol",
+    "absolutePath": "/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/main/SpaceOperator.sol",
     "exportedSymbols": {
       "External3": [
         1244
@@ -4056,7 +4056,7 @@
         "src": "0:23:2"
       },
       {
-        "absolutePath": "/Users/germaindacunha/Desktop/App_Togethers/contracts/owner/Ownable.sol",
+        "absolutePath": "/Users/germaindacunha/Documents/GitHub/App_Togethers/contracts/owner/Ownable.sol",
         "file": "../owner/Ownable.sol",
         "id": 1222,
         "nodeType": "ImportDirective",
@@ -7992,7 +7992,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.9",
-  "updatedAt": "2019-11-19T11:25:15.179Z",
+  "updatedAt": "2019-11-19T14:34:30.629Z",
   "devdoc": {
     "methods": {}
   },

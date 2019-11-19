@@ -1,21 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect, Fragment } from 'react'
+import AppNavigation from "./components/navigation/AppNavigation"
 
-// import drizzle functions and contract artifact
-import { Drizzle } from "drizzle";
-import { DrizzleProvider } from "drizzle-react"
+const App = props => {
+  const [drizzleReadinessState, setDrizzleReadinessState] = useState({drizzleState: null, loading: true})
+  const { drizzle } = props
 
-import LoadingContainer from "./loadingContainer"
-import drizzleOptions from "./drizzleOptions"
-import store from "./middleware"
+  useEffect(
+    () => {
+      const unsubscribe = drizzle.store.subscribe( () => {
+        // every time the store updates, grab the state from drizzle
+        const drizzleState = drizzle.store.getState()
+        // check to see if it's ready, if so, update local component state
+        if (drizzleState.drizzleStatus.initialized) {
+          setDrizzleReadinessState({drizzleState: drizzleState, loading: false})
+        }
+      })
+      return () => {
+        unsubscribe()
+      }
+    }, [drizzle.store, drizzleReadinessState]
+  )
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <DrizzleProvider store={store} options={drizzleOptions}>
-        <LoadingContainer>
-          <p> AAAAAAA </p>
-        </LoadingContainer>
-      </DrizzleProvider>
-    );
-  }
+  return (
+    drizzleReadinessState.loading ?
+      "Loading Drizzle..."
+      :
+      <Fragment>
+        <AppNavigation />
+      </Fragment>
+  )
 }
+
+export default App
