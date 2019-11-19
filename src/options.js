@@ -23,3 +23,4 @@ export spaceOperatorInstance;
 export togethersCoinInstance;
 export togethersInstance;
 export TokenERC20;
+export signer;

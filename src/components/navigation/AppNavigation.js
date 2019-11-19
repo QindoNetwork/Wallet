@@ -3,7 +3,7 @@ import { CssBaseline, Grid, Card, CardContent } from "@material-ui/core"
 
 import Welcome from '../Welcome';
 
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom' //HashRoute before build for deploy on ipfs
 import logo from '../../logo.png'
 import "../../App.css"
 

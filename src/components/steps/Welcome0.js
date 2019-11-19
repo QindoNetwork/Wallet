@@ -1,8 +1,43 @@
 import { drizzleConnect } from "drizzle-react"
 import React, { Component } from "react";
-import { Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
-import PropTypes from "prop-types";
-import signer from "../signer";
+import { togethersInstance, signer } from '../../options'
+
+export default class ChangeTGCTPrice extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      getAdminGroups: [],
+      membre: '',
+      pseudo1: '',
+      groupe: ''
+    };
+    this._ajouterMembre = this._ajouterMembre.bind(this)
+  }
+
+  handleChange = name => event => {
+   this.setState({ [name]: event.target.value });
+ };
+
+  async componentDidMount() {
+
+    let copy2 = []
+    let list2 = await contractInstance.getOwnedGroupe()
+    for (let j=0; j<list2.length; j++){
+      copy2.push(await contractInstance.getNomGroupe(list2[j]))
+    }
+
+    this.setState({
+                  getAdminGroups : copy2})
+
+  }
+
+  async _ajouterMembre() {
+      await window.ethereum.enable()
+     	await contractInstance.ajouterMembre(this.state.membre,this.state.groupe,this.state.pseudo1)
+  }
+
+
 
 import styles from '../Styles'
 
@@ -18,51 +53,69 @@ class Welcome extends Component {
     };
   }
 
-  componentDidMount() {
+ async componentDidMount() {
 
 this.setState({
 
-      dataKey1: this.contracts["Togethers"].methods["mappAddressToUser"].cacheCall(signer),
-      dataKey2: this.contracts["Togethers"].methods["getGroupsLength"].cacheCall({from: signer}),
-      dataKey3: this.contracts["TogethersCoin"].methods["balanceOf"].cacheCall(signer),
+      dataKey1: await contractInstance.mappAddressToUser(),
+      dataKey2: await contractInstance.getGroupsLength(),
+      dataKey3: await contractInstance.balanceOf(),
 
              })
   }
 
   render() {
-    // Contract is not yet intialized.
-    if (!this.props.contracts["Togethers"].initialized) {
-      return <ActivityIndicator size="large" color="#0000ff" />;
-    }
 
-    // If the cache key we received earlier isn't in the store yet; the initial value is still being fetched.
-    if (
-      !(
-        this.state.dataKey1 in
-        this.props.contracts["Togethers"]["mappAddressToUser"]
-
-        &&
-
-        this.state.dataKey2 in
-        this.props.contracts["Togethers"]["getGroupsLength"]
-
-        &&
-
-        this.state.dataKey3 in
-        this.props.contracts["TogethersCoin"]["balanceOf"]
-
-      )
-    ) {
-      return <ActivityIndicator size="large" color="#0000ff" />
-      }
-
-    var displayData1 = this.props.contracts["Togethers"]["mappAddressToUser"][this.state.dataKey1].value;
-    var displayData2 = this.props.contracts["Togethers"]["getGroupsLength"][this.state.dataKey2].value;
-    var displayData4 = this.props.contracts["TogethersCoin"]["balanceOf"][this.state.dataKey3].value;
+    var displayData1 = this.state.dataKey1;
+    var displayData2 = this.state.dataKey2;
+    var displayData4 = this.state.dataKey3;
 
     var balance = this.props.accountBalances[signer];
-
     var max = 200;
+
+    <div className="table-responsive w3-card-4">
+      <table className="table table-bordered">
+        <thead>
+          <tr className="w3-theme-d4">
+            <th>WELCOME</th>
+          </tr>
+        </thead>
+          <tbody>
+          <tr>
+          <td>
+            <Grid container spacing={24}>
+              <Grid item xs={12} md={6}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    label="NOM DU NOUVEAU GROUPE A CREER"
+                    fullWidth
+                    value={this.state.nom}
+                    onChange={this.handleChange('nom')}
+                    helperText="Ce nom doit être unique"
+                  />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    label="VOTRE PSEUDONYME DANS CE GROUPE"
+                    fullWidth
+                    value={this.state.pseudo}
+                    onChange={this.handleChange('pseudo')}
+                    helperText="Doit être unique"
+                  />
+                  </Grid>
+                  <Grid item xs={12} md={12}>
+                    <button className="btn-primary btn-block" onClick={this._creerGroupe}>PAYER</button>
+                  </Grid>
+                </Grid>
+              </td>
+          </tr>
+
+  </tbody>
+  </table>
+  </div>
 
     if (displayData1[3] != 0) {
 
