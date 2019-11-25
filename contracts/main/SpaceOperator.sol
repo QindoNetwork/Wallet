@@ -1,0 +1,72 @@
+pragma solidity ^0.5.0;
+
+import "../owner/Ownable.sol";
+
+contract SpaceOperator is Ownable {
+
+  event swapDemand(uint indexed a, uint indexed b, address from, address indexed to, uint offer);
+  event onSale(uint indexed spaceFrom, uint TGTCPrice);
+
+  mapping (uint => option) public swapOption;
+  mapping (uint => uint) public mappSpacePrice;
+
+  struct option
+  {
+    uint spaceID;
+    uint offer;
+  }
+
+  External2 TGTCToken;
+
+  constructor(address tgts, address tgtc) public {
+    owner = msg.sender;
+    TGTSToken = External3(tgts);
+    TGTCToken = External2(tgtc);
+  }
+
+  function exchangeSpace(uint spaceFrom, uint spaceTo, uint optionalTGTCOffer) public
+  {
+    address addressTo = TGTSToken.getApproved(spaceTo);
+    uint spaceID = TGTSToken.getLastSpaceID();
+    require(spaceFrom > spaceID && spaceTo > spaceID);
+    require(TGTSToken.getApproved(spaceFrom) == msg.sender
+    && spaceFrom != powerToken1 && spaceFrom != powerToken2 && addressTo != address(0) && addressTo != msg.sender);
+    if (swapOption[spaceTo].spaceID == spaceFrom)
+    {
+      TGTSToken.transferFrom(msg.sender,addressTo,spaceFrom);
+      TGTSToken.transferFrom(addressTo,msg.sender,spaceTo);
+      if (swapOption[spaceTo].offer != 0)
+      {
+        TGTCToken.transferFrom(msg.sender,addressTo,swapOption[spaceTo].offer);
+      }
+    }
+    else
+    {
+      if (optionalTGTCOffer != 0)
+      {
+        swapOption[spaceTo].offer = optionalTGTCOffer;
+      }
+      swapOption[spaceFrom].spaceID = spaceTo;
+      emit swapDemand(spaceFrom,spaceTo,msg.sender,addressTo,optionalTGTCOffer);
+    }
+  }
+
+  function sellSpace(uint spaceFrom, uint TGTCPrice) public
+  {
+    require(TGTSToken.getApproved(spaceFrom) == msg.sender && TGTCPrice != 0
+    && spaceFrom != powerToken1 && spaceFrom != powerToken2);
+    mappSpacePrice[spaceFrom] = TGTCPrice;
+    emit onSale(spaceFrom,TGTCPrice);
+  }
+
+  function buySpace(uint spaceFrom, uint TGTCAmount) public
+  {
+    require(TGTCAmount == mappSpacePrice[spaceFrom] && mappSpacePrice[spaceFrom] != 0
+    && spaceFrom != powerToken1 && spaceFrom != powerToken2);
+    address target = TGTSToken.getApproved(spaceFrom);
+    TGTCToken.transferFrom(msg.sender,target,TGTCAmount); // faire balance/approve dans app
+    TGTSToken.transferFrom(target,msg.sender,spaceFrom);
+    mappSpacePrice[spaceFrom] == 0;
+  }
+
+}
