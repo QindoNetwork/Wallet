@@ -1,72 +1,83 @@
-# Drizzle tutorial with React Hooks
+# Ethereum Wallet [![Build Status](https://travis-ci.org/fmsouza/ethereum-wallet.svg?branch=master)](https://travis-ci.org/fmsouza/ethereum-wallet)
 
-<img src="https://truffleframework.com/img/drizzle-logomark.svg" alt="drizzle_logo" title="drizzle_logo" width="100" />
+This project is a Ethereum Wallet built on top of ReactNative.
 
-I created a complete **React Hooks** version of this [**Drizzle tutorial**](https://www.trufflesuite.com/tutorials/getting-started-with-drizzle-and-react).
+## Table of Contents
 
-![DApp demo](https://media.giphy.com/media/TdQVda1SmPNaU2gN4J/giphy.gif)
+* [Available Scripts](#available-scripts)
+  * [npm start](#npm-start)
+  * [npm test](#npm-test)
+  * [npm test:ci](#npm-test-ci)
+  * [npm test:watch](#npm-test-watch)
+  * [npm run ios](#npm-run-ios)
+  * [npm run android](#npm-run-android)
+  * [npm run android:build](#npm-run-android-build)
+  * [npm run android:bundle](#npm-run-android-bundle)
+  * [npm run android:clean](#npm-run-android-clean)
+  * [npm run android:logcat](#npm-run-android-logcat)
+* [Writing and Running Tests](#writing-and-running-tests)
+* [License](#license)
+* [Contribute](#contribute)
 
-You will need to install Node.js and Truffle, as stated in the tutorial - see "Setting up the development environment".
+## Available Scripts
 
-See the ReactJS [guidance on using hooks](https://reactjs.org/docs/hooks-reference.html) and [Drizzle](https://www.trufflesuite.com/drizzle) for further details on implementing hooks in your project.
+### `npm install`
 
-## To get this box ##
+Installs all dependencies and prepares the app to run.
 
-1. Create a new directory.
+### `npm start`
 
-2. In the new directory, run ```truffle unbox atkinsonholly/Drizzle-tutorial-with-React-Hooks```. This should pull the box contents to the new local directory.
+Runs Packager to provide your app in development mode.
 
-## After unboxing ##
+#### `npm test`
 
-In the client directory:
+Runs the [jest](https://github.com/facebook/jest) test runner on your tests.
 
-```
-npm install
-```
+#### `npm run test:ci`
+
+Runs all the tests in CI mode, which does some optimizations and optputs code coverage information.
+
+#### `npm run test:watch`
+
+Runs the tests in watch mode, so whenever you change your code the involved tests will run again.
+
+#### `npm run ios`
+
+Open your app in the iOS Simulator if you're on a Mac and have it installed. Depends on `npm start`.
+
+#### `npm run android`
+
+Open your app on a connected Android device or emulator. Requires an installation of Android build tools (see [React Native docs](https://facebook.github.io/react-native/docs/getting-started.html) for detailed setup). Depends on `npm start`.
+
+#### `npm run android:build`
+
+Build the Android app and generate the APK to install on the device.
+
+#### `npm run android:bundle`
+
+Bundles the ReactNative JavaScript code. Run it before running the build command to be able to run the test without depending on the development server.
+
+#### `npm run android:generate-apk`
+
+Bundle and build the Android app.
+
+#### `npm run android:clean`
+
+Clean the Android generated build files.
+
+#### `npm run android:logcat`
+
+Outputs the Android logcat to the cli, so you can see native the logs in runtime.
+
+## Writing and Running Tests
+
+This project is set up to use [jest](https://facebook.github.io/jest/) for tests. You can configure whatever testing strategy you like, but jest works out of the box. Create test files in directories called `__tests__` or with the `.test` extension to have the files loaded by jest. See [the template project](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/App.test.js) for an example test. The [jest documentation](https://facebook.github.io/jest/docs/getting-started.html) is also a wonderful resource, as is the [React Native testing tutorial](https://facebook.github.io/jest/docs/tutorial-react-native.html).
+
+## License
+
+[MIT](./LICENSE)
 
 
-In the main project directory:
+## Contribute
 
-```
-truffle develop
-```
-
-Then, in the Truffle developer console: 
-```
-compile
-```
-
-and then:
-```
-migrate
-```
-
-To test your smart contract(s), in truffle's developer console:
-```
-test
-```
-
-Now that you have successfully launched your Solidity contract onto your local blockchain, go into the client directory:
-
-```
-cd client
-```
-
-Run the project by entering the following:
-
-```
-npm start
-```
-
-To see your project in the browser, go to http://localhost:3000/
-
-You can test your DApp by entering the following:
-
-```
-npm test
-```
-
-## Troubleshooting ##
-
-You may need to install Xcode to use this box on macOS, see [node-gyp](https://github.com/nodejs/node-gyp) on Github. 
-The following command may be useful if you encounter issues with this: ```xcode-select --install```.
+TODO
