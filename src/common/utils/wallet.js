@@ -1,9 +1,9 @@
 import { ethers } from 'ethers';
-import spaceManagerABI from '../../ABIs/SpaceManagerABI';
-import spaceOperatorABI from '../../ABIs/SpaceManagerABI';
-import togethersABI from '../../ABIs/SpaceManagerABI';
-import togethersCoinABI from '../../ABIs/SpaceManagerABI';
-import controlABI from '../../ABIs/SpaceManagerABI';
+import spaceManagerABI from '../../ABIs/spaceManagerABI';
+import spaceOperatorABI from '../../ABIs/spaceOperatorABI';
+import togethersABI from '../../ABIs/togethersABI';
+import ERC20ABI from '../../ABIs/ERC20ABI';
+import controlABI from '../../ABIs/controlABI';
 
 const { utils, Wallet } = ethers;
 
@@ -71,9 +71,15 @@ export function togethersInstance() {
 }
 
 export function togethersCoinInstance() {
-    return new ethers.Contract(togethersCoinAddress, togethersCoinABI, PROVIDER.getSigner());
+    return new ethers.Contract(togethersCoinAddress, ERC20ABI, PROVIDER.getSigner());
 }
 
 export function controlInstance() {
     return new ethers.Contract(controlAddress, controlABI, PROVIDER.getSigner());
+}
+
+//others ERC20
+
+export function ERC20Instance(address) {
+    return new ethers.Contract(address, ERC20ABI, PROVIDER.getSigner());
 }
