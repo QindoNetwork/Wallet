@@ -24,6 +24,7 @@ contract Togethers is Administration {
     string pseudo;
     string ipfsImage;
     uint language;
+    uint blockNumber;
   }
 
   struct profile
@@ -32,7 +33,6 @@ contract Togethers is Administration {
     bool open;
     bool owner;
     uint DemandID;
-    uint blockNumber;
   }
 
   constructor(address tgtc) public {
@@ -108,7 +108,7 @@ contract Togethers is Administration {
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     mappProfileInGroup[groupID][msg.sender].open = true;
     mappProfileInGroup[groupID][msg.sender].DemandID = ID;
-    mappProfileInGroup[groupID][msg.sender].blockNumber = block.number;
+    mappAddressToUser[msg.sender].blockNumber = block.number;
     mappSpaceInfo[ID].language = mappAddressToUser[msg.sender].language;
     mappSpaceInfo[ID].description = _description;
     nbDemands += 1;
@@ -135,11 +135,11 @@ contract Togethers is Administration {
       amount = _tokenAmount;
     }
     if (TGTCToken.balanceOf(owner) > TGTCToken.totalSupply().div(ratioForReward)
-    && block.number > mappProfileInGroup[groupID][msg.sender].blockNumber)
+    && block.number > mappAddressToUser[msg.sender].blockNumber)
     {
       TGTCToken.mintExternal(msg.sender,tgtcAmount);
     }
-    mappProfileInGroup[groupID][msg.sender].blockNumber = block.number;
+    mappAddressToUser[msg.sender].blockNumber = block.number;
     mappStatsPeerToPeer[msg.sender][_publicKey][_crypto] += amount;
     mappGiven[groupID][_publicKey][_crypto] += amount;
     emit payDemand(ID);
@@ -167,14 +167,14 @@ contract Togethers is Administration {
         }
       }
       if (TGTCToken.balanceOf(owner) > TGTCToken.totalSupply().div(ratioForReward)
-      && block.number > mappProfileInGroup[groupID][msg.sender].blockNumber)
+      && block.number > mappAddressToUser[msg.sender].blockNumber)
       {
         TGTCToken.mintExternal(msg.sender,tgtcAmount);
-      }
-      uint contractBalance = address(this).balance;
-      if (contractBalance != 0)
-      {
-        msg.sender.transfer(contractBalance.div(nbDemands));
+        uint contractBalance = address(this).balance;
+        if (contractBalance != 0)
+        {
+          msg.sender.transfer(contractBalance.div(nbDemands));
+        }
       }
     }
     emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID);
@@ -194,7 +194,7 @@ contract Togethers is Administration {
   {
     require(mappProfileInGroup[_groupID][msg.sender].isMember == true);
     require((mappProfileInGroup[_groupID][msg.sender].owner == true && mappUsersInGroup[_groupID].length == 1)
-    || mappUsersInGroup[_groupID].length != 1);
+    || (mappUsersInGroup[_groupID].length != 1 && mappProfileInGroup[_groupID][msg.sender].owner == false));
     require(mappProfileInGroup[_groupID][msg.sender].open == false);
     deleteProfile(_groupID,msg.sender);
   }
