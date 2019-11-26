@@ -13,13 +13,8 @@ import { Togethers as TogethersFunctions } from '@common/functions';
 @observer
 export class WalletExtract extends React.Component {
 
-    state = { test: '34' };
-
     componentDidMount() {
       this.updateHistory();
-      this.setState({
-              test : TogethersFunctions.ID(this.props.wallet.item),
-      })
     }
 
     async updateHistory() {
@@ -33,18 +28,21 @@ export class WalletExtract extends React.Component {
     renderItem = (address) => ({ item }) => <TransactionCard transaction={item} walletAddress={address} />
 
     renderBody = ({ item, history, loading, pendingTransactions }) =>  (!history.length && !loading) ? <NoTransactions /> : (
+        <View>
+        <Text>{item.privateKey}</Text>
         <FlatList
             style={styles.content}
             data={pendingTransactions.concat(history.slice().reverse())}
             refreshControl={<RefreshControl refreshing={loading} onRefresh={() => this.updateHistory()} />}
             keyExtractor={(element) => element.hash}
             renderItem={this.renderItem(item.address)} />
+</View>
     );
 
     render() {
         return (
             <View style={styles.container}>
-            <Text>{this.state.test}</Text>
+
                 <Balance />
                 {this.renderBody(this.props.wallet)}
             </View>
