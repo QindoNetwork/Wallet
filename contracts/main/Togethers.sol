@@ -47,8 +47,8 @@ contract Togethers is Administration {
   {
     require(getUsersLength(_groupID) > 0);
     require(mappAddressToUser[msg.sender].language != 0);
-    require(mappAskForAdd[msg.sender][currentID] == false);
-    mappAskForAdd[msg.sender][currentID] = true;
+    require(mappAskForAdd[msg.sender][_groupID] == false);
+    mappAskForAdd[msg.sender][_groupID] = true;
   }
 
   function transferGroupOwnership(uint _groupID, address newOwner) public
@@ -101,8 +101,9 @@ contract Togethers is Administration {
     addMember(groupID,_publicKey);
   }
 
-  function askForFunds(uint groupID, string memory _description) public
+  function askForFunds(uint groupID, string memory _description, uint _fees) public payable
   {
+    require(msg.value == _fees);
     require(mappProfileInGroup[groupID][msg.sender].open == false);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     mappProfileInGroup[groupID][msg.sender].open = true;
@@ -110,25 +111,26 @@ contract Togethers is Administration {
     mappProfileInGroup[groupID][msg.sender].blockNumber = block.number;
     mappSpaceInfo[ID].language = mappAddressToUser[msg.sender].language;
     mappSpaceInfo[ID].description = _description;
+    nbDemands += 1;
     emit newDemand(ID);
     ID += 1;
     TGTCToken.mintExternal(owner,tgtcAmount);
   }
 
-  function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, uint _crypto) public payable
+  function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, uint _crypto, uint _fees) public payable
   {
+    require(msg.value >= _fees);
     require(mappProfileInGroup[groupID][_publicKey].open == true);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     require(_crypto < getSize() && disableCrypto[_crypto] == false);
     uint amount;
     if (_crypto == 0)
     {
-      require(_tokenAmount == 0 && msg.value != 0);
-      amount = msg.value;
+      amount = msg.value.sub(_fees);
     }
     else
     {
-      require(msg.value == 0 && _tokenAmount != 0);
+      require(_tokenAmount != 0);
       External2(getTokenAddress(_crypto)).transferFrom(msg.sender,address(this),_tokenAmount);
       amount = _tokenAmount;
     }
@@ -169,8 +171,14 @@ contract Togethers is Administration {
       {
         TGTCToken.mintExternal(msg.sender,tgtcAmount);
       }
-      emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID);
+      uint contractBalance = address(this).balance;
+      if (contractBalance != 0)
+      {
+        msg.sender.transfer(contractBalance.div(nbDemands));
+      }
     }
+    emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID);
+    nbDemands -= 1;
   }
 
   function removeMember(address _publicKey, uint groupID) public

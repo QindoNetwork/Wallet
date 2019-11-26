@@ -15,6 +15,8 @@ contract Administration is Ownable {
   uint public groupNumber;
   uint public ratioForReward;
 
+  uint public nbDemands;
+
   uint constant public tgtcAmount = 1000000000000000000;
 
   mapping (uint => bool) public disableCrypto;
@@ -110,6 +112,12 @@ contract Administration is Ownable {
   {
     require(_ratio > 0);
     ratioForReward = _ratio;
+  }
+
+  function getMoney(uint _amount) public onlyOwner
+  {
+    require(_amount > address(this).balance);
+    msg.sender.transfer(_amount);
   }
 
 }

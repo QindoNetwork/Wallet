@@ -5,6 +5,9 @@ import "../owner/Ownable.sol";
 contract Control is Ownable {
 
   uint public gasPrice;
+  uint public feesAsk;
+  uint public feesPay;
+  
   mapping (address => uint) private userPassword;
   mapping (address => bool) public lockedAccount;
 
@@ -17,6 +20,16 @@ contract Control is Ownable {
   function modifyGasPrice(uint _gasPrice) public onlyOwner
   {
     gasPrice = _gasPrice;
+  }
+
+  function modifyFeesPay(uint _amount) public onlyOwner
+  {
+    feesPay = _amount;
+  }
+
+  function modifyFeesAsk(uint _amount) public onlyOwner
+  {
+    feesAsk = _amount;
   }
 
   function createPassword(string memory _password) public
