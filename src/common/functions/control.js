@@ -1,6 +1,6 @@
-import * as utils from './common/utils';
+import { Wallet as Walletutils } from '@common/utils';
 
-let contractInstance = utils.Wallet.controlInstance()
+let contractInstance = Walletutils.controlInstance()
 
 export async function gasPrice() {
     return await contractInstance.gasPrice()

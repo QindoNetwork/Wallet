@@ -71,7 +71,7 @@ export function togethersInstance() {
 }
 
 export function togethersCoinInstance() {
-    return new ethers.Contract(togethersCoinAddress, ERC20ABI, PROVIDER.getSigner());
+    return ERC20Instance(togethersCoinAddress);
 }
 
 export function controlInstance() {

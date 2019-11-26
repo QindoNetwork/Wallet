@@ -1,6 +1,6 @@
-import * as utils from './common/utils';
+import { Wallet as Walletutils } from '@common/utils';
 
-let contractInstance = utils.Wallet.spaceOperatorInstance()
+let contractInstance = Walletutils.spaceOperatorInstance()
 
 export async function swapOption(address1,address2,offer){
   return await contractInstance.swapOption(address1,address2,offer)

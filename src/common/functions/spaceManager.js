@@ -1,6 +1,6 @@
-import * as utils from './common/utils';
+import { Wallet as Walletutils } from '@common/utils';
 
-let contractInstance = utils.Wallet.spaceManagerInstance()
+let contractInstance = Walletutils.spaceManagerInstance()
 
 export async function urls(spaceID){
   return await contractInstance.urls(spaceID)

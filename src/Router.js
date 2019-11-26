@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   createAppContainer,
-  NavigationActions,
   createStackNavigator
 } from 'react-navigation';
 import * as Views from './components/views';
@@ -25,7 +24,20 @@ const navigator = createStackNavigator(
     Settings: { screen: Views.Settings },
     ShowPrivateKey: { screen: Views.ShowPrivateKey },
     WalletDetails: { screen: Views.WalletDetails },
-    WalletsOverview: { screen: Views.WalletsOverview }
+    WalletsOverview: { screen: Views.WalletsOverview },
+
+    AddProfile: { screen: Views.TogethersApplication.AddProfile },
+    AskGroup: { screen: Views.TogethersApplication.AskGroup },
+    ConfirmPayment: { screen: Views.TogethersApplication.ConfirmPayment },
+    CreateGroup: { screen: Views.TogethersApplication.CreateGroup },
+    Crypto: { screen: Views.TogethersApplication.Crypto },
+    MyProfile: { screen: Views.TogethersApplication.MyProfile },
+    Pay: { screen: Views.TogethersApplication.Pay },
+    Pending: { screen: Views.TogethersApplication.Pending },
+    ProfileData: { screen: Views.TogethersApplication.ProfileData },
+    Profiles: { screen: Views.TogethersApplication.Profiles },
+    Register: { screen: Views.TogethersApplication.Register },
+
   },
   {
     initialRouteName: INITIAL_ROUTE,
@@ -38,29 +50,6 @@ const navigator = createStackNavigator(
     }
   }
 );
-
-const parentGetStateForAction = navigator.router.getStateForAction;
-
-navigator.router.getStateForAction = (action, inputState) => {
-  const state = parentGetStateForAction(action, inputState);
-
-  // fix it up if applicable
-  if (state && action.type === NavigationActions.NAVIGATE) {
-    if (action.params && action.params.replaceRoute) {
-      const leave = action.params.leave || 1;
-      delete action.params.replaceRoute;
-      while (state.routes.length > leave && state.index > 0) {
-        const oldIndex = state.index - 1;
-        // remove one that we are replacing
-        state.routes.splice(oldIndex, 1);
-        // index now one less
-        state.index = oldIndex;
-      }
-    }
-  }
-
-  return state;
-};
 
 const AppContainer = createAppContainer(navigator);
 

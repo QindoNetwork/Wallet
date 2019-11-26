@@ -1,6 +1,6 @@
-import * as utils from './common/utils';
+import { Wallet as Walletutils } from '@common/utils';
 
-let contractInstance = utils.Wallet.ERC20Instance()
+let contractInstance = Walletutils.ERC20Instance()
 
 export async function name() {
     return await contractInstance.name()

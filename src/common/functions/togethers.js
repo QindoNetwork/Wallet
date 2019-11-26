@@ -1,10 +1,11 @@
-import * as utils from './common/utils';
+import { Wallet as Walletutils } from '@common/utils';
 
-let contractInstance = utils.Wallet.togethersInstance()
+let contractInstance = Walletutils.togethersInstance()
 
 export async function ID(){
   return await contractInstance.ID()
 }
+
 export async function MAX(){
   return await contractInstance.MAX()
 }

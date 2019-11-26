@@ -43,10 +43,9 @@ contract Togethers is Administration {
     ID = 2;
   }
 
-  function ask(string memory _groupName) public
+  function ask(uint _groupID) public
   {
-    uint currentID = returnHash(_groupName);
-    require(getUsersLength(currentID) > 0);
+    require(getUsersLength(_groupID) > 0);
     require(mappAddressToUser[msg.sender].language != 0);
     require(mappAskForAdd[msg.sender][currentID] == false);
     mappAskForAdd[msg.sender][currentID] = true;
