@@ -1,15 +1,16 @@
-import { Wallet as Walletutils } from '@common/utils';
+import { Contracts as contractInstance } from '@common/actions';
 
-let contractInstance = Walletutils.controlInstance()
-
-export async function gasPrice() {
-    return await contractInstance.gasPrice()
+export async function gasPrice(signer) {
+  let controlInstance = contractInstance.controlInstance(signer)
+  return await controlInstance.gasPrice()
 }
 
-export async function connectUser(_password) {
-    return await contractInstance.connectUser(_password)
+export async function connectUser(_password,signer) {
+  let controlInstance = contractInstance.controlInstance(signer)
+  return await controlInstance.connectUser(_password)
 }
 
-export async function createPassword(_password) {
-    await contractInstance.createPassword(_password)
+export async function createPassword(_password,signer) {
+  let controlInstance = contractInstance.controlInstance(signer)
+  await controlInstance.createPassword(_password)
 }

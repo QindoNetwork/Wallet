@@ -4,4 +4,4 @@ import { SpaceManagerABI } from './spaceManagerABI';
 import { SpaceOperatorABI } from './spaceOperatorABI';
 import { TogethersABI } from './togethersABI';
 
-export { CcontrolABI, ERC20ABI, SpaceManagerABI, SpaceOperatorABI, TogethersABI };
+export { ControlABI, ERC20ABI, SpaceManagerABI, SpaceOperatorABI, TogethersABI };

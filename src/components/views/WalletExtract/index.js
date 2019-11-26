@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, RefreshControl, StyleSheet, View, Text} from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, View, Text } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { measures } from '@common/styles';
 import { Wallets as WalletActions } from '@common/actions';
@@ -7,13 +7,19 @@ import Balance from './Balance';
 import TransactionCard from './TransactionCard';
 import NoTransactions from './NoTransactions';
 import { GeneralActions } from '@common/actions';
+import { Togethers as TogethersFunctions } from '@common/functions';
 
 @inject('wallet')
 @observer
 export class WalletExtract extends React.Component {
 
+    state = { test: '34' };
+
     componentDidMount() {
-        this.updateHistory();
+      this.updateHistory();
+      this.setState({
+              test : TogethersFunctions.ID(this.props.wallet.item),
+      })
     }
 
     async updateHistory() {
@@ -38,8 +44,8 @@ export class WalletExtract extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>{this.props.wallet.address}</Text>
-                <Balance />                
+            <Text>{this.state.test}</Text>
+                <Balance />
                 {this.renderBody(this.props.wallet)}
             </View>
         );

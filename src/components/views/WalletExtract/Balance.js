@@ -3,22 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { colors, measures } from '@common/styles';
 import { Wallet as WalletUtils } from '@common/utils';
-import { Togethers as TogethersFunctions} from '@common/functions';
 
 @inject('prices', 'wallet')
 @observer
 export default class Balance extends React.Component {
-
-  state = { test: '' };
-
-  async componentDidMount() {
-
-    let ID = TogethersFunctions.ID()
-
-    this.setState({
-                test : ID,
-                })
-  }
 
     get balance() {
         const { item } = this.props.wallet;
@@ -37,7 +25,6 @@ export default class Balance extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.leftColumn}>
-                <Text style={styles.title}>{this.state.test}</Text>
                     <Text style={styles.title}>Balance:</Text>
                 </View>
                 <View style={styles.rightColumn}>

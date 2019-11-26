@@ -38,7 +38,7 @@ export default class TransactionCard extends React.Component {
     get fiatLabel() {
         return this.props.prices.selectedRate.toUpperCase();
     }
-    
+
     get fiatBalance() {
         return Number(this.props.prices.usd * this.balance).toFixed(2);
     }

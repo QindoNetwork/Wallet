@@ -1,87 +1,106 @@
-import { Wallet as Walletutils } from '@common/utils';
+import { Contracts as contractInstance } from '@common/actions';
 
-let contractInstance = Walletutils.spaceManagerInstance()
-
-export async function urls(spaceID){
-  return await contractInstance.urls(spaceID)
+export async function urls(spaceID,signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.urls(spaceID)
 }
 
-export async function lockedSpace(spaceID){
-  return await contractInstance.lockedSpace(spaceID)
+export async function lockedSpace(spaceID,signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.lockedSpace(spaceID)
 }
 
-export async function mappSociety(spaceID){
-  return await contractInstance.mappSociety(spaceID)
+export async function mappSociety(spaceID,signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.mappSociety(spaceID)
 }
 
-export async function checkedSociety(spaceID){
-  return await contractInstance.checkedSociety(spaceID)
+export async function checkedSociety(spaceID,signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.checkedSociety(spaceID)
 }
 
-export async function isApproved(societyID){
-  return await contractInstance.isApproved(societyID)
+export async function isApproved(societyID,signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.isApproved(societyID)
 }
 
-export async function mappIDSocietyToHash(spaceID){
-  return await contractInstance.mappIDSocietyToHash(spaceID)
+export async function mappIDSocietyToHash(spaceID,signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.mappIDSocietyToHash(spaceID)
 }
 
-export async function mappSpacesList(spaceID){
-  return await contractInstance.mappSpacesList(spaceID)
+export async function mappSpacesList(spaceID,signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.mappSpacesList(spaceID)
 }
 
-export async function balckList(spaceID){
-  return await contractInstance.balckList(spaceID)
+export async function balckList(spaceID,signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.balckList(spaceID)
 }
 
-export async function mappPassword(spaceID){
-  return await contractInstance.mappPassword(spaceID)
+export async function mappPassword(spaceID,signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.mappPassword(spaceID)
 }
 
-export async function TGTCPrice(spaceID){
-  return await contractInstance.TGTCPrice(spaceID)
+export async function TGTCPrice(spaceID,signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.TGTCPrice(spaceID)
 }
 
-export async function MaxTokenCount(){
-  return await contractInstance.MaxTokenCount()
+export async function MaxTokenCount(signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.MaxTokenCount()
 }
 
-export async function spacePrice(){
-  return await contractInstance.spacePrice()
+export async function spacePrice(signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.spacePrice()
 }
 
-export async function getSpaceInfoName(spaceID){
-  return await contractInstance.getSpaceInfoName(spaceID)
+export async function getSpaceInfoName(spaceID,signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.getSpaceInfoName(spaceID)
 }
 
-export async function getSpaceInfoSIRET(spaceID){
-  return await contractInstance.getSpaceInfoSIRET(spaceID)
+export async function getSpaceInfoSIRET(spaceID,signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.getSpaceInfoSIRET(spaceID)
 }
 
-export async function getNBSpaces(address){
-  return await contractInstance.getNBSpaces(address)
+export async function getNBSpaces(address,signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.getNBSpaces(address)
 }
 
-export async function getLastSpaceID(){
-  return await contractInstance.getNBSpaces()
+export async function getLastSpaceID(signer){
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  return await spaceManagerInstance.getNBSpaces()
 }
 
-export async function registerSociety(password,name,siret,signatory,email) {
-    await contractInstance.registerSociety(password,name,siret,signatory,email)
+export async function registerSociety(password,name,siret,signatory,emai,signerl) {
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  await spaceManagerInstance.registerSociety(password,name,siret,signatory,email)
 }
 
-export async function getTGTCs(amount) {
-    await contractInstance.getTGTCs(_password)
+export async function getTGTCs(amount,signer) {
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  await spaceManagerInstance.getTGTCs(_password)
 }
 
 export async function modifySpaces(list,url) {
-    await contractInstance.modifySpaces(list,url)
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  await spaceManagerInstance.modifySpaces(list,url)
 }
 
-export async function lockSpaces(list) {
-    await contractInstance.lockSpaces(list)
+export async function lockSpaces(list,signer) {
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  await spaceManagerInstance.lockSpaces(list)
 }
 
-export async function buySpaces(list) {
-    await contractInstance.buySpaces(list)
+export async function buySpaces(list,signer) {
+  let spaceManagerInstance = contractInstance.spaceManagerInstance(signer)
+  await spaceManagerInstance.buySpaces(list)
 }
