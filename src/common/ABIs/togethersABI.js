@@ -1,4 +1,4 @@
-const abi = [
+export const TogethersABI = [
   {
     "constant": true,
     "inputs": [
@@ -1057,5 +1057,3 @@ const abi = [
     "type": "function"
   }
 ]
-
-export default abi;

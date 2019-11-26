@@ -1,4 +1,4 @@
-const abi = [
+export const SpaceManagerABI = [
   {
     "constant": true,
     "inputs": [
@@ -1020,5 +1020,3 @@ const abi = [
     "type": "function"
   }
 ]
-
-export default abi;

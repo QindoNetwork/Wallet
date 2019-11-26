@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-export class Login extends React.Component {
+export class Pay extends React.Component {
 
     static navigationOptions = ({ navigation }) => ({
-        title: 'Login'
+        title: 'Pay your friend'
     });
 
     render() {

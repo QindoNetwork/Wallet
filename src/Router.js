@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   createAppContainer,
+  NavigationActions,
   createStackNavigator
 } from 'react-navigation';
 import * as Views from './components/views';
@@ -26,17 +27,18 @@ const navigator = createStackNavigator(
     WalletDetails: { screen: Views.WalletDetails },
     WalletsOverview: { screen: Views.WalletsOverview },
 
-    AddProfile: { screen: Views.TogethersApplication.AddProfile },
-    AskGroup: { screen: Views.TogethersApplication.AskGroup },
-    ConfirmPayment: { screen: Views.TogethersApplication.ConfirmPayment },
-    CreateGroup: { screen: Views.TogethersApplication.CreateGroup },
-    Crypto: { screen: Views.TogethersApplication.Crypto },
-    MyProfile: { screen: Views.TogethersApplication.MyProfile },
-    Pay: { screen: Views.TogethersApplication.Pay },
-    Pending: { screen: Views.TogethersApplication.Pending },
-    ProfileData: { screen: Views.TogethersApplication.ProfileData },
-    Profiles: { screen: Views.TogethersApplication.Profiles },
-    Register: { screen: Views.TogethersApplication.Register },
+    AddProfile: { screen: Views.AddProfile },
+    AskGroup: { screen: Views.AskGroup },
+    CreateGroup: { screen: Views.CreateGroup },
+    Crypto: { screen: Views.Crypto },
+    MyProfile: { screen: Views.MyProfile },
+    Pay: { screen: Views.Pay },
+    Pending: { screen: Views.Pending },
+    ProfileData: { screen: Views.ProfileData },
+    Profiles: { screen: Views.Profiles },
+    Register: { screen: Views.Register },
+    Groups: { screen: Views.Groups },
+    Login: { screen: Views.Login },
 
   },
   {
@@ -52,5 +54,28 @@ const navigator = createStackNavigator(
 );
 
 const AppContainer = createAppContainer(navigator);
+
+const parentGetStateForAction = navigator.router.getStateForAction;
+
+navigator.router.getStateForAction = (action, inputState) => {
+  const state = parentGetStateForAction(action, inputState);
+
+  // fix it up if applicable
+  if (state && action.type === NavigationActions.NAVIGATE) {
+    if (action.params && action.params.replaceRoute) {
+      const leave = action.params.leave || 1;
+      delete action.params.replaceRoute;
+      while (state.routes.length > leave && state.index > 0) {
+        const oldIndex = state.index - 1;
+        // remove one that we are replacing
+        state.routes.splice(oldIndex, 1);
+        // index now one less
+        state.index = oldIndex;
+      }
+    }
+  }
+
+  return state;
+};
 
 export default AppContainer;

@@ -1,4 +1,4 @@
-const abi = [
+export const ControlABI = [
   {
     "constant": true,
     "inputs": [],
@@ -136,5 +136,3 @@ const abi = [
     "type": "function"
   }
 ]
-
-export default abi;

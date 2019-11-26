@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, View, Text} from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { measures } from '@common/styles';
 import { Wallets as WalletActions } from '@common/actions';
@@ -38,7 +38,8 @@ export class WalletExtract extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Balance />
+                <Text>{this.props.wallet.address}</Text>
+                <Balance />                
                 {this.renderBody(this.props.wallet)}
             </View>
         );

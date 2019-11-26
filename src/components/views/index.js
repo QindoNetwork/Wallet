@@ -17,4 +17,16 @@ export * from './WalletDetails';
 export * from './WalletExtract';
 export * from './WalletSettings';
 export * from './WalletsOverview';
-export * as TogethersApplication from './TogethersApplication';
+
+export * from './AddProfile';
+export * from './AskGroup';
+export * from './CreateGroup';
+export * from './Crypto';
+export * from './MyProfile';
+export * from './Pay';
+export * from './Pending';
+export * from './ProfileData';
+export * from './Profiles';
+export * from './Register';
+export * from './Groups';
+export * from './Login';

@@ -3,5 +3,6 @@ import * as Recents from './recents';
 import * as Storage from './storage';
 import * as Url from './url';
 import * as Wallet from './wallet';
+import * as Contracts from './contracts';
 
-export { Prices, Recents, Storage, Url, Wallet };
+export { Prices, Recents, Storage, Url, Wallet , Contracts };
