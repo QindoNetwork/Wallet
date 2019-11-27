@@ -2,6 +2,7 @@ pragma solidity ^0.5.0;
 
 interface External1 {
   function ID() external returns (uint);
+  function addInbox() payable external;
 }
 
 interface External2 {

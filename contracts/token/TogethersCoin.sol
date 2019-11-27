@@ -10,8 +10,8 @@ contract TogethersCoin is Ownable {
   event Transfer(address indexed from, address indexed to, uint256 value);
   event Approval(address indexed owner, address indexed spender, uint256 value);
 
-    string public constant name = "TogethersCoinTest";
-    string public constant symbol = "TGTCTT";
+    string public constant name = "TogethersCoin";
+    string public constant symbol = "TGTC";
     uint32 public constant decimals = 18;
 
     mapping (address => uint256) private _balances;

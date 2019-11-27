@@ -146,26 +146,16 @@ contract SpaceManager is TogethersSpace {
     balckList[_ID].reason = _reason;
   }
 
-  function getMoney() public onlyOwner
-  {
-    msg.sender.transfer(address(this).balance);
-  }
-
   function modifyTGTCPrice(uint price) public onlyOwner
   {
     TGTCPrice = price;
-  }
-
-  function putTGTCs(uint amount) public onlyOwner
-  {
-    require(TGTCPrice != 0);
-    TGTCToken.transferFrom(msg.sender,address(this),amount);
   }
 
   function getTGTCs(uint amount) public payable
   {
     require(TGTCPrice != 0);
     require(msg.value == TGTCPrice.mul(amount));
+    MainContract.addInbox.value(msg.value);
     TGTCToken.transfer(msg.sender,amount);
   }
 
@@ -212,7 +202,7 @@ contract SpaceManager is TogethersSpace {
     }
     if (k > 0)
     {
-      TGTCToken.burnExternal(msg.sender,spacePrice * k);
+      TGTCToken.burnExternal(msg.sender,spacePrice.mul(k));
     }
   }
 

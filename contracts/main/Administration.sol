@@ -13,7 +13,6 @@ contract Administration is Ownable {
   uint public MAX;
 
   uint public groupNumber;
-  uint public ratioForReward;
 
   uint public nbDemands;
 
@@ -40,6 +39,7 @@ contract Administration is Ownable {
   }
 
   address powerToken;
+  uint box;
 
   function setPowerToken(address _tgts) public onlyOwner
   {
@@ -108,16 +108,25 @@ contract Administration is Ownable {
     return true;
   }
 
-  function changeRatioForReward(uint _ratio) public onlyOwner
-  {
-    require(_ratio > 0);
-    ratioForReward = _ratio;
-  }
-
   function getMoney(uint _amount) public onlyOwner
   {
-    require(_amount > address(this).balance);
-    msg.sender.transfer(_amount);
+    uint value;
+    if (_amount == 0 || _amount > box)
+    {
+      value = box;
+    }
+    else
+    {
+      value = _amount;
+    }
+    box.sub(value);
+    msg.sender.transfer(value);
   }
+
+  function addInbox() public payable
+  {
+    box.add(msg.value);
+  }
+
 
 }

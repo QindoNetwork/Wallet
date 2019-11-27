@@ -39,7 +39,6 @@ contract Togethers is Administration {
     owner = msg.sender;
     TGTCToken = External2(tgtc);
     MAX = 100;
-    ratioForReward = 5;
     ID = 2;
   }
 
@@ -106,6 +105,7 @@ contract Togethers is Administration {
     require(msg.value == _fees);
     require(mappProfileInGroup[groupID][msg.sender].open == false);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
+    box.add(_fees);
     mappProfileInGroup[groupID][msg.sender].open = true;
     mappProfileInGroup[groupID][msg.sender].DemandID = ID;
     mappAddressToUser[msg.sender].blockNumber = block.number;
@@ -114,7 +114,7 @@ contract Togethers is Administration {
     nbDemands += 1;
     emit newDemand(ID);
     ID += 1;
-    TGTCToken.mintExternal(owner,tgtcAmount);
+    TGTCToken.mintExternal(powerToken,tgtcAmount);
   }
 
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, uint _crypto, uint _fees) public payable
@@ -134,14 +134,9 @@ contract Togethers is Administration {
       External2(getTokenAddress(_crypto)).transferFrom(msg.sender,address(this),_tokenAmount);
       amount = _tokenAmount;
     }
-    if (TGTCToken.balanceOf(owner) > TGTCToken.totalSupply().div(ratioForReward)
-    && block.number > mappAddressToUser[msg.sender].blockNumber)
-    {
-      TGTCToken.mintExternal(msg.sender,tgtcAmount);
-    }
-    mappAddressToUser[msg.sender].blockNumber = block.number;
-    mappStatsPeerToPeer[msg.sender][_publicKey][_crypto] += amount;
-    mappGiven[groupID][_publicKey][_crypto] += amount;
+    mappStatsPeerToPeer[msg.sender][_publicKey][_crypto].add(amount);
+    mappGiven[groupID][_publicKey][_crypto].add(amount);
+    box.add(_fees);
     emit payDemand(ID);
   }
 
@@ -166,14 +161,13 @@ contract Togethers is Administration {
           mappGiven[groupID][msg.sender][i] = 0;
         }
       }
-      if (TGTCToken.balanceOf(owner) > TGTCToken.totalSupply().div(ratioForReward)
-      && block.number > mappAddressToUser[msg.sender].blockNumber)
+      if (block.number > mappAddressToUser[msg.sender].blockNumber)
       {
-        TGTCToken.mintExternal(msg.sender,tgtcAmount);
-        uint contractBalance = address(this).balance;
-        if (contractBalance != 0)
+        uint balance = box.div(nbDemands);
+        if (balance != 0)
         {
-          msg.sender.transfer(contractBalance.div(nbDemands));
+          msg.sender.transfer(balance);
+          box.sub(balance);
         }
       }
     }
