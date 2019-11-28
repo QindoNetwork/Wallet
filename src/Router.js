@@ -17,8 +17,6 @@ const navigator = createStackNavigator(
     CreateMnemonics: { screen: Views.CreateMnemonics },
     CreateWallet: { screen: Views.CreateWallet },
     LoadMnemonics: { screen: Views.LoadMnemonics },
-    LoadPrivateKey: { screen: Views.LoadPrivateKey },
-    LoadWallet: { screen: Views.LoadWallet },
     NewWallet: { screen: Views.NewWallet },
     NewWalletName: { screen: Views.NewWalletName },
     SelectDestination: { screen: Views.SelectDestination },

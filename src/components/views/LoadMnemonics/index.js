@@ -6,7 +6,7 @@ import { Wallet as WalletUtils } from '@common/utils';
 import { General as GeneralActions, Wallets as WalletsActions } from '@common/actions';
 
 export class LoadMnemonics extends React.Component {
-    
+
     static navigationOptions = { title: 'Load Wallet' };
 
     state = { mnemonics: [] };
@@ -31,7 +31,7 @@ export class LoadMnemonics extends React.Component {
         mnemonics = mnemonics.filter(m => m !== mnemonic);
         this.setState({ mnemonics });
     }
-    
+
     renderMnemonic = (mnemonic, index) => (
         <TouchableWithoutFeedback key={index} onPress={() => this.removeMnemonic(mnemonic)}>
             <View style={styles.mnemonic}>

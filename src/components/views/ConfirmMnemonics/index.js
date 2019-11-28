@@ -7,13 +7,13 @@ import { General as GeneralActions, Wallets as WalletsActions } from '@common/ac
 import ConfirmBox from './ConfirmBox';
 
 export class ConfirmMnemonics extends React.Component {
-    
+
     static navigationOptions = { title: 'Create Wallet' };
 
     state = { mnemonics: [] };
 
     componentDidMount() {
-        const { mnemonics, walletName, walletDescription } = this.props.navigation.state.params;
+        const { mnemonics, walletName, walletDescription, password } = this.props.navigation.state.params;
         this.setState({ mnemonics, walletName, walletDescription });
     }
 

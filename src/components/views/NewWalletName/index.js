@@ -7,13 +7,14 @@ export class NewWalletName extends React.Component {
 
     static navigationOptions = { title: 'New Wallet Name' };
 
-    state = { walletName: '', walletDescription: '', password1: '', password2: '' };
+    state = { walletName: '', walletDescription: '' };
 
     onPressContinue() {
         Keyboard.dismiss();
         const { walletName, walletDescription, password1, password2 } = this.state;
-        if (!walletName && !pseudonyme && password1 === password2) return;
-        this.props.navigation.navigate('NewWallet', { walletName, walletDescription, password1, password2 });
+        if (!walletName || password1 !== password2 || !password1) return;
+        let password = password1
+        this.props.navigation.navigate('NewWallet', { walletName, walletDescription });
     }
 
     render() {
@@ -35,11 +36,13 @@ export class NewWalletName extends React.Component {
                     <Text style={styles.message}>Password</Text>
                     <TextInput
                         style={styles.input}
+                        secureTextEntry
                         underlineColorAndroid="transparent"
                         onChangeText={password1 => this.setState({ password1 })} />
                     <Text style={styles.message}>Confirm Password</Text>
                     <TextInput
                         style={styles.input}
+                        secureTextEntry
                         underlineColorAndroid="transparent"
                         onChangeText={password2 => this.setState({ password2 })} />
                 </View>

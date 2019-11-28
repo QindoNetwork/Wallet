@@ -35,9 +35,8 @@ contract Togethers is Administration {
     uint DemandID;
   }
 
-  constructor(address tgtc) public {
+  constructor() public {
     owner = msg.sender;
-    TGTCToken = External2(tgtc);
     MAX = 100;
     ID = 2;
   }
@@ -114,7 +113,7 @@ contract Togethers is Administration {
     nbDemands += 1;
     emit newDemand(ID);
     ID += 1;
-    TGTCToken.mintExternal(powerToken,tgtcAmount);
+    External2(getTokenAddress(1)).mintExternal(powerToken,tgtcAmount);
   }
 
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, uint _crypto, uint _fees) public payable
@@ -140,39 +139,38 @@ contract Togethers is Administration {
     emit payDemand(ID);
   }
 
-  function withdrawFunds(uint groupID) public
+  function withdrawFunds(uint groupID) public returns (uint)
   {
     require(mappProfileInGroup[groupID][msg.sender].open == true);
+    uint bonus;
     mappProfileInGroup[groupID][msg.sender].open = false;
     if (checkIsEmpty(groupID) == false)
     {
       for(uint i = 0 ; i < getSize() ; i++)
       {
-        if (mappGiven[groupID][msg.sender][i] > 0)
+        if (mappGiven[groupID][msg.sender][i] > 0 && disableCrypto[i] == false)
         {
           if (i == 0)
           {
             msg.sender.transfer(mappGiven[groupID][msg.sender][i]);
           }
-          else
-          {
-            External2(getTokenAddress(i)).transfer(msg.sender,mappGiven[groupID][msg.sender][i]);
-          }
+          else External2(getTokenAddress(i)).transfer(msg.sender,mappGiven[groupID][msg.sender][i]);
           mappGiven[groupID][msg.sender][i] = 0;
         }
       }
       if (block.number > mappAddressToUser[msg.sender].blockNumber)
       {
-        uint balance = box.div(nbDemands);
-        if (balance != 0)
+        bonus = box.div(nbDemands);
+        if (bonus != 0)
         {
-          msg.sender.transfer(balance);
-          box.sub(balance);
+          msg.sender.transfer(bonus);
+          box.sub(bonus);
         }
       }
     }
     emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID);
     nbDemands -= 1;
+    return bonus;
   }
 
   function removeMember(address _publicKey, uint groupID) public

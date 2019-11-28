@@ -4,14 +4,14 @@ import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 
 export class NewWallet extends React.Component {
-    
+
     static navigationOptions = { title: 'New Wallet' };
-    
+
     onPressLoad() {
         const { walletName, walletDescription } = this.props.navigation.state.params;
-        this.props.navigation.navigate('LoadWallet', { walletName, walletDescription });
+        this.props.navigation.navigate('LoadMnemonics', { walletName, walletDescription });
     }
-    
+
     onPressCreate() {
         const { walletName, walletDescription } = this.props.navigation.state.params;
         this.props.navigation.navigate('CreateWallet', { walletName, walletDescription });

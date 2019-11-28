@@ -4,8 +4,6 @@ export * from './ConfirmTransaction';
 export * from './CreateMnemonics';
 export * from './CreateWallet';
 export * from './LoadMnemonics';
-export * from './LoadPrivateKey';
-export * from './LoadWallet';
 export * from './NewWallet';
 export * from './NewWalletName';
 export * from './ReceiveCoins';

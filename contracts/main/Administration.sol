@@ -5,8 +5,6 @@ import "../technical/SafeMath.sol";
 
 contract Administration is Ownable {
 
-  External2 public TGTCToken;
-
   using SafeMath for uint256;
 
   uint public ID;

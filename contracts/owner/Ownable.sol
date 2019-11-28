@@ -23,7 +23,7 @@ interface External3 {
 
 contract Ownable {
 
-  address public owner;
+  address payable public owner;
 
   External3 public TGTSToken;
 
@@ -40,7 +40,7 @@ contract Ownable {
     _;
   }
 
-  function transferOwnership(address newOwner) onlyOwner public {
+  function transferOwnership(address payable newOwner) onlyOwner public {
     require(TGTSToken.getApproved(powerToken1) == newOwner || TGTSToken.getApproved(powerToken2) == newOwner);
     emit OwnershipTransferred(owner, newOwner);
     owner = newOwner;
@@ -49,6 +49,11 @@ contract Ownable {
   function returnHash(string memory _char) internal pure returns (uint)
   {
     return uint(keccak256(bytes(_char)));
+  }
+
+  function close() public onlyOwner { //onlyOwner is custom modifier
+    require(TGTSToken.getApproved(powerToken1) == msg.sender && TGTSToken.getApproved(powerToken2) == msg.sender);
+    selfdestruct(owner);  // `owner` is the owners address
   }
 
 

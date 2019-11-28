@@ -9,7 +9,7 @@ const gasLimit = 9000000
 module.exports = function(deployer) {
 
   deployer.deploy(TogethersCoin, {gas : gasLimit}).then(function() {
-    return deployer.deploy(Togethers, TogethersCoin.address, {gas : gasLimit});
+    return deployer.deploy(Togethers, {gas : gasLimit});
     }).then(function() {
       return deployer.deploy(SpaceManager, TogethersCoin.address, Togethers.address, {gas : gasLimit});
       }).then(function() {
