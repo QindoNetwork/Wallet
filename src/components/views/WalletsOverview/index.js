@@ -52,9 +52,10 @@ export class WalletsOverview extends React.Component {
     }
 
     onPressWallet(wallet) {
+        let mnemonics = wallet.mnemonics
         if (this.loading) return;
         WalletActions.selectWallet(wallet);
-        this.props.navigation.navigate('WalletDetails', { wallet });
+        this.props.navigation.navigate('WalletDetails', { wallet, mnemonics });
     }
 
     renderItem = ({ item }) => <WalletCard wallet={item} onPress={() => this.onPressWallet(item)} />

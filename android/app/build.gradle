@@ -139,7 +139,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-randombytes')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-svg')
     implementation project(':react-native-snackbar')

@@ -4,25 +4,23 @@ import "./Administration.sol";
 
 contract Togethers is Administration {
 
-  event newDemand(uint indexed ID);
-  event payDemand(uint indexed ID);
+  event newDemand(uint indexed ID, address indexed from);
+  event payDemand(uint indexed ID, address indexed from);
   event endDemand(uint indexed ID);
 
   mapping (address => mapping (address => mapping (uint => uint))) public mappStatsPeerToPeer;
-  mapping (address => user) public mappAddressToUser;
+  mapping (address => user) private mappAddressToUser;
   mapping (uint => string) public mappGroupIDToGroupName;
-  mapping (uint => mapping (address => profile)) public mappProfileInGroup;
-  mapping (address => uint[]) public mappGroupsForAddress;
-  mapping (uint => address[]) public mappUsersInGroup;
+  mapping (uint => mapping (address => profile)) private mappProfileInGroup;
+  mapping (address => uint[]) private mappGroupsForAddress;
+  mapping (uint => address[]) private mappUsersInGroup;
   mapping (uint => address) public checkNameUnicity;
   mapping (address => mapping (uint => uint)) public checkGroupUnicity;
   mapping (address => mapping (uint => bool)) public mappAskForAdd;
 
   struct user
   {
-    string name;
     string pseudo;
-    string ipfsImage;
     uint language;
     uint blockNumber;
   }
@@ -57,16 +55,14 @@ contract Togethers is Administration {
     mappProfileInGroup[_groupID][newOwner].owner = true;
   }
 
-  function setUser(string memory _pseudo, string memory _ipfsImage, string memory _userName, uint _language) public
+  function setUser(string memory _pseudo, uint _language) public
   {
     uint currentID = returnHash(_pseudo);
     require(checkNameUnicity[currentID] == address(0));
     checkNameUnicity[currentID] = msg.sender;
     mappAskForAdd[msg.sender][currentID] = true;
-    mappAddressToUser[msg.sender].name = _userName;
     mappAddressToUser[msg.sender].pseudo = _pseudo;
     mappAddressToUser[msg.sender].language = _language;
-    mappAddressToUser[msg.sender].ipfsImage = _ipfsImage;
   }
 
   function createGroup(string memory _groupName) public
@@ -111,9 +107,9 @@ contract Togethers is Administration {
     mappSpaceInfo[ID].language = mappAddressToUser[msg.sender].language;
     mappSpaceInfo[ID].description = _description;
     nbDemands += 1;
-    emit newDemand(ID);
+    emit newDemand(ID,msg.sender);
     ID += 1;
-    External2(getTokenAddress(1)).mintExternal(powerToken,tgtcAmount);
+    External2(getTokenAddress(1)).mintExternal(getTokenAddress(1),tgtcAmount);
   }
 
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, uint _crypto, uint _fees) public payable
@@ -136,7 +132,7 @@ contract Togethers is Administration {
     mappStatsPeerToPeer[msg.sender][_publicKey][_crypto].add(amount);
     mappGiven[groupID][_publicKey][_crypto].add(amount);
     box.add(_fees);
-    emit payDemand(ID);
+    emit payDemand(ID,msg.sender);
   }
 
   function withdrawFunds(uint groupID) public returns (uint)
@@ -233,15 +229,6 @@ contract Togethers is Administration {
     return mappAddressToUser[mappUsersInGroup[_group][_num]].pseudo;
   }
 
-  function getUserName2(uint _group, uint _num) view public returns (string memory)
-  {
-    if (_num >= getUsersLength(_group))
-    {
-      return "";
-    }
-    return mappAddressToUser[mappUsersInGroup[_group][_num]].name;
-  }
-
   function getGroup(uint _num) view public returns (string memory)
   {
     return mappGroupIDToGroupName[mappGroupsForAddress[msg.sender][_num]];
@@ -269,6 +256,26 @@ contract Togethers is Administration {
   function getUsersLength(uint _group) view public returns (uint)
   {
     return mappUsersInGroup[_group].length;
+  }
+
+  function getUsersLanguage() view public returns (uint)
+  {
+    return mappAddressToUser[msg.sender].language;
+  }
+
+  function isOwner(uint groupID, address _user) view public returns (bool)
+  {
+    return mappProfileInGroup[groupID][_user].owner;
+  }
+
+  function isOpen(uint groupID, address _user) view public returns (bool)
+  {
+    return mappProfileInGroup[groupID][_user].open;
+  }
+
+  function getDemandID(uint groupID, address _user) view public returns (uint)
+  {
+    return mappProfileInGroup[groupID][_user].DemandID;
   }
 
 }

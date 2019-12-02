@@ -18,7 +18,7 @@ contract Administration is Ownable {
 
   mapping (uint => bool) public disableCrypto;
   mapping (uint => mapping (address => mapping (uint => uint))) public mappGiven;
-  mapping (uint => spaceInfo) public mappSpaceInfo;
+  mapping (uint => spaceInfo) internal mappSpaceInfo;
 
   Token[] list;
 
@@ -124,6 +124,16 @@ contract Administration is Ownable {
   function addInbox() public payable
   {
     box.add(msg.value);
+  }
+
+  function getDescription(uint id) view public returns (string memory)
+  {
+    return mappSpaceInfo[id].description;
+  }
+
+  function getSpaceLanguage(uint id) view public returns (uint)
+  {
+    return mappSpaceInfo[id].language;
   }
 
 

@@ -13,7 +13,7 @@ export class ConfirmMnemonics extends React.Component {
     state = { mnemonics: [] };
 
     componentDidMount() {
-        const { mnemonics, walletName, walletDescription, password } = this.props.navigation.state.params;
+        const { mnemonics, walletName, walletDescription } = this.props.navigation.state.params;
         this.setState({ mnemonics, walletName, walletDescription });
     }
 
@@ -22,7 +22,7 @@ export class ConfirmMnemonics extends React.Component {
         try {
             const { mnemonics, walletName, walletDescription } = this.state;
             const wallet = WalletUtils.loadWalletFromMnemonics(mnemonics);
-            await WalletsActions.addWallet(walletName, wallet, walletDescription);
+            await WalletsActions.addWallet(walletName, wallet, walletDescription, mnemonics);
             this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
             await WalletsActions.saveWallets();
         } catch (e) {

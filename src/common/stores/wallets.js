@@ -15,10 +15,11 @@ export class WalletsStore {
         this.loading = Boolean(state);
     }
 
-    @action addWallet(walletName, wallet, walletDescription = '', password = '') {
+    @action addWallet(walletName, wallet, walletDescription = '', mnemonics) {
         if (!(wallet instanceof ethers.Wallet)) throw new Error('Invalid Wallet');
         wallet.name = walletName;
         wallet.description = walletDescription;
+        wallet.mnemonics = mnemonics;
         this.list.push(wallet);
     }
 

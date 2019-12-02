@@ -1,33 +1,37 @@
 import { ethers } from 'ethers';
+import * as ABIs from '@common/ABIs';
 import { Contracts as contractsAddress } from '@common/constants';
 
 const network = 'ropsten';
 let provider = ethers.getDefaultProvider(network);
 
-export function spaceManagerInstance() {
-    return new ethers.Contract(contractsAddress.spaceManagerAddress, ABIs.SpaceManagerABI, provider);
+export function spaceManagerInstance(wallet) {
+    let contract = new ethers.Contract(contractsAddress.spaceManagerAddress, ABIs.SpaceManagerABI, provider);
+    return contract.connect(wallet);
 }
 
-export function spaceOperatorInstance() {
-    return new ethers.Contract(contractsAddress.spaceOperatorAddress, ABIs.SpaceOperatorABI, provider);
+export function spaceOperatorInstance(wallet) {
+    let contract = new ethers.Contract(contractsAddress.spaceOperatorAddress, ABIs.SpaceOperatorABI, provider);
+    return contract.connect(wallet);
 }
 
-export function togethersInstance() {
-    return new ethers.Contract(contractsAddress.togethersAddress, ABIs.TogethersABI, provider);
+export function togethersInstance(wallet) {
+    let contract = new ethers.Contract(contractsAddress.togethersAddress, ABIs.TogethersABI, provider);
+    return contract.connect(wallet);
 }
 
-export function togethersCoinInstance() {
-    return ERC20Instance(contractsAddress.togethersCoinAddress);
+export function togethersCoinInstance(wallet) {
+    return  ERC20Instance(contractsAddress.togethersCoinAddress,wallet);
 }
 
-export function controlInstance() {
-    return new ethers.Contract(contractsAddress.controlAddress, ABIs.ControlABI, provider);
+export function controlInstance(wallet) {
+    let contract = new ethers.Contract(contractsAddress.controlAddress, ABIs.ControlABI, provider);
+    return contract.connect(wallet);
 }
 
-export function OtherERC20Instance(address) {
-    return new ERC20Instance(address);
-}
+//others ERC20
 
-function ERC20Instance(address) {
-    return new ethers.Contract(address, ABIs.ERC20ABI, provider);
+export function ERC20Instance(address,wallet) {
+    let contract = new ethers.Contract(address, ABIs.ERC20ABI, provider);
+    return contract.connect(wallet);
 }

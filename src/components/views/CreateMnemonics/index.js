@@ -5,7 +5,7 @@ import { Wallet as WalletUtils } from '@common/utils';
 import { colors, measures } from '@common/styles';
 
 export class CreateMnemonics extends React.Component {
-
+    
     static navigationOptions = { title: 'Create Wallet' };
 
     state = { mnemonics: null };

@@ -17,7 +17,6 @@ contract SpaceManager is TogethersSpace {
   mapping (uint => bool) public isApproved;
   mapping (uint => uint) public mappIDSocietyToHash;
   mapping (address => uint[]) public mappSpacesList;
-  mapping (uint => description) public balckList;
   mapping (uint => uint) public mappPassword;
 
   External2 public TGTCToken;
@@ -126,7 +125,6 @@ contract SpaceManager is TogethersSpace {
 
   function approveSociety(uint _ID) onlyOwner public
   {
-    require(balckList[_ID].isBlacklisted == false);
     if (isApproved[_ID] == false)
     {
       isApproved[_ID] = true;
@@ -139,13 +137,6 @@ contract SpaceManager is TogethersSpace {
     emit decision(checkedSociety[mappIDSocietyToHash[_ID]],isApproved[_ID]);
   }
 
-  function blackListSociety(uint _ID, string memory _reason) onlyOwner public
-  {
-    require(isApproved[ID] == false);
-    balckList[_ID].isBlacklisted = true;
-    balckList[_ID].reason = _reason;
-  }
-
   function modifyTGTCPrice(uint price) public onlyOwner
   {
     TGTCPrice = price;
@@ -153,7 +144,6 @@ contract SpaceManager is TogethersSpace {
 
   function getTGTCs(uint amount) public payable
   {
-    require(TGTCPrice != 0);
     require(msg.value == TGTCPrice.mul(amount));
     MainContract.addInbox.value(msg.value);
     TGTCToken.transfer(msg.sender,amount);

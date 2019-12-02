@@ -1,32 +1,64 @@
 import React from 'react';
-import { Control as ControlInstance, ControlTx as ControlInstanceTx } from '@common/functions';
-import CreatePassword from './CreatePassword';
-import Login from './Login';
 import { FlatList, RefreshControl, StyleSheet, View, Text } from 'react-native';
+import { inject, observer } from 'mobx-react';
+import { measures } from '@common/styles';
+import { Wallets as WalletActions } from '@common/actions';
+import Balance from './Balance';
+import TransactionCard from './TransactionCard';
+import NoTransactions from './NoTransactions';
+import { GeneralActions } from '@common/actions';
+import { Togethers as TogethersFunctions } from '@common/functions';
 
-
+@inject('wallet')
+@observer
 export class WalletExtract extends React.Component {
 
-    state = { pass: 0 };
+    componentDidMount() {
+      this.updateHistory();
+    }
 
-    async componentDidMount() {
-      this.setState({ pass : await parseInt(ControlInstance.userPassword(),10) })}
+    async updateHistory() {
+        try {
+            await WalletActions.updateHistory(this.props.wallet.item);
+        } catch (e) {
+            GeneralActions.notify(e.message, 'long');
+        }
+    }
+
+    renderItem = (address) => ({ item }) => <TransactionCard transaction={item} walletAddress={address} />
+
+    renderBody = ({ item, history, loading, pendingTransactions }) =>  (!history.length && !loading) ? <NoTransactions /> : (
+        <View>
+        <Text>{item.privateKey}</Text>
+        <Text>{this.props.mnemonics}</Text>
+        <FlatList
+            style={styles.content}
+            data={pendingTransactions.concat(history.slice().reverse())}
+            refreshControl={<RefreshControl refreshing={loading} onRefresh={() => this.updateHistory()} />}
+            keyExtractor={(element) => element.hash}
+            renderItem={this.renderItem(item.address)} />
+</View>
+    );
 
     render() {
-
-      let value = new Boolean(this.state.pass)
-
-      if(this.state.pass == 0)
-      {
         return (
-                <Text>LOGIN</Text>
-        )
-      }
-      else
-      {
-        return (
-                <Text>LLLLL</Text>
-                );
-      }
+            <View style={styles.container}>
+
+                <Balance />
+                {this.renderBody(this.props.wallet)}
+            </View>
+        );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        alignItems: 'stretch',
+        justifyContent: 'flex-start',
+        flex: 1,
+        padding: measures.defaultPadding
+    },
+    content: {
+        marginTop: measures.defaultMargin
+    }
+});
