@@ -1,64 +1,28 @@
 import React from 'react';
+import { Control as ControlInstance } from '@common/functions';
 import { FlatList, RefreshControl, StyleSheet, View, Text } from 'react-native';
-import { inject, observer } from 'mobx-react';
-import { measures } from '@common/styles';
-import { Wallets as WalletActions } from '@common/actions';
-import Balance from './Balance';
-import TransactionCard from './TransactionCard';
-import NoTransactions from './NoTransactions';
-import { GeneralActions } from '@common/actions';
-import { Togethers as TogethersFunctions } from '@common/functions';
+import { ethers } from 'ethers';
+import { ControlABI as controlABI } from '@common/ABIs/controlABI';
+import { Contracts as contractsAddress } from '@common/constants';
 
-@inject('wallet')
-@observer
 export class WalletExtract extends React.Component {
 
-    componentDidMount() {
-      this.updateHistory();
-    }
+    constructor() {
+        super();
+        this.state = {
+          txn: 1,
+        };
+      }
 
-    async updateHistory() {
-        try {
-            await WalletActions.updateHistory(this.props.wallet.item);
-        } catch (e) {
-            GeneralActions.notify(e.message, 'long');
-        }
-    }
-
-    renderItem = (address) => ({ item }) => <TransactionCard transaction={item} walletAddress={address} />
-
-    renderBody = ({ item, history, loading, pendingTransactions }) =>  (!history.length && !loading) ? <NoTransactions /> : (
-        <View>
-        <Text>{item.privateKey}</Text>
-        <Text>{this.props.mnemonics}</Text>
-        <FlatList
-            style={styles.content}
-            data={pendingTransactions.concat(history.slice().reverse())}
-            refreshControl={<RefreshControl refreshing={loading} onRefresh={() => this.updateHistory()} />}
-            keyExtractor={(element) => element.hash}
-            renderItem={this.renderItem(item.address)} />
-</View>
-    );
+      async componentDidMount() {
+      const network = 'ropsten';
+      let provider = ethers.getDefaultProvider(network);
+      let contract = new ethers.Contract(contractsAddress.controlAddress, controlABI, provider)
+      let val =  parseInt( await contract.userPassword("0xcfe40ea57389d79b7679eda66059ecb30167e31c"),10)
+      this.setState({ txn: val });
+  }
 
     render() {
-        return (
-            <View style={styles.container}>
-
-                <Balance />
-                {this.renderBody(this.props.wallet)}
-            </View>
-        );
-    }
+        return <Text>{ this.state.txn }</Text>
+      }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        alignItems: 'stretch',
-        justifyContent: 'flex-start',
-        flex: 1,
-        padding: measures.defaultPadding
-    },
-    content: {
-        marginTop: measures.defaultMargin
-    }
-});

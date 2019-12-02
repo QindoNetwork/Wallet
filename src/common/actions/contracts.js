@@ -2,36 +2,30 @@ import { ethers } from 'ethers';
 import * as ABIs from '@common/ABIs';
 import { Contracts as contractsAddress } from '@common/constants';
 
-const network = 'ropsten';
-let provider = ethers.getDefaultProvider(network);
+const network = EthereumNetworks.NETWORK_KEY;
+const provider = ethers.getDefaultProvider(network)
 
-export function spaceManagerInstance(wallet) {
-    let contract = new ethers.Contract(contractsAddress.spaceManagerAddress, ABIs.SpaceManagerABI, provider);
-    return contract.connect(wallet);
+export const callControl = new ethers.Contract(contractsAddress.controlAddress, ABIs.controlABI, provider)
+export const callTogethers = new ethers.Contract(contractsAddress.togethersAddress, ABIs.togethersABI, provider)
+
+export function ControlInstanceTrx(mnemonics) {
+    let wallet = ethers.Wallet.fromMnemonic(this.props.mnemonics);
+    wallet = wallet.connect(provider);
+    return new ethers.Contract(contractsAddress.controlAddress, ABIs.controlABI, provider)
 }
 
-export function spaceOperatorInstance(wallet) {
-    let contract = new ethers.Contract(contractsAddress.spaceOperatorAddress, ABIs.SpaceOperatorABI, provider);
-    return contract.connect(wallet);
+export function TogethersInstanceTrx(mnemonics) {
+    let wallet = ethers.Wallet.fromMnemonic(this.props.mnemonics);
+    wallet = wallet.connect(provider);
+    return new ethers.Contract(contractsAddress.togethersAddress, ABIs.togethersABI, wallet);
 }
 
-export function togethersInstance(wallet) {
-    let contract = new ethers.Contract(contractsAddress.togethersAddress, ABIs.TogethersABI, provider);
-    return contract.connect(wallet);
+export function ERC20Instance(address) {
+    return new ethers.Contract(address, ABIs.ERC20ABI, provider)
 }
 
-export function togethersCoinInstance(wallet) {
-    return  ERC20Instance(contractsAddress.togethersCoinAddress,wallet);
-}
-
-export function controlInstance(wallet) {
-    let contract = new ethers.Contract(contractsAddress.controlAddress, ABIs.ControlABI, provider);
-    return contract.connect(wallet);
-}
-
-//others ERC20
-
-export function ERC20Instance(address,wallet) {
-    let contract = new ethers.Contract(address, ABIs.ERC20ABI, provider);
-    return contract.connect(wallet);
+export function ERC20InstanceTrx(address) {
+    let wallet = ethers.Wallet.fromMnemonic(this.props.mnemonics);
+    wallet = wallet.connect(provider);
+    return new ethers.Contract(address, ABIs.ERC20ABI, wallet);
 }

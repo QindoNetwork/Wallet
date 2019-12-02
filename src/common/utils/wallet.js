@@ -1,8 +1,9 @@
 import { ethers } from 'ethers';
+import { Network as EthereumNetworks } from '@common/constants';
 
 const { utils, Wallet } = ethers;
 
-const network = 'ropsten';
+const network = EthereumNetworks.NETWORK_KEY;
 
 //const network = (process.env.NODE_ENV === 'production') ? 'mainnet' : 'rinkeby';
 // let network = (process.env.NODE_ENV === 'production') ?
