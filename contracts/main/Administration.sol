@@ -9,12 +9,18 @@ contract Administration is Ownable {
 
   uint public ID;
   uint public MAX;
-
   uint public groupNumber;
-
   uint public nbDemands;
-
   uint constant public tgtcAmount = 1000000000000000000;
+
+  event newDemand(uint indexed ID, address indexed from);
+  event payDemand(uint indexed ID, address indexed from);
+  event endDemand(uint indexed ID, address indexed from);
+  event askEvent(address indexed from, uint ID);
+  event transferGroupOwnershipEvent(address indexed from, uint ID);
+  event setUserEvent(address indexed from);
+  event createGroupEvent(address indexed from);
+  event createProfileEvent(address indexed from, uint ID);
 
   mapping (uint => bool) public disableCrypto;
   mapping (uint => mapping (address => mapping (uint => uint))) public mappGiven;
@@ -38,6 +44,7 @@ contract Administration is Ownable {
 
   address powerToken;
   uint box;
+  uint box2;
 
   function setPowerToken(address _tgts) public onlyOwner
   {
@@ -106,19 +113,9 @@ contract Administration is Ownable {
     return true;
   }
 
-  function getMoney(uint _amount) public onlyOwner
+  function getMoney() public onlyOwner
   {
-    uint value;
-    if (_amount == 0 || _amount > box)
-    {
-      value = box;
-    }
-    else
-    {
-      value = _amount;
-    }
-    box.sub(value);
-    msg.sender.transfer(value);
+    msg.sender.transfer(box2);
   }
 
   function addInbox() public payable

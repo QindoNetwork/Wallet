@@ -6,7 +6,12 @@ contract Togethers is Administration {
 
   event newDemand(uint indexed ID, address indexed from);
   event payDemand(uint indexed ID, address indexed from);
-  event endDemand(uint indexed ID);
+  event endDemand(uint indexed ID, address indexed from);
+  event askEvent(address indexed from, uint ID);
+  event transferGroupOwnershipEvent(address indexed from, uint ID);
+  event setUserEvent(address indexed from);
+  event createGroupEvent(address indexed from);
+  event createProfileEvent(address indexed from, uint ID);
 
   mapping (address => mapping (address => mapping (uint => uint))) public mappStatsPeerToPeer;
   mapping (address => user) private mappAddressToUser;
@@ -45,6 +50,7 @@ contract Togethers is Administration {
     require(mappAddressToUser[msg.sender].language != 0);
     require(mappAskForAdd[msg.sender][_groupID] == false);
     mappAskForAdd[msg.sender][_groupID] = true;
+    emit askEvent(msg.sender,_groupID);
   }
 
   function transferGroupOwnership(uint _groupID, address newOwner) public
@@ -53,6 +59,7 @@ contract Togethers is Administration {
     require(mappProfileInGroup[_groupID][newOwner].isMember == true);
     mappProfileInGroup[_groupID][msg.sender].owner = false;
     mappProfileInGroup[_groupID][newOwner].owner = true;
+    emit transferGroupOwnershipEvent(msg.sender,_groupID);
   }
 
   function setUser(string memory _pseudo, uint _language) public
@@ -63,6 +70,7 @@ contract Togethers is Administration {
     mappAskForAdd[msg.sender][currentID] = true;
     mappAddressToUser[msg.sender].pseudo = _pseudo;
     mappAddressToUser[msg.sender].language = _language;
+    emit setUserEvent(msg.sender);
   }
 
   function createGroup(string memory _groupName) public
@@ -73,6 +81,7 @@ contract Togethers is Administration {
     mappProfileInGroup[groupNumber][msg.sender].owner = true;
     mappGroupIDToGroupName[groupNumber] = _groupName;
     addMember(groupNumber,msg.sender);
+    emit createGroupEvent(msg.sender);
   }
 
   function addMember(uint _groupID, address _key) private
@@ -93,6 +102,7 @@ contract Togethers is Administration {
     require(getGroupsLength() < MAX);
     require(getUsersLength(groupID) < MAX);
     addMember(groupID,_publicKey);
+    emit createProfileEvent(msg.sender,groupID);
   }
 
   function askForFunds(uint groupID, string memory _description, uint _fees) public payable
@@ -159,12 +169,14 @@ contract Togethers is Administration {
         bonus = box.div(nbDemands);
         if (bonus != 0)
         {
-          msg.sender.transfer(bonus);
           box.sub(bonus);
+          bonus = bonus.div(2);
+          msg.sender.transfer(bonus);
+          box2.add(bonus);
         }
       }
     }
-    emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID);
+    emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID,msg.sender);
     nbDemands -= 1;
     return bonus;
   }

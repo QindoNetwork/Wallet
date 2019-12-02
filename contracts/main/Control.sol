@@ -7,17 +7,11 @@ contract Control is Ownable {
   uint public feesAsk;
   uint public feesPay;
 
-  mapping (address => password) private userPassword;
+  mapping (address => uint) private userPassword;
   mapping (address => bool) public lockedAccount;
   mapping (address => bool) public resetAuthorization;
   mapping (address => user) private mappAddressToOptionalUserInfo;
   mapping (uint => gasParameters) private mappFunctionToGasParameters;
-
-  struct password
-  {
-    uint code;
-    bool active;
-  }
 
   struct user
   {
@@ -80,14 +74,13 @@ contract Control is Ownable {
   {
     require(userPassword[msg.sender] == 0);
     userPassword[msg.sender] = returnHash(_password);
-    userPassword[msg.sender].active = true;
   }
 
   function changePassword(string memory NewPassword, string memory oldPassword) public
   {
     uint newHash = returnHash(NewPassword);
     require(newHash == returnHash(oldPassword));
-    userPassword[msg.sender].code = newHash;
+    userPassword[msg.sender] = newHash;
   }
 
   function lockAccount() public view
@@ -109,17 +102,6 @@ contract Control is Ownable {
     require(resetAuthorization[msg.sender] == true);
     userPassword[msg.sender] == 0;
     resetAuthorization[msg.sender] = false;
-    userPassword[msg.sender].active = false;
-  }
-
-  function hasPassword() public returns (bool)
-  {
-    return userPassword[msg.sender].active;
-  }
-
-  function getPassword() public returns(uint)
-  {
-    return userPassword[msg.sender].code;
   }
 
   function connectUser(string memory _password) public view returns (bool)
