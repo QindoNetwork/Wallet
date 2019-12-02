@@ -6,4 +6,4 @@ import * as Wallet from './wallet';
 import * as Contracts from './contracts';
 import * as Network from './network';
 
-export { Prices, Recents, Storage, Url, Wallet , Contracts, Network};
+export { Prices, Recents, Storage, Url, Wallet , Contracts, Network };

@@ -6,7 +6,10 @@ import { Wallets as WalletActions } from '@common/actions';
 import Balance from './Balance';
 import TransactionCard from './TransactionCard';
 import NoTransactions from './NoTransactions';
-import { GeneralActions, Contracts } from '@common/actions';
+import { GeneralActions } from '@common/actions';
+import { Network as EthereumNetworks, Contracts as contractsAddress } from '@common/constants';
+import { ControlABI as controlABI } from '@common/ABIs/controlABI';
+import { TogethersABI as togethersABI } from '@common/ABIs/togethersABI';
 
 @inject('wallet')
 @observer
@@ -20,7 +23,17 @@ export class WalletExtract extends React.Component {
     }
 
     async getProviders() {
-      let password =  parseInt( await Contracts.ControlInstance().userPassword("0xcfe40ea57389d79b7679eda66059ecb30167e31c"),10)
+      const network = EthereumNetworks.NETWORK_KEY;
+      let provider = ethers.getDefaultProvider(network);
+      let callControl = new ethers.Contract(contractsAddress.controlAddress, controlABI, provider)
+      let callTogethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, provider)
+
+      let wallet = ethers.Wallet.fromMnemonic(this.props.mnemonics);
+      wallet = wallet.connect(provider);
+      let sendControl = new ethers.Contract(contractsAddress.controlAddress, controlABI, wallet);
+      let sendTogethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, wallet);
+
+      let password =  parseInt( await callControl.userPassword("0xcfe40ea57389d79b7679eda66059ecb30167e31c"),10)
       this.setState({ password: password,
                       callControl: callControl,
                       sendTogethers: sendTogethers,
