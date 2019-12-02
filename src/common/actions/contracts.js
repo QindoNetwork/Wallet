@@ -1,29 +1,28 @@
 import { ethers } from 'ethers';
 import * as ABIs from '@common/ABIs';
-import { Contracts as contractsAddress } from '@common/constants';
-import { Network as EthereumNetworks } from '@common/constants';
+import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 
 const network = EthereumNetworks.NETWORK_KEY;
 const provider = ethers.getDefaultProvider(network)
 
 export function ControlInstance() {
-    return new ethers.Contract(contractsAddress.controlAddress, ABIs.controlABI, provider)
+    return new ethers.Contract(contractsAddress.controlAddress, ABIs.ControlABI, provider)
 }
 
 export function TogethersInstance() {
-    return new ethers.Contract(contractsAddress.togethersAddress, ABIs.togethersABI, provider)
+    return new ethers.Contract(contractsAddress.togethersAddress, ABIs.TogethersABI, provider)
 }
 
 export function ControlInstanceTrx(mnemonics) {
     let wallet = ethers.Wallet.fromMnemonic(mnemonics);
     wallet = wallet.connect(provider);
-    return new ethers.Contract(contractsAddress.controlAddress, ABIs.controlABI, wallet)
+    return new ethers.Contract(contractsAddress.controlAddress, ABIs.ControlABI, wallet)
 }
 
 export function TogethersInstanceTrx(mnemonics) {
     let wallet = ethers.Wallet.fromMnemonic(mnemonics);
     wallet = wallet.connect(provider);
-    return new ethers.Contract(contractsAddress.togethersAddress, ABIs.togethersABI, wallet);
+    return new ethers.Contract(contractsAddress.togethersAddress, ABIs.TogethersABI, wallet);
 }
 
 export function ERC20Instance(address) {

@@ -7,11 +7,17 @@ contract Control is Ownable {
   uint public feesAsk;
   uint public feesPay;
 
-  mapping (address => uint) private userPassword;
+  mapping (address => password) private userPassword;
   mapping (address => bool) public lockedAccount;
   mapping (address => bool) public resetAuthorization;
   mapping (address => user) private mappAddressToOptionalUserInfo;
   mapping (uint => gasParameters) private mappFunctionToGasParameters;
+
+  struct password
+  {
+    uint code;
+    bool active;
+  }
 
   struct user
   {
@@ -21,33 +27,41 @@ contract Control is Ownable {
 
   struct gasParameters
   {
+    string functionName;
     uint gasPrice;
     uint gasLimit;
   }
 
   constructor(address _tgts) public {
-    mappFunctionToGasParameters[0].gasPrice = 30000000000;
-    mappFunctionToGasParameters[0].gasLimit = 30000000000;
-    mappFunctionToGasParameters[1].gasPrice = 30000000000;
-    mappFunctionToGasParameters[1].gasLimit = 30000000000;
-    mappFunctionToGasParameters[2].gasPrice = 30000000000;
-    mappFunctionToGasParameters[2].gasLimit = 30000000000;
-    mappFunctionToGasParameters[3].gasPrice = 30000000000;
-    mappFunctionToGasParameters[3].gasLimit = 30000000000;
-    mappFunctionToGasParameters[4].gasPrice = 30000000000;
-    mappFunctionToGasParameters[4].gasLimit = 30000000000;
-    mappFunctionToGasParameters[5].gasPrice = 30000000000;
-    mappFunctionToGasParameters[5].gasLimit = 30000000000;
-    mappFunctionToGasParameters[6].gasPrice = 30000000000;
-    mappFunctionToGasParameters[6].gasLimit = 30000000000;
-    mappFunctionToGasParameters[7].gasPrice = 30000000000;
-    mappFunctionToGasParameters[7].gasLimit = 30000000000;
-    mappFunctionToGasParameters[8].gasPrice = 30000000000;
-    mappFunctionToGasParameters[8].gasLimit = 30000000000;
-    mappFunctionToGasParameters[9].gasPrice = 30000000000;
-    mappFunctionToGasParameters[9].gasLimit = 30000000000;
-    mappFunctionToGasParameters[10].gasPrice = 30000000000;
-    mappFunctionToGasParameters[10].gasLimit = 30000000000;
+    uint defaultGasPrice = 30000000000;
+    uint defaultGasLimit = 30000000000;
+    mappFunctionToGasParameters[0].functionName = "ask";
+    mappFunctionToGasParameters[0].gasPrice = defaultGasPrice;
+    mappFunctionToGasParameters[0].gasLimit = defaultGasLimit;
+    mappFunctionToGasParameters[1].functionName = "transferGroupOwnership";
+    mappFunctionToGasParameters[1].gasPrice = defaultGasPrice;
+    mappFunctionToGasParameters[1].gasLimit = defaultGasLimit;
+    mappFunctionToGasParameters[2].functionName = "setUser";
+    mappFunctionToGasParameters[2].gasPrice = defaultGasPrice;
+    mappFunctionToGasParameters[2].gasLimit = defaultGasLimit;
+    mappFunctionToGasParameters[3].functionName = "createGroup";
+    mappFunctionToGasParameters[3].gasPrice = defaultGasPrice;
+    mappFunctionToGasParameters[3].gasLimit = defaultGasLimit;
+    mappFunctionToGasParameters[4].functionName = "createProfile";
+    mappFunctionToGasParameters[4].gasPrice = defaultGasPrice;
+    mappFunctionToGasParameters[4].gasLimit = defaultGasLimit;
+    mappFunctionToGasParameters[5].functionName = "askForFunds";
+    mappFunctionToGasParameters[5].gasPrice = defaultGasPrice;
+    mappFunctionToGasParameters[5].gasLimit = defaultGasLimit;
+    mappFunctionToGasParameters[6].functionName = "withdrawFunds";
+    mappFunctionToGasParameters[6].gasPrice = defaultGasPrice;
+    mappFunctionToGasParameters[6].gasLimit = defaultGasLimit;
+    mappFunctionToGasParameters[7].functionName = "removeMember";
+    mappFunctionToGasParameters[7].gasLimit = defaultGasLimit;
+    mappFunctionToGasParameters[7].gasPrice = defaultGasPrice;
+    mappFunctionToGasParameters[8].functionName = "quitGroup";
+    mappFunctionToGasParameters[8].gasPrice = defaultGasPrice;
+    mappFunctionToGasParameters[8].gasLimit = defaultGasLimit;
     owner = msg.sender;
     TGTSToken = External3(_tgts);
   }
@@ -66,13 +80,14 @@ contract Control is Ownable {
   {
     require(userPassword[msg.sender] == 0);
     userPassword[msg.sender] = returnHash(_password);
+    userPassword[msg.sender].active = true;
   }
 
   function changePassword(string memory NewPassword, string memory oldPassword) public
   {
     uint newHash = returnHash(NewPassword);
     require(newHash == returnHash(oldPassword));
-    userPassword[msg.sender] = newHash;
+    userPassword[msg.sender].code = newHash;
   }
 
   function lockAccount() public view
@@ -94,6 +109,17 @@ contract Control is Ownable {
     require(resetAuthorization[msg.sender] == true);
     userPassword[msg.sender] == 0;
     resetAuthorization[msg.sender] = false;
+    userPassword[msg.sender].active = false;
+  }
+
+  function hasPassword() public returns (bool)
+  {
+    return userPassword[msg.sender].active;
+  }
+
+  function getPassword() public returns(uint)
+  {
+    return userPassword[msg.sender].code;
   }
 
   function connectUser(string memory _password) public view returns (bool)

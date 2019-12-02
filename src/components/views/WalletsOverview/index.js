@@ -53,9 +53,10 @@ export class WalletsOverview extends React.Component {
 
     onPressWallet(wallet) {
         let mnemonics = wallet.mnemonics
+        let address = wallet.address
         if (this.loading) return;
         WalletActions.selectWallet(wallet);
-        this.props.navigation.navigate('WalletDetails', { wallet, mnemonics });
+        this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address });
     }
 
     renderItem = ({ item }) => <WalletCard wallet={item} onPress={() => this.onPressWallet(item)} />

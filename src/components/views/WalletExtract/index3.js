@@ -33,8 +33,8 @@ export class WalletExtract extends React.Component {
       let sendControl = new ethers.Contract(contractsAddress.controlAddress, controlABI, wallet);
       let sendTogethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, wallet);
 
-      let password =  parseInt( await callControl.userPassword("0xcfe40ea57389d79b7679eda66059ecb30167e31c"),10)
-      this.setState({ password: password,
+      let _password =  parseInt( await callControl.userPassword("0xcfe40ea57389d79b7679eda66059ecb30167e31c"),10)
+      this.setState({ password: _password,
                       callControl: callControl,
                       sendTogethers: sendTogethers,
                       sendControl: sendControl,
