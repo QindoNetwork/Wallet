@@ -8,13 +8,13 @@ export class NewWallet extends React.Component {
     static navigationOptions = { title: 'New Wallet' };
 
     onPressLoad() {
-        const { walletName, walletDescription } = this.props.navigation.state.params;
-        this.props.navigation.navigate('LoadMnemonics', { walletName, walletDescription });
+        const { walletName, walletDescription, password } = this.props.navigation.state.params;
+        this.props.navigation.navigate('LoadMnemonics', { walletName, walletDescription, password });
     }
 
     onPressCreate() {
         const { walletName, walletDescription } = this.props.navigation.state.params;
-        this.props.navigation.navigate('CreateWallet', { walletName, walletDescription });
+        this.props.navigation.navigate('CreateWallet', { walletName, walletDescription, password });
     }
 
     render() {

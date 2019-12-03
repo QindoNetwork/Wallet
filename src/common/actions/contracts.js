@@ -5,32 +5,19 @@ import { Contracts as contractsAddress, Network as EthereumNetworks } from '@com
 const network = EthereumNetworks.NETWORK_KEY;
 const provider = ethers.getDefaultProvider(network)
 
-export function ControlInstance() {
-    return new ethers.Contract(contractsAddress.controlAddress, ABIs.ControlABI, provider)
+export function ControlInstance(mnemonics) {
+    return new ethers.Contract(contractsAddress.controlAddress, ABIs.ControlABI, connectInstance(mnemonics))
 }
 
-export function TogethersInstance() {
-    return new ethers.Contract(contractsAddress.togethersAddress, ABIs.TogethersABI, provider)
+export function TogethersInstance(mnemonics) {
+    return new ethers.Contract(contractsAddress.togethersAddress, ABIs.TogethersABI, connectInstance(mnemonics));
 }
 
-export function ControlInstanceTrx(mnemonics) {
-    let wallet = ethers.Wallet.fromMnemonic(mnemonics);
-    wallet = wallet.connect(provider);
-    return new ethers.Contract(contractsAddress.controlAddress, ABIs.ControlABI, wallet)
+export function ERC20Instance(address,mnemonics) {
+    return new ethers.Contract(address, ABIs.ERC20ABI, connectInstance(mnemonics));
 }
 
-export function TogethersInstanceTrx(mnemonics) {
-    let wallet = ethers.Wallet.fromMnemonic(mnemonics);
-    wallet = wallet.connect(provider);
-    return new ethers.Contract(contractsAddress.togethersAddress, ABIs.TogethersABI, wallet);
-}
-
-export function ERC20Instance(address) {
-    return new ethers.Contract(address, ABIs.ERC20ABI, provider)
-}
-
-export function ERC20InstanceTrx(address,mnemonics) {
-    let wallet = ethers.Wallet.fromMnemonic(mnemonics);
-    wallet = wallet.connect(provider);
-    return new ethers.Contract(address, ABIs.ERC20ABI, wallet);
+function connectInstance(mnemonics) {
+    let wallet = ethers.Wallet.fromMnemonic(mnemonics.toLowerCase());
+    return wallet.connect(provider);
 }

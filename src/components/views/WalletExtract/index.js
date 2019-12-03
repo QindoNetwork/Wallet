@@ -15,22 +15,12 @@ import { Contracts as contractsAddress, Network as EthereumNetworks } from '@com
 @observer
 export class WalletExtract extends React.Component {
 
-  constructor() {
-      super();
-      this.state = {
-        password: 1,
-        inputPassword: 0,
-      };
-      this.network = EthereumNetworks.NETWORK_KEY
-      this.provider = ethers.getDefaultProvider(this.network)
-    }
+  state = { password: 1 };
 
     async componentDidMount() {
-      let val =  parseInt(await ContractsActions.ControlInstance().userPassword(this.props.address),10)
-      //let contract = new ethers.Contract(contractsAddress.controlAddress, ABIs.ControlABI, this.provider)
-      //let val =  parseInt( await contract.userPassword(this.props.address),10)
-      this.setState({ password: val })
       try {
+          let val =  parseInt(await ContractsActions.ControlInstance(mnemonics).userPassword(this.props.address),10)
+          this.setState({ password: val })
           await WalletActions.updateHistory(this.props.wallet.item);
       } catch (e) {
           GeneralActions.notify(e.message, 'long');

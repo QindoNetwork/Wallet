@@ -5,15 +5,15 @@ import { Wallet as WalletUtils } from '@common/utils';
 import { colors, measures } from '@common/styles';
 
 export class CreateMnemonics extends React.Component {
-    
+
     static navigationOptions = { title: 'Create Wallet' };
 
     state = { mnemonics: null };
 
     onPressProceed() {
         const { mnemonics } = this.state;
-        const { walletName, walletDescription } = this.props.navigation.state.params;
-        this.props.navigation.navigate('ConfirmMnemonics', { mnemonics, walletName, walletDescription });
+        const { walletName, walletDescription, password } = this.props.navigation.state.params;
+        this.props.navigation.navigate('ConfirmMnemonics', { mnemonics, walletName, walletDescription, password });
     }
 
     onPressReveal() {

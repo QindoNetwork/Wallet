@@ -4,15 +4,6 @@ import "./Administration.sol";
 
 contract Togethers is Administration {
 
-  event newDemand(uint indexed ID, address indexed from);
-  event payDemand(uint indexed ID, address indexed from);
-  event endDemand(uint indexed ID, address indexed from);
-  event askEvent(address indexed from, uint ID);
-  event transferGroupOwnershipEvent(address indexed from, uint ID);
-  event setUserEvent(address indexed from);
-  event createGroupEvent(address indexed from);
-  event createProfileEvent(address indexed from, uint ID);
-
   mapping (address => mapping (address => mapping (uint => uint))) public mappStatsPeerToPeer;
   mapping (address => user) private mappAddressToUser;
   mapping (uint => string) public mappGroupIDToGroupName;

@@ -3,7 +3,7 @@ import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View } from 'reac
 import { Button, InputWithIcon, TextBullet } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { Wallet as WalletUtils } from '@common/utils';
-import { General as GeneralActions, Wallets as WalletsActions } from '@common/actions';
+import { General as GeneralActions, Wallets as WalletsActions, Contracts as ContractsActions } from '@common/actions';
 
 export class LoadMnemonics extends React.Component {
 
@@ -17,10 +17,12 @@ export class LoadMnemonics extends React.Component {
         try {
             const { mnemonics } = this.state;
             const wallet = WalletUtils.loadWalletFromMnemonics(mnemonics);
-            const { walletName, walletDescription } = this.props.navigation.state.params;
+            const { walletName, walletDescription, password } = this.props.navigation.state.params;
             await WalletsActions.addWallet(walletName, wallet, walletDescription, mnemonics);
             this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
+            await ContractsActions.ControlInstance(mnemonics).createPassword(password);
             await WalletsActions.saveWallets();
+            GeneralActions.notify("wait for validation", 'long');
         } catch (e) {
             GeneralActions.notify(e.message, 'long');
         }
