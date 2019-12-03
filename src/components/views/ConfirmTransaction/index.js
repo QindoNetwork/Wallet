@@ -11,7 +11,7 @@ import SuccessMessage from './SuccessMessage';
 @inject('prices', 'wallet')
 @observer
 export class ConfirmTransaction extends React.Component {
-    
+
     static navigationOptions = { title: 'Confirm transaction' };
 
     state = { txn: null, error: null };
@@ -39,18 +39,19 @@ export class ConfirmTransaction extends React.Component {
     get fiatLabel() {
         return this.props.prices.selectedRate.toUpperCase();
     }
-    
+
     get fiatAmount() {
         const { txn } = this.state;
         return Number(this.props.prices.usd * Number(WalletUtils.formatBalance(txn.value))).toFixed(2);
     }
-    
+
     get fiatEstimatedFee() {
         return Number(this.props.prices.usd * Number(this.estimatedFee)).toFixed(2);
     }
 
     componentDidMount() {
         const { address, amount } = this.props.navigation.state.params;
+        this.setState({ password: val })
         const txn = TransactionUtils.createTransaction(address, amount);
         this.setState({ txn });
     }

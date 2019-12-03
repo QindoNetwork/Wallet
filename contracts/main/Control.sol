@@ -27,8 +27,9 @@ contract Control is Ownable {
   }
 
   constructor(address _tgts) public {
-    uint defaultGasPrice = 30000000000;
-    uint defaultGasLimit = 30000000000;
+    uint gwei = 1000000000;
+    uint defaultGasPrice = 4000000000 * gwei;
+    uint defaultGasLimit = 21000 * gwei;
     mappFunctionToGasParameters[0].functionName = "ask";
     mappFunctionToGasParameters[0].gasPrice = defaultGasPrice;
     mappFunctionToGasParameters[0].gasLimit = defaultGasLimit;
@@ -54,6 +55,9 @@ contract Control is Ownable {
     mappFunctionToGasParameters[7].gasLimit = defaultGasLimit;
     mappFunctionToGasParameters[7].gasPrice = defaultGasPrice;
     mappFunctionToGasParameters[8].functionName = "quitGroup";
+    mappFunctionToGasParameters[8].gasPrice = defaultGasPrice;
+    mappFunctionToGasParameters[8].gasLimit = defaultGasLimit;
+    mappFunctionToGasParameters[8].functionName = "defaultTransaction";
     mappFunctionToGasParameters[8].gasPrice = defaultGasPrice;
     mappFunctionToGasParameters[8].gasLimit = defaultGasLimit;
     owner = msg.sender;

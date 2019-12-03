@@ -7,10 +7,6 @@ import Balance from './Balance';
 import TransactionCard from './TransactionCard';
 import NoTransactions from './NoTransactions';
 
-import { ethers } from 'ethers';
-import * as ABIs from '@common/ABIs';
-import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
-
 @inject('wallet')
 @observer
 export class WalletExtract extends React.Component {
