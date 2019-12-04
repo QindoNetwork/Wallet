@@ -17,7 +17,7 @@ export class WalletExtract extends React.Component {
 
       async componentDidMount() {
         const abi = controlABI;
-        const address = "0x58d7d2ee770b822dc6fe28d1b7d861867706d89f";
+        const address = "0xADb3469deA30e61Fb9D90eA7d15B55f7159FE808";
         var provider = new ethers.providers.InfuraProvider('ropsten');
         var wallet = ethers.Wallet.fromMnemonic("vicious pupil cheese improve advance squirrel measure spell depend discover permit cabin");
         wallet = wallet.connect(provider);

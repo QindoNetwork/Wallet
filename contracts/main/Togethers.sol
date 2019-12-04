@@ -96,12 +96,15 @@ contract Togethers is Administration {
     emit createProfileEvent(msg.sender,groupID);
   }
 
-  function askForFunds(uint groupID, string memory _description, uint _fees) public payable
+  function askForFunds(uint groupID, string memory _description) public payable
   {
-    require(msg.value == _fees);
+    require(msg.value == feesAsk);
     require(mappProfileInGroup[groupID][msg.sender].open == false);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
-    box.add(_fees);
+    if (feesAsk > 0)
+    {
+      box.add(feesAsk);
+    }
     mappProfileInGroup[groupID][msg.sender].open = true;
     mappProfileInGroup[groupID][msg.sender].DemandID = ID;
     mappAddressToUser[msg.sender].blockNumber = block.number;
@@ -113,16 +116,16 @@ contract Togethers is Administration {
     External2(getTokenAddress(1)).mintExternal(getTokenAddress(1),tgtcAmount);
   }
 
-  function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, uint _crypto, uint _fees) public payable
+  function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, uint _crypto) public payable
   {
-    require(msg.value >= _fees);
+    require(msg.value >= feesPay);
     require(mappProfileInGroup[groupID][_publicKey].open == true);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     require(_crypto < getSize() && disableCrypto[_crypto] == false);
     uint amount;
     if (_crypto == 0)
     {
-      amount = msg.value.sub(_fees);
+      amount = msg.value.sub(feesPay);
     }
     else
     {
@@ -132,7 +135,7 @@ contract Togethers is Administration {
     }
     mappStatsPeerToPeer[msg.sender][_publicKey][_crypto].add(amount);
     mappGiven[groupID][_publicKey][_crypto].add(amount);
-    box.add(_fees);
+    box.add(feesPay);
     emit payDemand(ID,msg.sender);
   }
 

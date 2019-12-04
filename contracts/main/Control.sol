@@ -4,9 +4,6 @@ import "../owner/Ownable.sol";
 
 contract Control is Ownable {
 
-  uint public feesAsk;
-  uint public feesPay;
-
   mapping (address => uint) private userPassword;
   mapping (address => bool) public lockedAccount;
   mapping (address => bool) public resetAuthorization;
@@ -62,16 +59,6 @@ contract Control is Ownable {
     mappFunctionToGasParameters[8].gasLimit = defaultGasLimit;
     owner = msg.sender;
     TGTSToken = External3(_tgts);
-  }
-
-  function modifyFeesPay(uint _amount) public onlyOwner
-  {
-    feesPay = _amount;
-  }
-
-  function modifyFeesAsk(uint _amount) public onlyOwner
-  {
-    feesAsk = _amount;
   }
 
   function createPassword(string memory _password) public

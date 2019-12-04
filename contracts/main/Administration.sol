@@ -12,6 +12,8 @@ contract Administration is Ownable {
   uint public groupNumber;
   uint public nbDemands;
   uint constant public tgtcAmount = 1000000000000000000;
+  uint public feesAsk;
+  uint public feesPay;
 
   event newDemand(uint indexed ID, address indexed from);
   event payDemand(uint indexed ID, address indexed from);
@@ -116,6 +118,7 @@ contract Administration is Ownable {
   function getMoney() public onlyOwner
   {
     msg.sender.transfer(box2);
+    box2 = 0;
   }
 
   function addInbox() public payable
@@ -131,6 +134,12 @@ contract Administration is Ownable {
   function getSpaceLanguage(uint id) view public returns (uint)
   {
     return mappSpaceInfo[id].language;
+  }
+
+  function modifyFees(uint _amount1, uint _amount2) public onlyOwner
+  {
+    feesPay = _amount1;
+    feesAsk = _amount2;
   }
 
 

@@ -51,7 +51,6 @@ export class ConfirmTransaction extends React.Component {
 
     componentDidMount() {
         const { address, amount } = this.props.navigation.state.params;
-        this.setState({ password: val })
         const txn = TransactionUtils.createTransaction(address, amount);
         this.setState({ txn });
     }

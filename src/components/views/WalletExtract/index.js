@@ -1,63 +1,39 @@
 import React from 'react';
+import { Control as ControlInstance } from '@common/functions';
 import { FlatList, RefreshControl, StyleSheet, View, Text } from 'react-native';
-import { inject, observer } from 'mobx-react';
-import { measures } from '@common/styles';
-import { Wallets as WalletActions, Contracts as ContractsActions } from '@common/actions';
-import Balance from './Balance';
-import TransactionCard from './TransactionCard';
-import NoTransactions from './NoTransactions';
+import { ethers } from 'ethers';
+import { ControlABI as controlABI } from '@common/ABIs/controlABI';
+import { Contracts as contractsAddress } from '@common/constants';
+import { ethers } from 'ethers';
+import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 
-@inject('wallet')
-@observer
+export function ControlInstance(mnemonics) {
+    return new ethers.Contract(contractsAddress.controlAddress, ABIs.ControlABI, connectInstance(mnemonics))
+
 export class WalletExtract extends React.Component {
 
-  state = { password: 1 };
-
-    async componentDidMount() {
-      try {
-          let val =  parseInt(await ContractsActions.ControlInstance(mnemonics).userPassword(this.props.address),10)
-          this.setState({ password: val })
-          await WalletActions.updateHistory(this.props.wallet.item);
-      } catch (e) {
-          GeneralActions.notify(e.message, 'long');
+    constructor() {
+        super();
+        this.state = {
+          txn: 1,
+        };
       }
-    }
 
-    renderItem = (address) => ({ item }) => <TransactionCard transaction={item} walletAddress={address} />
 
-    renderBody = ({ item, history, loading, pendingTransactions }) =>  (!history.length && !loading) ? <NoTransactions /> : (
-        <View>
-        <Text>{this.state.password}</Text>
-        <Text>{this.props.address}</Text>
-        <Text>{this.props.mnemonics}</Text>
-        <FlatList
-            style={styles.content}
-            data={pendingTransactions.concat(history.slice().reverse())}
-            refreshControl={<RefreshControl refreshing={loading} onRefresh={() => this.updateHistory()} />}
-            keyExtractor={(element) => element.hash}
-            renderItem={this.renderItem(item.address)} />
-</View>
-    );
+      async componentDidMount() {
+        const abi = controlABI;
+        const address = "0xB0680252B14d60b87c7a01E78B7dA52288967BF9";
+        var provider = new ethers.providers.InfuraProvider(EthereumNetworks.NETWORK_KEY);
+        var wallet = ethers.Wallet.fromMnemonic("vicious pupil cheese improve advance squirrel measure spell depend discover permit cabin");
+        wallet = wallet.connect(provider);
+        var contract = new ethers.Contract(address, abi, wallet);
+        var sendTransactionPromise = contract.createPassword("test");
+        sendTransactionPromise.then(function(tx) {
+            console.log(tx);
+        });
+  }
 
     render() {
-        return (
-            <View style={styles.container}>
-
-                <Balance />
-                {this.renderBody(this.props.wallet)}
-            </View>
-        );
-    }
+        return <Text>{ this.state.txn }</Text>
+      }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        alignItems: 'stretch',
-        justifyContent: 'flex-start',
-        flex: 1,
-        padding: measures.defaultPadding
-    },
-    content: {
-        marginTop: measures.defaultMargin
-    }
-});
