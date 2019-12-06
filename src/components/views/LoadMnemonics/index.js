@@ -17,9 +17,9 @@ export class LoadMnemonics extends React.Component {
         try {
             const { mnemonics } = this.state;
             const wallet = WalletUtils.loadWalletFromMnemonics(mnemonics);
-            const { walletName, walletDescription, password } = this.props.navigation.state.params;
+            const { walletName, walletDescription } = this.props.navigation.state.params;
             await WalletsActions.addWallet(walletName, wallet, walletDescription, mnemonics);
-            this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });     
+            this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
             await WalletsActions.saveWallets();
             GeneralActions.notify("wait for validation", 'long');
         } catch (e) {

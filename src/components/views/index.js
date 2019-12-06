@@ -15,7 +15,6 @@ export * from './WalletDetails';
 export * from './WalletExtract';
 export * from './WalletSettings';
 export * from './WalletsOverview';
-
 export * from './AddProfile';
 export * from './AskGroup';
 export * from './CreateGroup';

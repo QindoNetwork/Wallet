@@ -6,37 +6,45 @@ import { Contracts as ContractInstance } from '@common/actions';
 
 export class Login extends React.Component {
 
-    static navigationOptions = { title: 'Login' };
+    static navigationOptions = { title: 'New Wallet Name' };
 
-    state = {registered: false, password: '', password1: '', password2: '' };
+    state = { password: '', password1: '', password2: '' };
 
-    onPressContinueSignUp(password1,password2) {
+    onPressContinueSignUp() {
         Keyboard.dismiss();
-        const pass1 = password1.toString()
-        const pass2 = password2.toString()
-        const wallet = this.props.wallet
-        const mnemonics = this.props.wallet
-        const address = this.props.wallet
-        if (pass1 !== pass2) return;
-        ContractInstance.ControlInstance(this.props.mnemonics).createPassword(pass1);
-        this.props.navigation.navigate('WalletsDetail', { wallet, mnemonics, address, replaceRoute: true });
-        GeneralActions.notify("wait for validation", 'long');
+        const { walletName, walletDescription, password1, password2 } = this.state;
+        if (password1 === password2) return;
+        ContractInstance.ControlInstance(this.props.mnemonics).createPassword(password1);
+        this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
     }
 
-    async onPressContinueLogin(password) {
+    onPressContinueLogin() {
         Keyboard.dismiss();
-        const pass = password.toString()
-        const wallet = this.props.wallet
-        const mnemonics = this.props.wallet
-        const address = this.props.wallet
-        var resp = new Boolean (await ContractInstance.ControlInstance(this.props.mnemonics).connectUser(resp));
-        if (!resp) return;
-        this.props.navigation.navigate('WalletsDetail', { wallet, mnemonics, address, replaceRoute: true });
+        const { walletName, walletDescription, password1, password2 } = this.state;
+        if (!walletName && !pseudonyme && password1 === password2) return;
+        const password = password1
+        this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
+    }
+
+    isRegistered() {
+        Keyboard.dismiss();
+        const { walletName, walletDescription, password1, password2 } = this.state;
+        if (!walletName && !pseudonyme && password1 === password2) return;
+        isRegistered
+        const password = password1
+        this.props.navigation.navigate('NewWallet', { walletName, walletDescription, password });
     }
 
     async componentDidMount() {
-      var sendTransactionPromise = await (ContractInstance.ControlInstance(this.props.mnemonics).isRegistered());
-      this.setState({ registered: new Boolean(sendTransactionPromise) })
+      try {
+          var sendTransactionPromise = contractInstance.ControlInstance(this.props.mnemonics).verifyRegistration();
+          sendTransactionPromise.then(function(tx) {
+            GeneralActions.notify(tx, 'long');
+          });
+          await WalletActions.updateHistory(this.props.wallet.item);
+      } catch (e) {
+          GeneralActions.notify(e.message, 'long');
+      }
     }
 
     renderLogin() {
@@ -52,7 +60,7 @@ export class Login extends React.Component {
           <View style={styles.buttonsContainer}>
               <Button
                   children="Next"
-                  onPress={() => this.onPressContinueLogin(this.state.password)} />
+                  onPress={() => this.onPressContinue()} />
           </View>
       </View>)
     }
@@ -61,6 +69,7 @@ export class Login extends React.Component {
       return (
         <View style={styles.container}>
           <View style={styles.body}>
+              <Text style={styles.message}>Give a name to the new wallet</Text>
               <Text style={styles.message}>Password</Text>
               <TextInput
                   style={styles.input}
@@ -77,7 +86,7 @@ export class Login extends React.Component {
           <View style={styles.buttonsContainer}>
               <Button
                   children="Next"
-                  onPress={() => this.onPressContinueSignUp(this.state.password1, this.state.password2)} />
+                  onPress={() => this.onPressContinue()} />
           </View>
       </View>
       )
@@ -85,17 +94,11 @@ export class Login extends React.Component {
 
 
     render() {
-      if(this.state.registered === true)
-      {
         return (
             <View style={styles.container}>
-                {this.renderLogin()}
-            </View>
-        );
-      }
-        return (
-            <View style={styles.container}>
-                {this.renderNewWallet()}
+
+                <Balance />
+                {this.renderBody(this.props.wallet)}
             </View>
         );
     }

@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { ControlABI as controlABI, TogethersABI as togethersABI } from '@common/ABIs/controlABI';
+import { ControlABI as controlABI, TogethersABI as togethersABI, ERC20ABI as erc20ABI } from '@common/ABIs/controlABI';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 
 const network = EthereumNetworks.NETWORK_KEY;
@@ -13,6 +13,14 @@ function connectWallet(m) {
   return wallet;
 }
 
+function ControlCall() {
+    return new ethers.Contract(contractsAddress.controlAddress, controlABI, provider);
+}
+
+function TogethersCall() {
+    return new ethers.Contract(contractsAddress.togethersAddress, togethersABI, provider);
+}
+
 export function ControlInstance(mnemonics) {
   return new ethers.Contract(contractsAddress.controlAddress, controlABI, connectWallet(mnemonics));
 }
@@ -21,16 +29,8 @@ export function TogethersInstance(mnemonics) {
     return new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connectWallet(mnemonics));
 }
 
-export function ERC20Instance(address,m) {
-    return new ethers.Contract(address, ABIs.ERC20ABI, connectInstance(mnemonics));
-}
-
-function ControlCall() {
-    return new ethers.Contract(contractsAddress.controlAddress, controlABI, provider);
-}
-
-function TogethersCall() {
-    return new ethers.Contract(contractsAddress.togethersAddress, togethersABI, provider);
+export function ERC20Instance(address,mnemonics) {
+    return new ethers.Contract(address, erc20ABI, connectWallet(mnemonics));
 }
 
 export function getGasPriceAsk() {

@@ -5,6 +5,7 @@ import "../owner/Ownable.sol";
 contract Control is Ownable {
 
   mapping (address => uint) private userPassword;
+  mapping (address => bool) private isRegistered;
   mapping (address => bool) public lockedAccount;
   mapping (address => bool) public resetAuthorization;
   mapping (address => user) private mappAddressToOptionalUserInfo;
@@ -65,6 +66,7 @@ contract Control is Ownable {
   {
     require(userPassword[msg.sender] == 0);
     userPassword[msg.sender] = returnHash(_password);
+    isRegistered[msg.sender] = true;
   }
 
   function changePassword(string memory NewPassword, string memory oldPassword) public
@@ -72,6 +74,11 @@ contract Control is Ownable {
     uint newHash = returnHash(NewPassword);
     require(newHash == returnHash(oldPassword));
     userPassword[msg.sender] = newHash;
+  }
+
+  function verifyRegistration() public view returns (bool)
+  {
+    return isRegistered[msg.sender];
   }
 
   function lockAccount() public view

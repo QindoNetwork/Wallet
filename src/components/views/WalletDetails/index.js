@@ -13,7 +13,7 @@ export class WalletDetails extends React.Component {
         { id: 'receive', label: 'Receive', icon: 'qrcode', type: 'fa', content: <ReceiveCoins {...this.props} /> },
         { id: 'send', label: 'Send', icon: 'cube-send', type: 'mdc', content: <SendCoins {...this.props} /> },
         { id: 'settings', label: 'Settings', icon: 'settings', content: <WalletSettings {...this.props} /> },
-        { id: 'settings', label: 'Settings', icon: 'settings', content: <WalletSettings {...this.props} /> }
+        { id: 'togethers', label: 'Togethers', icon: 'settings', content: <WalletSettings {...this.props} /> }
     ];
 
     render() {

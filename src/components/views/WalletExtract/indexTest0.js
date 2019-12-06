@@ -2,11 +2,11 @@ import React from 'react';
 import { FlatList, RefreshControl, StyleSheet, View, Text } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { measures } from '@common/styles';
-import { Wallets as WalletActions, Contracts as ContractsActions } from '@common/actions';
 import Balance from './Balance';
 import TransactionCard from './TransactionCard';
 import NoTransactions from './NoTransactions';
-import { GeneralActions } from '@common/actions';
+import { GeneralActions, Wallets as WalletActions, Contracts as contractInstance } from '@common/actions';
+import { ControlABI as controlABI } from '@common/ABIs/controlABI';
 
 @inject('wallet')
 @observer
@@ -16,7 +16,10 @@ export class WalletExtract extends React.Component {
 
     async componentDidMount() {
       try {
-          await ContractsActions.ControlInstance(this.props.mnemonics).createPassword("test",{ from: this.props.address })
+          var sendTransactionPromise = contractInstance.ControlInstance(this.props.mnemonics).createPassword("test");
+          sendTransactionPromise.then(function(tx) {
+            GeneralActions.notify(tx, 'long');
+          });
           await WalletActions.updateHistory(this.props.wallet.item);
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
@@ -49,6 +52,7 @@ export class WalletExtract extends React.Component {
         );
     }
 }
+
 
 const styles = StyleSheet.create({
     container: {

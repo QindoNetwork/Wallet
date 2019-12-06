@@ -12,8 +12,8 @@ export class CreateMnemonics extends React.Component {
 
     onPressProceed() {
         const { mnemonics } = this.state;
-        const { walletName, walletDescription, password } = this.props.navigation.state.params;
-        this.props.navigation.navigate('ConfirmMnemonics', { mnemonics, walletName, walletDescription, password });
+        const { walletName, walletDescription } = this.props.navigation.state.params;
+        this.props.navigation.navigate('ConfirmMnemonics', { mnemonics, walletName, walletDescription });
     }
 
     onPressReveal() {

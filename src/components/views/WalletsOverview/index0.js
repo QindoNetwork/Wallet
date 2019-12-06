@@ -7,6 +7,7 @@ import { General as GeneralActions, Wallets as WalletActions, Prices as PricesAc
 import NoWallets from './NoWallets';
 import TotalBalance from './TotalBalance';
 import WalletCard from './WalletCard';
+import WalletCard from './Login';
 
 @inject('prices', 'wallets')
 @observer
@@ -56,7 +57,7 @@ export class WalletsOverview extends React.Component {
         let address = wallet.address
         if (this.loading) return;
         WalletActions.selectWallet(wallet);
-        this.props.navigation.navigate('Login', { wallet, mnemonics, address });
+        this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address });
     }
 
     renderItem = ({ item }) => <WalletCard wallet={item} onPress={() => this.onPressWallet(item)} />
