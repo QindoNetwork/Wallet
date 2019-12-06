@@ -22,7 +22,6 @@ export * from './CreateGroup';
 export * from './Crypto';
 export * from './MyProfile';
 export * from './Pay';
-export * from './Pending';
 export * from './ProfileData';
 export * from './Profiles';
 export * from './Register';

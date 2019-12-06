@@ -1,33 +1,36 @@
 import { ethers } from 'ethers';
-import * as ABIs from '@common/ABIs';
+import { ControlABI as controlABI, TogethersABI as togethersABI } from '@common/ABIs/controlABI';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 
 const network = EthereumNetworks.NETWORK_KEY;
 const provider = ethers.getDefaultProvider(network)
 
+function connectWallet(m) {
+  var mnemonics = m.toString()
+  var provider = new ethers.providers.InfuraProvider(EthereumNetworks.NETWORK_KEY);
+  var wallet = ethers.Wallet.fromMnemonic(mnemonics);
+  wallet = wallet.connect(provider);
+  return wallet;
+}
+
 export function ControlInstance(mnemonics) {
-    return new ethers.Contract(contractsAddress.controlAddress, ABIs.ControlABI, connectInstance(mnemonics))
+  return new ethers.Contract(contractsAddress.controlAddress, controlABI, connectWallet(mnemonics));
 }
 
 export function TogethersInstance(mnemonics) {
-    return new ethers.Contract(contractsAddress.togethersAddress, ABIs.TogethersABI, connectInstance(mnemonics));
+    return new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connectWallet(mnemonics));
 }
 
-export function ERC20Instance(address,mnemonics) {
+export function ERC20Instance(address,m) {
     return new ethers.Contract(address, ABIs.ERC20ABI, connectInstance(mnemonics));
 }
 
-function connectInstance(mnemonics) {
-    let wallet = ethers.Wallet.fromMnemonic(mnemonics.toLowerCase());
-    return wallet.connect(provider);
-}
-
 function ControlCall() {
-    return new ethers.Contract(contractsAddress.controlAddress, ABIs.ControlABI, provider)
+    return new ethers.Contract(contractsAddress.controlAddress, controlABI, provider);
 }
 
 function TogethersCall() {
-    return new ethers.Contract(contractsAddress.togethersAddress, ABIs.TogethersABI, provider)
+    return new ethers.Contract(contractsAddress.togethersAddress, togethersABI, provider);
 }
 
 export function getGasPriceAsk() {

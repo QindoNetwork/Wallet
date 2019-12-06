@@ -57,6 +57,11 @@ contract Togethers is Administration {
   {
     uint currentID = returnHash(_pseudo);
     require(checkNameUnicity[currentID] == address(0));
+    require(_language != 0);
+    if (mappAddressToUser[msg.sender].language != 0)
+    {
+      checkNameUnicity[returnHash(mappAddressToUser[msg.sender].pseudo)] = address(0);
+    }
     checkNameUnicity[currentID] = msg.sender;
     mappAskForAdd[msg.sender][currentID] = true;
     mappAddressToUser[msg.sender].pseudo = _pseudo;
