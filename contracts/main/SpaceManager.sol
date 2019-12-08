@@ -49,12 +49,6 @@ contract SpaceManager is TogethersSpace {
     string email;
   }
 
-  struct description
-  {
-    bool isBlacklisted;
-    string reason;
-  }
-
   uint public ID;
 
   function modifySpacePrice(uint _price) public onlyOwner

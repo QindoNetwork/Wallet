@@ -18,7 +18,7 @@ export async function notify(title, duration, driver=Snackbar) {
             duration = driver.LENGTH_SHORT;
             break;
     }
-    
+
     driver.show({ title, duration });
 }
 

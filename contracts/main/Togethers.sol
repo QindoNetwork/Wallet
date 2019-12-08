@@ -74,6 +74,7 @@ contract Togethers is Administration {
     groupNumber += 1;
     require(mappAddressToUser[msg.sender].language != 0);
     require(checkGroupUnicity[msg.sender][returnHash(_groupName)] == 0);
+    require(getGroupsLength() < MAX);
     mappProfileInGroup[groupNumber][msg.sender].owner = true;
     mappGroupIDToGroupName[groupNumber] = _groupName;
     addMember(groupNumber,msg.sender);
@@ -144,7 +145,7 @@ contract Togethers is Administration {
     emit payDemand(ID,msg.sender);
   }
 
-  function withdrawFunds(uint groupID) public returns (uint)
+  function withdrawFunds(uint groupID) public
   {
     require(mappProfileInGroup[groupID][msg.sender].open == true);
     uint bonus;
@@ -175,9 +176,8 @@ contract Togethers is Administration {
         }
       }
     }
-    emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID,msg.sender);
+    emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID,msg.sender,bonus);
     nbDemands -= 1;
-    return bonus;
   }
 
   function removeMember(address _publicKey, uint groupID) public
@@ -274,14 +274,22 @@ contract Togethers is Administration {
     return mappAddressToUser[msg.sender].language;
   }
 
-  function isOwner(uint groupID, address _user) view public returns (bool)
+  function isOwner(uint groupID, address _user) view public returns (uint)
   {
-    return mappProfileInGroup[groupID][_user].owner;
+    if (mappProfileInGroup[groupID][_user].owner == true)
+    {
+      return 1;
+    }
+    return 0;
   }
 
-  function isOpen(uint groupID, address _user) view public returns (bool)
+  function isOpen(uint groupID, address _user) view public returns (uint)
   {
-    return mappProfileInGroup[groupID][_user].open;
+    if (mappProfileInGroup[groupID][_user].open == true)
+    {
+      return 1;
+    }
+    return 0;
   }
 
   function getDemandID(uint groupID, address _user) view public returns (uint)

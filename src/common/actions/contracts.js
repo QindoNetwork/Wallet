@@ -2,23 +2,37 @@ import { ethers } from 'ethers';
 import { ControlABI as controlABI, TogethersABI as togethersABI, ERC20ABI as erc20ABI } from '@common/ABIs/controlABI';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 
-const network = EthereumNetworks.NETWORK_KEY;
-const provider = ethers.getDefaultProvider(network)
+// const provider = ethers.getDefaultProvider(EthereumNetworks.NETWORK_KEY)
+
+function getProvider() {
+// Connect to INFUA
+var infuraProvider = new ethers.providers.InfuraProvider(EthereumNetworks.NETWORK_KEY);
+// Connect to Etherscan
+var etherscanProvider = new ethers.providers.EtherscanProvider(EthereumNetworks.NETWORK_KEY);
+// Connect to togethers apiKey
+var togethersProvider = new ethers.providers.JsonRpcProvider('http://ropsten.infura.io/v3/' + EthereumNetworks.INFURA_API_KEY, EthereumNetworks.NETWORK_KEY);
+
+var fallbackProvider = new ethers.providers.FallbackProvider([
+    togethersProvider,
+    infuraProvider,
+    etherscanProvider,
+]);
+return fallbackProvider
+}
 
 function connectWallet(m) {
   var mnemonics = m.toString()
-  var provider = new ethers.providers.InfuraProvider(EthereumNetworks.NETWORK_KEY);
   var wallet = ethers.Wallet.fromMnemonic(mnemonics);
-  wallet = wallet.connect(provider);
+  wallet = wallet.connect(getProvider());
   return wallet;
 }
 
 function ControlCall() {
-    return new ethers.Contract(contractsAddress.controlAddress, controlABI, provider);
+    return new ethers.Contract(contractsAddress.controlAddress, controlABI, getProvider());
 }
 
 function TogethersCall() {
-    return new ethers.Contract(contractsAddress.togethersAddress, togethersABI, provider);
+    return new ethers.Contract(contractsAddress.togethersAddress, togethersABI, getProvider());
 }
 
 export function ControlInstance(mnemonics) {
@@ -115,4 +129,12 @@ export function defaultGasPrice() {
 
 export function getMAX() {
   return TogethersCall().MAX;
+}
+
+export function verifyRegistration(address) {
+  return ControlCall().verifyRegistration({ from : address });
+}
+
+export function connectUser(password,address) {
+  return ControlCall().connectUser(password, { from : address });
 }

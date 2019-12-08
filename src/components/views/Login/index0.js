@@ -2,7 +2,7 @@ import React from 'react';
 import { Keyboard, StyleSheet, Text, TextInput, View, Alert, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { Contracts, General as GeneralActions  } from '@common/actions';
+import { Contracts, GeneralActions  } from '@common/actions';
 
 export class Login extends React.Component {
 
@@ -34,7 +34,7 @@ export class Login extends React.Component {
         Keyboard.dismiss();
         var resp = 0
         try {
-          resp = parseInt (await Contracts.connectUser(this.state.password,address),10);
+          resp = parseInt (await Contracts.ControlInstance(mnemonics).connectUser(this.state.password),10);
         } catch (e) {
             GeneralActions.notify(e.message, 'long');
         }
@@ -56,11 +56,12 @@ export class Login extends React.Component {
       var promise = 0
       try {
         this.setState({ loading: 1,
-                        registered: parseInt (await Contracts.verifyRegistration(this.props.navigation.getParam('address')),10),
+                        registered: parseInt (await Contracts.ControlInstance(mnemonics).verifyRegistration(),10),
                       })
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
       }
+      this.setState({ loading: 1 })
     }
 
     renderLogin() {
@@ -77,7 +78,16 @@ export class Login extends React.Component {
           <View style={styles.buttonsContainer}>
               <Button
                   children="Next"
-                  onPress={() => this.onPressContinueLogin(this.state.password, this.state.password)}/>
+                  onPress={() => {
+                      Alert.alert(
+                        'Confirm',
+                      [
+                        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                        {text: 'OK', onPress: () => this.onPressContinueLogin(this.state.password, this.state.password)},
+                      ]
+                    )
+                    }
+                  } />
           </View>
       </View>)
     }

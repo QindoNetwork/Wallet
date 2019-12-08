@@ -59,6 +59,7 @@ contract Control is Ownable {
     mappFunctionToGasParameters[8].gasPrice = defaultGasPrice;
     mappFunctionToGasParameters[8].gasLimit = defaultGasLimit;
     owner = msg.sender;
+    //TGTSToken = External3(0xDDeB78A777c424F74B95c2AD29ec7B9a20802116);
     TGTSToken = External3(_tgts);
   }
 
@@ -76,9 +77,13 @@ contract Control is Ownable {
     userPassword[msg.sender] = newHash;
   }
 
-  function verifyRegistration() public view returns (bool)
+  function verifyRegistration() public view returns (uint)
   {
-    return isRegistered[msg.sender];
+    if (isRegistered[msg.sender] == false)
+    {
+      return 0;
+    }
+    else return 1;
   }
 
   function lockAccount() public view
@@ -102,14 +107,14 @@ contract Control is Ownable {
     resetAuthorization[msg.sender] = false;
   }
 
-  function connectUser(string memory _password) public view returns (bool)
+  function connectUser(string memory _password) public view returns (uint)
   {
     if (returnHash(_password) == userPassword[msg.sender]
     && lockedAccount[msg.sender] == false)
     {
-      return true;
+      return 1;
     }
-    else return false;
+    else return 0;
   }
 
   function setUserInfo(string memory snapShat, string memory ipfsImage) public
