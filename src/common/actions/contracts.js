@@ -130,11 +130,3 @@ export function defaultGasPrice() {
 export function getMAX() {
   return TogethersCall().MAX;
 }
-
-export function verifyRegistration(address) {
-  return ControlCall().verifyRegistration({ from : address });
-}
-
-export function connectUser(password,address) {
-  return ControlCall().connectUser(password, { from : address });
-}

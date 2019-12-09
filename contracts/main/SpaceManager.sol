@@ -22,7 +22,7 @@ contract SpaceManager is TogethersSpace {
   External2 public TGTCToken;
   External1 public MainContract;
 
-  uint public TGTCPrice;
+  uint constant public TGTCPrice = 10000000000000000;
   uint public MaxTokenCount;
   uint public spacePrice;
 
@@ -129,11 +129,6 @@ contract SpaceManager is TogethersSpace {
       isApproved[_ID] = false;
     }
     emit decision(checkedSociety[mappIDSocietyToHash[_ID]],isApproved[_ID]);
-  }
-
-  function modifyTGTCPrice(uint price) public onlyOwner
-  {
-    TGTCPrice = price;
   }
 
   function getTGTCs(uint amount) public payable

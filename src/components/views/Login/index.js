@@ -2,71 +2,65 @@ import React from 'react';
 import { Keyboard, StyleSheet, Text, TextInput, View, Alert, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { Contracts, General as GeneralActions  } from '@common/actions';
+import { Contracts, General as GeneralActions, Wallets as WalletActions  } from '@common/actions';
 
+@inject('wallet')
+@observer
 export class Login extends React.Component {
 
     static navigationOptions = { title: 'Login' };
 
-    state = {loading: 0, registered: 0, password: '', password1: '', password2: '' };
+    state = {loading: 0, registered: 0, password: '', password1: '', password2: '', result: 0 };
 
     async onPressContinueSignUp(wallet,mnemonics,address) {
         Keyboard.dismiss();
         if (this.state.password1 === this.state.password2) {
           try {
-            await Contracts.ControlInstance(mnemonics).createPassword(this.state.password1);
-            this.props.navigation.navigate('WalletsDetail', { wallet, mnemonics, address });
+            await Contracts.ControlInstance(mnemonics).createPassword(this.state.password1, { from : address });
+            WalletActions.selectWallet(wallet);
+            this.props.navigation.navigate('WalletsDetail', { wallet, mnemonics, address, replaceRoute: true });
           } catch (e) {
               GeneralActions.notify(e.message, 'long');
           }
         }
         else {
-        Alert.alert(
-          'Passwords not equals',
-        [
-          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        ]
-      )
-      }
+          GeneralActions.notify("Passwords not equals", 'long');
+        }
     }
 
     async onPressContinueLogin(wallet,mnemonics,address) {
         Keyboard.dismiss();
-        var resp = 0
         try {
-          resp = parseInt (await Contracts.connectUser(this.state.password,address),10);
+          this.setState({
+                          result : parseInt (await Contracts.ControlInstance(mnemonics).connectUser(this.state.password, { from : address }),10)
+                        })
         } catch (e) {
             GeneralActions.notify(e.message, 'long');
         }
-        if (resp === 1) {
-        this.props.navigation.navigate('WalletsDetail', { wallet, mnemonics, address });
+        if (this.state.result === 1) {
+          WalletActions.selectWallet(wallet);
+          this.props.navigation.navigate('WalletsDetail', { wallet, mnemonics, address, replaceRoute: true });
         }
         else {
-          Alert.alert(
-          'Password not good',
-        [
-          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        ]
-      )
-      }
+          GeneralActions.notify("Password not good", 'long');
+        }
     }
 
     async componentDidMount() {
-      var mnemonics = this.props.navigation.getParam('mnemonics')
-      var promise = 0
+
       try {
-        this.setState({ loading: 1,
-                        registered: parseInt (await Contracts.verifyRegistration(this.props.navigation.getParam('address')),10),
+        this.setState({
+                        registered: parseInt (await Contracts.ControlInstance(this.props.navigation.getParam('mnemonics')).verifyRegistration({ from : this.props.navigation.getParam('address') }),10),
+                        loading: 1
                       })
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
       }
     }
 
-    renderLogin() {
+    renderLogin(wallet,mnemonics,address) {
         return ( <View style={styles.container}>
           <View style={styles.body}>
-              <Text style={styles.message}>Login</Text>
               <Text style={styles.message}>Password</Text>
               <TextInput
                   style={styles.input}
@@ -77,16 +71,15 @@ export class Login extends React.Component {
           <View style={styles.buttonsContainer}>
               <Button
                   children="Next"
-                  onPress={() => this.onPressContinueLogin(this.state.password, this.state.password)}/>
+                  onPress={() => this.onPressContinueLogin(wallet,mnemonics,address)}/>
           </View>
       </View>)
     }
 
-    renderNewWallet() {
+    renderNewWallet(wallet,mnemonics,address) {
       return (
         <View style={styles.container}>
           <View style={styles.body}>
-              <Text style={styles.message}>First connection : Sign Up</Text>
               <Text style={styles.message}>Password</Text>
               <TextInput
                   style={styles.input}
@@ -103,16 +96,7 @@ export class Login extends React.Component {
           <View style={styles.buttonsContainer}>
               <Button
                   children="Next"
-                  onPress={() => {
-                      Alert.alert(
-                        'Confirm',
-                      [
-                        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                        {text: 'OK', onPress: () => this.onPressContinueSignUp(this.state.password1, this.state.password2)},
-                      ]
-                    )
-                    }
-                  } />
+                  onPress={() => this.onPressContinueSignUp(wallet,mnemonics,address)}/>
           </View>
       </View>
       )
@@ -128,22 +112,22 @@ export class Login extends React.Component {
       if(this.state.loading === 0)
       {
         return (
-            <ActivityIndicator size="large" color="#0000ff" />
+        <View style={styles.container}>
+          <View style={styles.body}>
+            <ActivityIndicator size="large"/>
+          </View>
+        </View>
         );
       }
 
       if(this.state.registered === 1)
       {
         return (
-            <View style={styles.container}>
-                {this.renderLogin(wallet,mnemonics,address)}
-            </View>
+                this.renderLogin(wallet,mnemonics,address)
         );
       }
         return (
-            <View style={styles.container}>
-                {this.renderNewWallet(wallet,mnemonics,address)}
-            </View>
+                this.renderNewWallet(wallet,mnemonics,address)
         );
     }
 

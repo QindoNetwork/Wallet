@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, RefreshControl, StyleSheet, View, Text } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { measures } from '@common/styles';
-import { Wallets as WalletActions, Contracts as ContractsActions } from '@common/actions';
+import { Wallets as WalletActions } from '@common/actions';
 import Balance from './Balance';
 import TransactionCard from './TransactionCard';
 import NoTransactions from './NoTransactions';
@@ -12,16 +12,8 @@ import { GeneralActions } from '@common/actions';
 @observer
 export class WalletExtract extends React.Component {
 
-  state = { password: 1 };
-
     async componentDidMount() {
       try {
-          let val =  await ContractsActions.ControlInstance(this.props.mnemonics).connectUser("test",{ from: this.props.address })
-          val = new boolean(val);
-          if(val === true)
-          {
-            this.setState({ password: 2 })
-          }
           await WalletActions.updateHistory(this.props.wallet.item);
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
@@ -32,9 +24,6 @@ export class WalletExtract extends React.Component {
 
     renderBody = ({ item, history, loading, pendingTransactions }) =>  (!history.length && !loading) ? <NoTransactions /> : (
         <View>
-        <Text>{this.state.password}</Text>
-        <Text>{this.props.address}</Text>
-        <Text>{this.props.mnemonics}</Text>
         <FlatList
             style={styles.content}
             data={pendingTransactions.concat(history.slice().reverse())}

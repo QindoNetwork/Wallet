@@ -55,7 +55,6 @@ export class WalletsOverview extends React.Component {
         let mnemonics = wallet.mnemonics
         let address = wallet.address
         if (this.loading) return;
-        WalletActions.selectWallet(wallet);
         this.props.navigation.navigate('Login', { wallet, mnemonics, address });
     }
 
