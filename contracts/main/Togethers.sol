@@ -119,7 +119,7 @@ contract Togethers is Administration {
     nbDemands += 1;
     emit newDemand(ID,msg.sender);
     ID += 1;
-    External2(getTokenAddress(1)).mintExternal(getTokenAddress(1),tgtcAmount);
+    External2(getTokenAddress(1)).mintExternal(owner,tgtcAmount);
   }
 
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, uint _crypto) public payable

@@ -22,9 +22,8 @@ contract SpaceManager is TogethersSpace {
   External2 public TGTCToken;
   External1 public MainContract;
 
-  uint constant public TGTCPrice = 10000000000000000;
   uint public MaxTokenCount;
-  uint public spacePrice;
+  uint constant public spacePrice = 10000000000000000;
 
   address spaceOperator;
 
@@ -34,7 +33,6 @@ contract SpaceManager is TogethersSpace {
     TGTSToken = External3(address(this));
     owner = msg.sender;
     MaxTokenCount = 10000;
-    spacePrice = 1;
     // get powerTokens
     _mint(msg.sender,powerToken1);
     _mint(msg.sender,powerToken2);
@@ -129,13 +127,6 @@ contract SpaceManager is TogethersSpace {
       isApproved[_ID] = false;
     }
     emit decision(checkedSociety[mappIDSocietyToHash[_ID]],isApproved[_ID]);
-  }
-
-  function getTGTCs(uint amount) public payable
-  {
-    require(msg.value == TGTCPrice.mul(amount));
-    MainContract.addInbox.value(msg.value);
-    TGTCToken.transfer(msg.sender,amount);
   }
 
   function modifySpaces(uint[] memory space, string memory url) public

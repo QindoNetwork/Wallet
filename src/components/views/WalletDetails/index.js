@@ -5,7 +5,7 @@ import { ReceiveCoins, SendCoins, WalletExtract, WalletSettings } from '..';
 export class WalletDetails extends React.Component {
 
     static navigationOptions = ({ navigation }) => ({
-        title: navigation.state.params.wallet.name
+        title: "Wallet"
     });
 
     tabs = [

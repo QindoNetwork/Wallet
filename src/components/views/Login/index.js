@@ -2,6 +2,7 @@ import React from 'react';
 import { Keyboard, StyleSheet, Text, TextInput, View, Alert, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
+import { inject, observer } from 'mobx-react';
 import { Contracts, General as GeneralActions, Wallets as WalletActions  } from '@common/actions';
 
 @inject('wallet')
@@ -18,7 +19,7 @@ export class Login extends React.Component {
           try {
             await Contracts.ControlInstance(mnemonics).createPassword(this.state.password1, { from : address });
             WalletActions.selectWallet(wallet);
-            this.props.navigation.navigate('WalletsDetail', { wallet, mnemonics, address, replaceRoute: true });
+            this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address });
           } catch (e) {
               GeneralActions.notify(e.message, 'long');
           }
@@ -39,7 +40,7 @@ export class Login extends React.Component {
         }
         if (this.state.result === 1) {
           WalletActions.selectWallet(wallet);
-          this.props.navigation.navigate('WalletsDetail', { wallet, mnemonics, address, replaceRoute: true });
+          this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address });
         }
         else {
           GeneralActions.notify("Password not good", 'long');
