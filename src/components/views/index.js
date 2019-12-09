@@ -23,6 +23,5 @@ export * from './MyProfile';
 export * from './Pay';
 export * from './ProfileData';
 export * from './Profiles';
-export * from './Register';
 export * from './Groups';
 export * from './Login';

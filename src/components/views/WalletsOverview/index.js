@@ -13,7 +13,7 @@ import WalletCard from './WalletCard';
 export class WalletsOverview extends React.Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
-        title: 'Overview',
+        title: 'Wallets',
         headerLeft: (
             <HeaderIcon
                 name='add'
@@ -73,7 +73,7 @@ export class WalletsOverview extends React.Component {
         const { list } = this.props.wallets;
         return (
             <View style={styles.container}>
-                <TotalBalance wallets={list} />
+              //  <TotalBalance wallets={list} />
                 {this.renderBody(list)}
             </View>
         );

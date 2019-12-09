@@ -8,21 +8,28 @@ export class Login extends React.Component {
 
     static navigationOptions = { title: 'Login' };
 
-    state = {loading: 0, registered: 0, password: '', password1: '', password2: '', result: 0 };
+    state = {loading: 0, registered: 0, password: '', password1: '', password2: '', pseudo: '', result: 0, available: 0, limit: 0};
 
     async onPressContinueSignUp(wallet,mnemonics,address) {
         Keyboard.dismiss();
-        if (this.state.password1 === this.state.password2) {
+        if (this.state.password1 === this.state.password2 && this.state.pseudo !== '' ) {
           try {
-            await Contracts.ControlInstance(mnemonics).createPassword(this.state.password1, { from : address });
-            WalletActions.selectWallet(wallet);
-            this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address, replaceRoute: true });
+            this.setState({
+                            available : parseInt (await Contracts.verifyUserAvailability(this.state.pseudo, { from : address }),10)
+                          })
+            if (this.state.available === 1) {
+              await Contracts.TogethersInstance(mnemonics).setUser(this.state.pseudo, 1, { from : address });
+              await Contracts.ControlInstance(mnemonics).createPassword(this.state.password1, { from : address })
+              WalletActions.selectWallet(wallet);
+              this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address});
+            }
+            else GeneralActions.notify("Pseudo not available", 'long');
           } catch (e) {
               GeneralActions.notify(e.message, 'long');
           }
         }
         else {
-          GeneralActions.notify("Passwords not equals", 'long');
+          GeneralActions.notify("Passwords not equals or pseudonyme already exist", 'long');
         }
     }
 
@@ -49,6 +56,7 @@ export class Login extends React.Component {
       try {
         this.setState({
                         registered: parseInt (await Contracts.ControlInstance(this.props.navigation.getParam('mnemonics')).verifyRegistration({ from : this.props.navigation.getParam('address') }),10),
+                        limit: parseInt (await Contracts.getGasLimitSetUser(),10)
                         loading: 1
                       })
       } catch (e) {
@@ -78,6 +86,12 @@ export class Login extends React.Component {
       return (
         <View style={styles.container}>
           <View style={styles.body}>
+              <Text style={styles.message}>Choose a pseudonyme</Text>
+              <TextInput
+                style={styles.input}
+                secureTextEntry
+                underlineColorAndroid="transparent"
+                onChangeText={pseudo => this.setState({ pseudo })} />
               <Text style={styles.message}>Password</Text>
               <TextInput
                   style={styles.input}
@@ -118,12 +132,22 @@ export class Login extends React.Component {
         );
       }
 
+      if (this.props.wallet.balance < this.state.limit) {
+        <View style={styles.container}>
+          <View style={styles.body}>
+            <Text style={styles.message}>{address}</Text>
+            <Text style={styles.message}>low balance, you need more ethers in your wallet</Text>
+          </View>
+        </View>
+      }
+
       if(this.state.registered === 1)
       {
         return (
                 this.renderLogin(wallet,mnemonics,address)
         );
       }
+
         return (
                 this.renderNewWallet(wallet,mnemonics,address)
         );

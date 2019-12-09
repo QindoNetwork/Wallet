@@ -69,6 +69,16 @@ contract Togethers is Administration {
     emit setUserEvent(msg.sender);
   }
 
+  function verifyUserAvailability(string memory _pseudo) public returns (uint)
+  {
+    uint currentID = returnHash(_pseudo);
+    if (checkNameUnicity[currentID] == address(0))
+    {
+      return 1;
+    }
+    return 0;
+  }
+
   function createGroup(string memory _groupName) public
   {
     groupNumber += 1;
@@ -79,6 +89,15 @@ contract Togethers is Administration {
     mappGroupIDToGroupName[groupNumber] = _groupName;
     addMember(groupNumber,msg.sender);
     emit createGroupEvent(msg.sender);
+  }
+
+  function verifyGroupAvailability(string memory _groupName) public returns (uint)
+  {
+    if (checkGroupUnicity[msg.sender][returnHash(_groupName)] == 0)
+    {
+      return 1;
+    }
+    return 0;
   }
 
   function addMember(uint _groupID, address _key) private
