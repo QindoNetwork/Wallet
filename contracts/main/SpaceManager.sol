@@ -24,6 +24,7 @@ contract SpaceManager is TogethersSpace {
 
   uint public MaxTokenCount;
   uint constant public spacePrice = 10000000000000000;
+  uint public TGTCPrice;
 
   address spaceOperator;
 
@@ -138,6 +139,18 @@ contract SpaceManager is TogethersSpace {
         urls[space[i]] = url;
       }
     }
+  }
+
+  function modifyTGTCPrice(uint price) public onlyOwner
+  {
+    TGTCPrice = price;
+  }
+
+  function getTGTCs(uint amount) public payable
+  {
+    require(msg.value == TGTCPrice.mul(amount));
+    MainContract.addInbox.value(msg.value);
+    TGTCToken.transfer(msg.sender,amount);
   }
 
   function lockSpaces(uint[] memory space) public

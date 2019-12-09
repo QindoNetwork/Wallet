@@ -10,6 +10,8 @@ import ListItem from './ListItem';
 @observer
 export class WalletSettings extends React.Component {
 
+    static navigationOptions = { title: "Settings" };
+
     async removeWallet() {
         try {
             const { wallet } = this.props;

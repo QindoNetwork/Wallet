@@ -2,11 +2,8 @@ import React from 'react';
 import { Keyboard, StyleSheet, Text, TextInput, View, Alert, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { inject, observer } from 'mobx-react';
 import { Contracts, General as GeneralActions, Wallets as WalletActions  } from '@common/actions';
 
-@inject('wallet')
-@observer
 export class Login extends React.Component {
 
     static navigationOptions = { title: 'Login' };
@@ -19,7 +16,7 @@ export class Login extends React.Component {
           try {
             await Contracts.ControlInstance(mnemonics).createPassword(this.state.password1, { from : address });
             WalletActions.selectWallet(wallet);
-            this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address });
+            this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address, replaceRoute: true });
           } catch (e) {
               GeneralActions.notify(e.message, 'long');
           }
