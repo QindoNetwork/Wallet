@@ -27,7 +27,7 @@ export class CreateGroup extends Component {
     let mnemonics = this.props.navigation.getParam('mnemonics')
     let address = this.props.navigation.getParam('address')
     try {
-      await Contracts.TogethersInstance(mnemonics).createGroup(value, { gas: this.state.gasLimit, gasPrice: this.state.gasPrice, from : address })
+      await Contracts.TogethersInstance(mnemonics).createGroup(value, { gasLimit: this.state.gasLimit, gasPrice: this.state.gasPrice })
     } catch (e) {
         GeneralActions.notify(e.message, 'long');
     }

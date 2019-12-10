@@ -8,14 +8,14 @@ export class Login extends React.Component {
 
     static navigationOptions = { title: 'Login' };
 
-    state = {loading: 0, registered: 0, password: '', password1: '', password2: '', result: 0 };
+    state = {loading: 0, registered: 0, password: '', password1: '', password2: '', result: 0, gasPrice: 0, gasLimit: 0 };
 
     async onPressContinueSignUp(wallet,mnemonics,address) {
         Keyboard.dismiss();
         if (this.state.password1 === this.state.password2) {
           try {
-            await Contracts.ControlInstance(mnemonics).createPassword(this.state.password1, { from : address });
-            WalletActions.selectWallet(wallet);
+            //{ gasLimit: this.state.gasLimit, gasPrice: this.state.gasPrice }
+            await Contracts.ControlInstance(mnemonics).createPassword(this.state.password1);
             this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address, replaceRoute: true });
           } catch (e) {
               GeneralActions.notify(e.message, 'long');
@@ -36,7 +36,6 @@ export class Login extends React.Component {
             GeneralActions.notify(e.message, 'long');
         }
         if (this.state.result === 1) {
-          WalletActions.selectWallet(wallet);
           this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address });
         }
         else {
@@ -48,6 +47,10 @@ export class Login extends React.Component {
 
       try {
         this.setState({
+          gasPrice: parseInt (await Contracts.getGasPriceCreateGroup(),10),
+          gasLimit: parseInt (await Contracts.getGasLimitCreateGroup(),10),
+                        //gasPrice: parseInt (await Contracts.getGasPriceSetUser(),10),
+                        //gasLimit: parseInt (await Contracts.getGasLimitSetUser(),10),
                         registered: parseInt (await Contracts.ControlInstance(this.props.navigation.getParam('mnemonics')).verifyRegistration({ from : this.props.navigation.getParam('address') }),10),
                         loading: 1
                       })
