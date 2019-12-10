@@ -19,11 +19,6 @@ contract Administration is Ownable {
   event newDemand(uint indexed ID, address indexed from);
   event payDemand(uint indexed ID, address indexed from);
   event endDemand(uint indexed ID, address indexed from, uint bonus);
-  event askEvent(address indexed from, uint ID);
-  event transferGroupOwnershipEvent(address indexed from, uint ID);
-  event setUserEvent(address indexed from);
-  event createGroupEvent(address indexed from);
-  event createProfileEvent(address indexed from, uint ID);
 
   mapping (uint => bool) public disableCrypto;
   mapping (uint => mapping (address => mapping (uint => uint))) public mappGiven;

@@ -10,7 +10,7 @@ contract Togethers is Administration {
   mapping (uint => mapping (address => profile)) private mappProfileInGroup;
   mapping (address => uint[]) private mappGroupsForAddress;
   mapping (uint => address[]) private mappUsersInGroup;
-  mapping (uint => address) public checkNameUnicity;
+  mapping (uint => address) private checkNameUnicity;
   mapping (address => mapping (uint => uint)) public checkGroupUnicity;
   mapping (address => mapping (uint => bool)) public mappAskForAdd;
 
@@ -41,7 +41,6 @@ contract Togethers is Administration {
     require(mappAddressToUser[msg.sender].language != 0);
     require(mappAskForAdd[msg.sender][_groupID] == false);
     mappAskForAdd[msg.sender][_groupID] = true;
-    emit askEvent(msg.sender,_groupID);
   }
 
   function transferGroupOwnership(uint _groupID, address newOwner) public
@@ -50,7 +49,6 @@ contract Togethers is Administration {
     require(mappProfileInGroup[_groupID][newOwner].isMember == true);
     mappProfileInGroup[_groupID][msg.sender].owner = false;
     mappProfileInGroup[_groupID][newOwner].owner = true;
-    emit transferGroupOwnershipEvent(msg.sender,_groupID);
   }
 
   function setUser(string memory _pseudo, uint _language) public
@@ -66,7 +64,6 @@ contract Togethers is Administration {
     mappAskForAdd[msg.sender][currentID] = true;
     mappAddressToUser[msg.sender].pseudo = _pseudo;
     mappAddressToUser[msg.sender].language = _language;
-    emit setUserEvent(msg.sender);
   }
 
   function createGroup(string memory _groupName) public
@@ -78,10 +75,9 @@ contract Togethers is Administration {
     mappProfileInGroup[groupNumber][msg.sender].owner = true;
     mappGroupIDToGroupName[groupNumber] = _groupName;
     addMember(groupNumber,msg.sender);
-    emit createGroupEvent(msg.sender);
   }
 
-  function verifyUserAvailability(string memory _pseudo) public returns (uint)
+  function verifyUserAvailability(string memory _pseudo) public view returns (uint)
   {
     uint currentID = returnHash(_pseudo);
     if (checkNameUnicity[currentID] == address(0))
@@ -91,7 +87,7 @@ contract Togethers is Administration {
     return 0;
   }
 
-  function verifyGroupAvailability(string memory _groupName) public returns (uint)
+  function verifyGroupAvailability(string memory _groupName) public view returns (uint)
   {
     if (checkGroupUnicity[msg.sender][returnHash(_groupName)] == 0)
     {
@@ -119,7 +115,6 @@ contract Togethers is Administration {
     require(getGroupsLength(msg.sender) < MAX);
     require(getUsersLength(groupID) < MAX);
     addMember(groupID,_publicKey);
-    emit createProfileEvent(msg.sender,groupID);
   }
 
   function askForFunds(uint groupID, string memory _description) public payable
@@ -267,6 +262,16 @@ contract Togethers is Administration {
   function getGroup(uint _num) view public returns (string memory)
   {
     return mappGroupIDToGroupName[mappGroupsForAddress[msg.sender][_num]];
+  }
+
+  function getGroupUnicity(string memory _name, address _key) view public returns (uint)
+  {
+    return checkGroupUnicity[_key][returnHash(_name)];
+  }
+
+  function getAddressFromName(string memory _name) view public returns (address)
+  {
+    return checkNameUnicity[returnHash(_name)];
   }
 
   function getUserAddress(uint _group, uint _num) view public returns (address)
