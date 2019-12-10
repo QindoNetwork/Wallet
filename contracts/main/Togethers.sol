@@ -69,6 +69,18 @@ contract Togethers is Administration {
     emit setUserEvent(msg.sender);
   }
 
+  function createGroup(string memory _groupName) public
+  {
+    groupNumber += 1;
+    require(mappAddressToUser[msg.sender].language != 0);
+    require(checkGroupUnicity[msg.sender][returnHash(_groupName)] == 0);
+    require(getGroupsLength(msg.sender) < MAX);
+    mappProfileInGroup[groupNumber][msg.sender].owner = true;
+    mappGroupIDToGroupName[groupNumber] = _groupName;
+    addMember(groupNumber,msg.sender);
+    emit createGroupEvent(msg.sender);
+  }
+
   function verifyUserAvailability(string memory _pseudo) public returns (uint)
   {
     uint currentID = returnHash(_pseudo);
@@ -77,18 +89,6 @@ contract Togethers is Administration {
       return 1;
     }
     return 0;
-  }
-
-  function createGroup(string memory _groupName) public
-  {
-    groupNumber += 1;
-    require(mappAddressToUser[msg.sender].language != 0);
-    require(checkGroupUnicity[msg.sender][returnHash(_groupName)] == 0);
-    require(getGroupsLength() < MAX);
-    mappProfileInGroup[groupNumber][msg.sender].owner = true;
-    mappGroupIDToGroupName[groupNumber] = _groupName;
-    addMember(groupNumber,msg.sender);
-    emit createGroupEvent(msg.sender);
   }
 
   function verifyGroupAvailability(string memory _groupName) public returns (uint)
@@ -115,7 +115,8 @@ contract Togethers is Administration {
     require(mappProfileInGroup[groupID][_publicKey].isMember == false);
     require(mappProfileInGroup[groupID][msg.sender].owner == true);
     require(mappAskForAdd[_publicKey][groupID] == true);
-    require(getGroupsLength() < MAX);
+    require(getGroupsLength(_publicKey) < MAX);
+    require(getGroupsLength(msg.sender) < MAX);
     require(getUsersLength(groupID) < MAX);
     addMember(groupID,_publicKey);
     emit createProfileEvent(msg.sender,groupID);
@@ -138,8 +139,11 @@ contract Togethers is Administration {
     nbDemands += 1;
     emit newDemand(ID,msg.sender);
     ID += 1;
-    address tgtcAddress = getTokenAddress(1);
-    External2(tgtcAddress).mintExternal(tgtcAddress,tgtcAmount);
+    if (activeMint == true)
+    {
+      address tgtcAddress = getTokenAddress(1);
+      External2(tgtcAddress).mintExternal(tgtcAddress,tgtcAmount);
+    }
   }
 
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, uint _crypto) public payable
@@ -279,9 +283,9 @@ contract Togethers is Administration {
     return mappGroupsForAddress[msg.sender][_num];
   }
 
-  function getGroupsLength() view public returns (uint)
+  function getGroupsLength(address _key) view public returns (uint)
   {
-    return mappGroupsForAddress[msg.sender].length;
+    return mappGroupsForAddress[_key].length;
   }
 
   function getUsersLength(uint _group) view public returns (uint)

@@ -33,6 +33,7 @@ const navigator = createStackNavigator(
     Pay: { screen: Views.Pay },
     ProfileData: { screen: Views.ProfileData },
     Profiles: { screen: Views.Profiles },
+    Register: { screen: Views.Register },
     Groups: { screen: Views.Groups },
     Login: { screen: Views.Login },
 

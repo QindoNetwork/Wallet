@@ -50,6 +50,11 @@ contract SpaceManager is TogethersSpace {
 
   uint public ID;
 
+  function modifySpacePrice(uint _price) public onlyOwner
+  {
+    spacePrice = _price;
+  }
+
   function setSpaceOperator(address _spaceOperator) public onlyOwner
   {
     require(spaceOperator == address(0));

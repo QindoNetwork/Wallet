@@ -128,13 +128,13 @@ export function defaultGasPrice() {
 }
 
 export function getMAX() {
-  return TogethersCall().MAX;
+  return TogethersCall().MAX();
 }
 
-export function verifyUserAvailability(pseudo) {
-  return TogethersCall().verifyUserAvailability(pseudo);
+export function getGroupsLength(user) {
+  return TogethersCall(user).getGroupsLength();
 }
 
-export function verifyGroupAvailability(groupName) {
-  return TogethersCall().verifyGroupAvailability(groupName);
+export function getUsersLength(group) {
+  return TogethersCall(group).getUsersLength();
 }

@@ -14,6 +14,7 @@ contract Administration is Ownable {
   uint constant public tgtcAmount = 1000000000000000000;
   uint public feesAsk;
   uint public feesPay;
+  bool public activeMint;
 
   event newDemand(uint indexed ID, address indexed from);
   event payDemand(uint indexed ID, address indexed from);
@@ -140,6 +141,18 @@ contract Administration is Ownable {
   {
     feesPay = _amount1;
     feesAsk = _amount2;
+  }
+
+  function mintTGTC() public onlyOwner
+  {
+    if (activeMint == false)
+    {
+      activeMint = true;
+    }
+    else
+    {
+      activeMint = false;
+    }
   }
 
 
