@@ -6,13 +6,13 @@ contract Togethers is Administration {
 
   mapping (address => mapping (address => mapping (uint => uint))) public mappStatsPeerToPeer;
   mapping (address => user) private mappAddressToUser;
-  mapping (uint => string) public mappGroupIDToGroupName;
+  mapping (uint => string) private mappGroupIDToGroupName;
   mapping (uint => mapping (address => profile)) private mappProfileInGroup;
   mapping (address => uint[]) private mappGroupsForAddress;
   mapping (uint => address[]) private mappUsersInGroup;
   mapping (uint => address) private checkNameUnicity;
-  mapping (address => mapping (uint => uint)) public checkGroupUnicity;
-  mapping (address => mapping (uint => bool)) public mappAskForAdd;
+  mapping (address => mapping (uint => uint)) private checkGroupUnicity;
+  mapping (address => mapping (uint => bool)) private mappAskForAdd;
 
   struct user
   {
@@ -38,9 +38,20 @@ contract Togethers is Administration {
   function ask(uint _groupID) public
   {
     require(getUsersLength(_groupID) > 0);
+    require(mappProfileInGroup[_groupID][msg.sender].isMember == false);
     require(mappAddressToUser[msg.sender].language != 0);
     require(mappAskForAdd[msg.sender][_groupID] == false);
+    require(getGroupsLength(msg.sender) < MAX);
     mappAskForAdd[msg.sender][_groupID] = true;
+  }
+
+  function isAsked(uint _groupID) public returns (uint)
+  {
+    if (mappAskForAdd[msg.sender][_groupID] == true)
+    {
+      return 1;
+    }
+    return 0;
   }
 
   function transferGroupOwnership(uint _groupID, address newOwner) public
@@ -98,23 +109,26 @@ contract Togethers is Administration {
 
   function addMember(uint _groupID, address _key) private
   {
+    require(mappProfileInGroup[_groupID][msg.sender].owner == true);
     mappProfileInGroup[_groupID][_key].isMember = true;
     mappGroupsForAddress[_key].push(_groupID);
     mappUsersInGroup[_groupID].push(_key);
     checkGroupUnicity[_key][returnHash(mappGroupIDToGroupName[_groupID])] = _groupID;
   }
 
-  function createProfile(uint groupID, string memory _pseudo) public
+  function checkProfile(uint groupID, string memory _pseudo) public returns (address)
   {
     uint currentID = returnHash(_pseudo);
     address _publicKey = checkNameUnicity[currentID];
     require(mappProfileInGroup[groupID][_publicKey].isMember == false);
-    require(mappProfileInGroup[groupID][msg.sender].owner == true);
     require(mappAskForAdd[_publicKey][groupID] == true);
-    require(getGroupsLength(_publicKey) < MAX);
-    require(getGroupsLength(msg.sender) < MAX);
-    require(getUsersLength(groupID) < MAX);
-    addMember(groupID,_publicKey);
+    require(getGroupsLength(_publicKey) < MAX && getGroupsLength(msg.sender) < MAX && getUsersLength(groupID) < MAX);
+    return _publicKey;
+  }
+
+  function createProfile(uint groupID, string memory _pseudo) public
+  {
+    addMember(groupID,checkProfile(groupID,_pseudo));
   }
 
   function askForFunds(uint groupID, string memory _description) public payable

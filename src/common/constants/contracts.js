@@ -1,3 +1,3 @@
-export const togethersAddress = "0x2C00b200E7516929CB02b1FF98aDf345786f34fc";
+export const togethersAddress = "0xDF444e565Bb31c8c45650Cd576BE7b79872ffcCB";
 
-export const controlAddress = "0x5d7466BfF79a16fF8dE672aAE0c5C358E7bc17f0";
+export const controlAddress = "0xbbfAe6b95b45a75817e59BE7bEfCB3343007D9E1";

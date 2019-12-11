@@ -52,7 +52,6 @@ contract SpaceManager is TogethersSpace {
 
   function setSpaceOperator(address _spaceOperator) public onlyOwner
   {
-    require(spaceOperator == address(0));
     spaceOperator = _spaceOperator;
   }
 

@@ -6,13 +6,11 @@ interface External1 {
 }
 
 interface External2 {
-  function totalSupply() external view returns (uint256);
   function balanceOf(address who) external view returns (uint256);
   function mintExternal(address account, uint256 value) external returns (bool);
   function burnExternal(address account, uint256 value) external returns (bool);
   function transferFrom(address from, address to, uint256 value) external returns (bool);
   function transfer(address to, uint256 value) external returns (bool);
-  function approve(address spender, uint256 value) external returns (bool);
 }
 
 interface External3 {

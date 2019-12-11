@@ -12,7 +12,7 @@ export class NewWalletName extends React.Component {
     onPressContinue() {
         Keyboard.dismiss();
         const { walletName, walletDescription } = this.state;
-        if (!walletName && !pseudonyme) return;
+        if (!walletName) return;
         this.props.navigation.navigate('NewWallet', { walletName, walletDescription });
     }
 

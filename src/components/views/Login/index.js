@@ -12,17 +12,18 @@ export class Login extends React.Component {
 
     async onPressContinueSignUp(wallet,mnemonics,address) {
         Keyboard.dismiss();
-        if (this.state.password1 === this.state.password2) {
+        const { password1, password2, pseudo } = this.state;
+        if (password1 === password2 && pseudo ) {
           try {
-            await Contracts.TogethersInstance(mnemonics).setUser(this.state.pseudo, 1)
-            await Contracts.ControlInstance(mnemonics).createPassword(this.state.password1);
+            await Contracts.TogethersInstance(mnemonics).setUser(pseudo, 1)
+            await Contracts.ControlInstance(mnemonics).createPassword(password1);
             this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address, replaceRoute: true });
           } catch (e) {
               GeneralActions.notify(e.message, 'long');
           }
         }
         else {
-          GeneralActions.notify("Passwords not equals", 'long');
+          GeneralActions.notify("Passwords not equals or pseudonyme already exists", 'long');
         }
     }
 
@@ -83,7 +84,6 @@ export class Login extends React.Component {
             <Text style={styles.message}>Choose a pseudonyme</Text>
             <TextInput
                 style={styles.input}
-                secureTextEntry
                 underlineColorAndroid="transparent"
                 onChangeText={pseudo => this.setState({ pseudo })} />
               <Text style={styles.message}>Password</Text>
