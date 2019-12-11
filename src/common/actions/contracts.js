@@ -16,8 +16,8 @@ var fallbackProvider = new ethers.providers.FallbackProvider([
     togethersProvider,
     infuraProvider,
     etherscanProvider,
-]);
-return fallbackProvider
+  ]);
+  return fallbackProvider
 }
 
 function connectWallet(m) {
