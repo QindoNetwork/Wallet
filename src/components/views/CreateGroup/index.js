@@ -1,6 +1,6 @@
 import * as yup from 'yup'
 import { Formik } from 'formik'
-import { Contracts, General as GeneralActions, Wallets as WalletActions  } from '@common/actions';
+import { Contracts, General as GeneralActions  } from '@common/actions';
 import React, { Component, Fragment } from 'react'
 import { colors, measures } from '@common/styles';
 import {View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
@@ -27,7 +27,9 @@ export class CreateGroup extends Component {
     let mnemonics = this.props.navigation.getParam('mnemonics')
     let address = this.props.navigation.getParam('address')
     try {
-      await Contracts.TogethersInstance(mnemonics).createGroup(value, { gasLimit: this.state.gasLimit, gasPrice: this.state.gasPrice })
+      // { gasLimit: this.state.gasLimit, gasPrice: this.state.gasPrice }
+      let tx = await Contracts.TogethersInstance(mnemonics).createGroup(value)
+      GeneralActions.notify(tx, 'long');
     } catch (e) {
         GeneralActions.notify(e.message, 'long');
     }

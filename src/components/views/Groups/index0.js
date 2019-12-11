@@ -3,7 +3,7 @@ import { Keyboard, StyleSheet, Text, TextInput, View, Alert, ActivityIndicator} 
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { HeaderIcon } from '@components/widgets';
-import { Contracts, General as GeneralActions  } from '@common/actions';
+import { Contracts, General as GeneralActions, Wallets as WalletActions  } from '@common/actions';
 
 export class Groups extends React.Component {
 
@@ -11,27 +11,25 @@ export class Groups extends React.Component {
 
     async componentDidMount() {
       const { mnemonics, address } = this.props
-      let keys = []
-      let names = []
-      let length = 0
       try {
-        length = parseInt ( await Contracts.TogethersInstance(mnemonics).getGroupsLength(address, { from : address }),10)
+        let keys = []
+        let names = []
+        let length = parseInt (await Contracts.getGroupsLength(address),10)
+
         if ( length !== 0 ) {
-        for ( var i = 0; i < length; i++ ) {
-           keys.push( parseInt (await Contracts.TogethersInstance(mnemonics).getGroupID(i, { from : address }),10))
-           names.push(await Contracts.TogethersInstance(mnemonics).getGroup(i, { from : address }))
+          for ( var i = 0; i < length; i++ ) {
+            keys.push( parseInt (await Contracts.TogethersInstance(mnemonics).getGroupID(i, { from : address }),10))
+            names.push(await Contracts.TogethersInstance(mnemonics).getGroup(i, { from : address }))
           }
           this.setState({
                         groupIDs : keys,
                         groupNames : names,
+                        loading: 1
                       })
         }
       } catch (e) {
       GeneralActions.notify(e.message, 'long');
       }
-      this.setState({
-                    loading: 1
-                  })
     }
 
     render() {

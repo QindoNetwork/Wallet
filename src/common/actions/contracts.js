@@ -132,9 +132,9 @@ export function getMAX() {
 }
 
 export function getGroupsLength(user) {
-  return TogethersCall(user).getGroupsLength();
+  return TogethersCall().getGroupsLength(user);
 }
 
 export function getUsersLength(group) {
-  return TogethersCall(group).getUsersLength();
+  return TogethersCall().getUsersLength(group);
 }

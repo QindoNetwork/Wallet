@@ -2,21 +2,22 @@ import React from 'react';
 import { Keyboard, StyleSheet, Text, TextInput, View, Alert, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { Contracts, General as GeneralActions, Wallets as WalletActions  } from '@common/actions';
+import { Contracts, General as GeneralActions  } from '@common/actions';
 
 export class Login extends React.Component {
 
     static navigationOptions = { title: 'Login' };
 
-    state = {loading: 0, registered: 0, password: '', password1: '', password2: '', result: 0, gasPrice: 0, gasLimit: 0 };
+    state = {loading: 0, registered: 0, password: '', password1: '', password2: '', pseudo: '', result: 0, gasPrice: 0, gasLimit: 0 };
 
     async onPressContinueSignUp(wallet,mnemonics,address) {
         Keyboard.dismiss();
         if (this.state.password1 === this.state.password2) {
           try {
             //{ gasLimit: this.state.gasLimit, gasPrice: this.state.gasPrice }
+            await Contracts.TogethersInstance(mnemonics).setUser(this.state.pseudo, 1)
             await Contracts.ControlInstance(mnemonics).createPassword(this.state.password1);
-            this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address, replaceRoute: true });
+            this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address, navigation: this.props.navigation, replaceRoute: true });
           } catch (e) {
               GeneralActions.notify(e.message, 'long');
           }
@@ -36,7 +37,7 @@ export class Login extends React.Component {
             GeneralActions.notify(e.message, 'long');
         }
         if (this.state.result === 1) {
-          this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address });
+          this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address, replaceRoute: true  });
         }
         else {
           GeneralActions.notify("Password not good", 'long');
@@ -47,10 +48,6 @@ export class Login extends React.Component {
 
       try {
         this.setState({
-          gasPrice: parseInt (await Contracts.getGasPriceCreateGroup(),10),
-          gasLimit: parseInt (await Contracts.getGasLimitCreateGroup(),10),
-                        //gasPrice: parseInt (await Contracts.getGasPriceSetUser(),10),
-                        //gasLimit: parseInt (await Contracts.getGasLimitSetUser(),10),
                         registered: parseInt (await Contracts.ControlInstance(this.props.navigation.getParam('mnemonics')).verifyRegistration({ from : this.props.navigation.getParam('address') }),10),
                         loading: 1
                       })
@@ -81,6 +78,12 @@ export class Login extends React.Component {
       return (
         <View style={styles.container}>
           <View style={styles.body}>
+            <Text style={styles.message}>Choose a pseudonyme</Text>
+            <TextInput
+                style={styles.input}
+                secureTextEntry
+                underlineColorAndroid="transparent"
+                onChangeText={pseudo => this.setState({ pseudo })} />
               <Text style={styles.message}>Password</Text>
               <TextInput
                   style={styles.input}

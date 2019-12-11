@@ -39,6 +39,12 @@ export default class WalletCard extends React.Component {
                         <Text style={styles.title}>{wallet.name}</Text>
                         <Text style={styles.description}>{wallet.description}</Text>
                     </View>
+                    <View style={styles.rightColumn}>
+                        <View style={styles.balanceContainer}>
+                            <Text style={styles.balance}>{this.balance.toFixed(3)}</Text>
+                            <Text style={styles.fiatBalance}>{this.fiatLabel} {this.fiatBalance.toFixed(2)}</Text>
+                        </View>
+                    </View>
                 </View>
             </TouchableWithoutFeedback>
         );

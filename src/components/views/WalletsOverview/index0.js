@@ -5,6 +5,7 @@ import { HeaderIcon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions, Wallets as WalletActions, Prices as PricesActions } from '@common/actions';
 import NoWallets from './NoWallets';
+import TotalBalance from './TotalBalance';
 import WalletCard from './WalletCard';
 
 @inject('prices', 'wallets')
@@ -73,6 +74,7 @@ export class WalletsOverview extends React.Component {
         const { list } = this.props.wallets;
         return (
             <View style={styles.container}>
+                <TotalBalance wallets={list} />
                 {this.renderBody(list)}
             </View>
         );
