@@ -220,9 +220,11 @@ contract Togethers is Administration {
 
   function deleteProfile(uint _groupID, address _publicKey) private
   {
-    initProfileInfo(_groupID,msg.sender);
-    deleteProfileInGroup(_groupID,msg.sender);
-    deleteGroupForProfile(_groupID,msg.sender);
+    require(mappProfileInGroup[_groupID][_publicKey].isMember == true);
+    require(mappProfileInGroup[_groupID][_publicKey].open == false);
+    initProfileInfo(_groupID,_publicKey);
+    deleteProfileInGroup(_groupID,_publicKey);
+    deleteGroupForProfile(_groupID,_publicKey);
   }
 
   function deleteProfileInGroup(uint _groupID, address _publicKey) private
@@ -259,8 +261,6 @@ contract Togethers is Administration {
 
   function initProfileInfo(uint _groupID, address _publicKey) private
   {
-    require(mappProfileInGroup[_groupID][msg.sender].isMember == true);
-    require(mappProfileInGroup[_groupID][msg.sender].open == false);
     mappProfileInGroup[_groupID][_publicKey].isMember = false;
     mappProfileInGroup[_groupID][_publicKey].owner = false;
     checkGroupUnicity[_publicKey][returnHash(getGroup(_groupID))] = 0;
