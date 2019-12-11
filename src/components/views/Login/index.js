@@ -14,10 +14,9 @@ export class Login extends React.Component {
         Keyboard.dismiss();
         if (this.state.password1 === this.state.password2) {
           try {
-            //{ gasLimit: this.state.gasLimit, gasPrice: this.state.gasPrice }
             await Contracts.TogethersInstance(mnemonics).setUser(this.state.pseudo, 1)
             await Contracts.ControlInstance(mnemonics).createPassword(this.state.password1);
-            this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address, navigation: this.props.navigation, replaceRoute: true });
+            this.props.navigation.navigate('WalletDetails', { wallet, mnemonics, address, replaceRoute: true });
           } catch (e) {
               GeneralActions.notify(e.message, 'long');
           }
@@ -46,9 +45,12 @@ export class Login extends React.Component {
 
     async componentDidMount() {
 
+      var mnemonics = this.props.navigation.getParam('mnemonics')
+      var address = this.props.navigation.getParam('address')
+
       try {
         this.setState({
-                        registered: parseInt (await Contracts.ControlInstance(this.props.navigation.getParam('mnemonics')).verifyRegistration({ from : this.props.navigation.getParam('address') }),10),
+                        registered: parseInt (await Contracts.ControlInstance(mnemonics).verifyRegistration({ from : address }),10),
                         loading: 1
                       })
       } catch (e) {
