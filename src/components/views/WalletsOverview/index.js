@@ -7,6 +7,10 @@ import { General as GeneralActions, Wallets as WalletActions, Prices as PricesAc
 import NoWallets from './NoWallets';
 import WalletCard from './WalletCard';
 
+import { ethers } from 'ethers';
+import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
+import { ControlABI as controlABI, TogethersABI as togethersABI, ERC20ABI as erc20ABI } from '@common/ABIs';
+
 @inject('prices', 'wallets')
 @observer
 export class WalletsOverview extends React.Component {
@@ -51,11 +55,28 @@ export class WalletsOverview extends React.Component {
     }
 
     onPressWallet(wallet) {
-        let mnemonics = wallet.mnemonics
-        let address = wallet.address
         if (this.loading) return;
-        WalletActions.selectWallet(wallet);
-        this.props.navigation.navigate('Login', { wallet, mnemonics, address });
+        const infuraProvider = new ethers.providers.InfuraProvider(EthereumNetworks.NETWORK_KEY);
+        const etherscanProvider = new ethers.providers.EtherscanProvider(EthereumNetworks.NETWORK_KEY);
+        const togethersProvider = new ethers.providers.JsonRpcProvider(EthereumNetworks.INFURA_URL + EthereumNetworks.INFURA_API_KEY, EthereumNetworks.NETWORK_KEY);
+        const fallbackProvider = new ethers.providers.FallbackProvider([
+            togethersProvider,
+            infuraProvider,
+            etherscanProvider,
+          ]);
+        const mnemonics = wallet.mnemonics.toString()
+        const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(fallbackProvider);
+        try {
+          var erc20s = []
+          const control = new ethers.Contract(contractsAddress.controlAddress, controlABI, connection);
+          const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
+          erc20s.push(togethers)
+          erc20s.push(new ethers.Contract(contractsAddress.togetherscoinAddress, erc20ABI, connection))
+          WalletActions.selectWallet(wallet)
+          this.props.navigation.navigate('Login', { wallet, control, togethers, erc20s });
+        } catch (e) {
+          GeneralActions.notify(e.message, 'long');
+        }
     }
 
     renderItem = ({ item }) => <WalletCard wallet={item} onPress={() => this.onPressWallet(item)} />
