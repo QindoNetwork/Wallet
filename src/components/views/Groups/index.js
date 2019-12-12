@@ -10,16 +10,16 @@ export class Groups extends React.Component {
     state = {loading: 0, groupIDs: [], groupNames: [] };
 
     async componentDidMount() {
-      const { mnemonics, address } = this.props
+      const { togethers, address } = this.props
       let keys = []
       let names = []
       let length = 0
       try {
-        length = parseInt ( await Contracts.TogethersInstance(mnemonics).getGroupsLength(address, { from : address }),10)
+        length = parseInt ( await togethers.getGroupsLength(address),10)
         if ( length !== 0 ) {
         for ( var i = 0; i < length; i++ ) {
-           keys.push( parseInt (await Contracts.TogethersInstance(mnemonics).getGroupID(i, { from : address }),10))
-           names.push(await Contracts.TogethersInstance(mnemonics).getGroup(i, { from : address }))
+           keys.push( parseInt (await togethers.getGroupID(i),10))
+           names.push(await togethers.getGroup(i))
           }
           this.setState({
                         groupIDs : keys,
@@ -36,7 +36,7 @@ export class Groups extends React.Component {
 
     render() {
 
-      const { mnemonics, address, navigation } = this.props
+      const { togethers, navigation } = this.props
 
       if (this.state.loading === 0){
 
@@ -59,7 +59,7 @@ export class Groups extends React.Component {
             <View style={styles.buttonsContainer}>
               <Button
                   children="Next"
-                  onPress={() => navigation.navigate('CreateGroup', {mnemonics: mnemonics, address: address})}/>
+                  onPress={() => navigation.navigate('CreateGroup', {togethers})}/>
             </View>
           </View>
         </View>

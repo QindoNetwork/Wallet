@@ -7,14 +7,14 @@ import {View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndi
 
 export class CreateGroup extends Component {
 
-  state = {loading: 0, gasPrice: 0, gasLimit: 0, max: 0 };
+  state = {loading: 0, max: 0 };
 
   async componentDidMount() {
 
     try {
       this.setState({
-                      gasPrice: parseInt (await Contracts.getGasPriceCreateGroup(),10),
-                      gasLimit: parseInt (await Contracts.getGasLimitCreateGroup(),10),
+                      //gasPrice: parseInt (await Contracts.getGasPriceCreateGroup(),10),
+                      //gasLimit: parseInt (await Contracts.getGasLimitCreateGroup(),10),
                       loading: 1
                     })
     } catch (e) {
@@ -24,12 +24,11 @@ export class CreateGroup extends Component {
 
   async submitForm(value) {
     Keyboard.dismiss();
-    let mnemonics = this.props.navigation.getParam('mnemonics')
-    let address = this.props.navigation.getParam('address')
+    let togethers = this.props.navigation.getParam('togethers')
     try {
       // { gasLimit: this.state.gasLimit, gasPrice: this.state.gasPrice }
-      let tx = await Contracts.TogethersInstance(mnemonics).createGroup(value)
-      GeneralActions.notify(tx, 'long');
+      await togethers.createGroup(value)
+      GeneralActions.notify("working", 'long');
     } catch (e) {
         GeneralActions.notify(e.message, 'long');
     }
@@ -85,10 +84,6 @@ export class CreateGroup extends Component {
             />
             </View>
             <View style={styles.container}>
-            <Text style={styles.label}>{this.props.navigation.getParam('mnemonics')}</Text>
-            <Text style={styles.label}>{this.props.navigation.getParam('address')}</Text>
-            <Text style={styles.label}>{this.state.gasPrice}</Text>
-            <Text style={styles.label}>{this.state.gasLimit}</Text>
             <TouchableOpacity
                 style={[styles.buttonsContainer, !isValid && styles.buttonDisabled]}
                 disabled={!isValid}

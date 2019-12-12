@@ -54,7 +54,7 @@ export class WalletsOverview extends React.Component {
         }
     }
 
-    onPressWallet(wallet) {
+    async onPressWallet(wallet) {
         if (this.loading) return;
         const infuraProvider = new ethers.providers.InfuraProvider(EthereumNetworks.NETWORK_KEY);
         const etherscanProvider = new ethers.providers.EtherscanProvider(EthereumNetworks.NETWORK_KEY);
@@ -68,12 +68,25 @@ export class WalletsOverview extends React.Component {
         const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(fallbackProvider);
         try {
           var erc20s = []
+          var gasParam = []
           const control = new ethers.Contract(contractsAddress.controlAddress, controlABI, connection);
           const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
-          erc20s.push(togethers)
-          erc20s.push(new ethers.Contract(contractsAddress.togetherscoinAddress, erc20ABI, connection))
+          const erc20sLength = parseInt(await togethers.getSize(),10)
+          for(var i = 0 ; i < erc20sLength ; i++)
+          {
+            var tokenAddress = await togethers.getTokenAddress(i)
+            erc20s.push({ name: await togethers.getTokenName(i),
+                          symbol: await togethers.getTokenSymbol(i),
+                          decimals: parseInt(await togethers.getTokenDecimal(i),10),
+                          instance: new ethers.Contract(tokenAddress, erc20ABI, connection)})
+          }
+          for(var j = 0 ; j <= 10 ; j++)
+          {
+            gasParam.push({ limit: await parseInt(control.getGasLimit(j),10),
+                            price: await parseInt(control.getGasPrice(j),10)})
+          }
           WalletActions.selectWallet(wallet)
-          this.props.navigation.navigate('Login', { wallet, control, togethers, erc20s });
+          this.props.navigation.navigate('Login', { gasParam, wallet, control, togethers, erc20s, address: wallet.address });
         } catch (e) {
           GeneralActions.notify(e.message, 'long');
         }
