@@ -17,7 +17,7 @@ export class Login extends React.Component {
           try {
             await this.props.navigation.getParam('togethers').setUser(pseudo, 1);
             await this.props.navigation.getParam('control').createPassword(password1);
-            this.props.navigation.navigate('WalletDetails', { wallet: this.props.navigation.getParam('wallet'), replaceRoute: true });
+            this.enter()
           } catch (e) {
               GeneralActions.notify(e.message, 'long');
           }
@@ -27,17 +27,28 @@ export class Login extends React.Component {
         }
     }
 
+    enter() {
+        const wallet = this.props.navigation.getParam('wallet')
+        const gasParam = this.props.navigation.getParam('gasParam')
+        const address = this.props.navigation.getParam('address')
+        const ERC20s = this.props.navigation.getParam('ERC20s')
+        const control = this.props.navigation.getParam('control')
+        const togethers = this.props.navigation.getParam('togethers')
+        this.props.navigation.navigate('WalletDetails', { wallet, gasParam, address, ERC20s, control, togethers, replaceRoute: true });
+    }
+
     async onPressContinueLogin() {
         Keyboard.dismiss();
+        const { password } = this.state;
         try {
           this.setState({
-                          result : parseInt (await this.props.navigation.getParam('control').connectUser(this.state.password ),10)
+                          result : parseInt (await this.props.navigation.getParam('control').connectUser(password),10)
                         })
         } catch (e) {
             GeneralActions.notify(e.message, 'long');
         }
         if (this.state.result === 1) {
-          this.props.navigation.navigate('WalletDetails', { wallet: this.props.navigation.getParam('wallet'), replaceRoute: true  });
+          this.enter()
         }
         else {
           GeneralActions.notify("Password not good", 'long');

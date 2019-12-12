@@ -6,7 +6,6 @@ import { colors, measures } from '@common/styles';
 import { General as GeneralActions, Wallets as WalletActions, Prices as PricesActions } from '@common/actions';
 import NoWallets from './NoWallets';
 import WalletCard from './WalletCard';
-
 import { ethers } from 'ethers';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 import { ControlABI as controlABI, TogethersABI as togethersABI, ERC20ABI as erc20ABI } from '@common/ABIs';
@@ -56,16 +55,8 @@ export class WalletsOverview extends React.Component {
 
     async onPressWallet(wallet) {
         if (this.loading) return;
-        const infuraProvider = new ethers.providers.InfuraProvider(EthereumNetworks.NETWORK_KEY);
-        const etherscanProvider = new ethers.providers.EtherscanProvider(EthereumNetworks.NETWORK_KEY);
-        const togethersProvider = new ethers.providers.JsonRpcProvider(EthereumNetworks.INFURA_URL + EthereumNetworks.INFURA_API_KEY, EthereumNetworks.NETWORK_KEY);
-        const fallbackProvider = new ethers.providers.FallbackProvider([
-            togethersProvider,
-            infuraProvider,
-            etherscanProvider,
-          ]);
         const mnemonics = wallet.mnemonics.toString()
-        const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(fallbackProvider);
+        const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
         try {
           var erc20s = []
           var gasParam = []

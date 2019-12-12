@@ -3,7 +3,7 @@ import { Formik } from 'formik'
 import { Contracts, General as GeneralActions  } from '@common/actions';
 import React, { Component, Fragment } from 'react'
 import { colors, measures } from '@common/styles';
-import {View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
+import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 
 export class CreateGroup extends Component {
 
@@ -22,13 +22,14 @@ export class CreateGroup extends Component {
     }
   }
 
-  async submitForm(value) {
+  submitForm = (value) => {
     Keyboard.dismiss();
     let togethers = this.props.navigation.getParam('togethers')
     try {
       // { gasLimit: this.state.gasLimit, gasPrice: this.state.gasPrice }
-      await togethers.createGroup(value)
-      GeneralActions.notify("working", 'long');
+      togethers.createGroup(value).then(function() {
+        GeneralActions.notify("working", 'long');
+        })
     } catch (e) {
         GeneralActions.notify(e.message, 'long');
     }
@@ -58,7 +59,7 @@ export class CreateGroup extends Component {
                 'Confirm',
                 'Create group ' + values.groupName + ' this action will take few minuts you will be notified if success',
               [
-                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                {text: 'Cancel', onPress: () => Keyboard.dismiss(), style: 'cancel'},
                 {text: 'OK', onPress: () => this.submitForm(values.groupName)},
               ]
             )
