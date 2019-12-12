@@ -6,7 +6,6 @@ import { colors, measures } from '@common/styles';
 import { Wallet as WalletUtils } from '@common/utils';
 import { Wallets as WalletActions } from '@common/actions';
 
-@observer
 export default class WalletCard extends React.Component {
 
     render() {

@@ -33,7 +33,7 @@ export class Groups extends React.Component {
       }
     }
 
-   onPressGroup() {
+   onPressGroup(item) {
       try {
         GeneralActions.notify("work", 'long');
       } catch (e) {
@@ -73,16 +73,14 @@ export class Groups extends React.Component {
 
       return (
         <View style={styles.container}>
-          <View style={styles.body}>
-            <ScrollView>
-                {this.renderBody(this.state.groups)}
-            </ScrollView>
+            {this.renderBody(this.state.groups)}
             <View style={styles.buttonsContainer}>
-              <Button
+              <View style={styles.body}>
+                <Button
                   children="Next"
                   onPress={() => navigation.navigate('CreateGroup', {togethers})}/>
+              </View>
             </View>
-          </View>
         </View>
       )
     }
