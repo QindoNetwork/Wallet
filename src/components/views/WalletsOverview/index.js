@@ -54,15 +54,18 @@ export class WalletsOverview extends React.Component {
     }
 
     async onPressWallet(wallet) {
+
         if (this.loading) return;
         const mnemonics = wallet.mnemonics.toString()
         const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
+
         try {
           var erc20s = []
           var gasParam = []
           const control = new ethers.Contract(contractsAddress.controlAddress, controlABI, connection);
           const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
           const erc20sLength = parseInt(await togethers.getSize(),10)
+
           for(var i = 0 ; i < erc20sLength ; i++)
           {
             var tokenAddress = await togethers.getTokenAddress(i)
@@ -71,6 +74,7 @@ export class WalletsOverview extends React.Component {
                           decimals: parseInt(await togethers.getTokenDecimal(i),10),
                           instance: new ethers.Contract(tokenAddress, erc20ABI, connection)})
           }
+
           for(var j = 0 ; j <= 10 ; j++)
           {
             gasParam.push({ limit: await parseInt(control.getGasLimit(j),10),

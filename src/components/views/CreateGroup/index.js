@@ -59,7 +59,7 @@ export class CreateGroup extends Component {
                 'Confirm',
                 'Create group ' + values.groupName + ' this action will take few minuts you will be notified if success',
               [
-                {text: 'Cancel', onPress: () => Keyboard.dismiss(), style: 'cancel'},
+                {text: 'Cancel', onPress: () => {}, style: 'cancel'},
                 {text: 'OK', onPress: () => this.submitForm(values.groupName)},
               ]
             )
@@ -76,15 +76,16 @@ export class CreateGroup extends Component {
           {({handleChange, values, errors, setFieldTouched, touched, isValid, handleSubmit}) => (
             <Fragment>
               <View style={styles.container}>
-            <TextInput
-              style={styles.input}
-              value={values.groupName}
-              onChangeText={handleChange('groupName')}
-              onBlur={() => setFieldTouched('groupName')}
-              placeholder="New Group"
-            />
+              <View style={styles.body}>
+                <TextInput
+                  style={styles.input}
+                  value={values.groupName}
+                  onChangeText={handleChange('groupName')}
+                  onBlur={() => setFieldTouched('groupName')}
+                  placeholder="New Group"
+                  />
             </View>
-            <View style={styles.container}>
+            <View style={styles.buttonsContainer}>
             <TouchableOpacity
                 style={[styles.buttonsContainer, !isValid && styles.buttonDisabled]}
                 disabled={!isValid}
@@ -93,7 +94,7 @@ export class CreateGroup extends Component {
                 onPress={handleSubmit}>
                 <Text style={styles.label}>CREATE NEW GROUP</Text>
             </TouchableOpacity>
-
+            </View>
             </View>
             </Fragment>
           )}

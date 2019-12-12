@@ -1,42 +1,61 @@
 import React from 'react';
-import { Keyboard, StyleSheet, Text, TextInput, View, Alert, ActivityIndicator} from 'react-native';
+import { FlatList, RefreshControl, ScrollView, Keyboard, StyleSheet, Text, TextInput, View, Alert, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { HeaderIcon } from '@components/widgets';
 import { Contracts, General as GeneralActions  } from '@common/actions';
+import GroupCard from './GroupCard';
+import NoGroups from './NoGroups';
 
 export class Groups extends React.Component {
 
-    state = {loading: 0, groupIDs: [], groupNames: [] };
+    state = {loading: 0, groups: [], groupNames: [] };
 
-    async componentDidMount() {
+    componentDidMount() {
+        this.populate();
+    }
+
+    async populate() {
       const { togethers, address } = this.props
-      let keys = []
-      let names = []
+      let groups = []
       let length = 0
       try {
         length = parseInt ( await togethers.getGroupsLength(address),10)
         if ( length !== 0 ) {
-        for ( var i = 0; i < length; i++ ) {
-           keys.push( parseInt (await togethers.getGroupID(i),10))
-           names.push(await togethers.getGroup(i))
+          for ( var i = 0; i < length; i++ ) {
+            groups.push({   key:  parseInt (await togethers.getGroupID(i),10),
+                            name: await togethers.getGroup(i)  })
           }
-          this.setState({
-                        groupIDs : keys,
-                        groupNames : names,
-                      })
+          this.setState({ groups, loading: 1})
         }
       } catch (e) {
       GeneralActions.notify(e.message, 'long');
       }
-      this.setState({
-                    loading: 1
-                  })
     }
+
+   onPressGroup() {
+      try {
+        GeneralActions.notify("work", 'long');
+      } catch (e) {
+      GeneralActions.notify(e.message, 'long');
+      }
+    }
+
+    renderItem = ({ item }) => <GroupCard group={item} onPress={() => this.onPressGroup(item)} />
+
+    renderBody = (list) => (!list.length) ? <NoGroups /> : (
+        <FlatList
+            style={styles.content}
+            data={list}
+            refreshControl={<RefreshControl refreshing={this.loading} onRefresh={() => this.populate()} />}
+            keyExtractor={(item, index) => String(index)}
+            renderItem={this.renderItem} />
+    );
 
     render() {
 
       const { togethers, navigation } = this.props
+      const { groupIDs, groupNames } = this.state
 
       if (this.state.loading === 0){
 
@@ -55,7 +74,9 @@ export class Groups extends React.Component {
       return (
         <View style={styles.container}>
           <View style={styles.body}>
-            <Text style={styles.message}>test</Text>
+            <ScrollView>
+                {this.renderBody(this.state.groups)}
+            </ScrollView>
             <View style={styles.buttonsContainer}>
               <Button
                   children="Next"
@@ -64,7 +85,7 @@ export class Groups extends React.Component {
           </View>
         </View>
       )
-}
+    }
 
 }
 

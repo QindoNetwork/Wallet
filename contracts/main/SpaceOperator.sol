@@ -64,7 +64,7 @@ contract SpaceOperator is Ownable {
     require(TGTCAmount == mappSpacePrice[spaceFrom] && mappSpacePrice[spaceFrom] != 0
     && spaceFrom != powerToken1 && spaceFrom != powerToken2);
     address target = TGTSToken.getApproved(spaceFrom);
-    TGTCToken.transferFrom(msg.sender,target,TGTCAmount); // faire balance/approve dans app
+    TGTCToken.transferFrom(msg.sender,target,TGTCAmount);
     TGTSToken.transferFrom(target,msg.sender,spaceFrom);
     mappSpacePrice[spaceFrom] == 0;
   }

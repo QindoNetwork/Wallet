@@ -6,29 +6,11 @@ import { colors, measures } from '@common/styles';
 import { Wallet as WalletUtils } from '@common/utils';
 import { Wallets as WalletActions } from '@common/actions';
 
-@inject('prices')
 @observer
 export default class WalletCard extends React.Component {
 
-    get balance() {
-        if (!this.props.wallet.balance) return 0;
-        return Number(WalletUtils.formatBalance(this.props.wallet.balance));
-    }
-
-    get fiatLabel() {
-        return this.props.prices.selectedRate.toUpperCase();
-    }
-
-    get fiatBalance() {
-        return Number(this.props.prices.usd * this.balance);
-    }
-
-    componentDidMount() {
-        WalletActions.updateBalance(this.props.wallet);
-    }
-
     render() {
-        const { onPress, wallet } = this.props;
+        const { onPress, group } = this.props;
         return (
             <TouchableWithoutFeedback onPress={onPress}>
                 <View style={styles.container}>
@@ -36,13 +18,13 @@ export default class WalletCard extends React.Component {
                         <Icon name='wallet' size='large' type='ent' />
                     </View>
                     <View style={styles.middleColumn}>
-                        <Text style={styles.title}>{wallet.name}</Text>
-                        <Text style={styles.description}>{wallet.description}</Text>
+                        <Text style={styles.title}>{group.name}</Text>
+                        <Text style={styles.description}>owner</Text>
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{this.balance.toFixed(3)}</Text>
-                            <Text style={styles.fiatBalance}>{this.fiatLabel} {this.fiatBalance.toFixed(2)}</Text>
+                            <Text style={styles.balance}>nbDemands</Text>
+                            <Text style={styles.fiatBalance}>active</Text>
                         </View>
                     </View>
                 </View>

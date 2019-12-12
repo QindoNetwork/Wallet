@@ -55,6 +55,14 @@ export class WalletSettings extends React.Component {
     render() {
         return (
             <ScrollView style={styles.container}>
+                <ListItem onPress={() => this.confirmExportPK()}>
+                    <View style={styles.itemContainer}>
+                        <View style={styles.icon}>
+                            <Icon name='database-export' type='mdc' />
+                        </View>
+                        <Text style={styles.itemTitle}>Export private key</Text>
+                    </View>
+                </ListItem>
                 <ListItem onPress={() => this.confirmRemoveWallet()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
