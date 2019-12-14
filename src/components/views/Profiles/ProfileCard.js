@@ -1,16 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { Wallet as WalletUtils } from '@common/utils';
 import { Wallets as WalletActions } from '@common/actions';
 
-export default class GroupsCard extends React.Component {
+export default class ProfilesCard extends React.Component {
 
     render() {
-        const { group } = this.props;
+        const { onPress, group } = this.props;
         return (
+            <TouchableWithoutFeedback onPress={onPress}>
                 <View style={styles.container}>
                     <View style={styles.leftColumn}>
                         <Icon name='wallet' size='large' type='ent' />
@@ -26,6 +27,7 @@ export default class GroupsCard extends React.Component {
                         </View>
                     </View>
                 </View>
+            </TouchableWithoutFeedback>
         );
     }
 }

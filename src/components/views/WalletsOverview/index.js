@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { HeaderIcon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
@@ -13,6 +13,8 @@ import { ControlABI as controlABI, TogethersABI as togethersABI, ERC20ABI as erc
 @inject('prices', 'wallets')
 @observer
 export class WalletsOverview extends React.Component {
+
+    state = { loading: 0 };
 
     static navigationOptions = ({ navigation, screenProps }) => ({
         title: 'Wallets',
@@ -59,12 +61,16 @@ export class WalletsOverview extends React.Component {
         const mnemonics = wallet.mnemonics.toString()
         const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
 
+        this.setState({ loading: 1 })
+
         try {
+
           var erc20s = []
           var gasParam = []
           const control = new ethers.Contract(contractsAddress.controlAddress, controlABI, connection);
           const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
           const erc20sLength = parseInt(await togethers.getSize(),10)
+          const max = parseInt(await togethers.MAX(),10)
 
           for(var i = 0 ; i < erc20sLength ; i++)
           {
@@ -78,13 +84,19 @@ export class WalletsOverview extends React.Component {
           for(var j = 0 ; j <= 10 ; j++)
           {
             gasParam.push({ limit: await parseInt(control.getGasLimit(j),10),
-                            price: await parseInt(control.getGasPrice(j),10)})
+                            price: await parseInt(control.getGasPrice(j),10)
+                          })
           }
+
           WalletActions.selectWallet(wallet)
-          this.props.navigation.navigate('Login', { gasParam, wallet, control, togethers, erc20s, address: wallet.address });
+          this.props.navigation.navigate('Login', { gasParam, wallet, control, togethers, erc20s, address: wallet.address, max });
+
         } catch (e) {
           GeneralActions.notify(e.message, 'long');
         }
+
+        this.setState({ loading: 0 })
+
     }
 
     renderItem = ({ item }) => <WalletCard wallet={item} onPress={() => this.onPressWallet(item)} />
@@ -100,6 +112,21 @@ export class WalletsOverview extends React.Component {
 
     render() {
         const { list } = this.props.wallets;
+
+        if (this.state.loading === 1){
+
+          return(
+
+            <View style={styles.container}>
+              <View style={styles.body}>
+                <ActivityIndicator size="large"/>
+              </View>
+            </View>
+
+        )
+
+        }
+
         return (
             <View style={styles.container}>
                 {this.renderBody(list)}
@@ -114,6 +141,11 @@ const styles = StyleSheet.create({
         padding: measures.defaultPadding,
         alignItems: 'stretch',
         justifyContent: 'flex-start'
+    },
+    body: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     content: {
         marginTop: measures.defaultMargin

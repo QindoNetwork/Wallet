@@ -34,7 +34,8 @@ export class Login extends React.Component {
         const ERC20s = this.props.navigation.getParam('ERC20s')
         const control = this.props.navigation.getParam('control')
         const togethers = this.props.navigation.getParam('togethers')
-        this.props.navigation.navigate('WalletDetails', { wallet, gasParam, address, ERC20s, control, togethers, replaceRoute: true });
+        const max = this.props.navigation.getParam('max')
+        this.props.navigation.navigate('WalletDetails', { max, wallet, gasParam, address, ERC20s, control, togethers, replaceRoute: true });
     }
 
     async onPressContinueLogin() {
