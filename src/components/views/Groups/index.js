@@ -19,8 +19,8 @@ export class Groups extends React.Component {
             groups.push({   id:  parseInt (await togethers.getGroupID(i),10),
                             name: await togethers.getGroup(i)  })
           }
-          this.setState({ groups, loading: 1})
         }
+        this.setState({ groups, loading: 1})
       } catch (e) {
       GeneralActions.notify(e.message, 'long');
       }
@@ -53,8 +53,10 @@ export class Groups extends React.Component {
 
     render() {
 
-      const { togethers, navigation, max } = this.props
-      const { groupIDs } = this.state
+      const gasParam = this.props.navigation.getParam('gasParam')
+      const togethers = this.props.navigation.getParam('togethers')
+      const max = this.props.navigation.getParam('max')
+      const address = this.props.navigation.getParam('address')
 
       if (this.state.loading === 0){
 
@@ -65,18 +67,6 @@ export class Groups extends React.Component {
             <ActivityIndicator size="large"/>
           </View>
         </View>
-
-      )
-
-      }
-
-      if (this.state.length === 0){
-
-        return(
-
-          <View style={styles.container}>
-              <Text>You have no group</Text>
-          </View>
 
       )
 
@@ -101,7 +91,7 @@ export class Groups extends React.Component {
               <View style={styles.body}>
                 <Button
                   children="Next"
-                  onPress={() => navigation.navigate('CreateGroup', {togethers})}/>
+                  onPress={() => this.props.navigation.navigate('AddGroup', {togethers, address, gasParam })}/>
               </View>
             </View>
         </View>

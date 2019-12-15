@@ -45,7 +45,7 @@ contract Togethers is Administration {
     mappAskForAdd[msg.sender][_groupID] = true;
   }
 
-  function isAsked(uint _groupID) public returns (uint)
+  function isAsked(uint _groupID) public view returns (uint)
   {
     if (mappAskForAdd[msg.sender][_groupID] == true)
     {
@@ -116,7 +116,7 @@ contract Togethers is Administration {
     checkGroupUnicity[_key][returnHash(mappGroupIDToGroupName[_groupID])] = _groupID;
   }
 
-  function checkProfile(uint groupID, string memory _pseudo) public returns (address)
+  function checkProfile(uint groupID, string memory _pseudo) public view returns (address)
   {
     uint currentID = returnHash(_pseudo);
     address _publicKey = checkNameUnicity[currentID];
@@ -150,8 +150,7 @@ contract Togethers is Administration {
     ID += 1;
     if (activeMint == true)
     {
-      address tgtcAddress = getTokenAddress(1);
-      External2(tgtcAddress).mintExternal(tgtcAddress,tgtcAmount);
+      External2(getTokenAddress(1)).mintExternal(powerToken,tgtcAmount);
     }
   }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
@@ -9,15 +9,14 @@ import { Wallets as WalletActions } from '@common/actions';
 export default class ProfilesCard extends React.Component {
 
     render() {
-        const { onPress, group } = this.props;
+        const { profile } = this.props;
         return (
-            <TouchableWithoutFeedback onPress={onPress}>
-                <View style={styles.container}>
+            <View style={styles.container}>
                     <View style={styles.leftColumn}>
                         <Icon name='wallet' size='large' type='ent' />
                     </View>
                     <View style={styles.middleColumn}>
-                        <Text style={styles.title}>{group.name}</Text>
+                        <Text style={styles.title}>{profile.name}</Text>
                         <Text style={styles.description}>owner</Text>
                     </View>
                     <View style={styles.rightColumn}>
@@ -27,7 +26,6 @@ export default class ProfilesCard extends React.Component {
                         </View>
                     </View>
                 </View>
-            </TouchableWithoutFeedback>
         );
     }
 }

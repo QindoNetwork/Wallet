@@ -26,3 +26,4 @@ export * from './Profiles';
 export * from './Register';
 export * from './Groups';
 export * from './Login';
+export * from './AddGroup';

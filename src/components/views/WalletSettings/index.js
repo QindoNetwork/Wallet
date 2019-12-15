@@ -63,6 +63,30 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Remove wallet</Text>
                     </View>
                 </ListItem>
+                <ListItem onPress={() => this.confirmRemoveWallet()}>
+                    <View style={styles.itemContainer}>
+                        <View style={styles.icon}>
+                            <Icon name='trash' />
+                        </View>
+                        <Text style={styles.itemTitle}>Change wallet</Text>
+                    </View>
+                </ListItem>
+                <ListItem onPress={() => this.confirmRemoveWallet()}>
+                    <View style={styles.itemContainer}>
+                        <View style={styles.icon}>
+                            <Icon name='trash' />
+                        </View>
+                        <Text style={styles.itemTitle}>Change password</Text>
+                    </View>
+                </ListItem>
+                <ListItem onPress={() => this.confirmRemoveWallet()}>
+                    <View style={styles.itemContainer}>
+                        <View style={styles.icon}>
+                            <Icon name='trash' />
+                        </View>
+                        <Text style={styles.itemTitle}>Change personal data</Text>
+                    </View>
+                </ListItem>
             </ScrollView>
         );
     }

@@ -4,10 +4,23 @@ import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Button } from '@components/widgets';
 import ProfileCard from './ProfileCard';
+import { HeaderIcon } from '@components/widgets';
 
 export class Profiles extends React.Component {
 
-    state = { loading: 0, profiles: [], length: 0 };
+  static navigationOptions = {
+        title: 'Profiles',
+        headerRight: (
+            <HeaderIcon
+                name='myDemand'
+                size='medium'
+                type='md'
+                color={colors.white}
+                onPress={() => this.props.navigation.navigate('myProfile')} />
+        )
+    }
+
+      state = { loading: 0, profiles: [], length: 0, owner: 0 };
 
     async componentDidMount() {
       const togethers = this.props.navigation.getParam('togethers')
@@ -15,25 +28,18 @@ export class Profiles extends React.Component {
       const item = this.props.navigation.getParam('item')
       let profiles = []
       try {
-        this.setState({ length:  parseInt ( await togethers.getUsersLength(item.id),10) })
-        if ( this.state.length !== 0 ) {
+        this.setState({ length:  parseInt ( await togethers.getUsersLength(item.id),10),
+                        owner : parseInt ( await togethers.isOwner(item.id,address),10) })
+        if ( this.state.length > 1 ) {
           for ( var i = 0; i < this.state.length; i++ ) {
-            let currentAddress = parseInt (await togethers.getUserAddress(item.id,i),10)
+            let currentAddress = await togethers.getUserAddress(item.id,i)
             if ( currentAddress !== address ) {
-              profiles.push({ id:  address,
+              profiles.push({ id:  currentAddress,
                               name: await togethers.getUserName(item.id,i) })
             }
           }
-          this.setState({ profiles, loading: 1})
         }
-      } catch (e) {
-      GeneralActions.notify(e.message, 'long');
-      }
-    }
-
-   onPressProfile(item) {
-      try {
-        this.props.navigation.navigate('ProfileData', { gasParam, address, ERC20s, togethers });
+        this.setState({ profiles, loading: 1})
       } catch (e) {
       GeneralActions.notify(e.message, 'long');
       }
@@ -57,7 +63,7 @@ export class Profiles extends React.Component {
                 gasParam : this.props.navigation.getParam('gasParam'),
               })
               }>
-                <ProfileCard group={item}/>
+                <ProfileCard profile={item}/>
               </TouchableOpacity>
             )}
         />)
@@ -83,19 +89,7 @@ export class Profiles extends React.Component {
 
       }
 
-      if (this.state.length === 0){
-
-        return(
-
-          <View style={styles.container}>
-              <Text>You have no friend</Text>
-          </View>
-
-      )
-
-      }
-
-      if (this.state.length >= max){
+      if (this.state.length >= max || this.state.owner !== 1){
 
         return(
 

@@ -1,35 +1,23 @@
 import * as yup from 'yup'
 import { Formik } from 'formik'
-import { Contracts, General as GeneralActions  } from '@common/actions';
+import { General as GeneralActions  } from '@common/actions';
 import React, { Component, Fragment } from 'react'
 import { colors, measures } from '@common/styles';
 import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 
 export class CreateGroup extends Component {
 
-  state = {loading: 0, max: 0 };
+  static navigationOptions = ({ navigation }) => ({
+      title: 'Add a user'
+  });
 
-  async componentDidMount() {
-
-    try {
-      this.setState({
-                      //gasPrice: parseInt (await Contracts.getGasPriceCreateGroup(),10),
-                      //gasLimit: parseInt (await Contracts.getGasLimitCreateGroup(),10),
-                      loading: 1
-                    })
-    } catch (e) {
-        GeneralActions.notify(e.message, 'long');
-    }
-  }
-
-  submitForm = (value) => {
+  async submitForm(value) {
     Keyboard.dismiss();
     let togethers = this.props.navigation.getParam('togethers')
     try {
       // { gasLimit: this.state.gasLimit, gasPrice: this.state.gasPrice }
-      togethers.createGroup(value).then(function() {
+      await togethers.createGroup(value)
         GeneralActions.notify("working", 'long');
-        })
     } catch (e) {
         GeneralActions.notify(e.message, 'long');
     }
@@ -37,21 +25,7 @@ export class CreateGroup extends Component {
 
   render() {
 
-    if (this.state.loading ===  0){
-
-      return(
-
-      <View style={styles.container}>
-        <View style={styles.body}>
-          <ActivityIndicator size="large"/>
-        </View>
-      </View>
-
-    )
-
-    }
-
-      return (
+    return (
         <Formik
           initialValues={{ groupName: '' }}
           onSubmit={values => {

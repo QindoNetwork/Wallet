@@ -36,6 +36,7 @@ const navigator = createStackNavigator(
     Register: { screen: Views.Register },
     Groups: { screen: Views.Groups },
     Login: { screen: Views.Login },
+    AddGroup: { screen: Views.AddGroup },
 
   },
   {
