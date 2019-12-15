@@ -42,6 +42,7 @@ contract Togethers is Administration {
     require(mappAddressToUser[msg.sender].language != 0);
     require(mappAskForAdd[msg.sender][_groupID] == false);
     require(getGroupsLength(msg.sender) < MAX);
+    require(checkGroupUnicity[msg.sender][returnHash(mappGroupIDToGroupName[_groupID])] == 0);
     mappAskForAdd[msg.sender][_groupID] = true;
   }
 
@@ -150,7 +151,7 @@ contract Togethers is Administration {
     ID += 1;
     if (activeMint == true)
     {
-      External2(getTokenAddress(1)).mintExternal(powerToken,tgtcAmount);
+      External2(getTokenAddress(1)).mintExternal(owner,tgtcAmount);
     }
   }
 
@@ -182,6 +183,7 @@ contract Togethers is Administration {
   {
     require(mappProfileInGroup[groupID][msg.sender].open == true);
     mappProfileInGroup[groupID][msg.sender].open = false;
+    uint bonus;
     if (checkIsEmpty(groupID) == false)
     {
       for(uint i = 0 ; i < getSize() ; i++)
@@ -196,12 +198,13 @@ contract Togethers is Administration {
           mappGiven[groupID][msg.sender][i] = 0;
         }
       }
-      getBonus(groupID);
+      bonus = getBonus(groupID);
     }
+    emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID,msg.sender,bonus);
     nbDemands -= 1;
   }
 
-  function getBonus(uint groupID) private
+  function getBonus(uint groupID) private returns (uint)
   {
     uint bonus;
     if (block.number > mappAddressToUser[msg.sender].blockNumber)
@@ -215,7 +218,7 @@ contract Togethers is Administration {
           box2.add(bonus);
         }
       }
-    emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID,msg.sender,bonus);
+      return bonus;
   }
 
   function removeMember(address _publicKey, uint groupID) public

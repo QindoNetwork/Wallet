@@ -63,7 +63,7 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Remove wallet</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.confirmRemoveWallet()}>
+                <ListItem onPress={() => this.props.navigation.navigate('WalletsOverview', { replaceRoute: true })}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
                             <Icon name='trash' />
@@ -85,6 +85,14 @@ export class WalletSettings extends React.Component {
                             <Icon name='trash' />
                         </View>
                         <Text style={styles.itemTitle}>Change personal data</Text>
+                    </View>
+                </ListItem>
+                <ListItem onPress={() => this.confirmExportPK()}>
+                    <View style={styles.itemContainer}>
+                        <View style={styles.icon}>
+                            <Icon name='trash' />
+                        </View>
+                        <Text style={styles.itemTitle}>Export private hey</Text>
                     </View>
                 </ListItem>
             </ScrollView>

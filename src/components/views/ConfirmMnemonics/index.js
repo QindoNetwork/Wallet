@@ -18,16 +18,18 @@ export class ConfirmMnemonics extends React.Component {
     }
 
     async onPressConfirm() {
-        if (!this.refs.confirm.isValidSequence()) return;
-        try {
+        if (this.refs.confirm.isValidSequence()) {
+          try {
             const { mnemonics, walletName, walletDescription } = this.state;
-            const wallet = WalletUtils.loadWalletFromMnemonics(mnemonics);
-            await WalletsActions.addWallet(walletName, wallet, walletDescription, mnemonics);
+            const m = mnemonics.join(' ');
+            const wallet = WalletUtils.loadWalletFromMnemonics(m);
+            await WalletsActions.addWallet(walletName, wallet, walletDescription, m);
             this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
             await WalletsActions.saveWallets();
-        } catch (e) {
+          } catch (e) {
             GeneralActions.notify(e.message, 'long');
-        }
+          }
+        } else GeneralActions.notify("uncorect", 'long');
     }
 
     render() {

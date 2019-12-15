@@ -57,13 +57,14 @@ export class WalletsOverview extends React.Component {
 
     async onPressWallet(wallet) {
 
-        if (this.loading) return;
-        const mnemonics = wallet.mnemonics.toString()
-        const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
+        //if (this.loading) return;
 
         this.setState({ loading: 1 })
 
         try {
+
+        const mnemonics = wallet.mnemonics.toString()
+        const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
 
           var erc20s = []
           var gasParam = []

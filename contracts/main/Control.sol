@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0;
 
-import "../owner/Ownable.sol";
+import "./Ownable.sol";
 
 contract Control is Ownable {
 
@@ -80,7 +80,7 @@ contract Control is Ownable {
 
   function verifyRegistration() public view returns (uint)
   {
-    if (userPassword[msg.sender] != 0)
+    if (userPassword[msg.sender] == 0)
     {
       return 0;
     }

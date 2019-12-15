@@ -13,7 +13,7 @@ export class CreateGroup extends Component {
 
   async submitForm(value) {
     Keyboard.dismiss();
-    let togethers = this.props.navigation.getParam('togethers')
+    var togethers = this.props.navigation.getParam('togethers')
     try {
       // { gasLimit: this.state.gasLimit, gasPrice: this.state.gasPrice }
       await togethers.createGroup(value)

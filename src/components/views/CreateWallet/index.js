@@ -9,7 +9,7 @@ export class CreateWallet extends React.Component {
 
     onPressProceed() {
         const { walletName, walletDescription } = this.props.navigation.state.params;
-        this.props.navigation.navigate('CreateMnemonics', { walletName, walletDescription, password });
+        this.props.navigation.navigate('CreateMnemonics', { walletName, walletDescription });
     }
 
     render() {
