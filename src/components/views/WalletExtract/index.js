@@ -12,7 +12,11 @@ import { GeneralActions } from '@common/actions';
 @observer
 export class WalletExtract extends React.Component {
 
-    async componentDidMount() {
+    componentDidMount() {
+      this.updateHistory()
+    }
+
+    async updateHistory() {
       try {
           await WalletActions.updateHistory(this.props.wallet.item);
       } catch (e) {

@@ -1,31 +1,79 @@
-import React from 'react';
-import { Keyboard, StyleSheet, Text, TextInput, View, Alert, ActivityIndicator} from 'react-native';
+import React, { Fragment } from 'react'
+import { Clipboard, Share, TouchableWithoutFeedback, Keyboard, StyleSheet, Text, TextInput, View, Alert, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
+import QRCode from 'react-native-qrcode-svg';
+import { Icon } from '@components/widgets';
+import { Wallet as WalletUtils } from '@common/utils';
+import * as yup from 'yup'
+import { Formik } from 'formik'
 
 export class Login extends React.Component {
 
     static navigationOptions = { title: 'Login' };
 
-    state = {loading: 0, registered: 0, password: '', password1: '', password2: '', pseudo: '', result: 0, gasPrice: 0, gasLimit: 0 };
+    state = { loading: 0, registered: 0, password: '', result: 0 };
 
-    async onPressContinueSignUp() {
-        Keyboard.dismiss();
-        const { password1, password2, pseudo } = this.state;
-        if (password1 === password2 && pseudo ) {
-          try {
-            await this.props.navigation.getParam('togethers').setUser(pseudo, 1);
-            await this.props.navigation.getParam('control').createPassword(password1);
-            this.enter()
-          } catch (e) {
-              GeneralActions.notify(e.message, 'long');
-          }
+    async onPressContinueSignUp(password1,password2,pseudo) {
+      Keyboard.dismiss();
+      var isOK = 1;
+      try {
+        if (!pseudo) {
+          isOK = 0;
+          GeneralActions.notify("Pseudo required", 'long');
         }
-        else {
-          GeneralActions.notify("Passwords not equals or pseudonyme already exists", 'long');
+        if (password1 !== password2) {
+          isOK = 0;
+          GeneralActions.notify("Passwords not equals", 'long');
         }
+        if ( parseInt(await this.props.navigation.getParam('togethers').verifyUserAvailability(pseudo)) !== 1 ) {
+          isOK = 0;
+          GeneralActions.notify("pseudonyme already exists", 'long');
+        }
+        if ( isOK === 1 ) {
+          let overrides1 = {
+              gasLimit: this.props.navigation.getParam('gasParam')[2].limit,
+              gasPrice: this.props.navigation.getParam('gasParam')[2].price * 1000000000,
+              //nonce: 123,
+              //value: utils.parseEther('1.0'),
+              };
+          let overrides2 = {
+              gasLimit: this.props.navigation.getParam('gasParam')[10].limit,
+              gasPrice: this.props.navigation.getParam('gasParam')[10].price * 1000000000,
+              //nonce: 123,
+              //value: utils.parseEther('1.0'),
+              };
+          await this.props.navigation.getParam('togethers').setUser(pseudo, 1, overrides1);
+          await this.props.navigation.getParam('control').createPassword(password1, overrides2);
+          this.enter()
+          GeneralActions.notify('Wait for validation', 'long');
+        }
+      } catch (e) {
+          GeneralActions.notify(e.message, 'long');
+      }
     }
+
+    copyToClipboard() {
+        Clipboard.setString(this.props.navigation.getParam('address'));
+        GeneralActions.notify('Copied to clipboard', 'short');
+    }
+
+    share() {
+        Share.share({
+            title: 'Wallet address:',
+            message: this.props.navigation.getParam('address')
+        });
+    }
+
+    renderColumn = (icon, label, action) => (
+        <TouchableWithoutFeedback onPress={action}>
+            <View style={styles.actionColumn}>
+                <Icon name={icon} style={styles.actionIcon} />
+                <Text style={styles.actionLabel}>{label}</Text>
+            </View>
+        </TouchableWithoutFeedback>
+    );
 
     enter() {
         const wallet = this.props.navigation.getParam('wallet')
@@ -69,8 +117,11 @@ export class Login extends React.Component {
     }
 
     renderLogin() {
+
+
         return ( <View style={styles.container}>
           <View style={styles.body}>
+
               <Text style={styles.message}>Password</Text>
               <TextInput
                   style={styles.input}
@@ -86,32 +137,94 @@ export class Login extends React.Component {
       </View>)
     }
 
-    renderNewWallet() {
+    renderNewWallet(EthPrice) {
       return (
+        <Formik
+          initialValues={{ password1: '', password2: '', pseudo: '' }}
+          onSubmit={values => {
+              Alert.alert(
+                'SignUp',
+                'This action cannot be undone. Are you sure?',
+                [
+                    { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                    { text: 'Confirm', onPress: () => this.onPressContinueSignUp(values.password1,values.password2,values.pseudo) }
+                ],
+                { cancelable: false }
+            );
+            }
+          }
+          validationSchema={yup.object().shape({
+            password1: yup
+              .string()
+              .min(2, 'Too Short!')
+              .max(30, 'Too Long!')
+              .required('Required'),
+            password2: yup
+              .string()
+              .min(2, 'Too Short!')
+              .max(30, 'Too Long!')
+              .required('Required'),
+            pseudo: yup
+              .string()
+              .min(2, 'Too Short!')
+              .max(30, 'Too Long!')
+              .required('Required')
+          })}
+        >
+          {({handleChange, values, errors, isValid, handleSubmit}) => (
+            <Fragment>
         <View style={styles.container}>
           <View style={styles.body}>
             <Text style={styles.message}>Choose a pseudonyme</Text>
             <TextInput
-                style={styles.input}
-                underlineColorAndroid="transparent"
-                onChangeText={pseudo => this.setState({ pseudo })} />
-              <Text style={styles.message}>Password</Text>
-              <TextInput
-                  style={styles.input}
-                  secureTextEntry
-                  underlineColorAndroid="transparent"
-                  onChangeText={password1 => this.setState({ password1 })} />
-              <Text style={styles.message}>Confirm Password</Text>
-              <TextInput
-                  style={styles.input}
-                  underlineColorAndroid="transparent"
-                  secureTextEntry
-                  onChangeText={password2 => this.setState({ password2 })} />
+              style={styles.input}
+              value={values.pseudo}
+              onChangeText={handleChange('pseudo')}
+              placeholder="pseudo"
+              />
+            <Text style={styles.message}>Password</Text>
+            <TextInput
+              style={styles.input}
+              value={values.password1}
+              secureTextEntry
+              onChangeText={handleChange('password1')}
+              placeholder="password"
+              />
+            <Text style={styles.message}>Confirm Password</Text>
+            <TextInput
+              style={styles.input}
+              value={values.password2}
+              secureTextEntry
+              onChangeText={handleChange('password2')}
+              placeholder="password"
+              />
           </View>
-          <View style={styles.buttonsContainer}>
-              <Button
-                  children="Next"
-                  onPress={() => this.onPressContinueSignUp()}/>
+      <View style={styles.buttonsContainer}>
+          <Button
+              children="Next"
+              disabled={!isValid}
+              onPress={handleSubmit}/>
+      </View>
+      <Text style={styles.message}>It will cost maximum {EthPrice} ETH</Text>
+  </View>
+  </Fragment>
+)}
+</Formik>
+  )
+}
+
+    renderWalletEmpty() {
+      return (
+        <View style={styles.container}>
+        <Text style={styles.centered}>Low balance, show the code below to receive ethers</Text>
+        <View style={styles.centered}>
+            <QRCode size={256} value={this.props.navigation.getParam('address')} />
+        </View>
+          <View style={styles.actions}>
+              <View style={styles.actionsBar}>
+                  {this.renderColumn('copy', 'Copy', () => this.copyToClipboard())}
+                  {this.renderColumn('share', 'Share', () => this.share())}
+              </View>
           </View>
       </View>
       )
@@ -119,6 +232,11 @@ export class Login extends React.Component {
 
 
     render() {
+
+      const balance =  Number(WalletUtils.formatBalance(this.props.navigation.getParam('address')))
+      const maxPrice =  ((this.props.navigation.getParam('gasParam')[2].limit * this.props.navigation.getParam('gasParam')[2].price)
+                        + (this.props.navigation.getParam('gasParam')[10].limit * this.props.navigation.getParam('gasParam')[10].price))
+      const EthPrice = maxPrice / 1000000000
 
       if(this.state.loading === 0)
       {
@@ -137,8 +255,16 @@ export class Login extends React.Component {
                 this.renderLogin()
         );
       }
+
+      if(maxPrice * 1000000000 > balance )
+      {
         return (
-                this.renderNewWallet()
+                this.renderWalletEmpty()
+        );
+      }
+
+        return (
+                this.renderNewWallet(EthPrice)
         );
     }
 
@@ -168,6 +294,22 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-between',
         height: 52
+    },
+    actions: {
+        height: 56
+    },
+    actionsBar: {
+        flexDirection: 'row',
+        flex: 3
+    },
+    actionColumn: {
+        flexDirection: 'column',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    centered: {
+        alignSelf: 'center'
     },
     input: {
         width: '90%',

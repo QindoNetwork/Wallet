@@ -84,13 +84,13 @@ export class WalletsOverview extends React.Component {
 
           for(var j = 0 ; j <= 10 ; j++)
           {
-            gasParam.push({ limit: await parseInt(control.getGasLimit(j),10),
-                            price: await parseInt(control.getGasPrice(j),10)
+            gasParam.push({ limit: parseInt(await control.getGasLimit(j),10),
+                            price: parseInt(await control.getGasPrice(j),10)
                           })
           }
 
           WalletActions.selectWallet(wallet)
-          this.props.navigation.navigate('Login', { gasParam, wallet, control, togethers, erc20s, address: wallet.address, max });
+          this.props.navigation.navigate('Login', { gasParam, wallet, control, togethers, erc20s, balance: wallet.balance, address: wallet.address, max });
 
         } catch (e) {
           GeneralActions.notify(e.message, 'long');

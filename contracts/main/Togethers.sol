@@ -11,7 +11,6 @@ contract Togethers is Administration {
   mapping (address => uint[]) private mappGroupsForAddress;
   mapping (uint => address[]) private mappUsersInGroup;
   mapping (uint => address) private checkNameUnicity;
-  mapping (address => mapping (uint => uint)) private checkGroupUnicity;
   mapping (address => mapping (uint => bool)) private mappAskForAdd;
 
   struct user
@@ -42,7 +41,6 @@ contract Togethers is Administration {
     require(mappAddressToUser[msg.sender].language != 0);
     require(mappAskForAdd[msg.sender][_groupID] == false);
     require(getGroupsLength(msg.sender) < MAX);
-    require(checkGroupUnicity[msg.sender][returnHash(mappGroupIDToGroupName[_groupID])] == 0);
     mappAskForAdd[msg.sender][_groupID] = true;
   }
 
@@ -82,7 +80,6 @@ contract Togethers is Administration {
   {
     groupNumber += 1;
     require(mappAddressToUser[msg.sender].language != 0);
-    require(checkGroupUnicity[msg.sender][returnHash(_groupName)] == 0);
     require(getGroupsLength(msg.sender) < MAX);
     mappProfileInGroup[groupNumber][msg.sender].owner = true;
     mappGroupIDToGroupName[groupNumber] = _groupName;
@@ -99,22 +96,12 @@ contract Togethers is Administration {
     return 0;
   }
 
-  function verifyGroupAvailability(string memory _groupName) public view returns (uint)
-  {
-    if (checkGroupUnicity[msg.sender][returnHash(_groupName)] == 0)
-    {
-      return 1;
-    }
-    return 0;
-  }
-
   function addMember(uint _groupID, address _key) private
   {
     require(mappProfileInGroup[_groupID][msg.sender].owner == true);
     mappProfileInGroup[_groupID][_key].isMember = true;
     mappGroupsForAddress[_key].push(_groupID);
     mappUsersInGroup[_groupID].push(_key);
-    checkGroupUnicity[_key][returnHash(mappGroupIDToGroupName[_groupID])] = _groupID;
   }
 
   function checkProfile(uint groupID, string memory _pseudo) public view returns (address)
@@ -280,7 +267,6 @@ contract Togethers is Administration {
   {
     mappProfileInGroup[_groupID][_publicKey].isMember = false;
     mappProfileInGroup[_groupID][_publicKey].owner = false;
-    checkGroupUnicity[_publicKey][returnHash(getGroup(_groupID))] = 0;
     mappAskForAdd[_publicKey][_groupID] = false;
   }
 
@@ -296,11 +282,6 @@ contract Togethers is Administration {
   function getGroup(uint _num) view public returns (string memory)
   {
     return mappGroupIDToGroupName[mappGroupsForAddress[msg.sender][_num]];
-  }
-
-  function getGroupUnicity(string memory _name, address _key) view public returns (uint)
-  {
-    return checkGroupUnicity[_key][returnHash(_name)];
   }
 
   function getAddressFromName(string memory _name) view public returns (address)
