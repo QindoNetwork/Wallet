@@ -9,37 +9,23 @@ export class Crypto extends React.Component {
 
     render() {
 
-      const gasParam = this.props.navigation.getParam('gasParam')
-      const togethers = this.props.navigation.getParam('togethers')
-      const max = this.props.navigation.getParam('max')
-      const address = this.props.navigation.getParam('address')
-      const erc20s = this.props.navigation.getParam('erc20s')
+      const { togethers, navigation, ERC20s, gasParam, address, balance } = this.props
 
       return(
 
         <View style={styles.container}>
-          <View style={styles.body}>
-        <FlatList
-            data={erc20s}
-            renderItem={({ item }) => (
+            <FlatList
+              data={ERC20s}
+              renderItem={({ item }) => (
               <TouchableOpacity
-              style={styles.content}
-              activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('SendCoins',
-              {
-                item: item,
-                gasParam: this.props.gasParam,
-                address: this.props.address,
-                ERC20s: this.props.ERC20s,
-                togethers: this.props.togethers,
-                max: this.props.max,
-              })
-              }>
-                <CryptoCard instance={item.instance} address={address}/>
+                style={styles.content}
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate('SendCoins', {togethers, navigation, ERC20s, gasParam, address})}>
+                  <CryptoCard crypto={item} address={address}/>
               </TouchableOpacity>
             )}
         />
-        </View>
+        <Text>{address}</Text>
       </View>
 
       )
@@ -55,6 +41,19 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: colors.defaultBackground,
         padding: measures.defaultPadding
+    },
+    leftColumn: {
+        width: 40,
+        alignItems: 'flex-start',
+        justifyContent: 'center'
+    },
+    middleColumn: {
+        flex: 2
+    },
+    rightColumn: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        flexDirection: 'row'
     },
     content: {
         marginTop: measures.defaultMargin

@@ -73,13 +73,22 @@ export class WalletsOverview extends React.Component {
           const erc20sLength = parseInt(await togethers.getSize(),10)
           const max = parseInt(await togethers.MAX(),10)
 
+          erc20s.push({ name: "ethers",
+                        symbol: "ETH",
+                        decimals: 0,
+                        instance: null,
+                        enable: 1,
+                        key: 0})
+
           for(var i = 1 ; i < erc20sLength ; i++)
           {
             var tokenAddress = await togethers.getTokenAddress(i)
             erc20s.push({ name: await togethers.getTokenName(i),
                           symbol: await togethers.getTokenSymbol(i),
                           decimals: parseInt(await togethers.getTokenDecimal(i),10),
-                          instance: new ethers.Contract(tokenAddress, erc20ABI, connection)})
+                          instance: new ethers.Contract(tokenAddress, erc20ABI, connection),
+                          enable:  parseInt(await togethers.checkEnableCrypto(i),10),
+                          key: i})
           }
 
           for(var j = 0 ; j <= 10 ; j++)

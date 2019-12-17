@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
@@ -10,23 +10,27 @@ export default class CryptoCard extends React.Component {
   state = {loading: 0, balance: 0 };
 
   async componentDidMount() {
-    const { instance, address } = this.props
-    let groups = []
     try {
-     this.setState({ length:  parseInt ( await instance.balanceOf(address),10),
-                     loading: 1})
+      if (this.props.crypto.key !== 0){
+        this.setState({ balance:  parseInt ( await this.props.instance.balanceOf(this.props.address),10) })
+      }
+      else {
+        this.setState({ balance: this.props.balance })
+      }
+      this.setState({ loading: 1})
     } catch (e) {
     GeneralActions.notify(e.message, 'long');
     }
   }
 
     render() {
-        const { item } = this.props;
+
+      const { name, symbol } = this.props
 
         if (this.state.loading === 0){
 
           return(
-            
+
               <ActivityIndicator size="large"/>
         )
 
@@ -38,13 +42,12 @@ export default class CryptoCard extends React.Component {
                         <Icon name='wallet' size='large' type='ent' />
                     </View>
                     <View style={styles.middleColumn}>
-                        <Text style={styles.title}>{item.name}</Text>
-                        <Text style={styles.description}>{this.state.balance}</Text>
+                        <Text style={styles.title}>{this.props.crypto.symbol}</Text>
+                        <Text style={styles.description}>{this.props.crypto.name}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>nbDemands</Text>
-                            <Text style={styles.fiatBalance}>active</Text>
+                            <Text style={styles.balance}>{this.state.balance}</Text>
                         </View>
                     </View>
                 </View>

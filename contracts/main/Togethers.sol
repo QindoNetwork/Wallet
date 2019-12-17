@@ -134,7 +134,7 @@ contract Togethers is Administration {
     mappSpaceInfo[ID].language = mappAddressToUser[msg.sender].language;
     mappSpaceInfo[ID].description = _description;
     nbDemands += 1;
-    emit newDemand(ID,msg.sender);
+    emit newDemand(ID);
     ID += 1;
     if (activeMint == true)
     {
@@ -163,10 +163,10 @@ contract Togethers is Administration {
     mappStatsPeerToPeer[msg.sender][_publicKey][_crypto].add(amount);
     mappGiven[groupID][_publicKey][_crypto].add(amount);
     box.add(feesPay);
-    emit payDemand(ID,msg.sender);
+    emit payDemand(mappProfileInGroup[groupID][_publicKey].DemandID);
   }
 
-  function withdrawFunds(uint groupID) public
+  function withdrawFunds(uint groupID) public returns (uint)
   {
     require(mappProfileInGroup[groupID][msg.sender].open == true);
     mappProfileInGroup[groupID][msg.sender].open = false;
@@ -187,8 +187,9 @@ contract Togethers is Administration {
       }
       bonus = getBonus(groupID);
     }
-    emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID,msg.sender,bonus);
+    emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID);
     nbDemands -= 1;
+    return bonus;
   }
 
   function getBonus(uint groupID) private returns (uint)

@@ -16,11 +16,11 @@ contract Administration is Ownable {
   uint public feesPay;
   bool public activeMint;
 
-  event newDemand(uint indexed ID, address indexed from);
-  event payDemand(uint indexed ID, address indexed from);
-  event endDemand(uint indexed ID, address indexed from, uint bonus);
+  event newDemand(uint indexed ID);
+  event payDemand(uint indexed ID);
+  event endDemand(uint indexed ID);
 
-  mapping (uint => bool) public disableCrypto;
+  mapping (uint => bool) internal disableCrypto;
   mapping (uint => mapping (address => mapping (uint => uint))) public mappGiven;
   mapping (uint => spaceInfo) internal mappSpaceInfo;
 
@@ -96,6 +96,18 @@ contract Administration is Ownable {
     else
     {
       disableCrypto[_index] = false;
+    }
+  }
+
+  function checkEnableCrypto(uint _index) public returns (uint)
+  {
+    if (disableCrypto[_index] == false)
+    {
+      return 1;
+    }
+    else
+    {
+      return 0;
     }
   }
 
