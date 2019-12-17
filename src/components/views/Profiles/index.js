@@ -125,6 +125,9 @@ const styles = StyleSheet.create({
         backgroundColor: colors.defaultBackground,
         padding: measures.defaultPadding
     },
+    content: {
+        marginTop: measures.defaultMargin
+    },
     body: {
         flex: 1,
         alignItems: 'center',

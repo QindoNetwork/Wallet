@@ -57,7 +57,7 @@ export class WalletsOverview extends React.Component {
 
     async onPressWallet(wallet) {
 
-        //if (this.loading) return;
+        if (this.loading) return;
 
         this.setState({ loading: 1 })
 
@@ -73,7 +73,7 @@ export class WalletsOverview extends React.Component {
           const erc20sLength = parseInt(await togethers.getSize(),10)
           const max = parseInt(await togethers.MAX(),10)
 
-          for(var i = 0 ; i < erc20sLength ; i++)
+          for(var i = 1 ; i < erc20sLength ; i++)
           {
             var tokenAddress = await togethers.getTokenAddress(i)
             erc20s.push({ name: await togethers.getTokenName(i),

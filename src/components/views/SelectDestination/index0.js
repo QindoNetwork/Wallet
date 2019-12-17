@@ -5,11 +5,11 @@ import { colors, measures } from '@common/styles';
 import Recents from './Recents';
 
 export class SelectDestination extends React.Component {
-
+    
     static navigationOptions = { title: 'Select destination' };
 
     state = { address: '' };
-
+    
     onPressContinue() {
         const { amount } = this.props.navigation.state.params;
         const { address } = this.state;

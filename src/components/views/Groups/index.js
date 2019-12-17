@@ -121,6 +121,9 @@ const styles = StyleSheet.create({
         marginVertical: measures.defaultMargin,
         marginHorizontal: 32
     },
+    content: {
+        marginTop: measures.defaultMargin
+    },
     buttonsContainer: {
         width: '100%',
         justifyContent: 'space-between',

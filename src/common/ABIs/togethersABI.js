@@ -753,27 +753,6 @@ export const TogethersABI = [
     "constant": true,
     "inputs": [
       {
-        "internalType": "string",
-        "name": "_groupName",
-        "type": "string"
-      }
-    ],
-    "name": "verifyGroupAvailability",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
         "internalType": "uint256",
         "name": "groupID",
         "type": "uint256"
@@ -970,32 +949,6 @@ export const TogethersABI = [
         "internalType": "string",
         "name": "_name",
         "type": "string"
-      },
-      {
-        "internalType": "address",
-        "name": "_key",
-        "type": "address"
-      }
-    ],
-    "name": "getGroupUnicity",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_name",
-        "type": "string"
       }
     ],
     "name": "getAddressFromName",
@@ -1101,13 +1054,40 @@ export const TogethersABI = [
   },
   {
     "constant": true,
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
     "name": "getUsersLanguage",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "getUsersPseudo",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
     "payable": false,

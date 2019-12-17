@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import { Icon } from '@components/widgets';
@@ -11,6 +11,16 @@ import { Contracts as contractsAddress } from '@common/constants';
 @inject('prices')
 @observer
 export default class TransactionCard extends React.Component {
+
+  state = { pseudoFrom: null, pseudoTo: null };
+
+  async componentDidMount() {
+
+    this.setState({
+                      pseudoFrom : await this.props.togethers.getUsersPseudo(this.props.transaction.from.toLowerCase()),
+                      pseudoTo : await this.props.togethers.getUsersPseudo(this.props.transaction.to.toLowerCase()),
+                    })
+  }
 
     get isReceiving() {
         return this.to.toLowerCase() === this.props.walletAddress.toLowerCase();
@@ -27,6 +37,9 @@ export default class TransactionCard extends React.Component {
       if (this.props.transaction.from.toLowerCase() === contractsAddress.togethersAddress.toLowerCase()){
         return 'Togethers';
       }
+      if ( this.state.pseudoFrom ){
+        return this.state.pseudoFrom;
+      }
       else return this.props.transaction.from;
     }
 
@@ -36,6 +49,9 @@ export default class TransactionCard extends React.Component {
       }
       if (this.props.transaction.to.toLowerCase() === contractsAddress.togethersAddress.toLowerCase()){
         return 'Togethers';
+      }
+      if ( this.state.pseudoTo  ){
+        return this.state.pseudoTo;
       }
       else return this.props.transaction.to;
     }

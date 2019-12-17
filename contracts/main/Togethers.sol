@@ -313,14 +313,14 @@ contract Togethers is Administration {
     return mappUsersInGroup[_group].length;
   }
 
-  function getUsersLanguage() view public returns (uint)
+  function getUsersLanguage(address _user) view public returns (uint)
   {
-    return mappAddressToUser[msg.sender].language;
+    return mappAddressToUser[_user].language;
   }
 
-  function getUsersPseudo() view public returns (string memory)
+  function getUsersPseudo(address _user) view public returns (string memory)
   {
-    return mappAddressToUser[msg.sender].pseudo;
+    return mappAddressToUser[_user].pseudo;
   }
 
   function isOwner(uint groupID, address _user) view public returns (uint)
