@@ -185,14 +185,14 @@ contract Togethers is Administration {
           mappGiven[groupID][msg.sender][i] = 0;
         }
       }
-      bonus = getBonus(groupID);
+      bonus = getBonus();
     }
     emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID);
     nbDemands -= 1;
     return bonus;
   }
 
-  function getBonus(uint groupID) private returns (uint)
+  function getBonus() private returns (uint)
   {
     uint bonus;
     if (block.number > mappAddressToUser[msg.sender].blockNumber)

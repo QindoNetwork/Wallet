@@ -57,6 +57,9 @@ contract Control is Ownable {
     mappFunctionToGasParameters[10].functionName = "createPassword";
     mappFunctionToGasParameters[10].gasPrice = 5;
     mappFunctionToGasParameters[10].gasLimit = 45000;
+    mappFunctionToGasParameters[11].functionName = "payForFunds";
+    mappFunctionToGasParameters[11].gasPrice = 5;
+    mappFunctionToGasParameters[11].gasLimit = 1500000;
     owner = msg.sender;
     //TGTSToken = External3(0xDDeB78A777c424F74B95c2AD29ec7B9a20802116);
     TGTSToken = External3(_tgts);

@@ -53,10 +53,7 @@ export class Groups extends React.Component {
 
     render() {
 
-      const gasParam = this.props.navigation.getParam('gasParam')
-      const togethers = this.props.navigation.getParam('togethers')
-      const max = this.props.navigation.getParam('max')
-      const address = this.props.navigation.getParam('address')
+      const { gasParam, togethers, max, address } = this.props
 
       if (this.state.loading === 0){
 

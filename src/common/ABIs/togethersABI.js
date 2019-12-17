@@ -329,24 +329,24 @@ export const TogethersABI = [
     "type": "function"
   },
   {
-    "constant": true,
+    "constant": false,
     "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_index",
+        "type": "uint256"
+      }
+    ],
+    "name": "checkEnableCrypto",
+    "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
     ],
-    "name": "disableCrypto",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
     "payable": false,
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -563,12 +563,6 @@ export const TogethersABI = [
         "internalType": "uint256",
         "name": "ID",
         "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
       }
     ],
     "name": "newDemand",
@@ -582,12 +576,6 @@ export const TogethersABI = [
         "internalType": "uint256",
         "name": "ID",
         "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
       }
     ],
     "name": "payDemand",
@@ -600,18 +588,6 @@ export const TogethersABI = [
         "indexed": true,
         "internalType": "uint256",
         "name": "ID",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "bonus",
         "type": "uint256"
       }
     ],
@@ -855,7 +831,13 @@ export const TogethersABI = [
       }
     ],
     "name": "withdrawFunds",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"

@@ -72,6 +72,8 @@ export class WalletsOverview extends React.Component {
           const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
           const erc20sLength = parseInt(await togethers.getSize(),10)
           const max = parseInt(await togethers.MAX(),10)
+          const feesPay = parseInt(await togethers.feesPay(),10)
+          const feesAsk = parseInt(await togethers.feesAsk(),10)
 
           erc20s.push({ name: "ethers",
                         symbol: "ETH",
@@ -80,18 +82,20 @@ export class WalletsOverview extends React.Component {
                         enable: 1,
                         key: 0})
 
-          for(var i = 1 ; i < erc20sLength ; i++)
+          if(erc20sLength > 1)
           {
-            var tokenAddress = await togethers.getTokenAddress(i)
-            erc20s.push({ name: await togethers.getTokenName(i),
+            for(var i = 1 ; i < erc20sLength ; i++)
+            {
+              var tokenAddress = await togethers.getTokenAddress(i)
+              erc20s.push({ name: await togethers.getTokenName(i),
                           symbol: await togethers.getTokenSymbol(i),
                           decimals: parseInt(await togethers.getTokenDecimal(i),10),
                           instance: new ethers.Contract(tokenAddress, erc20ABI, connection),
                           enable:  parseInt(await togethers.checkEnableCrypto(i),10),
                           key: i})
+            }
           }
-
-          for(var j = 0 ; j <= 10 ; j++)
+          for(var j = 0 ; j <= 11 ; j++)
           {
             gasParam.push({ limit: parseInt(await control.getGasLimit(j),10),
                             price: parseInt(await control.getGasPrice(j),10)
@@ -99,7 +103,7 @@ export class WalletsOverview extends React.Component {
           }
 
           WalletActions.selectWallet(wallet)
-          this.props.navigation.navigate('Login', { gasParam, wallet, control, togethers, erc20s, balance: wallet.balance, address: wallet.address, max });
+          this.props.navigation.navigate('Login', { wallet, feesPay, feesAsk, gasParam, control, togethers, erc20s, address: wallet.address, max });
 
         } catch (e) {
           GeneralActions.notify(e.message, 'long');

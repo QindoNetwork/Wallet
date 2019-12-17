@@ -20,6 +20,7 @@ const navigator = createStackNavigator(
     NewWallet: { screen: Views.NewWallet },
     NewWalletName: { screen: Views.NewWalletName },
     SelectDestination: { screen: Views.SelectDestination },
+    SendCoins: { screen: Views.SendCoins },
     Settings: { screen: Views.Settings },
     ShowPrivateKey: { screen: Views.ShowPrivateKey },
     WalletDetails: { screen: Views.WalletDetails },

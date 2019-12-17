@@ -61,6 +61,7 @@ export class ConfirmTransaction extends React.Component {
         try {
             const txn = await TransactionActions.sendTransaction(wallet.item, this.state.txn);
             this.setState({ txn });
+            //RecentsActions.saveAddressToRecents(txn.to);
         } catch (error) {
             this.setState({ error });
         } finally {
@@ -92,6 +93,10 @@ export class ConfirmTransaction extends React.Component {
                     <View style={styles.textColumn}>
                         <Text style={styles.title}>Amount (ETH)</Text>
                         <Text style={styles.value}>{WalletUtils.formatBalance(txn.value)} ({this.fiatLabel} {this.fiatAmount})</Text>
+                    </View>
+                    <View style={styles.textColumn}>
+                        <Text style={styles.title}>Estimated fee (ETH)</Text>
+                        <Text style={styles.value}>{this.estimatedFee} ({this.fiatLabel} {this.fiatEstimatedFee})</Text>
                     </View>
                 </View>
                 <SuccessMessage txn={txn} />

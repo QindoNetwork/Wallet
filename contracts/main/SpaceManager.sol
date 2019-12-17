@@ -147,7 +147,7 @@ contract SpaceManager is TogethersSpace {
     TGTCToken.transfer(msg.sender,amount);
   }
 
-  function showTGTCsInContract() public returns (uint)
+  function showTGTCsInContract() public view returns (uint)
   {
     return TGTCToken.balanceOf(address(this));
   }

@@ -4,23 +4,29 @@ import { inject, observer } from 'mobx-react';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
+import { Wallet as WalletUtils } from '@common/utils';
+
+@inject('prices', 'wallet')
+@observer
 
 export default class CryptoCard extends React.Component {
 
-  state = {loading: 0, balance: 0 };
+  state = {loading: 0 };
 
   async componentDidMount() {
     try {
       if (this.props.crypto.key !== 0){
         this.setState({ balance:  parseInt ( await this.props.instance.balanceOf(this.props.address),10) })
       }
-      else {
-        this.setState({ balance: this.props.balance })
-      }
       this.setState({ loading: 1})
     } catch (e) {
     GeneralActions.notify(e.message, 'long');
     }
+  }
+
+  get balance() {
+      const { item } = this.props.wallet;
+      return Number(WalletUtils.formatBalance(item.balance));
   }
 
     render() {
@@ -47,7 +53,7 @@ export default class CryptoCard extends React.Component {
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{this.state.balance}</Text>
+                            <Text style={styles.balance}>{this.balance.toFixed(3)}</Text>
                         </View>
                     </View>
                 </View>

@@ -99,7 +99,7 @@ contract Administration is Ownable {
     }
   }
 
-  function checkEnableCrypto(uint _index) public returns (uint)
+  function checkEnableCrypto(uint _index) view public returns (uint)
   {
     if (disableCrypto[_index] == false)
     {
