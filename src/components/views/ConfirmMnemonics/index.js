@@ -29,7 +29,7 @@ export class ConfirmMnemonics extends React.Component {
           } catch (e) {
             GeneralActions.notify(e.message, 'long');
           }
-        } else GeneralActions.notify("uncorect", 'long');
+        } else GeneralActions.notify("uncorrect", 'long');
     }
 
     render() {

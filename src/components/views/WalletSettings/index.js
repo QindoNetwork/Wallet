@@ -95,6 +95,14 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Export private hey</Text>
                     </View>
                 </ListItem>
+                <ListItem onPress={() => this.confirmExportPK()}>
+                    <View style={styles.itemContainer}>
+                        <View style={styles.icon}>
+                            <Icon name='trash' />
+                        </View>
+                        <Text style={styles.itemTitle}>Change user name</Text>
+                    </View>
+                </ListItem>
             </ScrollView>
         );
     }

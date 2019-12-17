@@ -318,6 +318,11 @@ contract Togethers is Administration {
     return mappAddressToUser[msg.sender].language;
   }
 
+  function getUsersPseudo() view public returns (string memory)
+  {
+    return mappAddressToUser[msg.sender].pseudo;
+  }
+
   function isOwner(uint groupID, address _user) view public returns (uint)
   {
     if (mappProfileInGroup[groupID][_user].owner == true)

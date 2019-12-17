@@ -46,7 +46,7 @@ export class Login extends React.Component {
               };
           await this.props.navigation.getParam('togethers').setUser(pseudo, 1, overrides1);
           await this.props.navigation.getParam('control').createPassword(password1, overrides2);
-          this.enter()
+          this.exit()
           GeneralActions.notify('Wait for validation', 'long');
         }
       } catch (e) {
@@ -75,15 +75,16 @@ export class Login extends React.Component {
         </TouchableWithoutFeedback>
     );
 
-    enter() {
+    exit() {
         const wallet = this.props.navigation.getParam('wallet')
         const gasParam = this.props.navigation.getParam('gasParam')
         const address = this.props.navigation.getParam('address')
         const ERC20s = this.props.navigation.getParam('ERC20s')
         const control = this.props.navigation.getParam('control')
         const togethers = this.props.navigation.getParam('togethers')
+        const balance = this.props.navigation.getParam('balance')
         const max = this.props.navigation.getParam('max')
-        this.props.navigation.navigate('WalletDetails', { max, wallet, gasParam, address, ERC20s, control, togethers, replaceRoute: true });
+        this.props.navigation.navigate('WalletDetails', { max, balance, wallet, gasParam, address, ERC20s, control, togethers, replaceRoute: true });
     }
 
     async onPressContinueLogin() {
@@ -97,7 +98,7 @@ export class Login extends React.Component {
             GeneralActions.notify(e.message, 'long');
         }
         if (this.state.result === 1) {
-          this.enter()
+          this.exit()
         }
         else {
           GeneralActions.notify("Password not good", 'long');
@@ -216,7 +217,7 @@ export class Login extends React.Component {
     renderWalletEmpty() {
       return (
         <View style={styles.container}>
-        <Text style={styles.centered}>Low balance, show the code below to receive ethers</Text>
+        <Text style={styles.centered}>Low balance, you need ether to register (at least {EthPrice} ETH), show the code below to receive ethers and enter to the community!</Text>
         <View style={styles.centered}>
             <QRCode size={256} value={this.props.navigation.getParam('address')} />
         </View>
@@ -259,7 +260,7 @@ export class Login extends React.Component {
       if(maxPrice * 1000000000 > balance )
       {
         return (
-                this.renderWalletEmpty()
+                this.renderWalletEmpty(EthPrice)
         );
       }
 

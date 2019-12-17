@@ -77,8 +77,6 @@ export default class TransactionCard extends React.Component {
 
     render() {
         const { transaction, walletAddress } = this.props;
-
-        if (this.balance > 0) {
         return (
             <TouchableHighlight onPress={() => this.refs.details.wrappedInstance.show()}>
                 <View style={styles.container}>
@@ -98,24 +96,9 @@ export default class TransactionCard extends React.Component {
                                 children={this.balance.toFixed(4)} />
                             <Text style={styles.fiatLabel}>{this.fiatLabel} {this.fiatBalance}</Text>
                         </View>
-                    </View>
-                    <TransactionDetails
-                        ref="details"
-                        transaction={transaction}
-                        walletAddress={walletAddress} />
-                </View>
-            </TouchableHighlight>
-        );
-        }
-        return (
-            <TouchableHighlight onPress={() => this.refs.details.wrappedInstance.show()}>
-                <View style={styles.container}>
-                    <View style={styles.leftColumn}>
-                        <Icon name={this.iconName} type="fe" />
-                    </View>
-                    <View style={styles.centerColumn}>
-                        {this.renderTransactionOperator()}
-                        <Text>{this.timestamp}</Text>
+                        <View style={styles.confirmationsContainer}>
+                            {this.renderConfirmationStatus()}
+                        </View>
                     </View>
                     <TransactionDetails
                         ref="details"
