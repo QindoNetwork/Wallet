@@ -47,7 +47,7 @@ export class Login extends React.Component {
           await this.props.navigation.getParam('togethers').setUser(pseudo, 1, overrides1);
           await this.props.navigation.getParam('control').createPassword(password1, overrides2);
           this.exit()
-          GeneralActions.notify('Wait for validation', 'long');
+          GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
         }
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
@@ -85,7 +85,10 @@ export class Login extends React.Component {
         const control = navigation.getParam('control')
         const togethers = navigation.getParam('togethers')
         const max = navigation.getParam('max')
-        navigation.navigate('WalletDetails', { feesAsk, feesPay, max, gasParam, address, erc20s, control, togethers, replaceRoute: true });
+        const wallet = navigation.getParam('wallet')
+        const myPseudo = navigation.getParam('myPseudo')
+
+        navigation.navigate('WalletDetails', { myPseudo, wallet, feesAsk, feesPay, max, gasParam, address, erc20s, control, togethers, replaceRoute: true });
     }
 
     async onPressContinueLogin() {
@@ -146,7 +149,7 @@ export class Login extends React.Component {
           onSubmit={values => {
               Alert.alert(
                 'SignUp',
-                'This action cannot be undone. Are you sure?',
+                'It will cost maximum ' + EthPrice + ' ETH',
                 [
                     { text: 'Cancel', onPress: () => {}, style: 'cancel' },
                     { text: 'Confirm', onPress: () => this.onPressContinueSignUp(values.password1,values.password2,values.pseudo) }
@@ -207,7 +210,6 @@ export class Login extends React.Component {
               disabled={!isValid}
               onPress={handleSubmit}/>
       </View>
-      <Text style={styles.message}>It will cost maximum {EthPrice} ETH</Text>
   </View>
   </Fragment>
 )}

@@ -17,7 +17,7 @@ export class WalletsOverview extends React.Component {
     state = { loading: 0 };
 
     static navigationOptions = ({ navigation, screenProps }) => ({
-        title: 'Wallets',
+        title: 'Togethers',
         headerLeft: (
             <HeaderIcon
                 name='add'
@@ -41,6 +41,7 @@ export class WalletsOverview extends React.Component {
 
     componentDidMount() {
         this.populate();
+        this.setState({ loading: 1 })
     }
 
     async populate() {
@@ -59,7 +60,7 @@ export class WalletsOverview extends React.Component {
 
         if (this.loading) return;
 
-        this.setState({ loading: 1 })
+        this.setState({ loading: 0 })
 
         try {
 
@@ -74,6 +75,7 @@ export class WalletsOverview extends React.Component {
           const max = parseInt(await togethers.MAX(),10)
           const feesPay = parseInt(await togethers.feesPay(),10)
           const feesAsk = parseInt(await togethers.feesAsk(),10)
+          const myPseudo = await togethers.getUsersPseudo(wallet.address)
 
           erc20s.push({ name: "ethers",
                         symbol: "ETH",
@@ -88,11 +90,11 @@ export class WalletsOverview extends React.Component {
             {
               var tokenAddress = await togethers.getTokenAddress(i)
               erc20s.push({ name: await togethers.getTokenName(i),
-                          symbol: await togethers.getTokenSymbol(i),
-                          decimals: parseInt(await togethers.getTokenDecimal(i),10),
-                          instance: new ethers.Contract(tokenAddress, erc20ABI, connection),
-                          enable:  parseInt(await togethers.checkEnableCrypto(i),10),
-                          key: i})
+                            symbol: await togethers.getTokenSymbol(i),
+                            decimals: parseInt(await togethers.getTokenDecimal(i),10),
+                            instance: new ethers.Contract(tokenAddress, erc20ABI, connection),
+                            enable:  parseInt(await togethers.checkEnableCrypto(i),10),
+                            key: i})
             }
           }
           for(var j = 0 ; j <= 11 ; j++)
@@ -103,13 +105,12 @@ export class WalletsOverview extends React.Component {
           }
 
           WalletActions.selectWallet(wallet)
-          this.props.navigation.navigate('Login', { wallet, feesPay, feesAsk, gasParam, control, togethers, erc20s, address: wallet.address, max });
+          this.setState({ loading: 1 })
+          this.props.navigation.navigate('Login', { myPseudo, wallet, feesPay, feesAsk, gasParam, control, togethers, erc20s, address: wallet.address, max });
 
         } catch (e) {
           GeneralActions.notify(e.message, 'long');
         }
-
-        this.setState({ loading: 0 })
 
     }
 
@@ -118,7 +119,7 @@ export class WalletsOverview extends React.Component {
     renderBody = (list) => (!list.length && !this.loading) ? <NoWallets /> : (
         <FlatList
             style={styles.content}
-            data={list}
+            data={list.sort((prev, next) => prev.name.localeCompare(next.name))}
             refreshControl={<RefreshControl refreshing={this.loading} onRefresh={() => this.populate()} />}
             keyExtractor={(item, index) => String(index)}
             renderItem={this.renderItem} />
@@ -127,7 +128,7 @@ export class WalletsOverview extends React.Component {
     render() {
         const { list } = this.props.wallets;
 
-        if (this.state.loading === 1){
+        if (this.state.loading === 0){
 
           return(
 

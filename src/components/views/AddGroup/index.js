@@ -8,7 +8,7 @@ import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, Ac
 
 export class AddGroup extends Component {
 
-  static navigationOptions = { title: "Settings" };
+  static navigationOptions = { title: "Add group" };
 
   render() {
 
@@ -17,7 +17,7 @@ export class AddGroup extends Component {
               <View style={styles.body}>
                 <View style={styles.buttonsContainer}>
                   <Button
-                    children="Create"
+                    children="Create a new group"
                     onPress={() => this.props.navigation.navigate('CreateGroup',
                     {
                       togethers : this.props.navigation.getParam('togethers'),
@@ -26,9 +26,9 @@ export class AddGroup extends Component {
                     })}
                     />
                 </View>
-                <View style={styles.body}>
+                <View style={styles.buttonsContainer}>
                   <Button
-                    children="Ask"
+                    children="Apply for an existing one"
                     onPress={() => this.props.navigation.navigate('AskGroup',
                     {
                       togethers : this.props.navigation.getParam('togethers'),

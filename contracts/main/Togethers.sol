@@ -29,7 +29,7 @@ contract Togethers is Administration {
 
   constructor() public {
     owner = msg.sender;
-    MAX = 100;
+    MAX = 50;
     ID = 2;
   }
 

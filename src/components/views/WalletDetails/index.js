@@ -5,7 +5,7 @@ import { ReceiveCoins, WalletExtract, WalletSettings, Groups, Crypto } from '..'
 export class WalletDetails extends React.Component {
 
     static navigationOptions = ({ navigation }) => ({
-        title: "Togethers"
+        title: navigation.getParam('myPseudo')
     });
 
     tabs = [

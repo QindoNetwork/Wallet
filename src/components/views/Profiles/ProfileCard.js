@@ -1,15 +1,48 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { inject, observer } from 'mobx-react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { Wallet as WalletUtils } from '@common/utils';
-import { Wallets as WalletActions } from '@common/actions';
+import { General as GeneralActions  } from '@common/actions';
 
 export default class ProfilesCard extends React.Component {
 
+  state = {active: 0, owner: 0, loading: 0 };
+
+   async componentDidMount() {
+
+     const { togethers, address, profile, groupID } = this.props
+     try {
+       this.setState({ owner:   parseInt ( await togethers.isOwner(groupID,profile.id),10),
+                       active:  parseInt ( await togethers.isOpen(groupID,profile.id),10),
+                       loading: 1 })
+     } catch (e) {
+     GeneralActions.notify(e.message, 'long');
+     }
+   }
+
     render() {
         const { profile } = this.props;
+        const { active, owner, loading } = this.state
+        var label1 = ''
+        var label2 = ''
+        if ( active === 1) {
+          label2 = "active"
+        }
+        if ( owner === 1) {
+          label1 = "owner"
+        }
+
+        if (loading === 0){
+
+          return(
+
+          <View style={styles.container}>
+            <View style={styles.body}>
+              <ActivityIndicator size="large"/>
+            </View>
+          </View>
+        )}
+
         return (
             <View style={styles.container}>
                     <View style={styles.leftColumn}>
@@ -17,12 +50,11 @@ export default class ProfilesCard extends React.Component {
                     </View>
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{profile.name}</Text>
-                        <Text style={styles.description}>owner</Text>
+                        <Text style={styles.description}>{label1}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>nbDemands</Text>
-                            <Text style={styles.fiatBalance}>active</Text>
+                            <Text style={styles.balance}>{label2}</Text>
                         </View>
                     </View>
                 </View>

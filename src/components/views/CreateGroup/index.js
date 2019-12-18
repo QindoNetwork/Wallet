@@ -2,22 +2,28 @@ import * as yup from 'yup'
 import { Formik } from 'formik'
 import { General as GeneralActions  } from '@common/actions';
 import React, { Component, Fragment } from 'react'
+import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 
 export class CreateGroup extends Component {
 
   static navigationOptions = ({ navigation }) => ({
-      title: 'Add a user'
+      title: 'Create a group'
   });
 
   async submitForm(value) {
     Keyboard.dismiss();
     var togethers = this.props.navigation.getParam('togethers')
     try {
-      // { gasLimit: this.state.gasLimit, gasPrice: this.state.gasPrice }
-      await togethers.createGroup(value)
-        GeneralActions.notify("working", 'long');
+      let overrides = {
+          gasLimit: this.props.navigation.getParam('gasParam')[3].limit,
+          gasPrice: this.props.navigation.getParam('gasParam')[3].price * 1000000000,
+          //nonce: 123,
+          //value: utils.parseEther('1.0'),
+          };
+      await togethers.createGroup(value,overrides)
+      GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
     } catch (e) {
         GeneralActions.notify(e.message, 'long');
     }
@@ -25,20 +31,25 @@ export class CreateGroup extends Component {
 
   render() {
 
+    const maxPrice =  this.props.navigation.getParam('gasParam')[3].limit * this.props.navigation.getParam('gasParam')[3].price
+
+    const EthPrice = maxPrice / 1000000000
+
     return (
         <Formik
           initialValues={{ groupName: '' }}
           onSubmit={values => {
-              Alert.alert(
-                'Confirm',
-                'Create group ' + values.groupName + ' this action will take few minuts you will be notified if success',
+            Alert.alert(
+              'SignUp',
+              'It will cost maximum ' + EthPrice +  ' ETH',
               [
-                {text: 'Cancel', onPress: () => {}, style: 'cancel'},
-                {text: 'OK', onPress: () => this.submitForm(values.groupName)},
-              ]
-            )
-            }
+                  { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                  { text: 'Confirm', onPress: () => this.submitForm(values.groupName) }
+              ],
+              { cancelable: false }
+          );
           }
+        }
           validationSchema={yup.object().shape({
             groupName: yup
               .string()
@@ -56,18 +67,14 @@ export class CreateGroup extends Component {
                   value={values.groupName}
                   onChangeText={handleChange('groupName')}
                   onBlur={() => setFieldTouched('groupName')}
-                  placeholder="New Group"
+                  placeholder="Group name"
                   />
-            </View>
             <View style={styles.buttonsContainer}>
-            <TouchableOpacity
-                style={[styles.buttonsContainer, !isValid && styles.buttonDisabled]}
-                disabled={!isValid}
-                color="white"
-                accessibilityLabel="CREATE NEW GROUP"
-                onPress={handleSubmit}>
-                <Text style={styles.label}>CREATE NEW GROUP</Text>
-            </TouchableOpacity>
+                <Button
+                    children="CREATE A NEW GROUP"
+                    disabled={!isValid}
+                    onPress={handleSubmit}/>
+            </View>
             </View>
             </View>
             </Fragment>

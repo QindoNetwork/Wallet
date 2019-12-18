@@ -1,49 +1,59 @@
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import { General as GeneralActions  } from '@common/actions';
+import { Button } from '@components/widgets';
 import React, { Component, Fragment } from 'react'
 import { colors, measures } from '@common/styles';
 import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 
 export class AddProfile extends Component {
 
-  static navigationOptions = { title: "Settings" };
+  static navigationOptions = { title: "Add a friend" };
 
-  submitForm = (value1,value2) => {
+   async submitForm(value) {
     Keyboard.dismiss();
     let togethers = this.props.navigation.getParam('togethers')
+    const groupID = this.props.navigation.getParam('groupID')
     try {
-      // { gasLimit: this.state.gasLimit, gasPrice: this.state.gasPrice }
-      togethers.createProfile(value1,value2).then(function() {
-        GeneralActions.notify("working", 'long');
-        })
+      let overrides = {
+          gasLimit: this.props.navigation.getParam('gasParam')[4].limit,
+          gasPrice: this.props.navigation.getParam('gasParam')[4].price * 1000000000,
+          //nonce: 123,
+          //value: utils.parseEther('1.0'),
+          };
+          await togethers.createProfile(groupID,value,overrides)
+          GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
     } catch (e) {
-        GeneralActions.notify(e.message, 'long');
+        GeneralActions.notify("You cannot add this profile or did not ask to apply", 'long');
     }
   }
 
   render() {
 
+    const maxPrice =  this.props.navigation.getParam('gasParam')[4].limit * this.props.navigation.getParam('gasParam')[4].price
+
+    const EthPrice = maxPrice / 1000000000
+
     return (
         <Formik
           initialValues={{ pseudo: '' }}
           onSubmit={values => {
-              Alert.alert(
-                'Confirm',
-                'Create group ' + values.groupName + ' this action will take few minuts you will be notified if success',
+            Alert.alert(
+              'SignUp',
+              'It will cost maximum ' + EthPrice + ' ETH',
               [
-                {text: 'Cancel', onPress: () => {}, style: 'cancel'},
-                {text: 'OK', onPress: () => this.submitForm(values.pseudo)},
-              ]
-            )
-            }
+                  { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                  { text: 'Confirm', onPress: () => this.submitForm(values.pseudo) }
+              ],
+              { cancelable: false }
+          );
           }
+        }
           validationSchema={yup.object().shape({
-            groupName: yup
-              .number()
-              .required(),
             pseudo: yup
               .string()
+              .min(2)
+              .max(30)
               .required(),
           })}
         >
@@ -56,20 +66,16 @@ export class AddProfile extends Component {
                   value={values.pseudo}
                   onChangeText={handleChange('pseudo')}
                   onBlur={() => setFieldTouched('pseudo')}
-                  placeholder="New Group"
+                  placeholder="pseudonyme"
                   />
-            </View>
-            <View style={styles.buttonsContainer}>
-            <TouchableOpacity
-                style={[styles.buttonsContainer, !isValid && styles.buttonDisabled]}
-                disabled={!isValid}
-                color="white"
-                accessibilityLabel="CREATE NEW GROUP"
-                onPress={handleSubmit}>
-                <Text style={styles.label}>CREATE NEW GROUP</Text>
-            </TouchableOpacity>
-            </View>
-            </View>
+                  <View style={styles.buttonsContainer}>
+                      <Button
+                          children="ADD FRIEND"
+                          disabled={!isValid}
+                          onPress={handleSubmit}/>
+                  </View>
+                  </View>
+                  </View>
             </Fragment>
           )}
         </Formik>

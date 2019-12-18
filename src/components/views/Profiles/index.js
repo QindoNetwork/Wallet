@@ -1,28 +1,44 @@
 import React from 'react';
-import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
+import { TouchableOpacity, RefreshControl,FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Button } from '@components/widgets';
 import ProfileCard from './ProfileCard';
 import { HeaderIcon } from '@components/widgets';
+import { inject, observer } from 'mobx-react';
+
+@inject('wallet')
+@observer
 
 export class Profiles extends React.Component {
 
-  static navigationOptions = {
-        title: 'Profiles',
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('item').name,
         headerRight: (
             <HeaderIcon
-                name='myDemand'
+                name='add'
                 size='medium'
                 type='md'
                 color={colors.white}
-                onPress={() => this.props.navigation.navigate('myProfile')} />
+                onPress={() => navigation.navigate('AddProfile',
+                {
+                  groupID : navigation.getParam('item').id,
+                  togethers : navigation.getParam('togethers'),
+                  address : navigation.getParam('address'),
+                  ERC20s : navigation.getParam('ERC20s'),
+                  gasParam : navigation.getParam('gasParam'),
+                })
+              } />
         )
-    }
+    })
 
       state = { loading: 0, profiles: [], length: 0, owner: 0 };
 
-    async componentDidMount() {
+      componentDidMount() {
+        this.update()
+      }
+
+    async update() {
       const togethers = this.props.navigation.getParam('togethers')
       const address = this.props.navigation.getParam('address')
       const item = this.props.navigation.getParam('item')
@@ -46,24 +62,23 @@ export class Profiles extends React.Component {
     }
 
     renderBody(){
+      const groupID = this.props.navigation.getParam('item').id
+      const item = item
+      const togethers = this.props.navigation.getParam('togethers')
+      const address = this.props.navigation.getParam('address')
+      const ERC20s = this.props.navigation.getParam('ERC20s')
+      const gasParam = this.props.navigation.getParam('gasParam')
       return      (
         <FlatList
             data={this.state.profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
+            refreshControl={<RefreshControl refreshing={this.props.wallet.loading} onRefresh={() => this.update()} />}
             renderItem={({ item }) => (
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('ProfileData',
-              {
-                groupID : this.props.navigation.getParam('item').id,
-                item: item,
-                togethers : this.props.navigation.getParam('togethers'),
-                address : this.props.navigation.getParam('address'),
-                ERC20s : this.props.navigation.getParam('ERC20s'),
-                gasParam : this.props.navigation.getParam('gasParam'),
-              })
+              onPress={() => this.props.navigation.navigate('ProfileData',{ groupID, item, togethers, address, ERC20s, gasParam })
               }>
-                <ProfileCard profile={item}/>
+                <ProfileCard profile={item} groupID={groupID} togethers={togethers}/>
               </TouchableOpacity>
             )}
         />)
@@ -105,11 +120,17 @@ export class Profiles extends React.Component {
         <View style={styles.container}>
             {this.renderBody()}
             <View style={styles.buttonsContainer}>
-              <View style={styles.body}>
                 <Button
                   children="Next"
-                  onPress={() => this.props.navigation.navigate('AddProfile', {togethers})}/>
-              </View>
+                  onPress={() => this.props.navigation.navigate('AddProfile',
+                  {
+                    groupID : this.props.navigation.getParam('item').id,
+                    togethers : this.props.navigation.getParam('togethers'),
+                    address : this.props.navigation.getParam('address'),
+                    ERC20s : this.props.navigation.getParam('ERC20s'),
+                    gasParam : this.props.navigation.getParam('gasParam'),
+                  })
+                }/>
             </View>
         </View>
       )

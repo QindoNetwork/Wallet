@@ -1,19 +1,27 @@
 import React from 'react';
-import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
+import { TouchableOpacity, RefreshControl, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
+import { inject, observer } from 'mobx-react';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import GroupCard from './GroupCard';
 
+@inject('wallet')
+@observer
+
 export class Groups extends React.Component {
 
-    state = {loading: 0, groups: [], length: 0 };
+    state = {loading: 0, groups: [], length: 0, myPseudo: '' };
 
-    async componentDidMount() {
+   componentDidMount() {
+      this.update()
+    }
+
+    async update() {
       const { togethers, address } = this.props
       let groups = []
       try {
-        this.setState({ length:  parseInt ( await togethers.getGroupsLength(address),10) })
+        this.setState({ length:  parseInt ( await togethers.getGroupsLength(address),10)})
         if ( this.state.length !== 0 ) {
           for ( var i = 0; i < this.state.length; i++ ) {
             groups.push({   id:  parseInt (await togethers.getGroupID(i),10),
@@ -27,27 +35,22 @@ export class Groups extends React.Component {
     }
 
     renderBody(){
+      const { address, togethers, ERC20s, gasParam, max  } = this.props;
       return      (
-        <FlatList
+        <View style={styles.container}>
+          <FlatList
             data={this.state.groups.sort((prev, next) => prev.name.localeCompare(next.name))}
+            refreshControl={<RefreshControl refreshing={this.props.wallet.loading} onRefresh={() => this.update()} />}
             renderItem={({ item }) => (
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('Profiles',
-              {
-                item: item,
-                gasParam: this.props.gasParam,
-                address: this.props.address,
-                ERC20s: this.props.ERC20s,
-                togethers: this.props.togethers,
-                max: this.props.max,
-              })
-              }>
-                <GroupCard group={item}/>
+              onPress={() => this.props.navigation.navigate('Profiles',{item, gasParam, address, ERC20s, togethers, max})}>
+                <GroupCard group={item} address={address} togethers={togethers} />
               </TouchableOpacity>
             )}
-        />)
+        />
+      </View>)
 
         }
 
@@ -85,12 +88,10 @@ export class Groups extends React.Component {
         <View style={styles.container}>
             {this.renderBody()}
             <View style={styles.buttonsContainer}>
-              <View style={styles.body}>
                 <Button
-                  children="Next"
+                  children="Add group"
                   onPress={() => this.props.navigation.navigate('AddGroup', {togethers, address, gasParam })}/>
               </View>
-            </View>
         </View>
       )
 
