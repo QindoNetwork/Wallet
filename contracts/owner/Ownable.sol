@@ -3,6 +3,7 @@ pragma solidity ^0.5.0;
 interface External1 {
   function ID() external returns (uint);
   function addInbox() payable external;
+  function spacePrice() external returns (uint);
 }
 
 interface External2 {
@@ -11,6 +12,7 @@ interface External2 {
   function burnExternal(address account, uint256 value) external returns (bool);
   function transferFrom(address from, address to, uint256 value) external returns (bool);
   function transfer(address to, uint256 value) external returns (bool);
+  function totalSupply() external view returns (uint256) ;
 }
 
 interface External3 {

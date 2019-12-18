@@ -4,7 +4,6 @@ import "./Administration.sol";
 
 contract Togethers is Administration {
 
-  mapping (address => mapping (address => mapping (uint => uint))) public mappStatsPeerToPeer;
   mapping (address => user) private mappAddressToUser;
   mapping (uint => string) private mappGroupIDToGroupName;
   mapping (uint => mapping (address => profile)) private mappProfileInGroup;
@@ -136,9 +135,11 @@ contract Togethers is Administration {
     nbDemands += 1;
     emit newDemand(ID);
     ID += 1;
-    if (activeMint == true)
+    uint quota = spacePrice.mul(nbDemands);
+    quota = quota.mul(1000);
+    if (totalSupply() < quota)
     {
-      External2(getTokenAddress(1)).mintExternal(owner,tgtcAmount);
+      External2(getTokenAddress(1)).mintExternal(owner,quota.sub(totalSupply()));
     }
   }
 
@@ -162,7 +163,10 @@ contract Togethers is Administration {
     }
     mappStatsPeerToPeer[msg.sender][_publicKey][_crypto].add(amount);
     mappGiven[groupID][_publicKey][_crypto].add(amount);
-    box.add(feesPay);
+    if (feesPay > 0)
+    {
+      box.add(feesPay);
+    }
     emit payDemand(mappProfileInGroup[groupID][_publicKey].DemandID);
   }
 

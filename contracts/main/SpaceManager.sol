@@ -23,7 +23,6 @@ contract SpaceManager is TogethersSpace {
   External1 public MainContract;
 
   uint public MaxTokenCount;
-  uint constant public spacePrice = 10000000000000000;
   uint public TGTCPrice;
 
   address spaceOperator;
@@ -184,7 +183,7 @@ contract SpaceManager is TogethersSpace {
     }
     if (k > 0)
     {
-      TGTCToken.burnExternal(msg.sender,spacePrice.mul(k));
+      TGTCToken.burnExternal(msg.sender,MainContract.spacePrice().mul(k));
     }
   }
 

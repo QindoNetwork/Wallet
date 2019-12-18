@@ -142,22 +142,11 @@ contract TogethersSpace is Context, ERC165, Ownable{
      */
     function transferFrom(address from, address to, uint256 tokenId) public {
         //solhint-disable-next-line max-line-length
-        require(tokenId != powerToken1);
-        require(tokenId != powerToken2);
         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: transfer caller is not owner nor approved");
 
         _transferFrom(from, to, tokenId);
     }
 
-    function transferPowerToken1(address to) public onlyOwner {
-        require(_isApprovedOrOwner(_msgSender(), powerToken1), "ERC721: transfer caller is not owner nor approved");
-        _transferFrom(msg.sender, to, powerToken1);
-    }
-
-    function transferPowerToken2(address to) public onlyOwner {
-        require(_isApprovedOrOwner(_msgSender(), powerToken2), "ERC721: transfer caller is not owner nor approved");
-        _transferFrom(msg.sender, to, powerToken2);
-    }
 
     /**
      * @dev Returns whether the specified token exists.

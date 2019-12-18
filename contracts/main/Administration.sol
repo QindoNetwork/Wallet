@@ -11,18 +11,18 @@ contract Administration is Ownable {
   uint public MAX;
   uint public groupNumber;
   uint public nbDemands;
-  uint constant public tgtcAmount = 1000000000000000000;
   uint public feesAsk;
   uint public feesPay;
-  bool public activeMint;
+  uint constant spacePrice = 1000000000000000000;
 
   event newDemand(uint indexed ID);
   event payDemand(uint indexed ID);
   event endDemand(uint indexed ID);
 
   mapping (uint => bool) internal disableCrypto;
-  mapping (uint => mapping (address => mapping (uint => uint))) public mappGiven;
+  mapping (uint => mapping (address => mapping (uint => uint))) internal mappGiven;
   mapping (uint => spaceInfo) internal mappSpaceInfo;
+  mapping (address => mapping (address => mapping (uint => uint))) internal mappStatsPeerToPeer;
 
   Token[] list;
 
@@ -144,22 +144,20 @@ contract Administration is Ownable {
     return mappSpaceInfo[id].language;
   }
 
+  function getCryptoGiven(uint groupID, address to, uint crypto) view public returns (uint)
+  {
+    return mappGiven[groupID][to][crypto];
+  }
+
+  function getStats(address from, address to, uint crypto) view public returns (uint)
+  {
+    return mappStatsPeerToPeer[from][to][crypto];
+  }
+
   function modifyFees(uint _amount1, uint _amount2) public onlyOwner
   {
     feesPay = _amount1;
     feesAsk = _amount2;
-  }
-
-  function mintTGTC() public onlyOwner
-  {
-    if (activeMint == false)
-    {
-      activeMint = true;
-    }
-    else
-    {
-      activeMint = false;
-    }
   }
 
 }
