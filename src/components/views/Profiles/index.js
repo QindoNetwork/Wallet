@@ -16,9 +16,8 @@ export class Profiles extends React.Component {
         title: navigation.getParam('item').name,
         headerRight: (
             <HeaderIcon
-                name='add'
+                name='person-add'
                 size='medium'
-                type='md'
                 color={colors.white}
                 onPress={() => navigation.navigate('AddProfile',
                 {

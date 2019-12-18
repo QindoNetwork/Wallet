@@ -46,7 +46,7 @@ export default class ProfilesCard extends React.Component {
         return (
             <View style={styles.container}>
                     <View style={styles.leftColumn}>
-                        <Icon name='wallet' size='large' type='ent' />
+                        <Icon name='person' size='large'/>
                     </View>
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{profile.name}</Text>

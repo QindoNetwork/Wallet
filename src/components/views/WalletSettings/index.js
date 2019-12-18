@@ -66,7 +66,7 @@ export class WalletSettings extends React.Component {
                 <ListItem onPress={() => this.props.navigation.navigate('WalletsOverview', { replaceRoute: true })}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
-                            <Icon name='trash' />
+                            <Icon name='walk' size='large' type='ent' />
                         </View>
                         <Text style={styles.itemTitle}>Change wallet</Text>
                     </View>
@@ -74,7 +74,7 @@ export class WalletSettings extends React.Component {
                 <ListItem onPress={() => this.confirmRemoveWallet()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
-                            <Icon name='trash' />
+                            <Icon name='finger-print' />
                         </View>
                         <Text style={styles.itemTitle}>Change password</Text>
                     </View>
@@ -82,15 +82,23 @@ export class WalletSettings extends React.Component {
                 <ListItem onPress={() => this.confirmRemoveWallet()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
-                            <Icon name='trash' />
+                            <Icon name='logo-snapchat' />
                         </View>
-                        <Text style={styles.itemTitle}>Change personal data</Text>
+                        <Text style={styles.itemTitle}>Change snapshat</Text>
+                    </View>
+                </ListItem>
+                <ListItem onPress={() => this.confirmRemoveWallet()}>
+                    <View style={styles.itemContainer}>
+                        <View style={styles.icon}>
+                            <Icon name='reverse-camera' />
+                        </View>
+                        <Text style={styles.itemTitle}>change personal image</Text>
                     </View>
                 </ListItem>
                 <ListItem onPress={() => this.confirmExportPK()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
-                            <Icon name='trash' />
+                            <Icon name='lock' />
                         </View>
                         <Text style={styles.itemTitle}>Export private hey</Text>
                     </View>
@@ -98,7 +106,7 @@ export class WalletSettings extends React.Component {
                 <ListItem onPress={() => this.confirmExportPK()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
-                            <Icon name='trash' />
+                            <Icon name='shirt' />
                         </View>
                         <Text style={styles.itemTitle}>Change user name</Text>
                     </View>
