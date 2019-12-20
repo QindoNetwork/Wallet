@@ -43,15 +43,6 @@ contract Togethers is Administration {
     mappAskForAdd[msg.sender][_groupID] = true;
   }
 
-  function isAsked(uint _groupID) public view returns (uint)
-  {
-    if (mappAskForAdd[msg.sender][_groupID] == true)
-    {
-      return 1;
-    }
-    return 0;
-  }
-
   function transferGroupOwnership(uint _groupID, address newOwner) public
   {
     require(mappProfileInGroup[_groupID][msg.sender].owner == true);
@@ -63,6 +54,7 @@ contract Togethers is Administration {
   function setUser(string memory _pseudo, uint _language) public
   {
     uint currentID = returnHash(_pseudo);
+    require(returnHash(_pseudo) != returnHash("Togethers"));
     require(checkNameUnicity[currentID] == address(0));
     require(_language != 0);
     if (mappAddressToUser[msg.sender].language != 0)
@@ -103,23 +95,19 @@ contract Togethers is Administration {
     mappUsersInGroup[_groupID].push(_key);
   }
 
-  function checkProfile(uint groupID, string memory _pseudo) public view returns (address)
+  function createProfile(uint groupID, string memory _pseudo) public
   {
     uint currentID = returnHash(_pseudo);
     address _publicKey = checkNameUnicity[currentID];
     require(mappProfileInGroup[groupID][_publicKey].isMember == false);
     require(mappAskForAdd[_publicKey][groupID] == true);
     require(getGroupsLength(_publicKey) < MAX && getGroupsLength(msg.sender) < MAX && getUsersLength(groupID) < MAX);
-    return _publicKey;
-  }
-
-  function createProfile(uint groupID, string memory _pseudo) public
-  {
-    addMember(groupID,checkProfile(groupID,_pseudo));
+    addMember(groupID,_publicKey);
   }
 
   function askForFunds(uint groupID, string memory _description) public payable
   {
+    require(stop == false);
     require(msg.value == feesAsk);
     require(mappProfileInGroup[groupID][msg.sender].open == false);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
@@ -137,9 +125,10 @@ contract Togethers is Administration {
     ID += 1;
     uint quota = spacePrice.mul(nbDemands);
     quota = quota.mul(1000);
-    if (totalSupply() < quota)
+    uint totalSupply = External2(getTokenAddress(1)).totalSupply();
+    if (totalSupply < quota)
     {
-      External2(getTokenAddress(1)).mintExternal(owner,quota.sub(totalSupply()));
+      External2(getTokenAddress(1)).mintExternal(owner,quota.sub(totalSupply));
     }
   }
 

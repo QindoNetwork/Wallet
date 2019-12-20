@@ -13,6 +13,7 @@ contract Administration is Ownable {
   uint public nbDemands;
   uint public feesAsk;
   uint public feesPay;
+  bool public stop;
   uint constant spacePrice = 1000000000000000000;
 
   event newDemand(uint indexed ID);
@@ -158,6 +159,18 @@ contract Administration is Ownable {
   {
     feesPay = _amount1;
     feesAsk = _amount2;
+  }
+
+  function blockAskForFunds(uint groupID, string memory _pseudo) public onlyOwner
+  {
+    if (stop == false)
+    {
+      stop == true;
+    }
+    else
+    {
+      stop == false;
+    }
   }
 
 }

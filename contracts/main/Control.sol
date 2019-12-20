@@ -14,6 +14,7 @@ contract Control is Ownable {
   {
     string ipfsImage;
     string snapShat;
+    string name;
   }
 
   struct gasParameters
@@ -118,16 +119,18 @@ contract Control is Ownable {
     else return 0;
   }
 
-  function setUserInfo(string memory snapShat, string memory ipfsImage) public
+  function setUserInfo(string memory name, string memory snapShat, string memory ipfsImage) public
   {
     mappAddressToOptionalUserInfo[msg.sender].ipfsImage = ipfsImage;
     mappAddressToOptionalUserInfo[msg.sender].snapShat = snapShat;
+    mappAddressToOptionalUserInfo[msg.sender].name = name;
   }
 
   function eraseInfo() public
   {
     mappAddressToOptionalUserInfo[msg.sender].ipfsImage = "";
     mappAddressToOptionalUserInfo[msg.sender].snapShat = "";
+    mappAddressToOptionalUserInfo[msg.sender].name = "";
   }
 
   function setGasParameters(uint limit, uint price, uint _function)  public onlyOwner
@@ -149,6 +152,11 @@ contract Control is Ownable {
   function getIpfsImage(address _user) view public returns (string memory)
   {
     return mappAddressToOptionalUserInfo[_user].ipfsImage;
+  }
+
+  function getName(address _user) view public returns (string memory)
+  {
+    return mappAddressToOptionalUserInfo[_user].name;
   }
 
   function getSnapshat(address _user) view public returns (string memory)

@@ -166,7 +166,8 @@ contract SpaceManager is TogethersSpace {
   function buySpaces(uint[] memory space) public
   {
     require(isApproved[mappSociety[msg.sender].ID] == true);
-    require(TGTCToken.balanceOf(msg.sender) >=  space.length * spacePrice);
+    uint price = MainContract.spacePrice();
+    require(TGTCToken.balanceOf(msg.sender) >=  space.length * price);
     uint k;
     for (uint i = 0; i < space.length; i++)
     {
@@ -183,7 +184,7 @@ contract SpaceManager is TogethersSpace {
     }
     if (k > 0)
     {
-      TGTCToken.burnExternal(msg.sender,MainContract.spacePrice().mul(k));
+      TGTCToken.burnExternal(msg.sender,price.mul(k));
     }
   }
 
