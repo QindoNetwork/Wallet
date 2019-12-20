@@ -50,7 +50,7 @@ export class ConfirmTransaction extends React.Component {
     }
 
     componentDidMount() {
-        const { address, amount } = this.props.navigation.state.params;
+        const { address, amount, crypto } = this.props.navigation.state.params;
         const txn = TransactionUtils.createTransaction(address, amount);
         this.setState({ txn });
     }

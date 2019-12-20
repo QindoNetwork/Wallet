@@ -12,10 +12,11 @@ export class SendCoins extends React.Component {
       const erc20s = navigation.getParam('erc20s')
       const control = navigation.getParam('control')
       const togethers = navigation.getParam('togethers')
+      const crypto = navigation.getParam('crypto')
       const max = navigation.getParam('max')
         const { amount } = this.refs.calc;
         if (!amount) return;
-        this.props.navigation.navigate('SelectDestination', { amount, gasParam, address, erc20s, control, togethers, max });
+        this.props.navigation.navigate('SelectDestination', { crypto, amount, gasParam, address, erc20s, control, togethers, max });
     }
 
     render() {

@@ -90,7 +90,7 @@ export class WalletSettings extends React.Component {
                 <ListItem onPress={() => this.confirmRemoveWallet()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
-                            <Icon name='reverse-camera' />
+                            <Icon name='photo' />
                         </View>
                         <Text style={styles.itemTitle}>change personal image</Text>
                     </View>
