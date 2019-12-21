@@ -11,7 +11,6 @@ contract Administration is Ownable {
   uint public MAX;
   uint public groupNumber;
   uint public nbDemands;
-  uint public feesAsk;
   uint public feesPay;
   bool public stop;
   uint constant spacePrice = 1000000000000000000;
@@ -155,13 +154,12 @@ contract Administration is Ownable {
     return mappStatsPeerToPeer[from][to][crypto];
   }
 
-  function modifyFees(uint _amount1, uint _amount2) public onlyOwner
+  function modifyFees(uint _amount) public onlyOwner
   {
-    feesPay = _amount1;
-    feesAsk = _amount2;
+    feesPay = _amount;
   }
 
-  function blockAskForFunds(uint groupID, string memory _pseudo) public onlyOwner
+  function blockAskForFunds() public onlyOwner
   {
     if (stop == false)
     {

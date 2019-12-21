@@ -73,8 +73,7 @@ export class WalletsOverview extends React.Component {
           const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
           const erc20sLength = parseInt(await togethers.getSize(),10)
           const max = parseInt(await togethers.MAX(),10)
-          const feesPay = parseInt(await togethers.feesPay(),10)
-          const feesAsk = parseInt(await togethers.feesAsk(),10)
+          const fees = parseInt(await togethers.feesPay(),10)
           const myPseudo = await togethers.getUsersPseudo(wallet.address)
 
           erc20s.push({ name: "ethers",
@@ -106,7 +105,7 @@ export class WalletsOverview extends React.Component {
 
           WalletActions.selectWallet(wallet)
           this.setState({ loading: 1 })
-          this.props.navigation.navigate('Login', { myPseudo, wallet, feesPay, feesAsk, gasParam, control, togethers, erc20s, address: wallet.address, max });
+          this.props.navigation.navigate('Login', { myPseudo, wallet, fees, gasParam, control, togethers, erc20s, address: wallet.address, max });
 
         } catch (e) {
           GeneralActions.notify(e.message, 'long');

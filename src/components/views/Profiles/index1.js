@@ -88,18 +88,14 @@ export class Profiles extends React.Component {
 
         return(
 
-          <View style={styles.container}>
-          <Text> 1 </Text>
-              </View>
+              <Case1/>
 
       )
         }
 
         return(
 
-          <View style={styles.container}>
-          <Text> 2 </Text>
-              </View>
+              <Case2/>
 
       )
 
@@ -109,9 +105,7 @@ export class Profiles extends React.Component {
 
       return(
 
-        <View style={styles.container}>
-        <Text> 3 </Text>
-            </View>
+            <Case3/>
 
     )
       }

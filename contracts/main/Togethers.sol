@@ -105,16 +105,11 @@ contract Togethers is Administration {
     addMember(groupID,_publicKey);
   }
 
-  function askForFunds(uint groupID, string memory _description) public payable
+  function askForFunds(uint groupID, string memory _description) public
   {
     require(stop == false);
-    require(msg.value == feesAsk);
     require(mappProfileInGroup[groupID][msg.sender].open == false);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
-    if (feesAsk > 0)
-    {
-      box.add(feesAsk);
-    }
     mappProfileInGroup[groupID][msg.sender].open = true;
     mappProfileInGroup[groupID][msg.sender].DemandID = ID;
     mappAddressToUser[msg.sender].blockNumber = block.number;
@@ -134,6 +129,7 @@ contract Togethers is Administration {
 
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, uint _crypto) public payable
   {
+    require(stop == false);
     require(mappProfileInGroup[groupID][_publicKey].open == true);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     require(_crypto < getSize() && disableCrypto[_crypto] == false);

@@ -88,18 +88,14 @@ export class Profiles extends React.Component {
 
         return(
 
-          <View style={styles.container}>
-          <Text> 1 </Text>
-              </View>
+              <Case1 profiles={profiles} navigation={navigation} groupID={groupID} togethers={togethers} address={address} ERC20s={ERC20s} gasParam={gasParam}/>
 
       )
         }
 
         return(
 
-          <View style={styles.container}>
-          <Text> 2 </Text>
-              </View>
+              <Case2 profiles={profiles} navigation={navigation} groupID={groupID} togethers={togethers} address={address} ERC20s={ERC20s} gasParam={gasParam}/>
 
       )
 
@@ -109,16 +105,14 @@ export class Profiles extends React.Component {
 
       return(
 
-        <View style={styles.container}>
-        <Text> 3 </Text>
-            </View>
+            <Case3 profiles={profiles} navigation={navigation} groupID={groupID} togethers={togethers} address={address} ERC20s={ERC20s} gasParam={gasParam}/>
 
     )
       }
 
       return(
 
-            <Case4/>
+            <Case4 profiles={profiles} navigation={navigation} groupID={groupID} togethers={togethers} address={address} ERC20s={ERC20s} gasParam={gasParam}/>
     )
     }
 
