@@ -8,7 +8,6 @@ import { HeaderIcon } from '@components/widgets';
 import Case1 from './Case1';
 import Case2 from './Case2';
 import Case3 from './Case3';
-import Case4 from './Case4';
 
 export class Profiles extends React.Component {
 
@@ -117,8 +116,10 @@ export class Profiles extends React.Component {
       }
 
       return(
+        <View>
+        <Text> 4 </Text>
+            </View>
 
-            <Case4/>
     )
     }
 

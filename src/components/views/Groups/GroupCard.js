@@ -61,7 +61,7 @@ export default class GroupsCard extends React.Component {
         return (
                 <View style={styles.container}>
                     <View style={styles.leftColumn}>
-                        <Icon name='cube' size='large' />
+                        <Icon name='cube' size='large' style="color:red"/>
                     </View>
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{group.name}</Text>

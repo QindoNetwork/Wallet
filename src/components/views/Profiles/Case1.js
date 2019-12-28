@@ -10,7 +10,7 @@ export default class Case1 extends React.Component {
 
       return
       (
-        <View style={styles.container}>
+        <View>
         <Text> 1 </Text>
             </View>
         )

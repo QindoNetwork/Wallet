@@ -154,7 +154,8 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: measures.defaultPadding,
         alignItems: 'stretch',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        backgroundColor: colors.darkGray
     },
     body: {
         flex: 1,
