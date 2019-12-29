@@ -48,7 +48,8 @@ export default class WalletCard extends React.Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'stretch',
-        backgroundColor: colors.black,
+        backgroundColor: colors.red,
+        borderRadius: 10,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: measures.defaultPadding,

@@ -28,9 +28,10 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         justifyContent: 'space-around',
         flexDirection: 'row',
-        height: 48,
-        borderTopWidth: 1,
-        borderColor: colors.gray,
-        backgroundColor: colors.lightestGray
+        height: 70,
+        borderTopWidth: 10,
+        borderBottomWidth: 10,
+        borderColor: colors.black,
+        backgroundColor: colors.black
     }
 });

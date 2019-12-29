@@ -149,12 +149,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'row',
-        backgroundColor: colors.secondary,
+        backgroundColor: colors.red,
         height: 64,
         marginBottom: measures.defaultMargin,
     },
     leftColumn: {
+        color: colors.white,
         width: 40,
+        color: colors.white,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 100
@@ -162,6 +164,7 @@ const styles = StyleSheet.create({
     centerColumn: {
         flex: 1,
         height: 64,
+        color: colors.white,
         flexDirection: 'column',
         alignItems: 'flex-start',
         justifyContent: 'center'
@@ -178,19 +181,23 @@ const styles = StyleSheet.create({
     amountContainer: {
         flex: 1,
         flexDirection: 'column',
+        color: colors.white,
         alignItems: 'flex-end'
     },
     confirmationsContainer: {
         marginLeft: measures.defaultMargin,
+        color: colors.white,
         alignItems: 'center',
         justifyContent: 'center',
         width: 20
     },
     amountLabel: {
         fontWeight: 'bold',
+        color: colors.white,
         fontSize: measures.fontSizeMedium
     },
     fiatLabel: {
+        color: colors.white,
         fontSize: measures.fontSizeMedium - 4
     }
 });

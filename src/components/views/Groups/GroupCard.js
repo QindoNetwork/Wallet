@@ -61,7 +61,7 @@ export default class GroupsCard extends React.Component {
         return (
                 <View style={styles.container}>
                     <View style={styles.leftColumn}>
-                        <Icon name='cube' size='large' style="color:red"/>
+                        <Icon name='cube' size='large' color={colors.lightRed}/>
                     </View>
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{group.name}</Text>
@@ -81,8 +81,9 @@ export default class GroupsCard extends React.Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'stretch',
-        backgroundColor: colors.white,
+        backgroundColor: colors.red,
         flexDirection: 'row',
+        borderRadius: 10,
         alignItems: 'center',
         paddingHorizontal: measures.defaultPadding,
         marginBottom: measures.defaultMargin,
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: measures.fontSizeMedium,
-        color: colors.gray,
+        color: colors.white,
         fontWeight: 'bold'
     },
     description: {
@@ -117,13 +118,13 @@ const styles = StyleSheet.create({
     },
     balance: {
         fontSize: measures.fontSizeMedium - 1,
-        color: colors.gray,
+        color: colors.white,
         marginLeft: measures.defaultMargin,
         fontWeight: 'bold'
     },
     fiatbalance: {
         fontSize: measures.fontSizeMedium - 3,
-        color: colors.gray,
+        color: colors.white,
         marginLeft: measures.defaultMargin
     },
     next: {
