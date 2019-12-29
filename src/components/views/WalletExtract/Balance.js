@@ -25,7 +25,7 @@ export default class Balance extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.leftColumn}>
-                    <Text style={styles.title}>Balance:</Text>
+                    <Text style={styles.title}>Balance</Text>
                 </View>
                 <View style={styles.rightColumn}>
                     <Text style={styles.balance}>ETH {this.balance.toFixed(3)}</Text>
@@ -50,16 +50,16 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: measures.fontSizeLarge,
-        color: colors.gray
+        color: colors.black
     },
     balance: {
         fontSize: measures.fontSizeMedium + 2,
         fontWeight: 'bold',
-        color: colors.gray
+        color: colors.black
     },
     fiatBalance: {
         fontSize: measures.fontSizeMedium - 3,
-        color: colors.gray
+        color: colors.black
     },
     rightColumn: {
         flex: 1,

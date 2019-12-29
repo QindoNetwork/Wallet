@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 70,
         borderTopWidth: 10,
-        borderBottomWidth: 10,
+        borderBottomWidth: 15,
         borderColor: colors.black,
         backgroundColor: colors.black
     }

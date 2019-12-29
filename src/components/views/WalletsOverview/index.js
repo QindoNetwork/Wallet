@@ -133,7 +133,7 @@ export class WalletsOverview extends React.Component {
 
             <View style={styles.container}>
               <View style={styles.body}>
-                <ActivityIndicator size="large"/>
+                <ActivityIndicator size="large" color={colors.red}/>
               </View>
             </View>
 

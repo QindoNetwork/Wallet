@@ -1,13 +1,10 @@
 import React from 'react';
-import { Alert, TouchableOpacity, RefreshControl,FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
+import { Alert, TouchableOpacity, RefreshControl,FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Button } from '@components/widgets';
 import ProfileCard from './ProfileCard';
 import { HeaderIcon } from '@components/widgets';
-import Case1 from './Case1';
-import Case2 from './Case2';
-import Case3 from './Case3';
 
 export class Profiles extends React.Component {
 
@@ -30,98 +27,122 @@ export class Profiles extends React.Component {
         )
     })
 
-      state = { loading: 0, profiles: [], length: 0, owner: 0, active: 0 };
+      state = { loading: 0, profiles: [], length: 0, owner: 0, active: 0, ethPrice:0 };
 
-    async componentDidMount() {
-      const togethers = this.props.navigation.getParam('togethers')
-      const address = this.props.navigation.getParam('address')
-      const item = this.props.navigation.getParam('item')
-      let profiles = []
-      try {
-        this.setState({ length:  parseInt ( await togethers.getUsersLength(item.id),10),
-                        active:  parseInt ( await togethers.isOpen(item.id,address),10),
-                        owner : parseInt ( await togethers.isOwner(item.id,address),10) })
-        if ( this.state.length > 1 ) {
-          for ( var i = 0; i < this.state.length; i++ ) {
-            let currentAddress = await togethers.getUserAddress(item.id,i)
-            if ( currentAddress !== address ) {
-              profiles.push({ id:  currentAddress,
-                              name: await togethers.getUserName(item.id,i) })
+      async componentDidMount() {
+        const togethers = this.props.navigation.getParam('togethers')
+        const address = this.props.navigation.getParam('address')
+        const item = this.props.navigation.getParam('item')
+        const gasParam = this.props.navigation.getParam('gasParam')
+        const ethPrice = (gasParam[8].price * gasParam[8].limit) / 1000000000
+        let profiles = []
+        try {
+          this.setState({ length:  parseInt ( await togethers.getUsersLength(item.id),10),
+                          active:  parseInt ( await togethers.isOpen(item.id,address),10),
+                          owner : parseInt ( await togethers.isOwner(item.id,address),10) })
+          if ( this.state.length > 1 ) {
+            for ( var i = 0; i < this.state.length; i++ ) {
+              let currentAddress = await togethers.getUserAddress(item.id,i)
+              if ( currentAddress !== address ) {
+                profiles.push({ id:  currentAddress,
+                                name: await togethers.getUserName(item.id,i) })
+              }
             }
           }
+          this.setState({ profiles, loading: 1, ethPrice})
+        } catch (e) {
+        GeneralActions.notify(e.message, 'long');
         }
-        this.setState({ profiles, loading: 1})
-      } catch (e) {
-      GeneralActions.notify(e.message, 'long');
-      }
-    }
-
-    render() {
-      const { profiles } = this.state
-      const { navigation } = this.props
-      const groupID = navigation.getParam('item').id
-      const togethers = navigation.getParam('togethers')
-      const address = this.props.navigation.getParam('address')
-      const ERC20s = this.props.navigation.getParam('ERC20s')
-      const gasParam = this.props.navigation.getParam('gasParam')
-      const max = navigation.getParam('max')
-
-
-      if (this.state.loading === 0){
-
-        return(
-
-        <View style={styles.container}>
-          <View style={styles.body}>
-            <ActivityIndicator size="large"/>
-          </View>
-        </View>
-
-      )
-
       }
 
-      if ((this.state.owner === 0 && this.state.length > 1) || (this.state.owner === 1 && this.state.length === 1)){
-
+      demand(groupID, owner, togethers, address, ERC20s, gasParam) {
         if (this.state.active === 1){
+          this.props.navigation.navigate('CloseDemand',{ groupID, owner, togethers, address, ERC20s, gasParam })
+        }
+        else this.props.navigation.navigate('OpenDemand',{ groupID, owner, togethers, address, ERC20s, gasParam })
+  }
 
-        return(
+      async onPressQuit(groupID,togethers,price,limit) {
+        if (this.state.owner === 1){
+          GeneralActions.notify("The owner have to be the last of the group to quit", 'long');
+        }
+        let overrides = {
+        gasLimit: limit,
+        gasPrice: price * 1000000000,
+        //nonce: 123,
+        //value: utils.parseEther('1.0'),
+        };
+      try {
+        await togethers.quitGroup(groupID,overrides)
+      } catch (e) {
+          GeneralActions.notify(e.message, 'long');
+      }
+  }
+
+      render() {
+        const { profiles, length, owner, active, ethPrice } = this.state
+        const { navigation } = this.props
+        const groupID = navigation.getParam('item').id
+        const togethers = navigation.getParam('togethers')
+        const address = this.props.navigation.getParam('address')
+        const ERC20s = this.props.navigation.getParam('ERC20s')
+        const gasParam = this.props.navigation.getParam('gasParam')
+        const max = navigation.getParam('max')
+
+
+        if (this.state.loading === 0){
+
+          return(
 
           <View style={styles.container}>
-          <Text> 1 </Text>
-              </View>
+            <View style={styles.body}>
+              <ActivityIndicator size="large"/>
+            </View>
+          </View>
 
-      )
+        )
+
         }
 
-        return(
-
-          <View style={styles.container}>
-          <Text> 2 </Text>
-              </View>
-
-      )
-
-      }
-
-      if (this.state.active === 1){
-
       return(
-
         <View style={styles.container}>
-        <Text> 3 </Text>
-            </View>
+        <View style={styles.buttonsContainer}>
+            <Button
+              children="My demand"
+              onPress={() => this.demand(groupID, owner, togethers, address, ERC20s, gasParam)}/>
+        </View>
+        <FlatList
+            data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+              style={styles.content}
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate('ProfileData',{ groupID, owner, item, togethers, address, ERC20s, gasParam })
+              }>
+                <ProfileCard profile={item} groupID={groupID} togethers={togethers}/>
+              </TouchableOpacity>
+            )}
+        />
+        <View style={styles.buttonsContainer}>
+            <Button
+              children="Quit"
+              onPress={() => {
+                  Alert.alert(
+                    'SignUp',
+                    'It will cost maximum ' + this.state.ethPrice + ' ETH',
+                    [
+                        { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                        { text: 'Confirm', onPress: () => this.onPressQuit(groupID,togethers,price,limit) }
+                    ],
+                    { cancelable: false }
+                );
+                }
+              }/>
+        </View>
+        </View>
+        )
 
-    )
-      }
-
-      return(
-        <View>
-        <Text> 4 </Text>
-            </View>
-
-    )
-    }
+}
 
 }
 
@@ -132,9 +153,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: colors.defaultBackground,
         padding: measures.defaultPadding
-    },
-    content: {
-        marginTop: measures.defaultMargin
     },
     body: {
         flex: 1,
@@ -147,6 +165,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginVertical: measures.defaultMargin,
         marginHorizontal: 32
+    },
+    content: {
+        marginTop: measures.defaultMargin
     },
     buttonsContainer: {
         width: '100%',

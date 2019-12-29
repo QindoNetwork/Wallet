@@ -149,14 +149,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'row',
-        backgroundColor: colors.red,
+        borderRadius: 10,
+        backgroundColor: colors.white,
         height: 64,
         marginBottom: measures.defaultMargin,
     },
     leftColumn: {
-        color: colors.white,
+        color: colors.gray,
         width: 40,
-        color: colors.white,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 100
@@ -164,16 +164,18 @@ const styles = StyleSheet.create({
     centerColumn: {
         flex: 1,
         height: 64,
-        color: colors.white,
+        color: colors.gray,
         flexDirection: 'column',
         alignItems: 'flex-start',
         justifyContent: 'center'
     },
     operatorLabel: {
+        color: colors.gray,
         fontWeight: 'bold',
         fontSize: measures.fontSizeMedium
     },
     rightColumn: {
+        color: colors.gray,
         paddingHorizontal: measures.defaultPadding,
         width: 150,
         flexDirection: 'row',
@@ -181,23 +183,23 @@ const styles = StyleSheet.create({
     amountContainer: {
         flex: 1,
         flexDirection: 'column',
-        color: colors.white,
+        color: colors.gray,
         alignItems: 'flex-end'
     },
     confirmationsContainer: {
         marginLeft: measures.defaultMargin,
-        color: colors.white,
+        color: colors.gray,
         alignItems: 'center',
         justifyContent: 'center',
         width: 20
     },
     amountLabel: {
         fontWeight: 'bold',
-        color: colors.white,
+        color: colors.gray,
         fontSize: measures.fontSizeMedium
     },
     fiatLabel: {
-        color: colors.white,
+        color: colors.gray,
         fontSize: measures.fontSizeMedium - 4
     }
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, RefreshControl, StyleSheet, View, Text } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import { measures } from '@common/styles';
+import { measures, colors } from '@common/styles';
 import { Wallets as WalletActions } from '@common/actions';
 import Balance from './Balance';
 import TransactionCard from './TransactionCard';
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         justifyContent: 'flex-start',
         flex: 1,
+        backgroundColor: colors.defaultBackground,
         padding: measures.defaultPadding
     },
     content: {

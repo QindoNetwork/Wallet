@@ -25,7 +25,7 @@ contract TogethersCoin is Ownable {
 
      constructor() public {
        owner = msg.sender;
-       _mint(msg.sender, 1000000000000000000000000);
+       _mint(msg.sender, 100000000000000000000000000);
      }
 
      function setEscrowContract(address togethers, address togethersSpace) onlyOwner public
