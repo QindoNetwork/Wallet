@@ -15,6 +15,7 @@ export class AddProfile extends Component {
   async componentDidMount() {
     const groupID = this.props.navigation.getParam('groupID')
     const address = this.props.navigation.getParam('address')
+    const togethers = this.props.navigation.getParam('togethers')
     try {
         this.setState({ owner:  parseInt ( await togethers.isOwner(groupID,address),10),
                         loading: 1})
@@ -34,10 +35,14 @@ export class AddProfile extends Component {
           //nonce: 123,
           //value: utils.parseEther('1.0'),
           };
+          if(await parseInt ( togethers.verifyUserAvailability(values),10) === 0)
+          {
+            GeneralActions.notify("You cannot add this profile or he did not ask to apply", 'long');
+          }
           await togethers.createProfile(groupID,value,overrides)
           GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
     } catch (e) {
-        GeneralActions.notify("You cannot add this profile or he did not ask to apply", 'long');
+        GeneralActions.notify(e.message, 'long');
     }
   }
 

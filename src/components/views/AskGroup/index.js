@@ -20,6 +20,14 @@ export class AskGroup extends Component {
           //nonce: 123,
           //value: utils.parseEther('1.0'),
           };
+          if (await togethers.groupNumber() < value)
+          {
+            GeneralActions.notify('this group does not exists', 'long');
+          }
+          //if (await togethers.verifyGroupAsked(value) === 1)
+          //{
+          //  GeneralActions.notify('you already asked', 'long');
+        //  }
           await togethers.ask(value,overrides)
           GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
     } catch (e) {

@@ -75,18 +75,9 @@ export class WalletsOverview extends React.Component {
           const max = parseInt(await togethers.MAX(),10)
           const myPseudo = await togethers.getUsersPseudo(wallet.address)
 
-          erc20s.push({ name: "ethers",
-                        symbol: "ETH",
-                        decimals: 0,
-                        instance: null,
-                        enable: 1,
-                        key: 0})
-
-          if(erc20sLength > 1)
-          {
             var enable
             var tokenAddress
-            for(var i = 1 ; i < erc20sLength ; i++)
+            for(var i = 0; i < erc20sLength ; i++)
             {
               enable = parseInt(await togethers.checkEnableCrypto(i),10)
               if(enable === 1)
@@ -99,7 +90,7 @@ export class WalletsOverview extends React.Component {
                               key: i})
               }
             }
-          }
+
           for(var j = 0 ; j <= 11 ; j++)
           {
             gasParam.push({ limit: parseInt(await control.getGasLimit(j),10),

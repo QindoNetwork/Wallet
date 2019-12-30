@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator, Alert} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
+import { HeaderIcon } from '@components/widgets';
 import { General as GeneralActions  } from '@common/actions';
 import CryptoCard from './CryptoCard';
 

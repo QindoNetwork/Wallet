@@ -101,6 +101,15 @@ contract Togethers is Administration {
     return 0;
   }
 
+  function verifyGroupAsked(uint groupNumber) public view returns (uint)
+  {
+    if (mappAskForAdd[msg.sender][groupNumber] == true)
+    {
+      return 1;
+    }
+    return 0;
+  }
+
   function addMember(uint _groupID, address _key) private
   {
     require(mappProfileInGroup[_groupID][msg.sender].owner == true);

@@ -18,7 +18,7 @@ export default class CryptoCard extends React.Component {
       if (this.props.crypto.key !== 0){
         this.setState({ balance:  parseInt ( await this.props.crypto.instance.balanceOf(this.props.address),10) })
       }
-      else this.setState({ balance:  Number(WalletUtils.formatBalance(this.props.wallet.item.balance))
+      else this.setState({ balance:  Number(WalletUtils.formatBalance(this.props.wallet.item.balance))})
       this.setState({ loading: 1})
     } catch (e) {
     GeneralActions.notify(e.message, 'long');
