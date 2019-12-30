@@ -73,7 +73,6 @@ export class WalletsOverview extends React.Component {
           const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
           const erc20sLength = parseInt(await togethers.getSize(),10)
           const max = parseInt(await togethers.MAX(),10)
-          const fees = parseInt(await togethers.feesPay(),10)
           const myPseudo = await togethers.getUsersPseudo(wallet.address)
 
           erc20s.push({ name: "ethers",
@@ -85,15 +84,20 @@ export class WalletsOverview extends React.Component {
 
           if(erc20sLength > 1)
           {
+            var enable
+            var tokenAddress
             for(var i = 1 ; i < erc20sLength ; i++)
             {
-              var tokenAddress = await togethers.getTokenAddress(i)
-              erc20s.push({ name: await togethers.getTokenName(i),
-                            symbol: await togethers.getTokenSymbol(i),
-                            decimals: parseInt(await togethers.getTokenDecimal(i),10),
-                            instance: new ethers.Contract(tokenAddress, erc20ABI, connection),
-                            enable:  parseInt(await togethers.checkEnableCrypto(i),10),
-                            key: i})
+              enable = parseInt(await togethers.checkEnableCrypto(i),10)
+              if(enable === 1)
+              {
+                tokenAddress = await togethers.getTokenAddress(i)
+                erc20s.push({ name: await togethers.getTokenName(i),
+                              symbol: await togethers.getTokenSymbol(i),
+                              decimals: parseInt(await togethers.getTokenDecimal(i),10),
+                              instance: new ethers.Contract(tokenAddress, erc20ABI, connection),
+                              key: i})
+              }
             }
           }
           for(var j = 0 ; j <= 11 ; j++)
@@ -105,7 +109,7 @@ export class WalletsOverview extends React.Component {
 
           WalletActions.selectWallet(wallet)
           this.setState({ loading: 1 })
-          this.props.navigation.navigate('Login', { myPseudo, wallet, fees, gasParam, control, togethers, erc20s, address: wallet.address, max });
+          this.props.navigation.navigate('Login', { myPseudo, wallet, gasParam, control, togethers, erc20s, address: wallet.address, max });
 
         } catch (e) {
           GeneralActions.notify(e.message, 'long');

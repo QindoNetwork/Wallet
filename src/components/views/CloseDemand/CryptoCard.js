@@ -1,32 +1,30 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import { inject, observer } from 'mobx-react';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Wallet as WalletUtils } from '@common/utils';
 
-@inject('prices', 'wallet')
-@observer
-
 export default class CryptoCard extends React.Component {
 
-  state = {loading: 0 };
+  state = { loading: 0, amount: 0 };
 
   async componentDidMount() {
+    const { togethers, address, item, groupID } = this.props
     try {
-      if (this.props.crypto.key !== 0){
-        this.setState({ balance:  parseInt ( await this.props.instance.balanceOf(this.props.address),10) })
-      }
-      this.setState({ loading: 1})
+      this.setState({ amount:  parseInt ( await togethers.getCryptoGiven(groupID, address, item.key),10),
+                      loading: 1 })
     } catch (e) {
     GeneralActions.notify(e.message, 'long');
     }
   }
 
-  get balance() {
-      const { item } = this.props.wallet;
-      return Number(WalletUtils.formatBalance(item.balance));
+  balance(value) {
+      const { item } = this.props
+      if(item.name === 'Ethers') {
+        return Number(WalletUtils.formatBalance(value));
+      }
+      else return Number(value/(10*item.decimals))
   }
 
     render() {
@@ -46,12 +44,12 @@ export default class CryptoCard extends React.Component {
                         <Icon name='cash' size='large'/>
                     </View>
                     <View style={styles.middleColumn}>
-                        <Text style={styles.title}>{this.props.crypto.symbol}</Text>
-                        <Text style={styles.description}>{this.props.crypto.name}</Text>
+                        <Text style={styles.title}>{this.props.item.symbol}</Text>
+                        <Text style={styles.description}>{this.props.item.name}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{this.balance.toFixed(3)}</Text>
+                            <Text style={styles.balance}>{this.balance(this.state.amount).toFixed(3)}</Text>
                         </View>
                     </View>
                 </View>

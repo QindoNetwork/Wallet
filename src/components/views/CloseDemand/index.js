@@ -1,46 +1,79 @@
-import * as yup from 'yup'
-import { Formik } from 'formik'
-import { General as GeneralActions  } from '@common/actions';
+import React from 'react';
+import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
-import React, { Component, Fragment } from 'react'
 import { colors, measures } from '@common/styles';
-import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
+import { General as GeneralActions  } from '@common/actions';
+import CryptoCard from './CryptoCard';
 
-export class CloseDemand extends Component {
+export class CloseDemand extends React.Component {
 
-  static navigationOptions = { title: "Add group" };
+  static navigationOptions = { title: "My demand" };
+
+  state = { loading: 0, size: 0 };
+
+  async componentDidMount() {
+    const { togethers, groupID, address } = this.props
+    try {
+      let size = 0
+      let given
+      for ( var i = 0; i < size; i++ ) {
+         given = parseInt ( await togethers.getCryptoGiven(groupID, address, i),10)
+        if ( given !== 0 ) {
+          size = size + 1
+        }
+      }
+      this.setState({ size,
+                      loading: 1 })
+    } catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    }
+  }
+
+  async demand() {
+    const togethers = this.props.navigation.getParam('togethers')
+    const groupID = this.props.navigation.getParam('groupID')
+    try {
+      let overrides = {
+          gasLimit: this.props.navigation.getParam('gasParam')[6].limit * this.state.size,
+          gasPrice: this.props.navigation.getParam('gasParam')[6].price * 1000000000,
+          //nonce: 123,
+          //value: utils.parseEther('1.0'),
+          };
+          await togethers.withdrawFunds(groupID,overrides)
+          GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
+    } catch (e) {
+      GeneralActions.notify(e.message, 'long');
+    }
+}
 
   render() {
 
-      return (
-          <View style={styles.container}>
-              <View style={styles.body}>
-                <View style={styles.buttonsContainer}>
-                  <Button
-                    children="Create a new group"
-                    onPress={() => this.props.navigation.navigate('CreateGroup',
-                    {
-                      togethers : this.props.navigation.getParam('togethers'),
-                      address : this.props.navigation.getParam('address'),
-                      gasParam : this.props.navigation.getParam('gasParam'),
-                    })}
-                    />
-                </View>
-                <View style={styles.buttonsContainer}>
-                  <Button
-                    children="Apply for an existing one"
-                    onPress={() => this.props.navigation.navigate('AskGroup',
-                    {
-                      togethers : this.props.navigation.getParam('togethers'),
-                      address : this.props.navigation.getParam('address'),
-                      gasParam : this.props.navigation.getParam('gasParam'),
-                    })}
-                    />
-                </View>
-              </View>
-          </View>
-      );
-  }
+
+    if (this.state.loading === 0){
+
+      return(
+
+          <ActivityIndicator size="large"/>
+    )
+
+    }
+
+    return(
+
+      <View style={styles.container}>
+      <View style={styles.buttonsContainer}>
+          <Button
+            children="Close"
+            onPress={() => this.demand()}/>
+      </View>
+          <FlatList
+            data={this.props.ERC20s}
+            renderItem={({ item }) => (
+            <CryptoCard crypto={item} address={address}/>
+          )}
+      />
+    </View>
+  )}
 
 
 }

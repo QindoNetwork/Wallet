@@ -20,20 +20,20 @@ contract TogethersCoin is Ownable {
 
      uint256 private _totalSupply;
 
-     address public Escrow1;
-     address public Escrow2;
+     address public Escrow;
+     uint256 public MAX;
 
      constructor() public {
        owner = msg.sender;
-       _mint(msg.sender, 100000000000000000000000000);
+       MAX = 100000000000000000000000000;
+       _mint(owner, MAX);
      }
 
-     function setEscrowContract(address togethers, address togethersSpace) onlyOwner public
+     function setEscrowContract(address togethersSpace) onlyOwner public
      {
-       require(Escrow1 == address(0) && Escrow2 == address(0));
-       Escrow1 = togethers;
-       Escrow2 = togethersSpace;
-       TGTSToken = External3(Escrow2);
+       require(Escrow == address(0));
+       Escrow = togethersSpace;
+       TGTSToken = External3(Escrow);
      }
 
      /**
@@ -173,14 +173,14 @@ contract TogethersCoin is Ownable {
          emit Transfer(account, address(0), value);
      }
 
-     function mintExternal(address account, uint256 value) public returns (bool){
-        require(msg.sender == Escrow1);
-        _mint(account, value);
+     function mintExternal() public returns (bool) onlyOwner {
+        uint value = MAX.sub(totalSupply())
+        _mint(owner, value);
         return true;
       }
 
       function burnExternal(address account, uint256 value) public returns (bool){
-        require(msg.sender == Escrow2);
+        require(msg.sender == Escrow);
         _burn(account, value);
         return true;
       }

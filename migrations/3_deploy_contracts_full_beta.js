@@ -15,7 +15,7 @@ module.exports = function(deployer) {
       }).then(function() {
         return TogethersCoin.deployed();
         }).then(function(instance) {
-          return instance.setEscrowContract(Togethers.address, SpaceManager.address, {gas : gasLimit});
+          return instance.setEscrowContract(SpaceManager.address, {gas : gasLimit});
           }).then(function() {
             return SpaceManager.deployed();
             }).then(function(instance) {

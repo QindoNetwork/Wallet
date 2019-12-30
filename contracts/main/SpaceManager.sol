@@ -22,8 +22,8 @@ contract SpaceManager is TogethersSpace {
   External2 public TGTCToken;
   External1 public MainContract;
 
-  uint public MaxTokenCount;
   uint public TGTCPrice;
+  uint constant public spacePrice = 1000000000000000000;
 
   address spaceOperator;
 
@@ -32,7 +32,6 @@ contract SpaceManager is TogethersSpace {
     MainContract = External1(main);
     TGTSToken = External3(address(this));
     owner = msg.sender;
-    MaxTokenCount = 10000;
     // get powerTokens
     _mint(msg.sender,powerToken1);
     _mint(msg.sender,powerToken2);
@@ -52,11 +51,6 @@ contract SpaceManager is TogethersSpace {
   function setSpaceOperator(address _spaceOperator) public onlyOwner
   {
     spaceOperator = _spaceOperator;
-  }
-
-  function changeMaxTokenCount(uint _max) public onlyOwner
-  {
-    MaxTokenCount = _max;
   }
 
   function getSpaceInfoName(uint _space) public view returns (string memory)
@@ -139,18 +133,6 @@ contract SpaceManager is TogethersSpace {
     TGTCPrice = price;
   }
 
-  function getTGTCs(uint amount) public payable
-  {
-    require(msg.value == TGTCPrice.mul(amount));
-    MainContract.addInbox.value(msg.value);
-    TGTCToken.transfer(msg.sender,amount);
-  }
-
-  function showTGTCsInContract() public view returns (uint)
-  {
-    return TGTCToken.balanceOf(address(this));
-  }
-
   function lockSpaces(uint[] memory space) public
   {
     for (uint i = 0; i < space.length; i++)
@@ -166,17 +148,12 @@ contract SpaceManager is TogethersSpace {
   function buySpaces(uint[] memory space) public
   {
     require(isApproved[mappSociety[msg.sender].ID] == true);
-    uint price = MainContract.spacePrice();
-    require(TGTCToken.balanceOf(msg.sender) >=  space.length * price);
+    require(TGTCToken.balanceOf(msg.sender) >=  space.length * spacePrice);
     uint k;
     for (uint i = 0; i < space.length; i++)
     {
       if (_exists(space[i]) == false && i > getLastSpaceID())
       {
-        if (balanceOf(msg.sender) > MaxTokenCount)
-        {
-          break;
-        }
         mappSpacesList[msg.sender].push(space[i]);
         k=k+1;
         _mint(msg.sender,i);
@@ -184,7 +161,7 @@ contract SpaceManager is TogethersSpace {
     }
     if (k > 0)
     {
-      TGTCToken.burnExternal(msg.sender,price.mul(k));
+      TGTCToken.burnExternal(msg.sender,spacePrice.mul(k));
     }
   }
 

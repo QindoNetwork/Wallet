@@ -10,10 +10,7 @@ contract Administration is Ownable {
   uint public ID;
   uint public MAX;
   uint public groupNumber;
-  uint public nbDemands;
-  uint public feesPay;
   bool public stop;
-  uint constant spacePrice = 1000000000000000000;
 
   event newDemand(uint indexed ID);
   event payDemand(uint indexed ID);
@@ -41,8 +38,6 @@ contract Administration is Ownable {
   }
 
   address powerToken;
-  uint box;
-  uint box2;
 
   function setPowerToken(address _tgts) public onlyOwner
   {
@@ -121,17 +116,6 @@ contract Administration is Ownable {
       }
     }
     return true;
-  }
-
-  function getMoney() public onlyOwner
-  {
-    msg.sender.transfer(box2);
-    box2 = 0;
-  }
-
-  function addInbox() public payable
-  {
-    box.add(msg.value);
   }
 
   function getDescription(uint id) view public returns (string memory)

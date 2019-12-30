@@ -40,8 +40,9 @@ export class Profiles extends React.Component {
                           active:  parseInt ( await togethers.isOpen(item.id,address),10),
                           owner : parseInt ( await togethers.isOwner(item.id,address),10) })
           if ( this.state.length > 1 ) {
+            let currentAddress
             for ( var i = 0; i < this.state.length; i++ ) {
-              let currentAddress = await togethers.getUserAddress(item.id,i)
+              currentAddress = await togethers.getUserAddress(item.id,i)
               if ( currentAddress !== address ) {
                 profiles.push({ id:  currentAddress,
                                 name: await togethers.getUserName(item.id,i) })

@@ -16,7 +16,6 @@ contract Togethers is Administration {
   {
     string pseudo;
     uint language;
-    uint blockNumber;
   }
 
   struct profile
@@ -112,19 +111,10 @@ contract Togethers is Administration {
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     mappProfileInGroup[groupID][msg.sender].open = true;
     mappProfileInGroup[groupID][msg.sender].DemandID = ID;
-    mappAddressToUser[msg.sender].blockNumber = block.number;
     mappSpaceInfo[ID].language = mappAddressToUser[msg.sender].language;
     mappSpaceInfo[ID].description = _description;
-    nbDemands += 1;
     emit newDemand(ID);
     ID += 1;
-    uint quota = spacePrice.mul(nbDemands);
-    quota = quota.mul(1000);
-    uint totalSupply = External2(getTokenAddress(1)).totalSupply();
-    if (totalSupply < quota)
-    {
-      External2(getTokenAddress(1)).mintExternal(owner,quota.sub(totalSupply));
-    }
   }
 
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, uint _crypto) public payable
@@ -136,22 +126,18 @@ contract Togethers is Administration {
     uint amount;
     if (_crypto == 0)
     {
-      require(msg.value > feesPay);
-      amount = msg.value.sub(feesPay);
+      require(msg.value > 0);
+      amount = msg.value;
     }
     else
     {
-      require(msg.value >= feesPay);
+      require(msg.value == 0);
       require(_tokenAmount != 0);
       External2(getTokenAddress(_crypto)).transferFrom(msg.sender,address(this),_tokenAmount);
       amount = _tokenAmount;
     }
     mappStatsPeerToPeer[msg.sender][_publicKey][_crypto].add(amount);
     mappGiven[groupID][_publicKey][_crypto].add(amount);
-    if (feesPay > 0)
-    {
-      box.add(feesPay);
-    }
     emit payDemand(mappProfileInGroup[groupID][_publicKey].DemandID);
   }
 
@@ -174,27 +160,8 @@ contract Togethers is Administration {
           mappGiven[groupID][msg.sender][i] = 0;
         }
       }
-      bonus = getBonus();
     }
     emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID);
-    nbDemands -= 1;
-  }
-
-  function getBonus() private returns (uint)
-  {
-    uint bonus;
-    if (block.number > mappAddressToUser[msg.sender].blockNumber)
-      {
-        bonus = box.div(nbDemands);
-        if (bonus != 0)
-        {
-          box.sub(bonus);
-          bonus = bonus.div(2);
-          msg.sender.transfer(bonus);
-          box2.add(bonus);
-        }
-      }
-      return bonus;
   }
 
   function removeMember(address _publicKey, uint groupID) public
