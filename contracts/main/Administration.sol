@@ -12,14 +12,15 @@ contract Administration is Ownable {
   uint public groupNumber;
   bool public stop;
 
-  event newDemand(uint indexed ID);
+  event newDemand(uint indexed ID, address indexed user);
   event payDemand(uint indexed ID);
   event endDemand(uint indexed ID);
 
-  mapping (uint => bool) internal disableCrypto;
+  mapping (uint => bool) public disableCrypto;
   mapping (uint => mapping (address => mapping (uint => uint))) internal mappGiven;
   mapping (uint => spaceInfo) internal mappSpaceInfo;
-  mapping (address => mapping (address => mapping (uint => uint))) internal mappStatsPeerToPeer;
+  mapping (address => mapping (address => mapping (uint => uint))) public mappStatsPeerToPeer;
+  mapping (uint => address) public mappSpaceIDToAddress;
 
   mapping (address => uint) private userPassword;
 
@@ -41,7 +42,7 @@ contract Administration is Ownable {
   function changePassword(string memory NewPassword, string memory oldPassword) public
   {
     uint newHash = returnHash(NewPassword);
-    require(newHash == returnHash(oldPassword));
+    require(userPassword[msg.sender] == returnHash(oldPassword));
     userPassword[msg.sender] = newHash;
   }
 

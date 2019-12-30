@@ -53,6 +53,7 @@ contract Togethers is Administration {
 
   function setUser(string memory _pseudo, uint _language, string memory _password) public
   {
+    require(mappAddressToUser[msg.sender].language == 0);
     uint currentID = returnHash(_pseudo);
     require(checkNameUnicity[currentID] == address(0));
     require(_language != 0);
@@ -127,7 +128,7 @@ contract Togethers is Administration {
     mappProfileInGroup[groupID][msg.sender].DemandID = ID;
     mappSpaceInfo[ID].language = mappAddressToUser[msg.sender].language;
     mappSpaceInfo[ID].description = _description;
-    emit newDemand(ID);
+    emit newDemand(ID,msg.sender);
     ID += 1;
   }
 
@@ -186,7 +187,7 @@ contract Togethers is Administration {
 
   function quitGroup(uint _groupID) public
   {
-    require(mappProfileInGroup[_groupID][msg.sender].owner == false || mappUsersInGroup[_groupID].length == 1)
+    require(mappProfileInGroup[_groupID][msg.sender].owner == false || mappUsersInGroup[_groupID].length == 1);
     deleteProfile(_groupID,msg.sender);
   }
 

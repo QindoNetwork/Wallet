@@ -31,7 +31,7 @@ const navigator = createStackNavigator(
     CreateGroup: { screen: Views.CreateGroup },
     Crypto: { screen: Views.Crypto },
     MyProfile: { screen: Views.MyProfile },
-    Pay: { screen: Views.Pay },
+    ProfileData: { screen: Views.ProfileData },
     Profiles: { screen: Views.Profiles },
     Register: { screen: Views.Register },
     Groups: { screen: Views.Groups },

@@ -11,25 +11,22 @@ contract SpaceManager is TogethersSpace {
   event decision(address indexed from, bool decision);
 
   mapping (uint => string) public urls;
-  mapping (uint => address) public lockedSpace;
   mapping (address => society) public mappSociety;
   mapping (uint => address) public checkedSociety;
   mapping (uint => bool) public isApproved;
   mapping (uint => uint) public mappIDSocietyToHash;
   mapping (address => uint[]) public mappSpacesList;
-  mapping (uint => uint) public mappPassword;
+  mapping (uint => uint) private mappPassword;
 
   External2 public TGTCToken;
-  External1 public MainContract;
 
   uint public TGTCPrice;
   uint constant public spacePrice = 1000000000000000000;
 
   address spaceOperator;
 
-  constructor(address tgtc, address main) public {
+  constructor(address tgtc) public {
     TGTCToken = External2(tgtc);
-    MainContract = External1(main);
     TGTSToken = External3(address(this));
     owner = msg.sender;
     // get powerTokens
@@ -61,16 +58,6 @@ contract SpaceManager is TogethersSpace {
   function getSpaceInfoSIRET(uint _space) public view returns (uint)
   {
     return mappSociety[checkedSociety[_space]].SIRET;
-  }
-
-  function getNBSpaces(address _society) public view returns (uint)
-  {
-    return mappSpacesList[_society].length;
-  }
-
-  function getLastSpaceID() public returns (uint)
-  {
-    return MainContract.ID();
   }
 
   function registerSociety(string memory password, string memory name, uint SIRET, string memory signatory, string memory email) public
@@ -133,18 +120,6 @@ contract SpaceManager is TogethersSpace {
     TGTCPrice = price;
   }
 
-  function lockSpaces(uint[] memory space) public
-  {
-    for (uint i = 0; i < space.length; i++)
-    {
-      if (getApproved(space[i]) == msg.sender && space[i] != powerToken1 && space[i] != powerToken2)
-      {
-        lockedSpace[space[i]] = msg.sender;
-        _burn(space[i]);
-      }
-    }
-  }
-
   function buySpaces(uint[] memory space) public
   {
     require(isApproved[mappSociety[msg.sender].ID] == true);
@@ -152,7 +127,7 @@ contract SpaceManager is TogethersSpace {
     uint k;
     for (uint i = 0; i < space.length; i++)
     {
-      if (_exists(space[i]) == false && i > getLastSpaceID())
+      if (_exists(space[i]) == false)
       {
         mappSpacesList[msg.sender].push(space[i]);
         k=k+1;

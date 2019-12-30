@@ -1,9 +1,5 @@
 pragma solidity ^0.5.0;
 
-interface External1 {
-  function ID() external returns (uint);
-}
-
 interface External2 {
   function balanceOf(address who) external view returns (uint256);
   function burnExternal(address account, uint256 value) external returns (bool);

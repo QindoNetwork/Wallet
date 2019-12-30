@@ -5,34 +5,26 @@ import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import CryptoCard from './CryptoCard';
 
-export class CloseDemand extends React.Component {
+export class ProfileData extends React.Component {
 
-  static navigationOptions = { title: "My demand" };
-
-  state = { loading: 0, size: 0 };
-
-  async componentDidMount() {
-    const { navigation } = this.props
-    const ERC20s = navigation.getParam('ERC20s')
-    const groupID = navigation.getParam('groupID')
-    const togethers = navigation.getParam('togethers')
-    const address = navigation.getParam('address')
-    try {
-      const size = 0
-      if ( ERC20s.length !== 0 ) {
-      for ( var i = 0; i < ERC20s.length; i++ ) {
-         given = parseInt ( await togethers.getCryptoGiven(groupID, address, i),10)
-        if ( given !== 0 ) {
-          size = size + 1
-        }
-      }
-      }
-      this.setState({ size,
-                      loading: 1 })
-    } catch (e) {
-    GeneralActions.notify(e.message, 'long');
-    }
-  }
+  static navigationOptions = ({ navigation }) => ({
+        title: "profile",
+        headerRight: (
+            <HeaderIcon
+                name='person-add'
+                size='medium'
+                color={colors.white}
+                onPress={() => navigation.navigate('AddProfile',
+                {
+                  groupID : navigation.getParam('item').id,
+                  togethers : navigation.getParam('togethers'),
+                  address : navigation.getParam('address'),
+                  ERC20s : navigation.getParam('ERC20s'),
+                  gasParam : navigation.getParam('gasParam'),
+                })
+              } />
+        )
+    })
 
   async demand() {
     const togethers = this.props.navigation.getParam('togethers')
@@ -63,22 +55,12 @@ export class CloseDemand extends React.Component {
     const price = gasParam[6].price
     const ethPrice = (price * limit) / 1000000000
 
-
-    if (this.state.loading === 0){
-
-      return(
-
-          <ActivityIndicator size="large"/>
-    )
-
-    }
-
     return(
 
       <View style={styles.container}>
       <View style={styles.buttonsContainer}>
           <Button
-            children="Close"
+            children="Remove user"
             onPress={() => {
                 Alert.alert(
                   'SignUp',
@@ -94,7 +76,7 @@ export class CloseDemand extends React.Component {
           <FlatList
             data={ERC20s}
             renderItem={({ item }) => (
-            <CryptoCard togethers={togethers} address={address} item={item} groupID={groupID}/>
+            <CryptoCard togethers={togethers} from={address} to={this.props.item.id} item={item} groupID={groupID}/>
           )}
       />
     </View>

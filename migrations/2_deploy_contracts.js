@@ -1,7 +1,5 @@
 const TogethersCoin = artifacts.require("./token/TogethersCoin");
 const Togethers = artifacts.require("./main/Togethers");
-const SpaceManager = artifacts.require("./main/SpaceManager");
-const SpaceOperator = artifacts.require("./main/SpaceOperator");
 const Control = artifacts.require("./main/Control");
 
 const gasLimit = 9000000
