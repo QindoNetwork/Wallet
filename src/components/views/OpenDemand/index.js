@@ -6,43 +6,83 @@ import React, { Component, Fragment } from 'react'
 import { colors, measures } from '@common/styles';
 import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 
-export class Demand extends Component {
+export class OpenDemand extends Component {
 
-  static navigationOptions = { title: "Add group" };
+  static navigationOptions = { title: "Open demand" };
+
+   async submitForm(value) {
+    Keyboard.dismiss();
+    const togethers = this.props.navigation.getParam('togethers')
+    const groupID = this.props.navigation.getParam('groupID')
+    try {
+      let overrides = {
+          gasLimit: this.props.navigation.getParam('gasParam')[5].limit,
+          gasPrice: this.props.navigation.getParam('gasParam')[5].price * 1000000000,
+          //nonce: 123,
+          //value: utils.parseEther('1.0'),
+          };
+          await togethers.askForFunds(groupID,value,overrides)
+          GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
+    } catch (e) {
+      GeneralActions.notify(e.message, 'long');
+    }
+  }
 
   render() {
 
-      return (
-          <View style={styles.container}>
+    const maxPrice =  this.props.navigation.getParam('gasParam')[5].limit * this.props.navigation.getParam('gasParam')[5].price
+
+    const EthPrice = maxPrice / 1000000000
+
+    return (
+        <Formik
+          initialValues={{ description: '' }}
+          onSubmit={values => {
+            Alert.alert(
+              'SignUp',
+              'It will cost maximum ' + EthPrice + ' ETH',
+              [
+                  { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                  { text: 'Confirm', onPress: () => this.submitForm(values.description) }
+              ],
+              { cancelable: false }
+          );
+          }
+        }
+          validationSchema={yup.object().shape({
+            description: yup
+              .string()
+              .min(2)
+              .max(300)
+              .required(),
+          })}
+        >
+          {({handleChange, values, errors, setFieldTouched, touched, isValid, handleSubmit}) => (
+            <Fragment>
+              <View style={styles.container}>
               <View style={styles.body}>
-                <View style={styles.buttonsContainer}>
-                  <Button
-                    children="Create a new group"
-                    onPress={() => this.props.navigation.navigate('CreateGroup',
-                    {
-                      togethers : this.props.navigation.getParam('togethers'),
-                      address : this.props.navigation.getParam('address'),
-                      gasParam : this.props.navigation.getParam('gasParam'),
-                    })}
-                    />
-                </View>
-                <View style={styles.buttonsContainer}>
-                  <Button
-                    children="Apply for an existing one"
-                    onPress={() => this.props.navigation.navigate('AskGroup',
-                    {
-                      togethers : this.props.navigation.getParam('togethers'),
-                      address : this.props.navigation.getParam('address'),
-                      gasParam : this.props.navigation.getParam('gasParam'),
-                    })}
-                    />
-                </View>
-              </View>
-          </View>
+                <TextInput
+                  style={styles.input}
+                  value={values.description}
+                  onChangeText={handleChange('description')}
+                  onBlur={() => setFieldTouched('description')}
+                  placeholder="description"
+                  />
+                  <View style={styles.buttonsContainer}>
+                      <Button
+                          children="DEMAND"
+                          disabled={!isValid}
+                          onPress={handleSubmit}/>
+                  </View>
+                  </View>
+                  </View>
+            </Fragment>
+          )}
+        </Formik>
       );
+
+
   }
-
-
 }
 
 const styles = StyleSheet.create({

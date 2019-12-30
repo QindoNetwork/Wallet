@@ -16,7 +16,7 @@ export class AddProfile extends Component {
     const groupID = this.props.navigation.getParam('groupID')
     const address = this.props.navigation.getParam('address')
     try {
-        this.setState({ owner:  parseInt ( await togethers.getUsersLength(groupID,address),10),
+        this.setState({ owner:  parseInt ( await togethers.isOwner(groupID,address),10),
                         loading: 1})
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
@@ -25,7 +25,7 @@ export class AddProfile extends Component {
 
    async submitForm(value) {
     Keyboard.dismiss();
-    let togethers = this.props.navigation.getParam('togethers')
+    const togethers = this.props.navigation.getParam('togethers')
     const groupID = this.props.navigation.getParam('groupID')
     try {
       let overrides = {

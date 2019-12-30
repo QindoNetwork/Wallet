@@ -13,8 +13,8 @@ export const primary                = darkGray;
 export const secondary              = white;
 
 export const statusBar              = primary;
-export const defaultBackground      = lightGray;
-export const splashscreenBackground = darkGray;
+export const defaultBackground      = white;
+export const splashscreenBackground = secondary;
 
 export const success                = green;
 export const successAlt             = lightGreen;

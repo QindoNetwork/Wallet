@@ -155,7 +155,7 @@ contract Togethers is Administration {
     emit payDemand(mappProfileInGroup[groupID][_publicKey].DemandID);
   }
 
-  function withdrawFunds(uint groupID) public returns (uint)
+  function withdrawFunds(uint groupID) public
   {
     require(mappProfileInGroup[groupID][msg.sender].open == true);
     mappProfileInGroup[groupID][msg.sender].open = false;
@@ -178,7 +178,6 @@ contract Togethers is Administration {
     }
     emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID);
     nbDemands -= 1;
-    return bonus;
   }
 
   function getBonus() private returns (uint)

@@ -32,12 +32,13 @@ const navigator = createStackNavigator(
     Crypto: { screen: Views.Crypto },
     MyProfile: { screen: Views.MyProfile },
     Pay: { screen: Views.Pay },
-    ProfileData: { screen: Views.ProfileData },
     Profiles: { screen: Views.Profiles },
     Register: { screen: Views.Register },
     Groups: { screen: Views.Groups },
     Login: { screen: Views.Login },
     AddGroup: { screen: Views.AddGroup },
+    OpenDemand: { screen: Views.OpenDemand },
+    CloseDemand: { screen: Views.CloseDemand },
 
   },
   {

@@ -24,7 +24,7 @@ contract Control is Ownable {
     uint gasLimit;
   }
 
-  constructor(address _tgts) public {
+  constructor() public {
     mappFunctionToGasParameters[0].functionName = "ask";
     mappFunctionToGasParameters[0].gasPrice = 5;
     mappFunctionToGasParameters[0].gasLimit = 500000;
@@ -42,17 +42,17 @@ contract Control is Ownable {
     mappFunctionToGasParameters[4].gasLimit = 500000;
     mappFunctionToGasParameters[5].functionName = "askForFunds";
     mappFunctionToGasParameters[5].gasPrice = 5;
-    mappFunctionToGasParameters[5].gasLimit = 1500000;
+    mappFunctionToGasParameters[5].gasLimit = 150000;
     mappFunctionToGasParameters[6].functionName = "withdrawFunds";
     mappFunctionToGasParameters[6].gasPrice = 5;
     mappFunctionToGasParameters[6].gasLimit = 1500000;
     mappFunctionToGasParameters[7].functionName = "removeMember";
-    mappFunctionToGasParameters[7].gasLimit = 5000000;
+    mappFunctionToGasParameters[7].gasLimit = 50000;
     mappFunctionToGasParameters[7].gasPrice = 5;
     mappFunctionToGasParameters[8].functionName = "quitGroup";
     mappFunctionToGasParameters[8].gasPrice = 5;
-    mappFunctionToGasParameters[8].gasLimit = 5000000;
-    mappFunctionToGasParameters[8].functionName = "defaultTransaction";
+    mappFunctionToGasParameters[8].gasLimit = 50000;
+    mappFunctionToGasParameters[9].functionName = "defaultTransaction";
     mappFunctionToGasParameters[9].gasPrice = 5;
     mappFunctionToGasParameters[9].gasLimit = 41000;
     mappFunctionToGasParameters[10].functionName = "createPassword";
@@ -62,8 +62,13 @@ contract Control is Ownable {
     mappFunctionToGasParameters[11].gasPrice = 5;
     mappFunctionToGasParameters[11].gasLimit = 1500000;
     owner = msg.sender;
-    //TGTSToken = External3(0xDDeB78A777c424F74B95c2AD29ec7B9a20802116);
-    TGTSToken = External3(_tgts);
+  }
+
+  function setPowerToken(address _tgts) public onlyOwner
+  {
+    require(powerToken == address(0));
+    powerToken = _tgts;
+    TGTSToken = External3(powerToken);
   }
 
   function createPassword(string memory _password) public

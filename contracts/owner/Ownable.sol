@@ -51,10 +51,5 @@ contract Ownable {
     return uint(keccak256(bytes(_char)));
   }
 
-  function close() public onlyOwner { //onlyOwner is custom modifier
-    require(TGTSToken.getApproved(powerToken1) == msg.sender && TGTSToken.getApproved(powerToken2) == msg.sender);
-    selfdestruct(owner);  // `owner` is the owners address
-  }
-
 
 }

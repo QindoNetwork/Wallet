@@ -27,14 +27,13 @@ export class Profiles extends React.Component {
         )
     })
 
-      state = { loading: 0, profiles: [], length: 0, owner: 0, active: 0, ethPrice:0 };
+      state = { loading: 0, profiles: [], length: 0, owner: 0, active: 0 };
 
       async componentDidMount() {
         const togethers = this.props.navigation.getParam('togethers')
         const address = this.props.navigation.getParam('address')
         const item = this.props.navigation.getParam('item')
         const gasParam = this.props.navigation.getParam('gasParam')
-        const ethPrice = (gasParam[8].price * gasParam[8].limit) / 1000000000
         let profiles = []
         try {
           this.setState({ length:  parseInt ( await togethers.getUsersLength(item.id),10),
@@ -49,7 +48,7 @@ export class Profiles extends React.Component {
               }
             }
           }
-          this.setState({ profiles, loading: 1, ethPrice})
+          this.setState({ profiles, loading: 1 })
         } catch (e) {
         GeneralActions.notify(e.message, 'long');
         }
@@ -67,20 +66,21 @@ export class Profiles extends React.Component {
           GeneralActions.notify("The owner have to be the last of the group to quit", 'long');
         }
         let overrides = {
-        gasLimit: limit,
+        gasLimit: limit * this.state.length,
         gasPrice: price * 1000000000,
         //nonce: 123,
         //value: utils.parseEther('1.0'),
         };
       try {
         await togethers.quitGroup(groupID,overrides)
+        GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
       }
   }
 
       render() {
-        const { profiles, length, owner, active, ethPrice } = this.state
+        const { profiles, length, owner, active } = this.state
         const { navigation } = this.props
         const groupID = navigation.getParam('item').id
         const togethers = navigation.getParam('togethers')
@@ -88,6 +88,9 @@ export class Profiles extends React.Component {
         const ERC20s = this.props.navigation.getParam('ERC20s')
         const gasParam = this.props.navigation.getParam('gasParam')
         const max = navigation.getParam('max')
+        const limit = gasParam[8].limit
+        const price = gasParam[8].price
+        const ethPrice = (price * limit * this.state.length) / 1000000000
 
 
         if (this.state.loading === 0){
@@ -129,7 +132,7 @@ export class Profiles extends React.Component {
               onPress={() => {
                   Alert.alert(
                     'SignUp',
-                    'It will cost maximum ' + this.state.ethPrice + ' ETH',
+                    'It will cost maximum ' + ethPrice + ' ETH',
                     [
                         { text: 'Cancel', onPress: () => {}, style: 'cancel' },
                         { text: 'Confirm', onPress: () => this.onPressQuit(groupID,togethers,price,limit) }

@@ -6,7 +6,7 @@ import React, { Component, Fragment } from 'react'
 import { colors, measures } from '@common/styles';
 import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 
-export class Demand extends Component {
+export class CloseDemand extends Component {
 
   static navigationOptions = { title: "Add group" };
 
