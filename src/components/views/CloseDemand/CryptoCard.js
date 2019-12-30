@@ -22,7 +22,7 @@ export default class CryptoCard extends React.Component {
   balance(value) {
       const { item } = this.props
       if(item.name === 'Ethers') {
-        return Number(WalletUtils.formatBalance(value));
+        return Number(value/1000000000)
       }
       else return Number(value/(10*item.decimals))
   }

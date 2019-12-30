@@ -58,7 +58,8 @@ export class CloseDemand extends React.Component {
     const ERC20s = navigation.getParam('ERC20s')
     const gasParam = navigation.getParam('gasParam')
     const address = navigation.getParam('address')
-    const address = navigation.getParam('togethers')
+    const togethers = navigation.getParam('togethers')
+    const groupID = navigation.getParam('groupID')
     const limit = gasParam[6].limit
     const price = gasParam[6].price
     const ethPrice = (price * limit * this.state.size) / 1000000000
