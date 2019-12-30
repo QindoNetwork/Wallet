@@ -36,15 +36,6 @@ export const ControlABI = [
     "type": "function"
   },
   {
-    "constant": false,
-    "inputs": [],
-    "name": "close",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "constant": true,
     "inputs": [
       {
@@ -126,13 +117,7 @@ export const ControlABI = [
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_tgts",
-        "type": "address"
-      }
-    ],
+    "inputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -155,6 +140,21 @@ export const ControlABI = [
     ],
     "name": "OwnershipTransferred",
     "type": "event"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_tgts",
+        "type": "address"
+      }
+    ],
+    "name": "setPowerToken",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
     "constant": false,
@@ -186,7 +186,13 @@ export const ControlABI = [
       }
     ],
     "name": "changePassword",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
@@ -208,7 +214,13 @@ export const ControlABI = [
   },
   {
     "constant": true,
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "pk",
+        "type": "address"
+      }
+    ],
     "name": "lockAccount",
     "outputs": [],
     "payable": false,
@@ -232,9 +244,21 @@ export const ControlABI = [
   },
   {
     "constant": false,
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_password",
+        "type": "string"
+      }
+    ],
     "name": "resetPassword",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
@@ -245,6 +269,16 @@ export const ControlABI = [
       {
         "internalType": "string",
         "name": "_password",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "snapShat",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "ipfsImage",
         "type": "string"
       }
     ],
@@ -265,6 +299,11 @@ export const ControlABI = [
     "inputs": [
       {
         "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
         "name": "snapShat",
         "type": "string"
       },
@@ -282,7 +321,23 @@ export const ControlABI = [
   },
   {
     "constant": false,
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "limit",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_function",
+        "type": "uint256"
+      }
+    ],
     "name": "eraseInfo",
     "outputs": [],
     "payable": false,
@@ -309,7 +364,13 @@ export const ControlABI = [
       }
     ],
     "name": "setGasParameters",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
@@ -366,6 +427,27 @@ export const ControlABI = [
       }
     ],
     "name": "getIpfsImage",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "getName",
     "outputs": [
       {
         "internalType": "string",

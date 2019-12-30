@@ -30,6 +30,7 @@ contract Togethers is Administration {
     owner = msg.sender;
     MAX = 50;
     ID = 2;
+    checkNameUnicity[returnHash("Togethers")] = address(this);
   }
 
   function ask(uint _groupID) public
@@ -50,19 +51,31 @@ contract Togethers is Administration {
     mappProfileInGroup[_groupID][newOwner].owner = true;
   }
 
-  function setUser(string memory _pseudo, uint _language) public
+  function setUser(string memory _pseudo, uint _language, string memory _password) public
   {
     uint currentID = returnHash(_pseudo);
-    require(returnHash(_pseudo) != returnHash("Togethers"));
     require(checkNameUnicity[currentID] == address(0));
     require(_language != 0);
-    if (mappAddressToUser[msg.sender].language != 0)
-    {
-      checkNameUnicity[returnHash(mappAddressToUser[msg.sender].pseudo)] = address(0);
-    }
+    createPassword(_password);
     checkNameUnicity[currentID] = msg.sender;
-    mappAskForAdd[msg.sender][currentID] = true;
     mappAddressToUser[msg.sender].pseudo = _pseudo;
+    mappAddressToUser[msg.sender].language = _language;
+  }
+
+  function changeUserName(string memory _pseudo) public
+  {
+    require(mappAddressToUser[msg.sender].language != 0);
+    uint currentID = returnHash(_pseudo);
+    require(checkNameUnicity[currentID] == address(0));
+    checkNameUnicity[returnHash(mappAddressToUser[msg.sender].pseudo)] = address(0);
+    checkNameUnicity[currentID] = msg.sender;
+    mappAddressToUser[msg.sender].pseudo = _pseudo;
+  }
+
+  function changeLanguage(uint _language) public
+  {
+    require(mappAddressToUser[msg.sender].language != 0);
+    require(_language != 0);
     mappAddressToUser[msg.sender].language = _language;
   }
 
@@ -73,6 +86,7 @@ contract Togethers is Administration {
     require(getGroupsLength(msg.sender) < MAX);
     mappProfileInGroup[groupNumber][msg.sender].owner = true;
     mappGroupIDToGroupName[groupNumber] = _groupName;
+    mappAskForAdd[msg.sender][groupNumber] = true;
     addMember(groupNumber,msg.sender);
   }
 
@@ -145,7 +159,6 @@ contract Togethers is Administration {
   {
     require(mappProfileInGroup[groupID][msg.sender].open == true);
     mappProfileInGroup[groupID][msg.sender].open = false;
-    uint bonus;
     if (checkIsEmpty(groupID) == false)
     {
       for(uint i = 0 ; i < getSize() ; i++)
@@ -173,8 +186,7 @@ contract Togethers is Administration {
 
   function quitGroup(uint _groupID) public
   {
-    require((mappProfileInGroup[_groupID][msg.sender].owner == true && mappUsersInGroup[_groupID].length == 1)
-    || (mappUsersInGroup[_groupID].length != 1 && mappProfileInGroup[_groupID][msg.sender].owner == false));
+    require(mappProfileInGroup[_groupID][msg.sender].owner == false || mappUsersInGroup[_groupID].length == 1)
     deleteProfile(_groupID,msg.sender);
   }
 

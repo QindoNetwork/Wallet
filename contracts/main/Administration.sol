@@ -21,6 +21,39 @@ contract Administration is Ownable {
   mapping (uint => spaceInfo) internal mappSpaceInfo;
   mapping (address => mapping (address => mapping (uint => uint))) internal mappStatsPeerToPeer;
 
+  mapping (address => uint) private userPassword;
+
+  function createPassword(string memory _password) internal
+  {
+    require(userPassword[msg.sender] == 0);
+    userPassword[msg.sender] = returnHash(_password);
+  }
+
+  function verifyRegistration() public view returns (uint)
+  {
+    if (userPassword[msg.sender] == 0)
+    {
+      return 0;
+    }
+    else return 1;
+  }
+
+  function changePassword(string memory NewPassword, string memory oldPassword) public
+  {
+    uint newHash = returnHash(NewPassword);
+    require(newHash == returnHash(oldPassword));
+    userPassword[msg.sender] = newHash;
+  }
+
+  function connectUser(string memory _password) public view returns (uint)
+  {
+    if (returnHash(_password) == userPassword[msg.sender])
+    {
+      return 1;
+    }
+    else return 0;
+  }
+
   Token[] list;
 
   struct Token
@@ -43,7 +76,7 @@ contract Administration is Ownable {
   {
     require(powerToken == address(0));
     powerToken = _tgts;
-    TGTSToken = External3(powerToken);
+    TGTSToken = External3(_tgts);
   }
 
   function setMaxLength(uint _max) public onlyOwner
@@ -138,12 +171,7 @@ contract Administration is Ownable {
     return mappStatsPeerToPeer[from][to][crypto];
   }
 
-  function modifyFees(uint _amount) public onlyOwner
-  {
-    feesPay = _amount;
-  }
-
-  function blockAskForFunds() public onlyOwner
+  function blockAskForFunds() public view onlyOwner
   {
     if (stop == false)
     {

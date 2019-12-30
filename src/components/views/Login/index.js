@@ -44,8 +44,7 @@ export class Login extends React.Component {
               //nonce: 123,
               //value: utils.parseEther('1.0'),
               };
-          await this.props.navigation.getParam('togethers').setUser(pseudo, 1, overrides1);
-          await this.props.navigation.getParam('control').createPassword(password1, overrides2);
+          await this.props.navigation.getParam('togethers').setUser(pseudo, 1, password1, overrides1);
           this.exit()
           GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
         }
@@ -96,7 +95,7 @@ export class Login extends React.Component {
         const { password } = this.state;
         try {
           this.setState({
-                          result : parseInt (await this.props.navigation.getParam('control').connectUser(password),10)
+                          result : parseInt (await this.props.navigation.getParam('togethers').connectUser(password),10)
                         })
         } catch (e) {
             GeneralActions.notify(e.message, 'long');
@@ -113,7 +112,7 @@ export class Login extends React.Component {
 
       try {
         this.setState({
-                        registered: parseInt (await this.props.navigation.getParam('control').verifyRegistration(),10),
+                        registered: parseInt (await this.props.navigation.getParam('togethers').verifyRegistration(),10),
                         loading: 1
                       })
       } catch (e) {

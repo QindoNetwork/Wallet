@@ -173,8 +173,8 @@ contract TogethersCoin is Ownable {
          emit Transfer(account, address(0), value);
      }
 
-     function mintExternal() public returns (bool) onlyOwner {
-        uint value = MAX.sub(totalSupply())
+     function mintExternal() public onlyOwner returns (bool) {
+        uint value = MAX.sub(totalSupply());
         _mint(owner, value);
         return true;
       }

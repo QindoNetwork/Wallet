@@ -35,7 +35,7 @@ export class Groups extends React.Component {
     }
 
     renderBody(){
-      const { address, togethers, ERC20s, gasParam, max  } = this.props;
+      const { address, togethers, ERC20s, gasParam, max, groupID  } = this.props;
       return      (
         <View style={styles.container}>
           <FlatList

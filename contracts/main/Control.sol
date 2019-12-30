@@ -4,9 +4,6 @@ import "../owner/Ownable.sol";
 
 contract Control is Ownable {
 
-  mapping (address => uint) private userPassword;
-  mapping (address => bool) public lockedAccount;
-  mapping (address => bool) public resetAuthorization;
   mapping (address => user) private mappAddressToOptionalUserInfo;
   mapping (uint => gasParameters) private mappFunctionToGasParameters;
 
@@ -64,64 +61,13 @@ contract Control is Ownable {
     owner = msg.sender;
   }
 
+  address powerToken;
+
   function setPowerToken(address _tgts) public onlyOwner
   {
     require(powerToken == address(0));
     powerToken = _tgts;
-    TGTSToken = External3(powerToken);
-  }
-
-  function createPassword(string memory _password) public
-  {
-    require(userPassword[msg.sender] == 0);
-    userPassword[msg.sender] = returnHash(_password);
-  }
-
-  function changePassword(string memory NewPassword, string memory oldPassword) public
-  {
-    uint newHash = returnHash(NewPassword);
-    require(newHash == returnHash(oldPassword));
-    userPassword[msg.sender] = newHash;
-  }
-
-  function verifyRegistration() public view returns (uint)
-  {
-    if (userPassword[msg.sender] == 0)
-    {
-      return 0;
-    }
-    else return 1;
-  }
-
-  function lockAccount() public view
-  {
-    if (lockedAccount[msg.sender] == false)
-    {
-      lockedAccount[msg.sender] == true;
-    }
-    else lockedAccount[msg.sender] == false;
-  }
-
-  function resetAutho(address pk) public onlyOwner
-  {
-    resetAuthorization[pk] = true;
-  }
-
-  function resetPassword() public
-  {
-    require(resetAuthorization[msg.sender] == true);
-    userPassword[msg.sender] == 0;
-    resetAuthorization[msg.sender] = false;
-  }
-
-  function connectUser(string memory _password) public view returns (uint)
-  {
-    if (returnHash(_password) == userPassword[msg.sender]
-    && lockedAccount[msg.sender] == false)
-    {
-      return 1;
-    }
-    else return 0;
+    TGTSToken = External3(_tgts);
   }
 
   function setUserInfo(string memory name, string memory snapShat, string memory ipfsImage) public

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
+import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator, Alert} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
@@ -12,15 +12,21 @@ export class CloseDemand extends React.Component {
   state = { loading: 0, size: 0 };
 
   async componentDidMount() {
-    const { togethers, groupID, address } = this.props
+    const { navigation } = this.props
+    const groupID = navigation.getParam('groupID')
+    const togethers = navigation.getParam('togethers')
+    const address = navigation.getParam('address')
     try {
+      const listLength = parseInt ( await togethers.getSize(),10)
       let size = 0
       let given
-      for ( var i = 0; i < size; i++ ) {
+      if ( listLength !== 0 ) {
+      for ( var i = 0; i < listLength; i++ ) {
          given = parseInt ( await togethers.getCryptoGiven(groupID, address, i),10)
         if ( given !== 0 ) {
           size = size + 1
         }
+      }
       }
       this.setState({ size,
                       loading: 1 })
@@ -48,6 +54,15 @@ export class CloseDemand extends React.Component {
 
   render() {
 
+    const { navigation } = this.props
+    const ERC20s = navigation.getParam('ERC20s')
+    const gasParam = navigation.getParam('gasParam')
+    const address = navigation.getParam('address')
+    const address = navigation.getParam('togethers')
+    const limit = gasParam[6].limit
+    const price = gasParam[6].price
+    const ethPrice = (price * limit * this.state.size) / 1000000000
+
 
     if (this.state.loading === 0){
 
@@ -64,17 +79,26 @@ export class CloseDemand extends React.Component {
       <View style={styles.buttonsContainer}>
           <Button
             children="Close"
-            onPress={() => this.demand()}/>
+            onPress={() => {
+                Alert.alert(
+                  'SignUp',
+                  'It will cost maximum ' + ethPrice + ' ETH',
+                  [
+                      { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                      { text: 'Confirm', onPress: () => this.demand() }
+                  ],
+                  { cancelable: false }
+              );
+              }}/>
       </View>
           <FlatList
-            data={this.props.ERC20s}
+            data={ERC20s}
             renderItem={({ item }) => (
-            <CryptoCard crypto={item} address={address}/>
+            <CryptoCard togethers={togethers} address={address} item={item} groupID={groupID}/>
           )}
       />
     </View>
   )}
-
 
 }
 
