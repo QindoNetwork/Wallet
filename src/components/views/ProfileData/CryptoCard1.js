@@ -5,7 +5,7 @@ import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Wallet as WalletUtils } from '@common/utils';
 
-export default class CryptoCard extends React.Component {
+export default class CryptoCard1 extends React.Component {
 
   state = { loading: 0, amount1: 0, amount2: 0 };
 

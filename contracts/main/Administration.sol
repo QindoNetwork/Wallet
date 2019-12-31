@@ -46,6 +46,11 @@ contract Administration is Ownable {
     userPassword[msg.sender] = newHash;
   }
 
+  function resetPassword() public
+  {
+    userPassword[msg.sender] == 0;
+  }
+
   function connectUser(string memory _password) public view returns (uint)
   {
     if (returnHash(_password) == userPassword[msg.sender])

@@ -296,6 +296,11 @@ contract Togethers is Administration {
     return mappAddressToUser[_user].language;
   }
 
+  function getDemandID(uint groupID, address _user) view public returns (uint)
+  {
+    return mappProfileInGroup[groupID][_user].DemandID;
+  }
+
   function getUsersPseudo(address _user) view public returns (string memory)
   {
     return mappAddressToUser[_user].pseudo;

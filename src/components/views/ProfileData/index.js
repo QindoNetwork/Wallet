@@ -4,7 +4,8 @@ import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { HeaderIcon } from '@components/widgets';
 import { General as GeneralActions  } from '@common/actions';
-import CryptoCard from './CryptoCard';
+import CryptoCard1 from './CryptoCard1';
+import CryptoCard2 from './CryptoCard2';
 
 export class ProfileData extends React.Component {
 
@@ -15,17 +16,31 @@ export class ProfileData extends React.Component {
                 name='person-add'
                 size='medium'
                 color={colors.white}
-                onPress={() => navigation.navigate('AddProfile',
+                onPress={() => navigation.navigate('Crypto',
                 {
-                  groupID : navigation.getParam('item').id,
-                  togethers : navigation.getParam('togethers'),
                   address : navigation.getParam('address'),
-                  ERC20s : navigation.getParam('ERC20s'),
+                  togethers : navigation.getParam('togethers'),
+                  groupID : navigation.getParam('groupID'),
                   gasParam : navigation.getParam('gasParam'),
+                  ERC20s : this.props.navigation.getParam('ERC20s')
                 })
               } />
+
         )
     })
+
+    async componentDidMount() {
+      try {
+        const { togethers, item, groupID, address } = this.props
+        if (item.key !== 0){
+          this.setState({ balance:  parseInt ( await togethers.getCryptoGiven(groupID,address,item.key),10) })
+        }
+        else this.setState({ balance:  Number(WalletUtils.formatBalance(parseInt ( await togethers.getCryptoGiven(groupID,address,item.key),10)))})
+        this.setState({ loading: 1})
+      } catch (e) {
+      GeneralActions.notify(e.message, 'long');
+      }
+    }
 
   async demand() {
     const togethers = this.props.navigation.getParam('togethers')
@@ -51,6 +66,7 @@ export class ProfileData extends React.Component {
     const gasParam = navigation.getParam('gasParam')
     const address = navigation.getParam('address')
     const togethers = navigation.getParam('togethers')
+    const profile = navigation.getParam('item')
     const groupID = navigation.getParam('groupID')
     const limit = gasParam[6].limit
     const price = gasParam[6].price
@@ -77,9 +93,15 @@ export class ProfileData extends React.Component {
           <FlatList
             data={ERC20s}
             renderItem={({ item }) => (
-            <CryptoCard togethers={togethers} from={address} to={this.props.item.id} item={item} groupID={groupID}/>
+            <CryptoCard1 togethers={togethers} from={address} to={profile.id} item={item} groupID={groupID}/>
           )}
       />
+      <FlatList
+        data={ERC20s}
+        renderItem={({ item }) => (
+        <CryptoCard2 togethers={togethers} address={address} item={item} groupID={groupID}/>
+      )}
+  />
     </View>
   )}
 

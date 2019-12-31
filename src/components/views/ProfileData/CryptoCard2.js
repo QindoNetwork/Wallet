@@ -1,24 +1,21 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import { inject, observer } from 'mobx-react';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Wallet as WalletUtils } from '@common/utils';
 
-@inject('prices', 'wallet')
-@observer
-
-export default class CryptoCard extends React.Component {
+export default class CryptoCard2 extends React.Component {
 
   state = { loading: 0, balance: 0 };
 
   async componentDidMount() {
     try {
-      if (this.props.crypto.key !== 0){
-        this.setState({ balance:  parseInt ( await this.props.crypto.instance.balanceOf(this.props.address),10) })
+      const { togethers, item, groupID, address } = this.props
+      if (item.key !== 0){
+        this.setState({ balance:  parseInt ( await togethers.getCryptoGiven(groupID,address,item.key),10) })
       }
-      else this.setState({ balance:  Number(WalletUtils.formatBalance(this.props.wallet.item.balance))})
+      else this.setState({ balance:  Number(WalletUtils.formatBalance(parseInt ( await togethers.getCryptoGiven(groupID,address,item.key),10)))})
       this.setState({ loading: 1})
     } catch (e) {
     GeneralActions.notify(e.message, 'long');
@@ -26,9 +23,9 @@ export default class CryptoCard extends React.Component {
   }
 
   balance(value) {
-      const { crypto } = this.props
-      if(crypto.name !== 'Ethers') {
-        return Number(value/(10*crypto.decimals))
+      const { item } = this.props
+      if(item.name !== 'Ethers') {
+        return Number(value/(10*item.decimals))
       }
       else return value
   }
@@ -50,8 +47,8 @@ export default class CryptoCard extends React.Component {
                         <Icon name='cash' size='large'/>
                     </View>
                     <View style={styles.middleColumn}>
-                        <Text style={styles.title}>{this.props.crypto.symbol}</Text>
-                        <Text style={styles.description}>{this.props.crypto.name}</Text>
+                        <Text style={styles.title}>{this.props.item.symbol}</Text>
+                        <Text style={styles.description}>{this.props.item.name}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>

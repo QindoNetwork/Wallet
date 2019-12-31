@@ -12,7 +12,8 @@ export class AskGroup extends Component {
 
   async submitForm(value) {
     Keyboard.dismiss();
-    let togethers = this.props.navigation.getParam('togethers')
+    const togethers = this.props.navigation.getParam('togethers')
+    const address = this.props.navigation.getParam('address')
     try {
       let overrides = {
           gasLimit: this.props.navigation.getParam('gasParam')[0].limit,
@@ -24,9 +25,17 @@ export class AskGroup extends Component {
           {
             GeneralActions.notify('this group does not exists', 'long');
           }
-          //if (await togethers.verifyGroupAsked(value) === 1)
-          //{
-          //  GeneralActions.notify('you already asked', 'long');
+          if (await togethers.getGroupsLength(address) >= togethers.MAX())
+          {
+            GeneralActions.notify('you have too manay groups', 'long');
+          }
+          if (await togethers.getUsersLength(value) >= togethers.MAX())
+          {
+            GeneralActions.notify('there is too many members in this group', 'long');
+          }
+        //  if (await togethers.verifyGroupAsked(value) === 1)
+        //  {
+        //    GeneralActions.notify('you already asked', 'long');
         //  }
           await togethers.ask(value,overrides)
           GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');

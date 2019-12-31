@@ -35,7 +35,7 @@ export class AddProfile extends Component {
           //nonce: 123,
           //value: utils.parseEther('1.0'),
           };
-          if(await parseInt ( togethers.verifyUserAvailability(values),10) === 0)
+          if(await parseInt ( togethers.verifyUserAvailability(value),10) === 0)
           {
             GeneralActions.notify("You cannot add this profile or he did not ask to apply", 'long');
           }
