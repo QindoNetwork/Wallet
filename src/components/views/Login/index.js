@@ -76,18 +76,12 @@ export class Login extends React.Component {
 
     exit() {
         const { navigation } = this.props
-        const feesPay = navigation.getParam('feesPay')
-        const feesAsk = navigation.getParam('feesAsk')
         const gasParam = navigation.getParam('gasParam')
         const address = navigation.getParam('address')
         const erc20s = navigation.getParam('erc20s')
-        const control = navigation.getParam('control')
         const togethers = navigation.getParam('togethers')
-        const max = navigation.getParam('max')
-        const wallet = navigation.getParam('wallet')
         const myPseudo = navigation.getParam('myPseudo')
-
-        navigation.navigate('WalletDetails', { myPseudo, wallet, feesAsk, feesPay, max, gasParam, address, erc20s, control, togethers, replaceRoute: true });
+        navigation.navigate('WalletDetails', { myPseudo, gasParam, address, erc20s, togethers, replaceRoute: true });
     }
 
     async onPressContinueLogin() {

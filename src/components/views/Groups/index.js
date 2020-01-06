@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, RefreshControl, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
+import { TouchableOpacity, RefreshControl, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { Button } from '@components/widgets';
 import { inject, observer } from 'mobx-react';
 import { colors, measures } from '@common/styles';
@@ -11,7 +11,7 @@ import GroupCard from './GroupCard';
 
 export class Groups extends React.Component {
 
-    state = {loading: 0, groups: [], length: 0, myPseudo: '' };
+    state = {loading: 0, groups: [], length: 0, myPseudo: '', max: 0 };
 
    componentDidMount() {
       this.update()
@@ -21,7 +21,8 @@ export class Groups extends React.Component {
       const { togethers, address } = this.props
       let groups = []
       try {
-        this.setState({ length:  parseInt ( await togethers.getGroupsLength(address),10)})
+        this.setState({ length:  parseInt ( await togethers.getGroupsLength(address),10),
+                        max:  parseInt ( await togethers.MAX(),10)})
         if ( this.state.length !== 0 ) {
           for ( var i = 0; i < this.state.length; i++ ) {
             groups.push({   id:  parseInt (await togethers.getGroupID(i),10),
@@ -35,7 +36,8 @@ export class Groups extends React.Component {
     }
 
     renderBody(){
-      const { address, togethers, ERC20s, gasParam, max, groupID  } = this.props;
+      const { address, togethers, ERC20s, gasParam, groupID  } = this.props;
+      const { max  } = this.state;
       return      (
         <View style={styles.container}>
           <FlatList

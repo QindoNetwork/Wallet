@@ -40,6 +40,7 @@ export class AddProfile extends Component {
             GeneralActions.notify("You cannot add this profile or he did not ask to apply", 'long');
           }
           await togethers.createProfile(groupID,value,overrides)
+          this.props.navigation.navigate('WalletDetails', { wallet: wallet.item, replaceRoute: true, leave: 3 });
           GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
     } catch (e) {
         GeneralActions.notify(e.message, 'long');

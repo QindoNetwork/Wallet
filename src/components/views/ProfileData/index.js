@@ -32,8 +32,8 @@ export class ProfileData extends React.Component {
     async componentDidMount() {
       try {
         const { togethers, item, groupID, address } = this.props
-        if (item.key !== 0){
-          this.setState({ balance:  parseInt ( await togethers.getCryptoGiven(groupID,address,item.key),10) })
+        if (item.id !== 0){
+          this.setState({ balance:  parseInt ( await togethers.getCryptoGiven(groupID,address,item.id),10) })
         }
         else this.setState({ balance:  Number(WalletUtils.formatBalance(parseInt ( await togethers.getCryptoGiven(groupID,address,item.key),10)))})
         this.setState({ loading: 1})
@@ -42,17 +42,18 @@ export class ProfileData extends React.Component {
       }
     }
 
-  async demand() {
+  async removeMember() {
     const togethers = this.props.navigation.getParam('togethers')
+    const address = this.props.navigation.getParam('address')
     const groupID = this.props.navigation.getParam('groupID')
     try {
       let overrides = {
-          gasLimit: this.props.navigation.getParam('gasParam')[6].limit,
-          gasPrice: this.props.navigation.getParam('gasParam')[6].price * 1000000000,
+          gasLimit: this.props.navigation.getParam('gasParam')[7].limit,
+          gasPrice: this.props.navigation.getParam('gasParam')[7].price * 1000000000,
           //nonce: 123,
           //value: utils.parseEther('1.0'),
           };
-          await togethers.withdrawFunds(groupID,overrides)
+          await togethers.removeMember(address,groupID,overrides)
           GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
     } catch (e) {
       GeneralActions.notify(e.message, 'long');
@@ -68,40 +69,50 @@ export class ProfileData extends React.Component {
     const togethers = navigation.getParam('togethers')
     const profile = navigation.getParam('item')
     const groupID = navigation.getParam('groupID')
-    const limit = gasParam[6].limit
-    const price = gasParam[6].price
+    const limit = gasParam[7].limit
+    const price = gasParam[7].price
     const ethPrice = (price * limit) / 1000000000
 
     return(
+      <View>
 
       <View style={styles.container}>
-      <View style={styles.buttonsContainer}>
-          <Button
-            children="Remove user"
-            onPress={() => {
-                Alert.alert(
-                  'SignUp',
-                  'It will cost maximum ' + ethPrice + ' ETH',
-                  [
-                      { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                      { text: 'Confirm', onPress: () => this.demand() }
-                  ],
-                  { cancelable: false }
-              );
-              }}/>
-      </View>
+      <Text style={styles.message}>
+      Stats
+      </Text>
           <FlatList
             data={ERC20s}
             renderItem={({ item }) => (
             <CryptoCard1 togethers={togethers} from={address} to={profile.id} item={item} groupID={groupID}/>
           )}
       />
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.message}>
+        Current demand
+        </Text>
       <FlatList
         data={ERC20s}
         renderItem={({ item }) => (
         <CryptoCard2 togethers={togethers} address={address} item={item} groupID={groupID}/>
       )}
   />
+  </View>
+  <View style={styles.buttonsContainer}>
+      <Button
+        children="Remove user"
+        onPress={() => {
+            Alert.alert(
+              'SignUp',
+              'It will cost maximum ' + ethPrice + ' ETH',
+              [
+                  { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                  { text: 'Confirm', onPress: () => this.removeMember() }
+              ],
+              { cancelable: false }
+          );
+          }}/>
+  </View>
     </View>
   )}
 

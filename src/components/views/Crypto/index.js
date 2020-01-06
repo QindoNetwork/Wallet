@@ -9,7 +9,7 @@ export class Crypto extends React.Component {
 
     render() {
 
-      const { control, max, togethers, navigation, ERC20s, gasParam, address, type } = this.props
+      const { togethers, navigation, ERC20s, gasParam, address, type } = this.props
 
       return(
 
@@ -20,7 +20,7 @@ export class Crypto extends React.Component {
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('SendCoins', { control, max, crypto:item.instance, togethers, ERC20s, gasParam, address, type })}>
+                onPress={() => navigation.navigate('SendCoins', { crypto:item.instance, togethers, ERC20s, gasParam, address, type })}>
                   <CryptoCard crypto={item} address={address}/>
               </TouchableOpacity>
             )}

@@ -64,22 +64,47 @@ export class ConfirmTransaction extends React.Component {
         const togethers = this.props.navigation.getParam('togethers')
         const groupID = this.props.navigation.getParam('groupID')
         wallet.isLoading(true);
+        let txn
+        let overrides
         try {
-            if(type === 1) {
-                let overrides = {
+            if(togethers) {
+              if(crypto !== 0) {
+                overrides = {
                     gasLimit: gasParam[11].limit,
                     gasPrice: gasParam[11].price * 1000000000,
                     //nonce: 123,
                     //value: utils.parseEther('1.0'),
                     };
-              if(crypto !== 0) {
-                await ERC20s.instance.increaseAllowance(address,this.state.value)
+                await ERC20s.instance.increaseAllowance(address,this.state.value, overrides)
               }
-              const txn = await togethers.payForFunds(address,groupID,this.state.value,crypto,overrides);
+              overrides = {
+                  gasLimit: gasParam[11].limit,
+                  gasPrice: gasParam[11].price * 1000000000,
+                  //nonce: 123,
+                  //value: utils.parseEther('1.0'),
+                  };
+              txn = await togethers.payForFunds(address,groupID,this.state.value,crypto,overrides);
               this.setState({ txn });
             }
             else {
-            const txn = await TransactionActions.sendTransaction(wallet.item, this.state.txn);
+            if(crypto !== 0) {
+              overrides = {
+                  gasLimit: gasParam[11].limit,
+                  gasPrice: gasParam[11].price * 1000000000,
+                  //nonce: 123,
+                  //value: utils.parseEther('1.0'),
+                  };
+                txn = await ERC20s.instance.transfer(address,this.state.value, overrides)
+            }
+            else {
+              overrides = {
+                  gasLimit: gasParam[11].limit,
+                  gasPrice: gasParam[11].price * 1000000000,
+                  //nonce: 123,
+                  //value: utils.parseEther('1.0'),
+                  };
+            txn = await TransactionActions.sendTransaction(wallet.item, this.state.txn, overrides);
+            }
             this.setState({ txn });
             }
         } catch (error) {

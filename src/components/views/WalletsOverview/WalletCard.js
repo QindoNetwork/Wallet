@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
@@ -30,17 +30,17 @@ export default class WalletCard extends React.Component {
     render() {
         const { onPress, wallet } = this.props;
         return (
-            <TouchableWithoutFeedback onPress={onPress}>
+            <TouchableOpacity onPress={onPress}>
                 <View style={styles.container}>
-                    <View style={styles.leftColumn}>
-                        <Icon name='wallet' size='large' type='ent' />
-                    </View>
+                <View style={styles.leftColumn}>
+                <Icon name='wallet' size='large' type='ent' />
+                </View>
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{wallet.name}</Text>
                         <Text style={styles.description}>{wallet.description}</Text>
                     </View>
                 </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         );
     }
 }
@@ -54,17 +54,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: measures.defaultPadding,
         marginBottom: measures.defaultMargin,
-        height: 70
+        height: 150
     },
     leftColumn: {
-        width: 40,
-        alignItems: 'flex-start',
+        flex: 1,
         justifyContent: 'center',
-        color: colors.grey
+        color: colors.lightGray
     },
     middleColumn: {
         flex: 2,
-        color: colors.grey
+        justifyContent: 'center',
+        color: colors.darkGray
     },
     rightColumn: {
         flex: 1,
@@ -72,13 +72,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     title: {
-        fontSize: measures.fontSizeMedium,
-        color: colors.grey,
+        fontSize: measures.fontSizeLarge,
+        color: colors.darkGray,
         fontWeight: 'bold'
     },
     description: {
-        fontSize: measures.fontSizeMedium - 2,
-        color: colors.grey
+        fontSize: measures.fontSizeLarge - 2,
+        color: colors.darkGray
     },
     balanceContainer: {
         alignItems: 'flex-end',
@@ -86,13 +86,13 @@ const styles = StyleSheet.create({
         flexDirection: 'column'
     },
     balance: {
-        fontSize: measures.fontSizeMedium - 1,
-        color: colors.grey,
+        fontSize: measures.fontSizeLarge - 1,
+        color: colors.darkGray,
         marginLeft: measures.defaultMargin,
         fontWeight: 'bold'
     },
     fiatbalance: {
-        fontSize: measures.fontSizeMedium - 3,
+        fontSize: measures.fontSizeLarge - 3,
         color: colors.grey,
         marginLeft: measures.defaultMargin
     },

@@ -139,7 +139,10 @@ const styles = StyleSheet.create({
     itemContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        backgroundColor: colors.white,
+        borderRadius: 10,
+        height: 60
     },
     icon: {
         width: 24,
@@ -147,6 +150,7 @@ const styles = StyleSheet.create({
         margin: measures.defaultMargin
     },
     itemTitle: {
-        fontSize: measures.fontSizeMedium
+        fontSize: measures.fontSizeMedium,
+        backgroundColor: colors.grey,
     }
 });

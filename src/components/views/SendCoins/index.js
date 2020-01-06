@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Calculator } from '@components/widgets';
 import { colors } from '@common/styles';
+import { General as GeneralActions  } from '@common/actions';
 
 export class SendCoins extends React.Component {
 
@@ -12,16 +13,18 @@ export class SendCoins extends React.Component {
     onPressContinue() {
       const { navigation } = this.props
       const gasParam = navigation.getParam('gasParam')
+      const balance = navigation.getParam('balance')
       const address = navigation.getParam('address')
       const erc20s = navigation.getParam('erc20s')
-      const control = navigation.getParam('control')
       const togethers = navigation.getParam('togethers')
       const crypto = navigation.getParam('crypto')
-      const max = navigation.getParam('max')
       const type = navigation.getParam('type')
         const { amount } = this.refs.calc;
         if (!amount) return;
-        this.props.navigation.navigate('SelectDestination', { crypto, amount, gasParam, address, erc20s, control, togethers, max, type });
+        if (amount < balance) {
+        GeneralActions.notify("You don t have enough balance", 'long');
+        }
+        this.props.navigation.navigate('SelectDestination', { crypto, amount, gasParam, address, erc20s, togethers, type });
     }
 
     render() {

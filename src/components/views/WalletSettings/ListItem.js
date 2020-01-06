@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { measures } from '@common/styles';
 
 export default ({ children, onPress }) => (
-    <TouchableWithoutFeedback onPress={onPress}>
+    <TouchableOpacity onPress={onPress}>
         <View style={styles.container} children={children} />
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
         height: 64,
         alignItems: 'stretch',
         justifyContent: 'center',
-        padding: measures.defaultPadding
+        padding: measures.defaultPadding,
+        borderRadius: 10,
     }
 });

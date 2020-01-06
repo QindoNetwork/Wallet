@@ -23,6 +23,7 @@ export class CreateGroup extends Component {
           //value: utils.parseEther('1.0'),
           };
       await togethers.createGroup(value,overrides)
+      this.props.navigation.navigate('WalletDetails', { wallet: wallet.item, replaceRoute: true, leave: 3 });
       GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
     } catch (e) {
         GeneralActions.notify(e.message, 'long');

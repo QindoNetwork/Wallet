@@ -38,6 +38,7 @@ export class AskGroup extends Component {
         //    GeneralActions.notify('you already asked', 'long');
         //  }
           await togethers.ask(value,overrides)
+          this.props.navigation.navigate('WalletDetails', { wallet: wallet.item, replaceRoute: true, leave: 3 });
           GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
     } catch (e) {
         GeneralActions.notify(e.message, 'long');

@@ -48,9 +48,15 @@ export default class CryptoCard1 extends React.Component {
                         <Text style={styles.title}>{this.props.item.symbol}</Text>
                         <Text style={styles.description}>{this.balance(this.state.amount1).toFixed(3)}</Text>
                     </View>
-                    <View style={styles.rightColumn}>
+                    <View style={styles.middleColumn}>
+                        <Text style={styles.title}>/</Text>
+                    </View>
+                    <View style={styles.middleColumn}>
                         <Text style={styles.title}>{this.props.item.symbol}</Text>
                         <Text style={styles.description}>{this.balance(this.state.amount2).toFixed(3)}</Text>
+                    </View>
+                    <View style={styles.rightColumn}>
+                        <Icon name='cash' size='large'/>
                     </View>
                 </View>
         );
@@ -74,12 +80,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     middleColumn: {
-        flex: 2
+        flex: 1
     },
     rightColumn: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        flexDirection: 'row'
+      width: 40,
+      alignItems: 'flex-start',
+      justifyContent: 'center'
     },
     title: {
         fontSize: measures.fontSizeMedium,
