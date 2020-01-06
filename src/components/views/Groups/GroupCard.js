@@ -74,7 +74,7 @@ export default class GroupsCard extends React.Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'stretch',
-        backgroundColor: colors.red,
+        backgroundColor: colors.white,
         flexDirection: 'row',
         borderRadius: 10,
         alignItems: 'center',
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: measures.fontSizeMedium,
-        color: colors.white,
+        color: colors.gray,
         fontWeight: 'bold'
     },
     description: {
@@ -111,13 +111,13 @@ const styles = StyleSheet.create({
     },
     balance: {
         fontSize: measures.fontSizeMedium - 1,
-        color: colors.white,
+        color: colors.gray,
         marginLeft: measures.defaultMargin,
         fontWeight: 'bold'
     },
     fiatbalance: {
         fontSize: measures.fontSizeMedium - 3,
-        color: colors.white,
+        color: colors.gray,
         marginLeft: measures.defaultMargin
     },
     next: {

@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         flexDirection: 'row',
         alignItems: 'center',
+        borderRadius: 10,
         paddingHorizontal: measures.defaultPadding,
         marginBottom: measures.defaultMargin,
         height: 70

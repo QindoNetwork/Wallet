@@ -28,3 +28,5 @@ export * from './Login';
 export * from './AddGroup';
 export * from './OpenDemand';
 export * from './CloseDemand';
+export * from './ComingSoon';
+export * from './CryptoType1';

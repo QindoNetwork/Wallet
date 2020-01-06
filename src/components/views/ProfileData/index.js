@@ -13,16 +13,16 @@ export class ProfileData extends React.Component {
         title: "profile",
         headerRight: (
             <HeaderIcon
-                name='person-add'
+                name='cash'
                 size='medium'
                 color={colors.white}
-                onPress={() => navigation.navigate('Crypto',
+                onPress={() => navigation.navigate('CryptoType1',
                 {
                   address : navigation.getParam('address'),
                   togethers : navigation.getParam('togethers'),
                   groupID : navigation.getParam('groupID'),
                   gasParam : navigation.getParam('gasParam'),
-                  ERC20s : this.props.navigation.getParam('ERC20s')
+                  ERC20s : navigation.getParam('ERC20s')
                 })
               } />
 

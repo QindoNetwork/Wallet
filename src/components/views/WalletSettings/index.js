@@ -28,6 +28,13 @@ export class WalletSettings extends React.Component {
         this.props.navigation.push('ShowPrivateKey', { wallet });
     }
 
+    ComingSoon() {
+        const { wallet } = this.props;
+        this.props.navigation.push('ComingSoon', { wallet });
+    }
+
+
+
     confirmRemoveWallet() {
         Alert.alert(
             'Remove wallet',
@@ -71,7 +78,7 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Change wallet</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.confirmRemoveWallet()}>
+                <ListItem onPress={() => this.ComingSoon()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
                             <Icon name='finger-print' />
@@ -79,7 +86,7 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Change password</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.confirmRemoveWallet()}>
+                <ListItem onPress={() => this.ComingSoon()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
                             <Icon name='logo-snapchat' />
@@ -87,12 +94,12 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Change snapshat</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.confirmRemoveWallet()}>
+                <ListItem onPress={() => this.ComingSoon()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
                             <Icon name='photo' />
                         </View>
-                        <Text style={styles.itemTitle}>change personal image</Text>
+                        <Text style={styles.itemTitle}>Change personal image</Text>
                     </View>
                 </ListItem>
                 <ListItem onPress={() => this.confirmExportPK()}>
@@ -103,12 +110,20 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Export private hey</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.confirmExportPK()}>
+                <ListItem onPress={() => this.ComingSoon()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
                             <Icon name='shirt' />
                         </View>
                         <Text style={styles.itemTitle}>Change user name</Text>
+                    </View>
+                </ListItem>
+                <ListItem onPress={() => this.ComingSoon()}>
+                    <View style={styles.itemContainer}>
+                        <View style={styles.icon}>
+                            <Icon name='shirt' />
+                        </View>
+                        <Text style={styles.itemTitle}>Change advertisements language</Text>
                     </View>
                 </ListItem>
             </ScrollView>

@@ -39,6 +39,8 @@ const navigator = createStackNavigator(
     AddGroup: { screen: Views.AddGroup },
     OpenDemand: { screen: Views.OpenDemand },
     CloseDemand: { screen: Views.CloseDemand },
+    ComingSoon: { screen: Views.ComingSoon },
+    CryptoType1: { screen: Views.CryptoType1 },
 
   },
   {

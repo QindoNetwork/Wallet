@@ -68,7 +68,8 @@ export class SelectDestination extends React.Component {
         const togethers = navigation.getParam('togethers')
         const max = navigation.getParam('max')
         const crypto = navigation.getParam('crypto')
-        const address = this.state.address
+        const address = navigation.getParam('address')
+        const type = navigation.getParam('type')
 
         try {
           if (1 === 2) {
@@ -85,7 +86,7 @@ export class SelectDestination extends React.Component {
             GeneralActions.notify(e.message, 'long');
         }
       //  navigation.navigate('WalletDetails', { max, gasParam, address, erc20s, control, togethers, replaceRoute: true });
-      this.props.navigation.navigate('ConfirmTransaction', { crypto, address: id, amount });
+      this.props.navigation.navigate('ConfirmTransaction', { crypto, address: id, amount, type });
 
     }
 
@@ -141,7 +142,7 @@ export class SelectDestination extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: colors.white,
+        backgroundColor: colors.lightGray,
         flex: 1,
         padding: measures.defaultPadding
     },

@@ -1,60 +1,61 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { inject, observer } from 'mobx-react';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
+import { Wallet as WalletUtils } from '@common/utils';
 
-export default class ProfilesCard extends React.Component {
+@inject('prices', 'wallet')
+@observer
 
-  state = {active: 0, owner: 0, loading: 0 };
+export default class CryptoCard extends React.Component {
 
-   async componentDidMount() {
+  state = { loading: 0, balance: 0 };
 
-     const { togethers, address, profile, groupID } = this.props
-     try {
-       this.setState({ owner:   parseInt ( await togethers.isOwner(groupID,profile.id),10),
-                       active:  parseInt ( await togethers.isOpen(groupID,profile.id),10),
-                       loading: 1 })
-     } catch (e) {
-     GeneralActions.notify(e.message, 'long');
-     }
-   }
+  async componentDidMount() {
+    try {
+      if (this.props.crypto.key !== 0){
+        this.setState({ balance:  parseInt ( await this.props.crypto.instance.balanceOf(this.props.address),10) })
+      }
+      else this.setState({ balance:  Number(WalletUtils.formatBalance(this.props.wallet.item.balance))})
+      this.setState({ loading: 1})
+    } catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    }
+  }
+
+  balance(value) {
+      const { crypto } = this.props
+      if(crypto.name !== 'Ethers') {
+        return Number(value/(10*crypto.decimals))
+      }
+      else return value
+  }
 
     render() {
-        const { profile } = this.props;
-        const { active, owner, loading } = this.state
-        var label1 = ''
-        var label2 = ''
-        if ( active === 1) {
-          label2 = "active"
-        }
-        if ( owner === 1) {
-          label1 = "owner"
-        }
 
-        if (loading === 0){
+        if (this.state.loading === 0){
 
           return(
 
-          <View style={styles.container}>
-            <View style={styles.body}>
               <ActivityIndicator size="large"/>
-            </View>
-          </View>
-        )}
+        )
+
+        }
 
         return (
-            <View style={styles.container}>
+                <View style={styles.container}>
                     <View style={styles.leftColumn}>
-                        <Icon name='person' size='large'/>
+                        <Icon name='cash' size='large'/>
                     </View>
                     <View style={styles.middleColumn}>
-                        <Text style={styles.title}>{profile.name}</Text>
-                        <Text style={styles.description}>{label1}</Text>
+                        <Text style={styles.title}>{this.props.crypto.symbol}</Text>
+                        <Text style={styles.description}>{this.props.crypto.name}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{label2}</Text>
+                            <Text style={styles.balance}>{this.balance(this.state.balance).toFixed(3)}</Text>
                         </View>
                     </View>
                 </View>

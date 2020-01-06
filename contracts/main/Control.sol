@@ -58,6 +58,9 @@ contract Control is Ownable {
     mappFunctionToGasParameters[11].functionName = "payForFunds";
     mappFunctionToGasParameters[11].gasPrice = 5;
     mappFunctionToGasParameters[11].gasLimit = 1500000;
+    mappFunctionToGasParameters[12].functionName = "ERC20allowance";
+    mappFunctionToGasParameters[12].gasPrice = 5;
+    mappFunctionToGasParameters[12].gasLimit = 45000;
     owner = msg.sender;
   }
 

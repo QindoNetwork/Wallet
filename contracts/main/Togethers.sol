@@ -296,9 +296,9 @@ contract Togethers is Administration {
     return mappAddressToUser[_user].language;
   }
 
-  function getDemandID(uint groupID, address _user) view public returns (uint)
+  function getLastSpaceIDForAddress(address user) view public returns (uint)
   {
-    return mappProfileInGroup[groupID][_user].DemandID;
+    return mapAddressToLastSpaceID[user];
   }
 
   function getUsersPseudo(address _user) view public returns (string memory)
@@ -322,11 +322,6 @@ contract Togethers is Administration {
       return 1;
     }
     return 0;
-  }
-
-  function getDemandID(uint groupID, address _user) view public returns (uint)
-  {
-    return mappProfileInGroup[groupID][_user].DemandID;
   }
 
 }

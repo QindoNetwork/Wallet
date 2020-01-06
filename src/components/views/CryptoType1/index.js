@@ -5,11 +5,57 @@ import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import CryptoCard from './CryptoCard';
 
-export class Crypto extends React.Component {
+export class CryptoType1 extends React.Component {
+
+  state = { loading: 0, active: 0 };
+
+  async componentDidMount() {
+    const address = this.props.navigation.getParam('address')
+    const togethers = this.props.navigation.getParam('togethers')
+    const groupID = this.props.navigation.getParam('groupID')
+    try {
+      this.setState({ active:   parseInt ( await togethers.isOpen(groupID,address),10),
+                      loading: 1})
+    } catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    }
+  }
 
     render() {
 
-      const { control, max, togethers, navigation, ERC20s, gasParam, address, type } = this.props
+      const address = this.props.navigation.getParam('address')
+      const ERC20s = this.props.navigation.getParam('ERC20s')
+      const gasParam = this.props.navigation.getParam('gasParam')
+      const togethers = this.props.navigation.getParam('togethers')
+      const groupID = this.props.navigation.getParam('groupID')
+      const type = 1
+
+      if (this.state.loading === 0){
+
+        return(
+
+        <View style={styles.container}>
+          <View style={styles.body}>
+            <ActivityIndicator size="large"/>
+          </View>
+        </View>
+
+      )
+
+      }
+
+      if (this.state.active === 0){
+
+        return(
+
+          <View style={styles.container}>
+          <View style={styles.body}>
+              <Text>There is no demand</Text>
+              </View>
+          </View>
+
+      )
+      }
 
       return(
 
@@ -20,7 +66,7 @@ export class Crypto extends React.Component {
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('SendCoins', { control, max, crypto:item.instance, togethers, ERC20s, gasParam, address, type })}>
+                onPress={() => navigation.navigate('SendCoins', { control, max, crypto:item.instance, togethers, ERC20s, gasParam, address,type })}>
                   <CryptoCard crypto={item} address={address}/>
               </TouchableOpacity>
             )}

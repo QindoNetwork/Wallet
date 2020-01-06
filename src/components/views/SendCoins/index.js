@@ -5,6 +5,10 @@ import { colors } from '@common/styles';
 
 export class SendCoins extends React.Component {
 
+  static navigationOptions = ({ navigation, screenProps }) => ({
+      title: 'Amount'
+  });
+
     onPressContinue() {
       const { navigation } = this.props
       const gasParam = navigation.getParam('gasParam')
@@ -14,9 +18,10 @@ export class SendCoins extends React.Component {
       const togethers = navigation.getParam('togethers')
       const crypto = navigation.getParam('crypto')
       const max = navigation.getParam('max')
+      const type = navigation.getParam('type')
         const { amount } = this.refs.calc;
         if (!amount) return;
-        this.props.navigation.navigate('SelectDestination', { crypto, amount, gasParam, address, erc20s, control, togethers, max });
+        this.props.navigation.navigate('SelectDestination', { crypto, amount, gasParam, address, erc20s, control, togethers, max, type });
     }
 
     render() {
