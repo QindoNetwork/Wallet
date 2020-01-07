@@ -73,12 +73,12 @@ export class WalletSettings extends React.Component {
                 <ListItem onPress={() => this.props.navigation.navigate('WalletsOverview', { replaceRoute: true })}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
-                            <Icon name='walk' size='large' type='ent' />
+                            <Icon name='wallet' type='ent' />
                         </View>
                         <Text style={styles.itemTitle}>Change wallet</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.ComingSoon()}>
+                <ListItem onPress={() => this.props.navigation.navigate('ChangePassword')}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
                             <Icon name='finger-print' />
@@ -89,7 +89,7 @@ export class WalletSettings extends React.Component {
                 <ListItem onPress={() => this.ComingSoon()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
-                            <Icon name='logo-snapchat' />
+                            <Icon name='shirt' />
                         </View>
                         <Text style={styles.itemTitle}>Change snapshat</Text>
                     </View>
@@ -97,7 +97,7 @@ export class WalletSettings extends React.Component {
                 <ListItem onPress={() => this.ComingSoon()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
-                            <Icon name='photo' />
+                            <Icon name='shirt' />
                         </View>
                         <Text style={styles.itemTitle}>Change personal image</Text>
                     </View>
@@ -110,7 +110,7 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Export private hey</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.ComingSoon()}>
+                <ListItem onPress={() => this.props.navigation.navigate('ChangePseudonyme')}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
                             <Icon name='shirt' />
@@ -123,7 +123,7 @@ export class WalletSettings extends React.Component {
                         <View style={styles.icon}>
                             <Icon name='shirt' />
                         </View>
-                        <Text style={styles.itemTitle}>Change advertisements language</Text>
+                        <Text style={styles.itemTitle}>Change advertisments language</Text>
                     </View>
                 </ListItem>
             </ScrollView>

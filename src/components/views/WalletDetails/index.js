@@ -9,7 +9,7 @@ export class WalletDetails extends React.Component {
     });
 
     tabs = [
-        { id: 'extract', label: 'Extract', icon: 'list', content: <WalletExtract {...this.props}/> },
+        { id: 'extract', label: 'Historic', icon: 'list', content: <WalletExtract {...this.props}/> },
         { id: 'receive', label: 'Receive', icon: 'qrcode', type: 'fa', content: <ReceiveCoins {...this.props} /> },
         { id: 'send', label: 'Send', icon: 'cube-send', type: 'mdc', content: <Crypto address = {this.props.navigation.getParam('address')} togethers = {this.props.navigation.getParam('togethers')} navigation = {this.props.navigation}
                                                                                       ERC20s = {this.props.navigation.getParam('erc20s')} gasParam = {this.props.navigation.getParam('gasParam')}/> },

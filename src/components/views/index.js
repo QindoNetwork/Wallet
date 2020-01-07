@@ -30,3 +30,5 @@ export * from './OpenDemand';
 export * from './CloseDemand';
 export * from './ComingSoon';
 export * from './CryptoType1';
+export * from './ChangePseudonyme';
+export * from './ChangePassword';

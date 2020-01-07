@@ -5,6 +5,9 @@ import { Button } from '@components/widgets';
 import React, { Component, Fragment } from 'react'
 import { colors, measures } from '@common/styles';
 import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
+import { inject, observer } from 'mobx-react';
+@inject('prices', 'wallet')
+@observer
 
 export class OpenDemand extends Component {
 
@@ -22,6 +25,7 @@ export class OpenDemand extends Component {
           //value: utils.parseEther('1.0'),
           };
           await togethers.askForFunds(groupID,value,overrides)
+          this.props.navigation.navigate('WalletDetails', { wallet: this.props.swallet.item, replaceRoute: true, leave: 3 });
           GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
     } catch (e) {
       GeneralActions.notify(e.message, 'long');

@@ -5,6 +5,9 @@ import { Button } from '@components/widgets';
 import React, { Component, Fragment } from 'react'
 import { colors, measures } from '@common/styles';
 import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
+import { inject, observer } from 'mobx-react';
+@inject('prices', 'wallet')
+@observer
 
 export class AddProfile extends Component {
 
@@ -40,7 +43,7 @@ export class AddProfile extends Component {
             GeneralActions.notify("You cannot add this profile or he did not ask to apply", 'long');
           }
           await togethers.createProfile(groupID,value,overrides)
-          this.props.navigation.navigate('WalletDetails', { wallet: wallet.item, replaceRoute: true, leave: 3 });
+          this.props.navigation.navigate('WalletDetails', { wallet: this.props.wallet.item, replaceRoute: true, leave: 3 });
           GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
     } catch (e) {
         GeneralActions.notify(e.message, 'long');

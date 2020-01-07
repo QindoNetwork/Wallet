@@ -9,27 +9,22 @@ import { Wallet as WalletUtils } from '@common/utils';
 import * as yup from 'yup'
 import { Formik } from 'formik'
 
-export class Login extends React.Component {
+export class ChangePassword extends React.Component {
 
     static navigationOptions = { title: 'Login' };
 
-    state = { loading: 0, registered: 0, password: '', result: 0 };
-
-    async onPressContinueSignUp(password1,password2,pseudo) {
+    async onPressContinue(password1,password2,oldPassword) {
       Keyboard.dismiss();
       var isOK = 1;
       try {
-        if (!pseudo) {
+        const result = parseInt (await this.props.navigation.getParam('togethers').connectUser(oldPassword),10)
+        if (result === 0) {
           isOK = 0;
-          GeneralActions.notify("Pseudo required", 'long');
+          GeneralActions.notify("Password not good", 'long');
         }
         if (password1 !== password2) {
           isOK = 0;
           GeneralActions.notify("Passwords not equals", 'long');
-        }
-        if ( parseInt(await this.props.navigation.getParam('togethers').verifyUserAvailability(pseudo)) !== 1 ) {
-          isOK = 0;
-          GeneralActions.notify("pseudonyme already exists", 'long');
         }
         if ( isOK === 1 ) {
           let overrides = {
@@ -38,7 +33,7 @@ export class Login extends React.Component {
               //nonce: 123,
               //value: utils.parseEther('1.0'),
               };
-          await this.props.navigation.getParam('togethers').setUser(pseudo, 1, password1, overrides);
+          await this.props.navigation.getParam('togethers').changePassword(password1, overrides);
           this.exit()
           GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
         }
@@ -57,58 +52,13 @@ export class Login extends React.Component {
         navigation.navigate('WalletDetails', { myPseudo, gasParam, address, erc20s, togethers, replaceRoute: true });
     }
 
-    async onPressContinueLogin() {
-        Keyboard.dismiss();
-        const { password } = this.state;
-        try {
-          this.setState({
-                          result : parseInt (await this.props.navigation.getParam('togethers').connectUser(password),10)
-                        })
-        } catch (e) {
-            GeneralActions.notify(e.message, 'long');
-        }
-        if (this.state.result === 1) {
-          this.exit()
-        }
-        else {
-          GeneralActions.notify("Password not good", 'long');
-        }
-    }
 
-    async componentDidMount() {
+    render() {
 
-      try {
-        this.setState({
-                        registered: parseInt (await this.props.navigation.getParam('togethers').verifyRegistration(),10),
-                        loading: 1
-                      })
-      } catch (e) {
-          GeneralActions.notify(e.message, 'long');
-      }
-    }
+      const balance =  Number(WalletUtils.formatBalance(this.props.navigation.getParam('address')))
+      const maxPrice =  this.props.navigation.getParam('gasParam')[2].limit * this.props.navigation.getParam('gasParam')[2].price
+      const EthPrice = maxPrice / 1000000000
 
-    renderLogin() {
-
-
-        return ( <View style={styles.container}>
-          <View style={styles.body}>
-
-              <Text style={styles.message}>Password</Text>
-              <TextInput
-                  style={styles.input}
-                  secureTextEntry
-                  underlineColorAndroid="transparent"
-                  onChangeText={password => this.setState({ password })} />
-          </View>
-          <View style={styles.buttonsContainer}>
-              <Button
-                  children="Next"
-                  onPress={() => this.onPressContinueLogin()}/>
-          </View>
-      </View>)
-    }
-
-    renderNewWallet(EthPrice) {
       return (
         <Formik
           initialValues={{ password1: '', password2: '', pseudo: '' }}
@@ -118,24 +68,24 @@ export class Login extends React.Component {
                 'It will cost maximum ' + EthPrice + ' ETH',
                 [
                     { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                    { text: 'Confirm', onPress: () => this.onPressContinueSignUp(values.password1,values.password2,values.pseudo) }
+                    { text: 'Confirm', onPress: () => this.onPressContinue(values.password1,values.password2,values.oldPassword) }
                 ],
                 { cancelable: false }
             );
             }
           }
           validationSchema={yup.object().shape({
+            oldPassword: yup
+              .string()
+              .min(2, 'Too Short!')
+              .max(30, 'Too Long!')
+              .required('Required'),
             password1: yup
               .string()
               .min(2, 'Too Short!')
               .max(30, 'Too Long!')
               .required('Required'),
             password2: yup
-              .string()
-              .min(2, 'Too Short!')
-              .max(30, 'Too Long!')
-              .required('Required'),
-            pseudo: yup
               .string()
               .min(2, 'Too Short!')
               .max(30, 'Too Long!')
@@ -146,14 +96,14 @@ export class Login extends React.Component {
             <Fragment>
         <View style={styles.container}>
           <View style={styles.body}>
-            <Text style={styles.message}>Choose a pseudonyme</Text>
+            <Text style={styles.message}>Old password</Text>
             <TextInput
               style={styles.input}
-              value={values.pseudo}
-              onChangeText={handleChange('pseudo')}
-              placeholder="pseudo"
+              value={values.oldPassword}
+              onChangeText={handleChange('oldPassword')}
+              placeholder="old password"
               />
-            <Text style={styles.message}>Password</Text>
+            <Text style={styles.message}>New Password</Text>
             <TextInput
               style={styles.input}
               value={values.password1}
@@ -181,61 +131,6 @@ export class Login extends React.Component {
 )}
 </Formik>
   )
-}
-
-    renderWalletEmpty() {
-      return (
-        <View style={styles.container}>
-        <Text style={styles.centered}>Low balance, you need ether to register (at least {EthPrice} ETH), show the code below to receive ethers and enter to the community!</Text>
-        <View style={styles.centered}>
-            <QRCode size={256} value={this.props.navigation.getParam('address')} />
-        </View>
-          <View style={styles.actions}>
-              <View style={styles.actionsBar}>
-                  {this.renderColumn('copy', 'Copy', () => this.copyToClipboard())}
-                  {this.renderColumn('share', 'Share', () => this.share())}
-              </View>
-          </View>
-      </View>
-      )
-    }
-
-
-    render() {
-
-      const balance =  Number(WalletUtils.formatBalance(this.props.navigation.getParam('address')))
-      const maxPrice =  ((this.props.navigation.getParam('gasParam')[2].limit * this.props.navigation.getParam('gasParam')[2].price)
-                        + (this.props.navigation.getParam('gasParam')[10].limit * this.props.navigation.getParam('gasParam')[10].price))
-      const EthPrice = maxPrice / 1000000000
-
-      if(this.state.loading === 0)
-      {
-        return (
-        <View style={styles.container}>
-          <View style={styles.body}>
-            <ActivityIndicator size="large"/>
-          </View>
-        </View>
-        );
-      }
-
-      if(this.state.registered === 1)
-      {
-        return (
-                this.renderLogin()
-        );
-      }
-
-      if(maxPrice * 1000000000 > balance )
-      {
-        return (
-                this.renderWalletEmpty(EthPrice)
-        );
-      }
-
-        return (
-                this.renderNewWallet(EthPrice)
-        );
     }
 
 }

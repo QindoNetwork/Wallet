@@ -62,7 +62,7 @@ export default class GroupsCard extends React.Component {
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{ length - 1 }</Text>
+                            <Text style={styles.balance}>{ length - 1 } members</Text>
                             <Text style={styles.fiatBalance}>{label2}</Text>
                         </View>
                     </View>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     },
     fiatbalance: {
         fontSize: measures.fontSizeMedium - 3,
-        color: colors.gray,
+        color: colors.darkGray,
         marginLeft: measures.defaultMargin
     },
     next: {
