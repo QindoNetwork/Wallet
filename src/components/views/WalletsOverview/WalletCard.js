@@ -33,7 +33,7 @@ export default class WalletCard extends React.Component {
             <TouchableOpacity onPress={onPress}>
                 <View style={styles.container}>
                 <View style={styles.leftColumn}>
-                <Icon name='wallet' size='large' type='ent' />
+                <Icon name='wallet' size='large' type='ent' color='white' />
                 </View>
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{wallet.name}</Text>
@@ -48,7 +48,7 @@ export default class WalletCard extends React.Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'stretch',
-        backgroundColor: colors.white,
+        backgroundColor: blue,
         borderRadius: 10,
         flexDirection: 'row',
         alignItems: 'center',
@@ -64,21 +64,23 @@ const styles = StyleSheet.create({
     middleColumn: {
         flex: 2,
         justifyContent: 'center',
-        color: colors.darkGray
+        color: colors.white
     },
     rightColumn: {
         flex: 1,
         justifyContent: 'flex-end',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        color: colors.white
     },
     title: {
         fontSize: measures.fontSizeLarge,
         color: colors.darkGray,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color: colors.white
     },
     description: {
         fontSize: measures.fontSizeLarge - 2,
-        color: colors.darkGray
+        color: colors.white
     },
     balanceContainer: {
         alignItems: 'flex-end',

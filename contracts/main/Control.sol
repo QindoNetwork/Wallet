@@ -52,7 +52,7 @@ contract Control is Ownable {
     mappFunctionToGasParameters[9].functionName = "defaultTransaction";
     mappFunctionToGasParameters[9].gasPrice = 5;
     mappFunctionToGasParameters[9].gasLimit = 41000;
-    mappFunctionToGasParameters[10].functionName = "createPassword";
+    mappFunctionToGasParameters[10].functionName = "ChangeSnapshat";
     mappFunctionToGasParameters[10].gasPrice = 5;
     mappFunctionToGasParameters[10].gasLimit = 45000;
     mappFunctionToGasParameters[11].functionName = "payForFunds";
@@ -70,7 +70,7 @@ contract Control is Ownable {
     mappFunctionToGasParameters[15].functionName = "ChangeUserName";
     mappFunctionToGasParameters[15].gasPrice = 5;
     mappFunctionToGasParameters[15].gasLimit = 45000;
-    mappFunctionToGasParameters[16].functionName = "ChangeSnapshat";
+    mappFunctionToGasParameters[16].functionName = "ERC20transfer";
     mappFunctionToGasParameters[16].gasPrice = 5;
     mappFunctionToGasParameters[16].gasLimit = 45000;
     owner = msg.sender;
@@ -113,6 +113,11 @@ contract Control is Ownable {
   function getGasLimit(uint _function) view public returns (uint)
   {
     return mappFunctionToGasParameters[_function].gasLimit;
+  }
+
+  function getGasFunctionName(uint _function) view public returns (string memory)
+  {
+    return mappFunctionToGasParameters[_function].functionName;
   }
 
   function getIpfsImage(address _user) view public returns (string memory)

@@ -4,6 +4,7 @@ import { General as GeneralActions  } from '@common/actions';
 import React, { Component, Fragment } from 'react'
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
+import { Gas as gas } from '@common/constants';
 import { Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import { inject, observer } from 'mobx-react';
 @inject('prices', 'wallet')
@@ -15,13 +16,15 @@ export class CreateGroup extends Component {
       title: 'Create a group'
   });
 
+    state = { gasParam: this.props.navigation.getParam('gasParam'), functionIndex: gas.createGroup };
+
   async submitForm(value) {
     Keyboard.dismiss();
     var togethers = this.props.navigation.getParam('togethers')
     try {
       let overrides = {
-          gasLimit: this.props.navigation.getParam('gasParam')[3].limit,
-          gasPrice: this.props.navigation.getParam('gasParam')[3].price * 1000000000,
+          gasLimit: this.state.gasParam[this.state.createGroup].limit,
+          gasPrice: this.state.gasParam[this.state.createGroup].price * 1000000000,
           //nonce: 123,
           //value: utils.parseEther('1.0'),
           };
@@ -35,7 +38,7 @@ export class CreateGroup extends Component {
 
   render() {
 
-    const maxPrice =  this.props.navigation.getParam('gasParam')[3].limit * this.props.navigation.getParam('gasParam')[3].price
+    const maxPrice =  this.state.gasParam[this.state.createGroup].limit * this.state.gasParam[this.state.createGroup].price
 
     const EthPrice = maxPrice / 1000000000
 

@@ -5,29 +5,18 @@ import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Wallet as WalletUtils } from '@common/utils';
 
-export default class CryptoCard2 extends React.Component {
+export default class ProfileCard extends React.Component {
 
-  state = { loading: 0, balance: 0 };
+  state = { loading: 0, spaceID: 0 };
 
   async componentDidMount() {
     try {
-      const { togethers, item, groupID, address } = this.props
-      if (item.key !== 0){
-        this.setState({ balance:  parseInt ( await togethers.getCryptoGiven(groupID,address,item.key),10) })
-      }
-      else this.setState({ balance:  Number(WalletUtils.formatBalance(parseInt ( await togethers.getCryptoGiven(groupID,address,item.key),10)))})
-      this.setState({ loading: 1})
+      const { togethers, spaceID } = this.props
+      this.setState({ spaceID:  await togethers.getDescription(spaceID),
+                      loading: 1 })
     } catch (e) {
     GeneralActions.notify(e.message, 'long');
     }
-  }
-
-  balance(value) {
-      const { item } = this.props
-      if(item.name !== 'Ethers') {
-        return Number(value/(10*item.decimals))
-      }
-      else return value
   }
 
     render() {
@@ -47,13 +36,7 @@ export default class CryptoCard2 extends React.Component {
                         <Icon name='cash' size='large'/>
                     </View>
                     <View style={styles.middleColumn}>
-                        <Text style={styles.title}>{this.props.item.symbol}</Text>
-                        <Text style={styles.description}>{this.props.item.name}</Text>
-                    </View>
-                    <View style={styles.rightColumn}>
-                        <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{this.balance(this.state.balance).toFixed(3)}</Text>
-                        </View>
+                        <Text style={styles.title}>{this.state.description}</Text>
                     </View>
                 </View>
         );

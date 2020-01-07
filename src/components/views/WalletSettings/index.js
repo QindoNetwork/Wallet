@@ -61,7 +61,7 @@ export class WalletSettings extends React.Component {
 
     render() {
         return (
-            <ScrollView style={styles.container}>
+            <View style={styles.container}>
                 <ListItem onPress={() => this.confirmRemoveWallet()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
@@ -126,7 +126,7 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Change advertisments language</Text>
                     </View>
                 </ListItem>
-            </ScrollView>
+            </View>
         );
     }
 }

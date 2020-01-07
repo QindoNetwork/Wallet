@@ -3,6 +3,7 @@ import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, Activit
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
+import { Gas as gas } from '@common/constants';
 import CryptoCard from './CryptoCard';
 import { inject, observer } from 'mobx-react';
 @inject('prices', 'wallet')
@@ -13,7 +14,7 @@ export class CloseDemand extends React.Component {
 
   static navigationOptions = { title: "My demand" };
 
-  state = { loading: 0, size: 0 };
+  state = { loading: 0, size: 0, gasParam: this.props.navigation.getParam('gasParam'), functionIndex: gas.withdrawFunds };
 
   async componentDidMount() {
     const { navigation } = this.props
@@ -43,13 +44,13 @@ export class CloseDemand extends React.Component {
     const groupID = this.props.navigation.getParam('groupID')
     try {
       let overrides = {
-          gasLimit: this.props.navigation.getParam('gasParam')[6].limit,
-          gasPrice: this.props.navigation.getParam('gasParam')[6].price * 1000000000,
+          gasLimit: this.state.gasParam[this.state.withdrawFunds].limit,
+          gasPrice: this.state.gasParam[this.state.withdrawFunds].price * 1000000000,
           //nonce: 123,
           //value: utils.parseEther('1.0'),
           };
           await togethers.withdrawFunds(groupID,overrides)
-          this.props.navigation.navigate('WalletDetails', { wallet: this.props.wallet.item, replaceRoute: true, leave: 3 });
+          this.props.navigation.navigate('WalletDetails', { wallet: this.props.wallet.item, replaceRoute: true, leave: 2 });
           GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
     } catch (e) {
       GeneralActions.notify(e.message, 'long');
@@ -60,12 +61,12 @@ export class CloseDemand extends React.Component {
 
     const { navigation } = this.props
     const ERC20s = navigation.getParam('ERC20s')
-    const gasParam = navigation.getParam('gasParam')
+    const gasParam = this.state.gasParam
     const address = navigation.getParam('address')
     const togethers = navigation.getParam('togethers')
     const groupID = navigation.getParam('groupID')
-    const limit = gasParam[6].limit
-    const price = gasParam[6].price
+    const limit = gasParam[this.state.withdrawFunds].limit
+    const price = gasParam[this.state.withdrawFunds].price
     const ethPrice = (price * limit) / 1000000000
 
 

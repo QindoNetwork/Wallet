@@ -3,6 +3,7 @@ import { Formik } from 'formik'
 import { General as GeneralActions  } from '@common/actions';
 import { Button } from '@components/widgets';
 import React, { Component, Fragment } from 'react'
+import { Gas as gas } from '@common/constants';
 import { colors, measures } from '@common/styles';
 import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import { inject, observer } from 'mobx-react';
@@ -13,7 +14,9 @@ export class AddProfile extends Component {
 
   static navigationOptions = { title: "Add a friend" };
 
-  state = { loading: 0, owner: 0 };
+  createProfile
+
+  state = { loading: 0, owner: 0, gasParam: this.props.navigation.getParam('gasParam'), functionIndex: gas.createProfile };
 
   async componentDidMount() {
     const groupID = this.props.navigation.getParam('groupID')
@@ -33,8 +36,8 @@ export class AddProfile extends Component {
     const groupID = this.props.navigation.getParam('groupID')
     try {
       let overrides = {
-          gasLimit: this.props.navigation.getParam('gasParam')[4].limit,
-          gasPrice: this.props.navigation.getParam('gasParam')[4].price * 1000000000,
+          gasLimit: this.state.gasParam[this.state.functionIndex].limit,
+          gasPrice: this.state.gasParam[this.state.functionIndex].price * 1000000000,
           //nonce: 123,
           //value: utils.parseEther('1.0'),
           };
@@ -52,7 +55,7 @@ export class AddProfile extends Component {
 
   render() {
 
-    const maxPrice =  this.props.navigation.getParam('gasParam')[4].limit * this.props.navigation.getParam('gasParam')[4].price
+    const maxPrice =  this.state.gasParam[this.state.functionIndex].limit * this.state.gasParam[this.state.functionIndex].price
 
     const EthPrice = maxPrice / 1000000000
 

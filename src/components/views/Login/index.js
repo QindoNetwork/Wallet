@@ -4,6 +4,7 @@ import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import QRCode from 'react-native-qrcode-svg';
+import { Gas as gas } from '@common/constants';
 import { Icon } from '@components/widgets';
 import { Wallet as WalletUtils } from '@common/utils';
 import * as yup from 'yup'
@@ -13,7 +14,7 @@ export class Login extends React.Component {
 
     static navigationOptions = { title: 'Login' };
 
-    state = { loading: 0, registered: 0, password: '', result: 0 };
+    state = { loading: 0, registered: 0, password: '', result: 0, gasParam: this.props.navigation.getParam('gasParam'), functionIndex: gas.setUser };
 
     async onPressContinueSignUp(password1,password2,pseudo) {
       Keyboard.dismiss();
@@ -33,8 +34,8 @@ export class Login extends React.Component {
         }
         if ( isOK === 1 ) {
           let overrides = {
-              gasLimit: this.props.navigation.getParam('gasParam')[2].limit,
-              gasPrice: this.props.navigation.getParam('gasParam')[2].price * 1000000000,
+              gasLimit: this.state.gasParam[this.state.functionIndex].limit,
+              gasPrice: this.state.gasParam[this.state.functionIndex].price * 1000000000,
               //nonce: 123,
               //value: utils.parseEther('1.0'),
               };
@@ -49,7 +50,7 @@ export class Login extends React.Component {
 
     exit() {
         const { navigation } = this.props
-        const gasParam = navigation.getParam('gasParam')
+        const gasParam = this.state.gasParam
         const address = navigation.getParam('address')
         const erc20s = navigation.getParam('erc20s')
         const togethers = navigation.getParam('togethers')
@@ -204,8 +205,7 @@ export class Login extends React.Component {
     render() {
 
       const balance =  Number(WalletUtils.formatBalance(this.props.navigation.getParam('address')))
-      const maxPrice =  ((this.props.navigation.getParam('gasParam')[2].limit * this.props.navigation.getParam('gasParam')[2].price)
-                        + (this.props.navigation.getParam('gasParam')[10].limit * this.props.navigation.getParam('gasParam')[10].price))
+      const maxPrice =  this.state.gasParam[this.state.functionIndex].limit * this.state.gasParam[this.state.functionIndex].price
       const EthPrice = maxPrice / 1000000000
 
       if(this.state.loading === 0)

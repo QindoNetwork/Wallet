@@ -301,6 +301,11 @@ contract Togethers is Administration {
     return mapAddressToLastSpaceID[user];
   }
 
+  function getSpaceID(uint groupID, address user) view public returns (uint)
+  {
+    return mappProfileInGroup[groupID][user];
+  }
+
   function getUsersPseudo(address _user) view public returns (string memory)
   {
     return mappAddressToUser[_user].pseudo;

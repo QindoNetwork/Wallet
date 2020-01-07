@@ -5,6 +5,10 @@ import { General as GeneralActions  } from '@common/actions';
 import { Button } from '@components/widgets';
 import ProfileCard from './ProfileCard';
 import { HeaderIcon } from '@components/widgets';
+import { Gas as gas } from '@common/constants';
+import { inject, observer } from 'mobx-react';
+@inject('prices', 'wallet')
+@observer
 
 export class Profiles extends React.Component {
 
@@ -27,13 +31,13 @@ export class Profiles extends React.Component {
         )
     })
 
-      state = { loading: 0, profiles: [], length: 0, owner: 0, active: 0 };
+      state = { loading: 0, profiles: [], length: 0, owner: 0, active: 0, gasParam: this.props.navigation.getParam('gasParam'), functionIndex: gas.quitGroup };
 
       async componentDidMount() {
         const togethers = this.props.navigation.getParam('togethers')
         const address = this.props.navigation.getParam('address')
         const item = this.props.navigation.getParam('item')
-        const gasParam = this.props.navigation.getParam('gasParam')
+        const gasParam = this.state.gasParam
         let profiles = []
         try {
           this.setState({ length:  parseInt ( await togethers.getUsersLength(item.id),10),
@@ -60,7 +64,7 @@ export class Profiles extends React.Component {
           this.props.navigation.navigate('CloseDemand',{ groupID, owner, togethers, address, ERC20s, gasParam })
         }
         else this.props.navigation.navigate('OpenDemand',{ groupID, owner, togethers, address, ERC20s, gasParam })
-  }
+      }
 
       async onPressQuit(groupID,togethers,price,limit) {
         if (this.state.owner === 1){
@@ -74,6 +78,7 @@ export class Profiles extends React.Component {
         };
       try {
         await togethers.quitGroup(groupID,overrides)
+        this.props.navigation.navigate('WalletDetails', { wallet: this.props.swallet.item, replaceRoute: true, leave: 3 });
         GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
@@ -87,10 +92,10 @@ export class Profiles extends React.Component {
         const togethers = navigation.getParam('togethers')
         const address = this.props.navigation.getParam('address')
         const ERC20s = this.props.navigation.getParam('ERC20s')
-        const gasParam = this.props.navigation.getParam('gasParam')
+        const gasParam = this.state.gasParam
         const max = navigation.getParam('max')
-        const limit = gasParam[8].limit
-        const price = gasParam[8].price
+        const limit = gasParam[this.state.functionIndex].limit
+        const price = gasParam[this.state.functionIndex].price
         const ethPrice = (price * limit * this.state.length) / 1000000000
 
 

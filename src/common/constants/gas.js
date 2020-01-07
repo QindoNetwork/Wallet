@@ -18,7 +18,7 @@ export const quitGroup = 8
 
 export const defaultTransaction = 9
 
-export const createPassword = 10
+export const changeSnapshat = 10
 
 export const payForFunds = 11
 
@@ -30,4 +30,4 @@ export const changeImage = 14
 
 export const changeUserName = 15
 
-export const changeSnapshat = 16
+export const eRC20transfer = 16

@@ -2,6 +2,7 @@ import React from 'react';
 import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
 import { Button } from '@components/widgets';
 import { measures, colors } from '@common/styles';
+import { Gas as gas } from '@common/constants';
 import { Recents as RecentsActions, Transactions as TransactionActions } from '@common/actions';
 import { Image as ImageUtils, Transaction as TransactionUtils, Wallet as WalletUtils } from '@common/utils';
 import ErrorMessage from './ErrorMessage';
@@ -14,7 +15,8 @@ export class ConfirmTransaction extends React.Component {
 
     static navigationOptions = { title: 'Confirm transaction' };
 
-    state = { txn: null, error: null, value: 0 };
+    state = { txn: null, error: null, value: 0, gasParam: this.props.navigation.getParam('gasParam'),
+              functionIndex: gas.payForFunds, functionIndex2: gas.eRC20allowance, functionIndex3: gas.defaultTransaction, functionIndex4: gas.eRC20transfer };
 
     get returnButton() {
         return { title: 'Return to wallet', action: () => this.onPressReturn() };
@@ -60,7 +62,7 @@ export class ConfirmTransaction extends React.Component {
         const value = this.props.navigation.getParam('value')
         const address = this.props.navigation.getParam('address')
         const ERC20s = this.props.navigation.getParam('ERC20s')
-        const gasParam = this.props.navigation.getParam('gasParam')
+        const gasParam = this.state.gasParam
         const togethers = this.props.navigation.getParam('togethers')
         const groupID = this.props.navigation.getParam('groupID')
         wallet.isLoading(true);
@@ -70,16 +72,16 @@ export class ConfirmTransaction extends React.Component {
             if(togethers) {
               if(crypto !== 0) {
                 overrides = {
-                    gasLimit: gasParam[11].limit,
-                    gasPrice: gasParam[11].price * 1000000000,
+                    gasLimit: gasParam[this.state.functionIndex2].limit,
+                    gasPrice: gasParam[this.state.functionIndex2].price * 1000000000,
                     //nonce: 123,
                     //value: utils.parseEther('1.0'),
                     };
                 await ERC20s.instance.increaseAllowance(address,this.state.value, overrides)
               }
               overrides = {
-                  gasLimit: gasParam[11].limit,
-                  gasPrice: gasParam[11].price * 1000000000,
+                  gasLimit: gasParam[this.state.functionIndex].limit,
+                  gasPrice: gasParam[this.state.functionIndex].price * 1000000000,
                   //nonce: 123,
                   //value: utils.parseEther('1.0'),
                   };
@@ -89,8 +91,8 @@ export class ConfirmTransaction extends React.Component {
             else {
             if(crypto !== 0) {
               overrides = {
-                  gasLimit: gasParam[11].limit,
-                  gasPrice: gasParam[11].price * 1000000000,
+                  gasLimit: gasParam[functionIndex4].limit,
+                  gasPrice: gasParam[functionIndex4].price * 1000000000,
                   //nonce: 123,
                   //value: utils.parseEther('1.0'),
                   };
@@ -98,8 +100,8 @@ export class ConfirmTransaction extends React.Component {
             }
             else {
               overrides = {
-                  gasLimit: gasParam[11].limit,
-                  gasPrice: gasParam[11].price * 1000000000,
+                  gasLimit: gasParam[this.state.functionIndex3].limit,
+                  gasPrice: gasParam[this.state.functionIndex3].price * 1000000000,
                   //nonce: 123,
                   //value: utils.parseEther('1.0'),
                   };
@@ -116,7 +118,7 @@ export class ConfirmTransaction extends React.Component {
 
     onPressReturn() {
         const { wallet } = this.props;
-        this.props.navigation.navigate('WalletDetails', { wallet: wallet.item, replaceRoute: true, leave: 2 });
+        this.props.navigation.navigate('WalletDetails', { wallet: wallet.item, gasParam, address, erc20s, togethers, replaceRoute: true, leave: 2 });
     }
 
     render() {

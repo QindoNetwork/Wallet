@@ -6,6 +6,7 @@ import React, { Component, Fragment } from 'react'
 import { colors, measures } from '@common/styles';
 import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import { inject, observer } from 'mobx-react';
+import { Gas as gas } from '@common/constants';
 @inject('prices', 'wallet')
 @observer
 
@@ -13,14 +14,16 @@ export class OpenDemand extends Component {
 
   static navigationOptions = { title: "Open demand" };
 
+  state = { gasParam: this.props.navigation.getParam('gasParam'), functionIndex: gas.askForFunds };
+
    async submitForm(value) {
     Keyboard.dismiss();
     const togethers = this.props.navigation.getParam('togethers')
     const groupID = this.props.navigation.getParam('groupID')
     try {
       let overrides = {
-          gasLimit: this.props.navigation.getParam('gasParam')[5].limit,
-          gasPrice: this.props.navigation.getParam('gasParam')[5].price * 1000000000,
+          gasLimit: this.state.gasParam[this.state.functionIndex].limit,
+          gasPrice: this.state.gasParam[this.state.functionIndex].price * 1000000000,
           //nonce: 123,
           //value: utils.parseEther('1.0'),
           };
@@ -34,7 +37,7 @@ export class OpenDemand extends Component {
 
   render() {
 
-    const maxPrice =  this.props.navigation.getParam('gasParam')[5].limit * this.props.navigation.getParam('gasParam')[5].price
+    const maxPrice =  this.state.gasParam[this.state.functionIndex].limit * this.state.gasParam[this.state.functionIndex].price
 
     const EthPrice = maxPrice / 1000000000
 
