@@ -11,6 +11,7 @@ contract Administration is Ownable {
   uint public MAX;
   uint public groupNumber;
   bool public stop;
+  uint public ERC20AllowanceExpiry;
 
   event newDemand(uint indexed ID, address indexed user);
   event payDemand(uint indexed ID);
@@ -68,6 +69,7 @@ contract Administration is Ownable {
     string symbol;
     address ID;
     uint decimal;
+    uint type;
   }
 
   struct spaceInfo
@@ -90,15 +92,25 @@ contract Administration is Ownable {
     MAX = _max;
   }
 
-  function useNewToken(string memory name, string memory symbol, address _address, uint decimal) public onlyOwner
+  function setExpiry(uint _delai) public onlyOwner
+  {
+    ERC20AllowanceExpiry = _delai;
+  }
+
+  function useNewToken(string memory name, string memory symbol, address _address, uint decimal, uint type) public onlyOwner
   {
     require(_address != address(0));
-    list.push(Token(name,symbol,_address,decimal));
+    list.push(Token(name,symbol,_address,decimal,type));
   }
 
   function getTokenAddress(uint256 index) public view returns (address)
   {
     return list[index].ID;
+  }
+
+  function getTokenType(uint256 index) public view returns (uint)
+  {
+    return list[index].type;
   }
 
   function getTokenDecimal(uint256 index) public view returns (uint)

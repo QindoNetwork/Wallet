@@ -291,9 +291,9 @@ contract Togethers is Administration {
     return mappUsersInGroup[_group].length;
   }
 
-  function getUsersLanguage(address _user) view public returns (uint)
+  function getSpaceIDLanguage(uint ID) view public returns (uint)
   {
-    return mappAddressToUser[_user].language;
+    return mappSpaceInfo[ID].language;
   }
 
   function getLastSpaceIDForAddress(address user) view public returns (uint)
@@ -303,7 +303,7 @@ contract Togethers is Administration {
 
   function getSpaceID(uint groupID, address user) view public returns (uint)
   {
-    return mappProfileInGroup[groupID][user];
+    return mappProfileInGroup[groupID][user].DemandID;
   }
 
   function getUsersPseudo(address _user) view public returns (string memory)

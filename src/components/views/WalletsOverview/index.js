@@ -84,6 +84,7 @@ export class WalletsOverview extends React.Component {
                 tokenAddress = await togethers.getTokenAddress(i)
                 erc20s.push({ name: await togethers.getTokenName(i),
                               symbol: await togethers.getTokenSymbol(i),
+                              type: await togethers.getTokenType(i),
                               decimals: parseInt(await togethers.getTokenDecimal(i),10),
                               instance: new ethers.Contract(tokenAddress, erc20ABI, connection),
                               key: i})

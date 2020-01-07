@@ -75,7 +75,7 @@ export class WalletSettings extends React.Component {
                         <View style={styles.icon}>
                             <Icon name='wallet' type='ent' />
                         </View>
-                        <Text style={styles.itemTitle}>Change wallet</Text>
+                        <Text style={styles.itemTitle}>Wallets</Text>
                     </View>
                 </ListItem>
                 <ListItem onPress={() => this.props.navigation.navigate('ChangePassword')}>
@@ -83,7 +83,7 @@ export class WalletSettings extends React.Component {
                         <View style={styles.icon}>
                             <Icon name='finger-print' />
                         </View>
-                        <Text style={styles.itemTitle}>Change password</Text>
+                        <Text style={styles.itemTitle}>Password</Text>
                     </View>
                 </ListItem>
                 <ListItem onPress={() => this.ComingSoon()}>
@@ -91,7 +91,7 @@ export class WalletSettings extends React.Component {
                         <View style={styles.icon}>
                             <Icon name='shirt' />
                         </View>
-                        <Text style={styles.itemTitle}>Change snapshat</Text>
+                        <Text style={styles.itemTitle}>Snapshat</Text>
                     </View>
                 </ListItem>
                 <ListItem onPress={() => this.ComingSoon()}>
@@ -99,7 +99,7 @@ export class WalletSettings extends React.Component {
                         <View style={styles.icon}>
                             <Icon name='shirt' />
                         </View>
-                        <Text style={styles.itemTitle}>Change personal image</Text>
+                        <Text style={styles.itemTitle}>Profile image</Text>
                     </View>
                 </ListItem>
                 <ListItem onPress={() => this.confirmExportPK()}>
@@ -115,7 +115,7 @@ export class WalletSettings extends React.Component {
                         <View style={styles.icon}>
                             <Icon name='shirt' />
                         </View>
-                        <Text style={styles.itemTitle}>Change user name</Text>
+                        <Text style={styles.itemTitle}>User name</Text>
                     </View>
                 </ListItem>
                 <ListItem onPress={() => this.ComingSoon()}>
@@ -123,7 +123,7 @@ export class WalletSettings extends React.Component {
                         <View style={styles.icon}>
                             <Icon name='shirt' />
                         </View>
-                        <Text style={styles.itemTitle}>Change advertisments language</Text>
+                        <Text style={styles.itemTitle}>Advertisments language</Text>
                     </View>
                 </ListItem>
             </View>

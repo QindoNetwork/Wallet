@@ -4,7 +4,7 @@ import { General as GeneralActions  } from '@common/actions';
 import { Button } from '@components/widgets';
 import React, { Component, Fragment } from 'react'
 import { colors, measures } from '@common/styles';
-import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
+import { Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 
 export class AddGroup extends Component {
 

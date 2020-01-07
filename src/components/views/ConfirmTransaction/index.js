@@ -68,21 +68,24 @@ export class ConfirmTransaction extends React.Component {
         wallet.isLoading(true);
         let txn
         let overrides
+        let nonce = TransactionActions.nextNonce(address)
         try {
             if(togethers) {
               if(crypto !== 0) {
                 overrides = {
                     gasLimit: gasParam[this.state.functionIndex2].limit,
                     gasPrice: gasParam[this.state.functionIndex2].price * 1000000000,
-                    //nonce: 123,
+                    nonce: nonce,
                     //value: utils.parseEther('1.0'),
                     };
-                await ERC20s.instance.increaseAllowance(address,this.state.value, overrides)
+                const delay = await togethers.ERC20AllowanceExpiry()
+                TransactionActions.erc20approve(this.state.value,ERC20s.instance.type,nonce,ERC20s.instance,delay,overrides)
+                nonce = nonce + 1
               }
               overrides = {
                   gasLimit: gasParam[this.state.functionIndex].limit,
                   gasPrice: gasParam[this.state.functionIndex].price * 1000000000,
-                  //nonce: 123,
+                  nonce: nonce,
                   //value: utils.parseEther('1.0'),
                   };
               txn = await togethers.payForFunds(address,groupID,this.state.value,crypto,overrides);
@@ -91,8 +94,8 @@ export class ConfirmTransaction extends React.Component {
             else {
             if(crypto !== 0) {
               overrides = {
-                  gasLimit: gasParam[functionIndex4].limit,
-                  gasPrice: gasParam[functionIndex4].price * 1000000000,
+                  gasLimit: gasParam[this.state.functionIndex4].limit,
+                  gasPrice: gasParam[this.state.functionIndex4].price * 1000000000,
                   //nonce: 123,
                   //value: utils.parseEther('1.0'),
                   };
@@ -118,6 +121,12 @@ export class ConfirmTransaction extends React.Component {
 
     onPressReturn() {
         const { wallet } = this.props;
+        const value = this.props.navigation.getParam('value')
+        const address = this.props.navigation.getParam('address')
+        const ERC20s = this.props.navigation.getParam('ERC20s')
+        const gasParam = this.state.gasParam
+        const togethers = this.props.navigation.getParam('togethers')
+        const groupID = this.props.navigation.getParam('groupID')
         this.props.navigation.navigate('WalletDetails', { wallet: wallet.item, gasParam, address, erc20s, togethers, replaceRoute: true, leave: 2 });
     }
 
