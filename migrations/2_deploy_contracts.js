@@ -11,11 +11,11 @@ module.exports = function(deployer) {
     }).then(function() {
       return Togethers.deployed();
       }).then(function(instance) {
-        return instance.useNewToken("Ethers", "ETH", Togethers.address, 0, {gas : gasLimit});
+        return instance.useNewToken("Ethers", "ETH", Togethers.address, 0, 0, {gas : gasLimit});
         }).then(function() {
           return Togethers.deployed();
           }).then(function(instance) {
-            return instance.useNewToken("TogethersCoin", "TGTC", TogethersCoin.address, 18, {gas : gasLimit});
+            return instance.useNewToken("TogethersCoin", "TGTC", TogethersCoin.address, 18, 1, {gas : gasLimit});
             }).then(function() {
               return Togethers.deployed();
               }).then(function(instance) {

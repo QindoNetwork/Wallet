@@ -1,27 +1,6 @@
 export const ControlABI = [
   {
     "constant": true,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "resetAuthorization",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
     "inputs": [],
     "name": "powerToken2",
     "outputs": [
@@ -29,27 +8,6 @@ export const ControlABI = [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "lockedAccount",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
       }
     ],
     "payable": false,
@@ -161,144 +119,6 @@ export const ControlABI = [
     "inputs": [
       {
         "internalType": "string",
-        "name": "_password",
-        "type": "string"
-      }
-    ],
-    "name": "createPassword",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "NewPassword",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "oldPassword",
-        "type": "string"
-      }
-    ],
-    "name": "changePassword",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "verifyRegistration",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "pk",
-        "type": "address"
-      }
-    ],
-    "name": "lockAccount",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "pk",
-        "type": "address"
-      }
-    ],
-    "name": "resetAutho",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_password",
-        "type": "string"
-      }
-    ],
-    "name": "resetPassword",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_password",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "snapShat",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "ipfsImage",
-        "type": "string"
-      }
-    ],
-    "name": "connectUser",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "string",
         "name": "name",
         "type": "string"
       },
@@ -321,23 +141,7 @@ export const ControlABI = [
   },
   {
     "constant": false,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "limit",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_function",
-        "type": "uint256"
-      }
-    ],
+    "inputs": [],
     "name": "eraseInfo",
     "outputs": [],
     "payable": false,
@@ -364,13 +168,7 @@ export const ControlABI = [
       }
     ],
     "name": "setGasParameters",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
@@ -411,6 +209,27 @@ export const ControlABI = [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_function",
+        "type": "uint256"
+      }
+    ],
+    "name": "getGasFunctionName",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
     "payable": false,

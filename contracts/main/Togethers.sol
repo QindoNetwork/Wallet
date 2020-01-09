@@ -296,14 +296,14 @@ contract Togethers is Administration {
     return mappSpaceInfo[ID].language;
   }
 
-  function getLastSpaceIDForAddress(address user) view public returns (uint)
+  function getLastSpaceIDForAddress(address _user) view public returns (uint)
   {
-    return mapAddressToLastSpaceID[user];
+    return mapAddressToLastSpaceID[_user];
   }
 
-  function getSpaceID(uint groupID, address user) view public returns (uint)
+  function getSpaceID(uint groupID, address _user) view public returns (uint)
   {
-    return mappProfileInGroup[groupID][user].DemandID;
+    return mappProfileInGroup[groupID][_user].DemandID;
   }
 
   function getUsersPseudo(address _user) view public returns (string memory)

@@ -7,3 +7,4 @@ export * from './InputWithIcon';
 export * from './NumberGrid';
 export * from './TabView';
 export * from './TextBullet';
+export * from './SecureTransaction';

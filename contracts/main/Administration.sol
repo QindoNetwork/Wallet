@@ -47,7 +47,7 @@ contract Administration is Ownable {
     userPassword[msg.sender] = newHash;
   }
 
-  function resetPassword() public
+  function resetPassword() public view
   {
     userPassword[msg.sender] == 0;
   }
@@ -69,7 +69,7 @@ contract Administration is Ownable {
     string symbol;
     address ID;
     uint decimal;
-    uint type;
+    uint category;
   }
 
   struct spaceInfo
@@ -97,10 +97,10 @@ contract Administration is Ownable {
     ERC20AllowanceExpiry = _delai;
   }
 
-  function useNewToken(string memory name, string memory symbol, address _address, uint decimal, uint type) public onlyOwner
+  function useNewToken(string memory name, string memory symbol, address _address, uint decimal, uint _type) public onlyOwner
   {
     require(_address != address(0));
-    list.push(Token(name,symbol,_address,decimal,type));
+    list.push(Token(name,symbol,_address,decimal,_type));
   }
 
   function getTokenAddress(uint256 index) public view returns (address)
@@ -110,7 +110,7 @@ contract Administration is Ownable {
 
   function getTokenType(uint256 index) public view returns (uint)
   {
-    return list[index].type;
+    return list[index].category;
   }
 
   function getTokenDecimal(uint256 index) public view returns (uint)

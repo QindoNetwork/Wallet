@@ -7,7 +7,6 @@ import { colors, measures } from '@common/styles';
 import { Gas as gas } from '@common/constants';
 import { Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import { inject, observer } from 'mobx-react';
-import { SecureTransaction } from '@components/widgets';
 @inject('prices', 'wallet')
 @observer
 
@@ -17,26 +16,31 @@ export class CreateGroup extends Component {
       title: 'Create a group'
   });
 
-    state = { gasParam: this.props.navigation.getParam('gasParam') };
+    state = { gasParam: this.props.navigation.getParam('gasParam'), functionIndex: gas.createGroup };
 
-    submitForm = (groupName) => ({ values }) => {
-
-      <SecureTransaction
-          togethers={this.props.navigation.getParam('togethers')}
-          values={groupName}
-          limit={this.state.gasParam[gas.createGroup].limit}
-          price={this.state.gasParam[gas.createGroup].price}
-          type={gas.createGroup}/>
-
+  async submitForm(value) {
+    Keyboard.dismiss();
+    var togethers = this.props.navigation.getParam('togethers')
+    try {
+      let overrides = {
+          gasLimit: this.state.gasParam[this.state.createGroup].limit,
+          gasPrice: this.state.gasParam[this.state.createGroup].price * 1000000000,
+          //nonce: 123,
+          //value: utils.parseEther('1.0'),
+          };
+      await togethers.createGroup(value,overrides)
+      this.props.navigation.navigate('WalletDetails', { wallet: this.props.swallet.item, replaceRoute: true, leave: 3 });
+      GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
+    } catch (e) {
+        GeneralActions.notify(e.message, 'long');
+    }
   }
 
   render() {
 
-    const limit = this.state.gasParam[gas.createGroup].limit
-    const price = this.state.gasParam[gas.createGroup].price * 1000000000
+    const maxPrice =  this.state.gasParam[this.state.createGroup].limit * this.state.gasParam[this.state.createGroup].price
 
-    const maxPrice =  limit * price
-    const EthPrice = maxPrice / 1000000000000000000
+    const EthPrice = maxPrice / 1000000000
 
     return (
         <Formik
@@ -47,7 +51,7 @@ export class CreateGroup extends Component {
               'It will cost maximum ' + EthPrice +  ' ETH',
               [
                   { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                  { text: 'Confirm', onPress: (values.groupName) => this.submitForm(values.groupName)}
+                  { text: 'Confirm', onPress: () => this.submitForm(values.groupName) }
               ],
               { cancelable: false }
           );

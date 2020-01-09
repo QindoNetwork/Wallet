@@ -9,7 +9,6 @@ import { inject, observer } from 'mobx-react';
 @inject('prices', 'wallet')
 @observer
 
-
 export class CloseDemand extends React.Component {
 
   static navigationOptions = { title: "My demand" };

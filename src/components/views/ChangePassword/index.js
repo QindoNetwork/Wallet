@@ -32,6 +32,10 @@ export class ChangePassword extends React.Component {
           isOK = 0;
           GeneralActions.notify("Passwords not equals", 'long');
         }
+        if (password1 === oldPassword) {
+          isOK = 0;
+          GeneralActions.notify("The new password have to be different", 'long');
+        }
         if ( isOK === 1 ) {
           let overrides = {
               gasLimit: this.state.gasParam[this.state.functionIndex].limit,
