@@ -105,63 +105,22 @@ export class SecureTransaction extends React.Component {
                 GeneralActions.notify('unknown function', 'long');
                 break;
         }
-        this.setState({
-                        loading: 1,
-                        show: false
-                      })
-        navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 2 });
+        this.setState({show: false})
+        navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 0 });
         GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
 
     }
 
     hide() {
       this.setState({show: false})
-      const { navigation, values, type } = this.props;
-      switch (type) {
-          case gas.createGroup:
-              navigation.navigate('AddGroup', { ...this.props })
-              break;
-          case gas.ask:
-              navigation.navigate('AddGroup', { ...this.props })
-              break;
-          case gas.createProfile:
-              navigation.navigate('Profiles', { ...this.props, ...values })
-              break;
-          case gas.changePassword:
-              navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 4 });
-              break;
-          case gas.changeUserName:
-              navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 4 });
-              break;
-          case gas.withdrawFunds:
-              navigation.navigate('Profiles', { ...this.props, ...values })
-              break;
-          case gas.payForFunds:
-              navigation.navigate('ProfileData', { ...this.props, ...values })
-              break;
-          case gas.askForFunds:
-              navigation.navigate('Profiles', { ...this.props, ...values })
-              break;
-          case gas.quitGroup:
-              navigation.navigate('Profiles', { ...this.props, ...values })
-              break;
-          case gas.transferGroupOwnership:
-              navigation.navigate('ProfileData', { ...this.props, ...values })
-              break;
-          case gas.removeMember:
-              navigation.navigate('ProfileData', { ...this.props, ...values })
-              break;
-          default:
-              GeneralActions.notify('unknown function', 'long');
-              break;
-      }
+      this.props.navigation.pop()
     }
 
     renderDescription(ethPrice) {
       return(
         <View>
           <Text style={styles.message}>This action will cost maximum</Text>
-          <Text style={styles.message}>{ethPrice}</Text>
+          <Text style={styles.message}>{ethPrice} ETH</Text>
         </View>)
     }
 
@@ -248,12 +207,12 @@ message: {
     marginHorizontal: 32
 },
 input: {
-    width: '90%',
+    width: '100%',
     borderBottomWidth: 1,
     borderBottomColor: colors.black,
     padding: 4,
     paddingLeft: 0,
-    marginRight: 2,
+    marginRight: 0,
     textAlign: 'center',
     color: colors.black
 },

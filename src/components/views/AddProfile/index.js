@@ -14,8 +14,6 @@ export class AddProfile extends Component {
 
   static navigationOptions = { title: "Add a friend" };
 
-  createProfile
-
   state = { loading: 0, owner: 0, gasParam: this.props.navigation.getParam('gasParam'), functionIndex: gas.createProfile };
 
   async componentDidMount() {

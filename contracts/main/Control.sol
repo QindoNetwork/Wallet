@@ -85,24 +85,29 @@ contract Control is Ownable {
     TGTSToken = External3(_tgts);
   }
 
-  function setUserInfo(string memory name, string memory snapShat, string memory ipfsImage) public
+  function setImage(string memory ipfsImage) public
   {
     mappAddressToOptionalUserInfo[msg.sender].ipfsImage = ipfsImage;
-    mappAddressToOptionalUserInfo[msg.sender].snapShat = snapShat;
+  }
+
+  function setName(string memory name) public
+  {
     mappAddressToOptionalUserInfo[msg.sender].name = name;
   }
 
-  function eraseInfo() public
+  function setSnapshat(string memory snapShat) public
   {
-    mappAddressToOptionalUserInfo[msg.sender].ipfsImage = "";
-    mappAddressToOptionalUserInfo[msg.sender].snapShat = "";
-    mappAddressToOptionalUserInfo[msg.sender].name = "";
+    mappAddressToOptionalUserInfo[msg.sender].snapShat = snapShat;
   }
 
-  function setGasParameters(uint limit, uint price, uint _function)  public onlyOwner
+  function setGasLimit(uint limit, uint _function)  public onlyOwner
+  {
+    mappFunctionToGasParameters[_function].gasLimit = limit;
+  }
+
+  function setGasPrice(uint price, uint _function)  public onlyOwner
   {
     mappFunctionToGasParameters[_function].gasPrice = price;
-    mappFunctionToGasParameters[_function].gasLimit = limit;
   }
 
   function getGasPrice(uint _function) view public returns (uint)
