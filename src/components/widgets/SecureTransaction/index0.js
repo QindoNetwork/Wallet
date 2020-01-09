@@ -13,7 +13,7 @@ import { Gas as gas, Conversions as conversions, Restrictions as restrictions } 
 
 export class SecureTransaction extends React.Component {
 
-    state = { show: true };
+    state = { show: this.props.show };
 
     async onPressContinueLogin() {
         Keyboard.dismiss();
@@ -99,11 +99,9 @@ export class SecureTransaction extends React.Component {
         this.setState({ show: false });
     }
 
-  renderBody() {
-    return ( <View style={styles.container}>
+  renderBody = () => ( <View style={styles.container}>
       <Text style={styles.message}>Password</Text>
 </View>);
-}
 
 render() {
 
