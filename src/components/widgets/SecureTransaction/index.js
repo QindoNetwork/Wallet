@@ -1,11 +1,8 @@
 import React, { Fragment } from 'react'
-import { Clipboard, Share, TouchableWithoutFeedback, Keyboard, StyleSheet, Text, TextInput, View, Alert, ActivityIndicator} from 'react-native';
+import { Keyboard, StyleSheet, Text, TextInput, View, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions, Contracts as ContractsActions  } from '@common/actions';
-import QRCode from 'react-native-qrcode-svg';
-import { Icon } from '@components/widgets';
-import { Wallet as WalletUtils } from '@common/utils';
+import { General as GeneralActions, Contract as ContractActions  } from '@common/actions';
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import Modal from 'react-native-modal';
@@ -13,27 +10,46 @@ import { Gas as gas, Conversions as conversions, Restrictions as restrictions } 
 
 export class SecureTransaction extends React.Component {
 
-    state = { show: true };
+    state = { show: true, loading: 0, registered: 0, password: '' };
 
-    async onPressContinueLogin() {
+    async componentDidMount() {
+
+      try {
+        this.setState({
+                        registered: parseInt (await this.props.togethers.verifyRegistration(),10),
+                        loading: 1
+                      })
+      } catch (e) {
+          GeneralActions.notify(e.message, 'long');
+      }
+    }
+
+    async onPressContinue() {
         Keyboard.dismiss();
+        this.setState({ loading: 0 });
         try {
-          const result = parseInt (await this.props.togethers.connectUser(this.state.password),10)
+          let result
+          if (this.state.registered === 1) {
+            result = parseInt (await this.props.togethers.connectUser(this.state.password),10)
+          }
+          else result = 1
+          if (result === 1) {
+            this.exit()
+          }
+          else {
+            this.hide()
+            GeneralActions.notify("Password not good", 'long');
+          }
         } catch (e) {
-            GeneralActions.notify(e.message, 'long');
+          this.hide()
+          GeneralActions.notify(e.message, 'long');
         }
-        if (result === 1) {
-          this.exit()
-        }
-        else {
-          GeneralActions.notify("Password not good", 'long');
-        }
+
     }
 
     exit() {
 
-      const { togethers, values, limit, price , type, nonce } = this.props
-      this.hide()
+      const { togethers, limit, price , type, nonce, navigation, values, myPseudo } = this.props
       let overrides
 
       if (type === gas.payForFunds) {
@@ -51,72 +67,167 @@ export class SecureTransaction extends React.Component {
           };
       }
 
-      try {
-
-      if (type === gas.createGroup) {
-        ContractsActions.createGroup(togethers,values,overrides)
-      }
-      if (type === gas.ask) {
-        ContractsActions.ask(togethers,values,overrides)
-      }
-      if (type === gas.createProfile) {
-        ContractsActions.createProfile(togethers,values,overrides)
-      }
-      if (type === gas.changePassword) {
-        ContractsActions.changePassword(togethers,values,overrides)
-      }
-      if (type === gas.changeUserName) {
-        ContractsActions.changeUserName(togethers,values,overrides)
-      }
-      if (type === gas.withdrawFunds) {
-        ContractsActions.withdrawFunds(togethers,values,overrides)
-      }
-      if (type === gas.payForFunds) {
-        ContractsActions.payForFunds(togethers,values,overrides)
-      }
-      if (type === gas.askForFunds) {
-        ContractsActions.askForFunds(togethers,values,overrides)
-      }
-      if (type === gas.quitGroup) {
-        ContractsActions.quitGroup(togethers,values,overrides)
-      }
-      if (type === gas.transferGroupOwnership) {
-        ContractsActions.transferGroupOwnership(togethers,values,overrides)
-      }
-      if (type === gas.removeMember) {
-        ContractsActions.removeMember(togethers,values,overrides)
-      }
-      this.props.navigation.navigate('WalletDetails', { wallet: this.props.swallet.item, replaceRoute: true, leave: 2 });
-      GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
-
-    } catch (e) {
-        GeneralActions.notify(e.message, 'long');
-    }
+        switch (type) {
+                case gas.createGroup:
+                    ContractActions.createGroup(togethers,values,overrides)
+                break;
+                case gas.ask:
+                    ContractActions.ask(togethers,values,overrides)
+                    break;
+                case gas.createProfile:
+                    ContractActions.createProfile(togethers,values,overrides)
+                    break;
+                case gas.changePassword:
+                    ContractActions.changePassword(togethers,values,overrides)
+                    break;
+                case gas.changeUserName:
+                    ContractActions.changeUserName(togethers,values,overrides)
+                    break;
+                case gas.withdrawFunds:
+                    ContractActions.withdrawFunds(togethers,values,overrides)
+                    break;
+                case gas.payForFunds:
+                    ContractActions.payForFunds(togethers,values,overrides)
+                    break;
+                case gas.askForFunds:
+                    ContractActions.askForFunds(togethers,values,overrides)
+                    break;
+                case gas.quitGroup:
+                    ContractActions.quitGroup(togethers,values,overrides)
+                    break;
+                case gas.transferGroupOwnership:
+                    ContractActions.transferGroupOwnership(togethers,values,overrides)
+                    break;
+                case gas.removeMember:
+                    ContractActions.removeMember(togethers,values,overrides)
+                    break;
+            default:
+                GeneralActions.notify('unknown function', 'long');
+                break;
+        }
+        this.setState({
+                        loading: 1,
+                        show: false
+                      })
+        navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 2 });
+        GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
 
     }
 
     hide() {
-        this.setState({ show: false });
+      this.setState({show: false})
+      const { navigation, values, type } = this.props;
+      switch (type) {
+          case gas.createGroup:
+              navigation.navigate('AddGroup', { ...this.props })
+              break;
+          case gas.ask:
+              navigation.navigate('AddGroup', { ...this.props })
+              break;
+          case gas.createProfile:
+              navigation.navigate('Profiles', { ...this.props, ...values })
+              break;
+          case gas.changePassword:
+              navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 4 });
+              break;
+          case gas.changeUserName:
+              navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 4 });
+              break;
+          case gas.withdrawFunds:
+              navigation.navigate('Profiles', { ...this.props, ...values })
+              break;
+          case gas.payForFunds:
+              navigation.navigate('ProfileData', { ...this.props, ...values })
+              break;
+          case gas.askForFunds:
+              navigation.navigate('Profiles', { ...this.props, ...values })
+              break;
+          case gas.quitGroup:
+              navigation.navigate('Profiles', { ...this.props, ...values })
+              break;
+          case gas.transferGroupOwnership:
+              navigation.navigate('ProfileData', { ...this.props, ...values })
+              break;
+          case gas.removeMember:
+              navigation.navigate('ProfileData', { ...this.props, ...values })
+              break;
+          default:
+              GeneralActions.notify('unknown function', 'long');
+              break;
+      }
     }
 
-  renderBody() {
-    return ( <View style={styles.container}>
-      <Text style={styles.message}>Password</Text>
-</View>);
+    renderDescription(ethPrice) {
+      return(
+        <View>
+          <Text style={styles.message}>This action will cost maximum</Text>
+          <Text style={styles.message}>{ethPrice}</Text>
+        </View>)
+    }
+
+    renderButtons() {
+      return(
+        <View style={styles.body}>
+          <View style={styles.buttonsContainer}>
+            <Button
+              children="Continue"
+              onPress={() => this.onPressContinue()}
+              />
+          </View>
+          <View style={styles.buttonsContainer}>
+            <Button
+              children="Cancel"
+              onPress={() => this.hide()}
+              />
+          </View>
+        </View>)
+    }
+
+
+  renderBody(ethPrice) {
+    if(this.state.loading === 0)
+    {
+      return(
+        <View style={styles.container}>
+            <View style={styles.body}>
+              <ActivityIndicator size="large"/>
+            </View>
+          </View>
+    )
+    }
+    if(this.state.registered === 0)
+    {
+      return(
+        <View>
+        {this.renderDescription(ethPrice)}
+        {this.renderButtons()}
+        </View>
+    )
+    }
+    return(
+      <View style={styles.container}>
+        {this.renderDescription(ethPrice)}
+        <Text style={styles.message}>Password</Text>
+        <TextInput
+            style={styles.input}
+            secureTextEntry
+            underlineColorAndroid="transparent"
+            onChangeText={password => this.setState({ password })} />
+        {this.renderButtons()}
+        </View>
+  )
 }
 
 render() {
 
-    const { togethers, values, limit, price, type } = this.props;
+    const { limit, price } = this.props;
     const maxPrice =  limit * price * conversions.gigaWeiToWei
-    const EthPrice = maxPrice / conversions.weiToEthereum
+    const ethPrice = maxPrice / conversions.weiToEthereum
 
     return (
         <Modal
             isVisible={this.state.show}
-            onBackButtonPress={() => this.hide()}
-            onBackdropPress={() => this.hide()}
-            children={this.renderBody()} />
+            children={this.renderBody(ethPrice)} />
     );
 }
 

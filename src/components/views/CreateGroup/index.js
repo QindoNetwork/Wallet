@@ -5,7 +5,7 @@ import React, { Component, Fragment } from 'react'
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
-import { Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
+import { View, StyleSheet, TextInput, Text } from 'react-native'
 import { inject, observer } from 'mobx-react';
 import { SecureTransaction } from '@components/widgets';
 @inject('prices', 'wallet')
@@ -19,16 +19,21 @@ export class CreateGroup extends Component {
 
   renderModal(groupName) {
 
-    const gasParam = this.props.navigation.getParam('gasParam')
+    const { gasParam, togethers, myPseudo, erc20s, address  } = this.props.navigation.state.params;
     const limit = gasParam[gas.createGroup].limit
     const price = gasParam[gas.createGroup].price
 
     if (this.state.show === true) {
     return (  <SecureTransaction
-          togethers={this.props.navigation.getParam('togethers')}
-          values={groupName}
+          togethers={togethers}
+          values={{groupName}}
           limit={limit}
           price={price}
+          myPseudo={myPseudo}
+          erc20s={erc20s}
+          address={address}
+          gasParam={gasParam}
+          navigation={this.props.navigation}
           type={gas.createGroup}/> )
     }
   }

@@ -33,7 +33,7 @@ contract Control is Ownable {
     mappFunctionToGasParameters[2].gasLimit = 110000;
     mappFunctionToGasParameters[3].functionName = "createGroup";
     mappFunctionToGasParameters[3].gasPrice = 5;
-    mappFunctionToGasParameters[3].gasLimit = 500000;
+    mappFunctionToGasParameters[3].gasLimit = 200000;
     mappFunctionToGasParameters[4].functionName = "createProfile";
     mappFunctionToGasParameters[4].gasPrice = 5;
     mappFunctionToGasParameters[4].gasLimit = 500000;

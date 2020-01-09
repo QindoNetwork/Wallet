@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, RefreshControl, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { TouchableOpacity, RefreshControl, FlatList, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { Button } from '@components/widgets';
 import { inject, observer } from 'mobx-react';
 import { colors, measures } from '@common/styles';
@@ -11,7 +11,7 @@ import GroupCard from './GroupCard';
 
 export class Groups extends React.Component {
 
-    state = {loading: 0, groups: [], length: 0, myPseudo: '', max: 0 };
+    state = {loading: 0, groups: [], length: 0, max: 0 };
 
    componentDidMount() {
       this.update()
@@ -37,7 +37,7 @@ export class Groups extends React.Component {
 
     renderBody(){
       const { address, togethers, ERC20s, gasParam, groupID  } = this.props;
-      const { max  } = this.state;
+      const { max } = this.state;
       return      (
         <View style={styles.container}>
           <FlatList
@@ -58,7 +58,8 @@ export class Groups extends React.Component {
 
     render() {
 
-      const { gasParam, togethers, max, address } = this.props
+      const { gasParam, togethers, address, erc20s, myPseudo } = this.props
+      const { max } = this.state;
 
       if (this.state.loading === 0){
 
@@ -92,7 +93,7 @@ export class Groups extends React.Component {
             <View style={styles.buttonsContainer}>
                 <Button
                   children="Add group"
-                  onPress={() => this.props.navigation.navigate('AddGroup', {togethers, address, gasParam })}/>
+                  onPress={() => this.props.navigation.navigate('AddGroup', {togethers, address, gasParam, erc20s, myPseudo })}/>
               </View>
         </View>
       )

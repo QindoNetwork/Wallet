@@ -1,10 +1,7 @@
-import * as yup from 'yup'
-import { Formik } from 'formik'
-import { General as GeneralActions  } from '@common/actions';
 import { Button } from '@components/widgets';
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { colors, measures } from '@common/styles';
-import { Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 export class AddGroup extends Component {
 
@@ -12,29 +9,21 @@ export class AddGroup extends Component {
 
   render() {
 
+    const { gasParam, togethers, myPseudo, erc20s, address  } = this.props.navigation.state.params;
+
       return (
           <View style={styles.container}>
               <View style={styles.body}>
                 <View style={styles.buttonsContainer}>
                   <Button
                     children="Create a new group"
-                    onPress={() => this.props.navigation.navigate('CreateGroup',
-                    {
-                      togethers : this.props.navigation.getParam('togethers'),
-                      address : this.props.navigation.getParam('address'),
-                      gasParam : this.props.navigation.getParam('gasParam'),
-                    })}
+                    onPress={() => this.props.navigation.navigate('CreateGroup',{togethers,address,gasParam,myPseudo,erc20s})}
                     />
                 </View>
                 <View style={styles.buttonsContainer}>
                   <Button
                     children="Apply for an existing one"
-                    onPress={() => this.props.navigation.navigate('AskGroup',
-                    {
-                      togethers : this.props.navigation.getParam('togethers'),
-                      address : this.props.navigation.getParam('address'),
-                      gasParam : this.props.navigation.getParam('gasParam'),
-                    })}
+                    onPress={() => this.props.navigation.navigate('AskGroup',{togethers,address,gasParam,myPseudo,erc20s})}
                     />
                 </View>
               </View>
