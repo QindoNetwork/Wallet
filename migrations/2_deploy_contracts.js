@@ -19,7 +19,7 @@ module.exports = function(deployer) {
             }).then(function() {
               return Togethers.deployed();
               }).then(function(instance) {
-                return instance.setUser("Inventor", 1,"", {gas : gasLimit});
+                return instance.setUser("Inventor","", {gas : gasLimit});
                 }).then(function() {
                   return Togethers.deployed();
                   }).then(function(instance) {

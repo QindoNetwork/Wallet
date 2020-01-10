@@ -127,15 +127,6 @@ export const TogethersABI = [
     "type": "function"
   },
   {
-    "constant": true,
-    "inputs": [],
-    "name": "blockAskForFunds",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "constant": false,
     "inputs": [
       {
@@ -197,6 +188,15 @@ export const TogethersABI = [
         "type": "uint256"
       }
     ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "stopAskForFunds",
+    "outputs": [],
     "payable": false,
     "stateMutability": "view",
     "type": "function"
@@ -363,27 +363,6 @@ export const TogethersABI = [
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      }
-    ],
-    "name": "getSpaceLanguage",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -691,6 +670,31 @@ export const TogethersABI = [
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "crypto",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawIssue",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "previousOwner",
@@ -750,11 +754,6 @@ export const TogethersABI = [
         "type": "string"
       },
       {
-        "internalType": "uint256",
-        "name": "_language",
-        "type": "uint256"
-      },
-      {
         "internalType": "string",
         "name": "_password",
         "type": "string"
@@ -776,21 +775,6 @@ export const TogethersABI = [
       }
     ],
     "name": "changeUserName",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_language",
-        "type": "uint256"
-      }
-    ],
-    "name": "changeLanguage",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -839,6 +823,11 @@ export const TogethersABI = [
         "internalType": "uint256",
         "name": "groupNumber",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_key",
+        "type": "address"
       }
     ],
     "name": "verifyGroupAsked",
@@ -862,9 +851,9 @@ export const TogethersABI = [
         "type": "uint256"
       },
       {
-        "internalType": "string",
-        "name": "_pseudo",
-        "type": "string"
+        "internalType": "address",
+        "name": "_key",
+        "type": "address"
       }
     ],
     "name": "createProfile",
@@ -1119,48 +1108,6 @@ export const TogethersABI = [
       }
     ],
     "name": "getUsersLength",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "ID",
-        "type": "uint256"
-      }
-    ],
-    "name": "getSpaceIDLanguage",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      }
-    ],
-    "name": "getLastSpaceIDForAddress",
     "outputs": [
       {
         "internalType": "uint256",

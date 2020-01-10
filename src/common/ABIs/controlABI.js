@@ -118,22 +118,12 @@ export const ControlABI = [
     "constant": false,
     "inputs": [
       {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "snapShat",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "ipfsImage",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "_language",
+        "type": "uint256"
       }
     ],
-    "name": "setUserInfo",
+    "name": "setLanguage",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -141,8 +131,44 @@ export const ControlABI = [
   },
   {
     "constant": false,
-    "inputs": [],
-    "name": "eraseInfo",
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "ipfsImage",
+        "type": "string"
+      }
+    ],
+    "name": "setImage",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      }
+    ],
+    "name": "setName",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "snapShat",
+        "type": "string"
+      }
+    ],
+    "name": "setSnapshat",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -158,6 +184,21 @@ export const ControlABI = [
       },
       {
         "internalType": "uint256",
+        "name": "_function",
+        "type": "uint256"
+      }
+    ],
+    "name": "setGasLimit",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "price",
         "type": "uint256"
       },
@@ -167,7 +208,7 @@ export const ControlABI = [
         "type": "uint256"
       }
     ],
-    "name": "setGasParameters",
+    "name": "setGasPrice",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -293,6 +334,27 @@ export const ControlABI = [
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "getLanguage",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "payable": false,

@@ -76,7 +76,7 @@ contract Administration is Ownable {
   struct spaceInfo
   {
     string description;
-    uint language;
+    address user;
   }
 
   address powerToken;
@@ -173,11 +173,6 @@ contract Administration is Ownable {
   function getDescription(uint id) view public returns (string memory)
   {
     return mappSpaceInfo[id].description;
-  }
-
-  function getSpaceLanguage(uint id) view public returns (uint)
-  {
-    return mappSpaceInfo[id].language;
   }
 
   function getCryptoGiven(uint groupID, address to, uint crypto) view public returns (uint)

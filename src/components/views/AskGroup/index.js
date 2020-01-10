@@ -20,8 +20,8 @@ export class AskGroup extends Component {
   renderModal(groupID) {
 
     const { gasParam, togethers, myPseudo, erc20s, address  } = this.props.navigation.state.params;
-    const limit = gasParam[gas.createGroup].limit
-    const price = gasParam[gas.createGroup].price
+    const limit = gasParam[gas.ask].limit
+    const price = gasParam[gas.ask].price
 
     if (this.state.show === true) {
     return (  <SecureTransaction

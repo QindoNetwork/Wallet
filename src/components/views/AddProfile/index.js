@@ -1,12 +1,13 @@
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import { General as GeneralActions  } from '@common/actions';
-import { Button } from '@components/widgets';
 import React, { Component, Fragment } from 'react'
-import { Gas as gas } from '@common/constants';
+import { Gas as gas, Restrictions as restrictions } from '@common/constants';
 import { colors, measures } from '@common/styles';
 import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import { inject, observer } from 'mobx-react';
+import { SecureTransaction } from '@components/widgets';
+import { Button, Camera, InputWithIcon } from '@components/widgets';
 @inject('prices', 'wallet')
 @observer
 
@@ -14,12 +15,31 @@ export class AddProfile extends Component {
 
   static navigationOptions = { title: "Add a friend" };
 
-  state = { loading: 0, owner: 0, gasParam: this.props.navigation.getParam('gasParam'), functionIndex: gas.createProfile };
+  state = { show: 0, loading: 0, owner: 0, address: '' };
+
+  renderModal(value) {
+
+    const { gasParam, togethers, myPseudo, erc20s, address, groupID  } = this.props.navigation.state.params;
+    const limit = gasParam[gas.createProfile].limit
+    const price = gasParam[gas.createProfile].price
+
+    if (this.state.show === true) {
+    return (  <SecureTransaction
+          togethers={togethers}
+          values={{groupID,value}}
+          limit={limit}
+          price={price}
+          myPseudo={myPseudo}
+          erc20s={erc20s}
+          address={address}
+          gasParam={gasParam}
+          navigation={this.props.navigation}
+          type={gas.createProfile}/> )
+    }
+  }
 
   async componentDidMount() {
-    const groupID = this.props.navigation.getParam('groupID')
-    const address = this.props.navigation.getParam('address')
-    const togethers = this.props.navigation.getParam('togethers')
+    const { groupID, togethers, address  } = this.props.navigation.state.params;
     try {
         this.setState({ owner:  parseInt ( await togethers.isOwner(groupID,address),10),
                         loading: 1})
@@ -28,34 +48,7 @@ export class AddProfile extends Component {
       }
   }
 
-   async submitForm(value) {
-    Keyboard.dismiss();
-    const togethers = this.props.navigation.getParam('togethers')
-    const groupID = this.props.navigation.getParam('groupID')
-    try {
-      let overrides = {
-          gasLimit: this.state.gasParam[this.state.functionIndex].limit,
-          gasPrice: this.state.gasParam[this.state.functionIndex].price * 1000000000,
-          //nonce: 123,
-          //value: utils.parseEther('1.0'),
-          };
-          if(await parseInt ( togethers.verifyUserAvailability(value),10) === 0)
-          {
-            GeneralActions.notify("You cannot add this profile or he did not ask to apply", 'long');
-          }
-          await togethers.createProfile(groupID,value,overrides)
-          this.props.navigation.navigate('WalletDetails', { wallet: this.props.wallet.item, replaceRoute: true, leave: 3 });
-          GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
-    } catch (e) {
-        GeneralActions.notify(e.message, 'long');
-    }
-  }
-
   render() {
-
-    const maxPrice =  this.state.gasParam[this.state.functionIndex].limit * this.state.gasParam[this.state.functionIndex].price
-
-    const EthPrice = maxPrice / 1000000000
 
     if (this.state.loading === 0){
 
@@ -74,53 +67,23 @@ export class AddProfile extends Component {
     if (this.state.owner === 1) {
 
     return (
-        <Formik
-          initialValues={{ pseudo: '' }}
-          onSubmit={values => {
-            Alert.alert(
-              'SignUp',
-              'It will cost maximum ' + EthPrice + ' ETH',
-              [
-                  { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                  { text: 'Confirm', onPress: () => this.submitForm(values.pseudo) }
-              ],
-              { cancelable: false }
-          );
-          }
-        }
-          validationSchema={yup.object().shape({
-            pseudo: yup
-              .string()
-              .min(2)
-              .max(30)
-              .required(),
-          })}
-        >
-          {({handleChange, values, errors, setFieldTouched, touched, isValid, handleSubmit}) => (
-            <Fragment>
-              <View style={styles.container}>
-              <View style={styles.body}>
-                <TextInput
-                  style={styles.input}
-                  value={values.pseudo}
-                  onChangeText={handleChange('pseudo')}
-                  onBlur={() => setFieldTouched('pseudo')}
-                  placeholder="pseudonyme"
-                  />
-                  <View style={styles.buttonsContainer}>
-                      <Button
-                          children="ADD FRIEND"
-                          disabled={!isValid}
-                          onPress={handleSubmit}/>
-                  </View>
-                  </View>
-                  </View>
-            </Fragment>
-          )}
-        </Formik>
+      <View style={styles.container}>
+      <InputWithIcon
+          ref="input"
+          autoFocus
+          icon="qr-scanner"
+          placeholder="Destination address"
+          onChangeText={(address) => this.setState({ address })}
+          onPressIcon={() => this.refs.camera.show()} />
+      <Button children="Continue" onPress={() =>this.renderModal(this.state.address)} />
+      <Camera
+          ref="camera"
+          modal
+          onClose={() => this.refs.camera.hide()}
+          onBarCodeRead={address => this.refs.input.onChangeText(address)} />
+      </View>
       );
 
-      }
 
       return(
 
@@ -131,6 +94,8 @@ export class AddProfile extends Component {
       </View>
 
     )
+
+  }s
 
 
   }

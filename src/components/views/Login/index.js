@@ -21,8 +21,8 @@ export class Login extends React.Component {
     renderModal(pseudo,password1,password2) {
 
       const { gasParam, togethers, myPseudo, erc20s, address  } = this.props.navigation.state.params;
-      const limit = gasParam[gas.createGroup].limit
-      const price = gasParam[gas.createGroup].price
+      const limit = gasParam[gas.setUser].limit
+      const price = gasParam[gas.setUser].price
 
       if (this.state.show === true) {
       return (  <SecureTransaction

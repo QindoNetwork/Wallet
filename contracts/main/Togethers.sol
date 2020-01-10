@@ -52,21 +52,17 @@ contract Togethers is Administration {
     mappProfileInGroup[_groupID][newOwner].owner = true;
   }
 
-  function setUser(string memory _pseudo, uint _language, string memory _password) public
+  function setUser(string memory _pseudo, string memory _password) public
   {
-    require(mappAddressToUser[msg.sender].language == 0);
     uint currentID = returnHash(_pseudo);
     require(checkNameUnicity[currentID] == address(0));
-    require(_language != 0);
     createPassword(_password);
     checkNameUnicity[currentID] = msg.sender;
     mappAddressToUser[msg.sender].pseudo = _pseudo;
-    mappAddressToUser[msg.sender].language = _language;
   }
 
   function changeUserName(string memory _pseudo) public
   {
-    require(mappAddressToUser[msg.sender].language != 0);
     uint currentID = returnHash(_pseudo);
     require(checkNameUnicity[currentID] == address(0));
     checkNameUnicity[returnHash(mappAddressToUser[msg.sender].pseudo)] = address(0);
@@ -74,17 +70,9 @@ contract Togethers is Administration {
     mappAddressToUser[msg.sender].pseudo = _pseudo;
   }
 
-  function changeLanguage(uint _language) public
-  {
-    require(mappAddressToUser[msg.sender].language != 0);
-    require(_language != 0);
-    mappAddressToUser[msg.sender].language = _language;
-  }
-
   function createGroup(string memory _groupName) public
   {
     groupNumber += 1;
-    require(mappAddressToUser[msg.sender].language != 0);
     require(getGroupsLength(msg.sender) < MAX);
     mappProfileInGroup[groupNumber][msg.sender].owner = true;
     mappGroupIDToGroupName[groupNumber] = _groupName;
@@ -102,7 +90,7 @@ contract Togethers is Administration {
     return 0;
   }
 
-  function verifyGroupAsked(uint groupNumber) public view returns (uint)
+  function verifyGroupAsked(uint groupNumber, address _key) public view returns (uint)
   {
     if (mappAskForAdd[msg.sender][groupNumber] == true)
     {
@@ -119,14 +107,12 @@ contract Togethers is Administration {
     mappUsersInGroup[_groupID].push(_key);
   }
 
-  function createProfile(uint groupID, string memory _pseudo) public
+  function createProfile(uint groupID, address _key) public
   {
-    uint currentID = returnHash(_pseudo);
-    address _publicKey = checkNameUnicity[currentID];
-    require(mappProfileInGroup[groupID][_publicKey].isMember == false);
-    require(mappAskForAdd[_publicKey][groupID] == true);
-    require(getGroupsLength(_publicKey) < MAX && getGroupsLength(msg.sender) < MAX && getUsersLength(groupID) < MAX);
-    addMember(groupID,_publicKey);
+    require(mappProfileInGroup[groupID][_key].isMember == false);
+    require(mappAskForAdd[_key][groupID] == true);
+    require(getGroupsLength(_key) < MAX && getGroupsLength(msg.sender) < MAX && getUsersLength(groupID) < MAX);
+    addMember(groupID,_key);
   }
 
   function askForFunds(uint groupID, string memory _description) public
@@ -136,7 +122,7 @@ contract Togethers is Administration {
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     mappProfileInGroup[groupID][msg.sender].open = true;
     mappProfileInGroup[groupID][msg.sender].DemandID = ID;
-    mappSpaceInfo[ID].language = mappAddressToUser[msg.sender].language;
+    mappSpaceInfo[ID].user = msg.sender;
     mappSpaceInfo[ID].description = _description;
     emit newDemand(ID,msg.sender);
     ID += 1;
@@ -203,6 +189,7 @@ contract Togethers is Administration {
   function removeMember(address _publicKey, uint groupID) public
   {
     require(_publicKey != msg.sender);
+    require(mappProfileInGroup[_groupID][_publicKey].isMember == true);
     require(mappProfileInGroup[groupID][msg.sender].owner == true);
     deleteProfile(groupID,_publicKey);
   }
@@ -302,16 +289,6 @@ contract Togethers is Administration {
   function getUsersLength(uint _group) view public returns (uint)
   {
     return mappUsersInGroup[_group].length;
-  }
-
-  function getSpaceIDLanguage(uint ID) view public returns (uint)
-  {
-    return mappSpaceInfo[ID].language;
-  }
-
-  function getLastSpaceIDForAddress(address _user) view public returns (uint)
-  {
-    return mapAddressToLastSpaceID[_user];
   }
 
   function getSpaceID(uint groupID, address _user) view public returns (uint)

@@ -12,6 +12,7 @@ contract Control is Ownable {
     string ipfsImage;
     string snapShat;
     string name;
+    uint language;
   }
 
   struct gasParameters
@@ -85,6 +86,11 @@ contract Control is Ownable {
     TGTSToken = External3(_tgts);
   }
 
+  function setLanguage(uint _language) public
+  {
+    mappAddressToOptionalUserInfo[msg.sender].language = _language;
+  }
+
   function setImage(string memory ipfsImage) public
   {
     mappAddressToOptionalUserInfo[msg.sender].ipfsImage = ipfsImage;
@@ -138,6 +144,11 @@ contract Control is Ownable {
   function getSnapshat(address _user) view public returns (string memory)
   {
     return mappAddressToOptionalUserInfo[_user].snapShat;
+  }
+
+  function getLanguage(address _user) view public returns (uint)
+  {
+    return mappAddressToOptionalUserInfo[_user].language;
   }
 
 }

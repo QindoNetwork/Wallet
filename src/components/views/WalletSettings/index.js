@@ -70,7 +70,7 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Remove wallet</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.props.navigation.navigate('WalletsOverview', { replaceRoute: true })}>
+                <ListItem onPress={() => this.props.navigation.pop(2)>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
                             <Icon name='wallet' type='ent' />

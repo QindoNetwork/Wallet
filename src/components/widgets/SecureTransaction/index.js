@@ -49,7 +49,7 @@ export class SecureTransaction extends React.Component {
 
     }
 
-    exit() {
+    async exit() {
 
       const { togethers, limit, price , type, nonce, navigation, values, myPseudo, address } = this.props
       let overrides
@@ -68,52 +68,54 @@ export class SecureTransaction extends React.Component {
           gasPrice: price * conversions.gigaWeiToWei,
           };
       }
-
+        var tx = 0
         switch (type) {
-
                 case gas.setUser:
-                    ContractActions.setUser(togethers,values,overrides)
-                break;
+                    tx = await ContractActions.setUser(togethers,values,overrides)
+                    break;
                 case gas.createGroup:
-                    ContractActions.createGroup(togethers,values,overrides)
-                break;
+                    tx = await ContractActions.createGroup(togethers,values,overrides)
+                    break;
                 case gas.ask:
-                    ContractActions.ask(togethers,values,address,overrides)
+                    tx = await ContractActions.ask(togethers,values,address,overrides)
                     break;
                 case gas.createProfile:
-                    ContractActions.createProfile(togethers,values,overrides)
+                    tx = await ContractActions.createProfile(togethers,values,overrides)
                     break;
                 case gas.changePassword:
-                    ContractActions.changePassword(togethers,values,overrides)
+                    tx = await ContractActions.changePassword(togethers,values,overrides)
                     break;
                 case gas.changeUserName:
-                    ContractActions.changeUserName(togethers,values,overrides)
+                    tx = await ContractActions.changeUserName(togethers,values,overrides)
                     break;
                 case gas.withdrawFunds:
-                    ContractActions.withdrawFunds(togethers,values,overrides)
+                    tx = await ContractActions.withdrawFunds(togethers,values,overrides)
                     break;
                 case gas.payForFunds:
-                    ContractActions.payForFunds(togethers,values,overrides)
+                    tx = await ContractActions.payForFunds(togethers,values,overrides)
                     break;
                 case gas.askForFunds:
-                    ContractActions.askForFunds(togethers,values,overrides)
+                    tx = await ContractActions.askForFunds(togethers,values,overrides)
                     break;
                 case gas.quitGroup:
-                    ContractActions.quitGroup(togethers,values,overrides)
+                    tx = await ContractActions.quitGroup(togethers,values,overrides)
                     break;
                 case gas.transferGroupOwnership:
-                    ContractActions.transferGroupOwnership(togethers,values,overrides)
+                    tx = await ContractActions.transferGroupOwnership(togethers,values,overrides)
                     break;
                 case gas.removeMember:
-                    ContractActions.removeMember(togethers,values,overrides)
+                    tx = await ContractActions.removeMember(togethers,values,overrides)
                     break;
             default:
                 GeneralActions.notify('unknown function', 'long');
                 break;
         }
         this.setState({show: false})
-        navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 0 });
-        GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
+        if (tx === 1) {
+          navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 0 });
+          GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
+        }
+        else this.hide()
 
     }
 
