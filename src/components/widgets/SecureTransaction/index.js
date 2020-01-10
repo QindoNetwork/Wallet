@@ -6,7 +6,7 @@ import { General as GeneralActions, Contract as ContractActions  } from '@common
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import Modal from 'react-native-modal';
-import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
+import { Gas as gas, Conversions as conversions } from '@common/constants';
 import { sha256 } from 'react-native-sha256';
 
 export class SecureTransaction extends React.Component {
@@ -51,7 +51,7 @@ export class SecureTransaction extends React.Component {
 
     exit() {
 
-      const { togethers, limit, price , type, nonce, navigation, values, myPseudo } = this.props
+      const { togethers, limit, price , type, nonce, navigation, values, myPseudo, address } = this.props
       let overrides
 
       if (type === gas.payForFunds) {
@@ -70,11 +70,15 @@ export class SecureTransaction extends React.Component {
       }
 
         switch (type) {
+
+                case gas.setUser:
+                    ContractActions.setUser(togethers,values,overrides)
+                break;
                 case gas.createGroup:
                     ContractActions.createGroup(togethers,values,overrides)
                 break;
                 case gas.ask:
-                    ContractActions.ask(togethers,values,overrides)
+                    ContractActions.ask(togethers,values,address,overrides)
                     break;
                 case gas.createProfile:
                     ContractActions.createProfile(togethers,values,overrides)

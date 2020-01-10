@@ -27,10 +27,10 @@ export async function erc20approve(amount,type,nonce,instance,expiry,overrides) 
   const address = contractsAddress.togethersAddress
   const blockExpiry = await wallet.provider.getBlockNumber() + expiry;
   if (type === 1){
-    await instance.allowance(address,amount, overrides)
+    await instance.increaseAllowance(address,amount, overrides)
   }
   if (type === 2){
-    await instance.increaseAllowance(address,amount, overrides)
+    await instance.allowance(address,amount, overrides)
   }
   if (type === 3){
     //permit dai...

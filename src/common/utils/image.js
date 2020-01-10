@@ -1,7 +1,6 @@
 import Identicon from 'identicon.js';
 
-export function generateAvatar(hash) {
-  const options = { size: 500 };
-  const avatar = new Identicon(hash, options).toString();
+export function generateAvatar(hash,size) {
+  const avatar = new Identicon(hash,size).toString();
   return `data:image/png;base64,${avatar}`;
 }

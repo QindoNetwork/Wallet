@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { Wallet as WalletUtils } from '@common/utils';
 import { Wallets as WalletActions } from '@common/actions';
+import { Image as ImageUtils } from '@common/utils';
 
 @inject('prices')
 @observer
@@ -38,6 +39,10 @@ export default class WalletCard extends React.Component {
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{wallet.name}</Text>
                         <Text style={styles.description}>{wallet.description}</Text>
+                    </View>
+                    <View style={styles.rightColumn}>
+                    <Image style={styles.avatar}
+                        source={{ uri: ImageUtils.generateAvatar(wallet.address,50) }} />
                     </View>
                 </View>
             </TouchableOpacity>
@@ -100,5 +105,9 @@ const styles = StyleSheet.create({
     },
     next: {
         color: colors.lightGray
+    },
+    avatar: {
+        width: 100,
+        height: 100
     }
 });

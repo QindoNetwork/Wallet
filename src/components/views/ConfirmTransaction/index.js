@@ -144,7 +144,7 @@ export class ConfirmTransaction extends React.Component {
                                 children={txn.to} />
                         </View>
                         <Image style={styles.avatar}
-                            source={{ uri: ImageUtils.generateAvatar(txn.to) }} />
+                            source={{ uri: ImageUtils.generateAvatar(txn.to,500) }} />
                     </View>
                     <View style={styles.textColumn}>
                         <Text style={styles.title}>Amount (ETH)</Text>

@@ -31,6 +31,7 @@ contract Togethers is Administration {
     MAX = 50;
     ID = 2;
     checkNameUnicity[returnHash("Togethers")] = address(this);
+    useNewToken("Ethers","ETH",address(this),0,0);
   }
 
   function ask(uint _groupID) public
@@ -177,7 +178,7 @@ contract Togethers is Administration {
         {
           if (i == 0)
           {
-            if (this.balance >= mappGiven[groupID][msg.sender][i])
+            if (address(this).balance >= mappGiven[groupID][msg.sender][i])
             {
               msg.sender.transfer(mappGiven[groupID][msg.sender][i]);
               mappGiven[groupID][msg.sender][i] = 0;

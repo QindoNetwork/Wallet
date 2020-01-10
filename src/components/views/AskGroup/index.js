@@ -4,76 +4,48 @@ import { General as GeneralActions  } from '@common/actions';
 import React, { Component, Fragment } from 'react'
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { Gas as gas } from '@common/constants';
+import { Gas as gas, Restrictions as restrictions } from '@common/constants';
 import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import { inject, observer } from 'mobx-react';
+import { SecureTransaction } from '@components/widgets';
 @inject('prices', 'wallet')
 @observer
 
 export class AskGroup extends Component {
 
-  state = { gasParam: this.props.navigation.getParam('gasParam'), functionIndex: gas.ask };
-
   static navigationOptions = { title: "Apply for a group" };
 
-  async submitForm(value) {
-    Keyboard.dismiss();
-    const togethers = this.props.navigation.getParam('togethers')
-    const address = this.props.navigation.getParam('address')
-    try {
-      let overrides = {
-          gasLimit: this.state.gasParam[this.state.functionIndex].limit,
-          gasPrice: this.state.gasParam[this.state.functionIndex].price * 1000000000,
-          //nonce: 123,
-          //value: utils.parseEther('1.0'),
-          };
-          if (await togethers.groupNumber() < value)
-          {
-            GeneralActions.notify('this group does not exists', 'long');
-          }
-          if (await togethers.getGroupsLength(address) >= togethers.MAX())
-          {
-            GeneralActions.notify('you have too manay groups', 'long');
-          }
-          if (await togethers.getUsersLength(value) >= togethers.MAX())
-          {
-            GeneralActions.notify('there is too many members in this group', 'long');
-          }
-          if (await togethers.verifyGroupAsked(value) === 1)
-          {
-            GeneralActions.notify('you already asked', 'long');
-          }
-          await togethers.ask(value,overrides)
-          this.props.navigation.navigate('WalletDetails', { wallet: this.props.wallet.item, replaceRoute: true, leave: 3 });
-          GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
-    } catch (e) {
-        GeneralActions.notify(e.message, 'long');
+  state = { show: false };
+
+  renderModal(groupID) {
+
+    const { gasParam, togethers, myPseudo, erc20s, address  } = this.props.navigation.state.params;
+    const limit = gasParam[gas.createGroup].limit
+    const price = gasParam[gas.createGroup].price
+
+    if (this.state.show === true) {
+    return (  <SecureTransaction
+          togethers={togethers}
+          values={{groupID}}
+          limit={limit}
+          price={price}
+          myPseudo={myPseudo}
+          erc20s={erc20s}
+          address={address}
+          gasParam={gasParam}
+          navigation={this.props.navigation}
+          type={gas.ask}/> )
     }
   }
 
   render() {
 
-    const maxPrice =  this.state.gasParam[this.state.functionIndex].limit * this.state.gasParam[this.state.functionIndex].price
-
-    const EthPrice = maxPrice / 1000000000
-
     return (
         <Formik
-          initialValues={{ groupName: '' }}
-          onSubmit={values => {
-            Alert.alert(
-              'SignUp',
-              'It will cost maximum ' + EthPrice + ' ETH',
-              [
-                  { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                  { text: 'Confirm', onPress: () => this.submitForm(values.groupName) }
-              ],
-              { cancelable: false }
-          );
-          }
-        }
+          initialValues={{ groupID: '' }}
+          onSubmit={() => this.setState({ show: true })}
           validationSchema={yup.object().shape({
-            groupName: yup
+            groupID: yup
               .number()
               .required(),
           })}
@@ -84,9 +56,9 @@ export class AskGroup extends Component {
               <View style={styles.body}>
                 <TextInput
                   style={styles.input}
-                  value={values.groupName}
-                  onChangeText={handleChange('groupName')}
-                  onBlur={() => setFieldTouched('groupName')}
+                  value={values.groupID}
+                  onChangeText={handleChange('groupID')}
+                  onBlur={() => setFieldTouched('groupID')}
                   placeholder="Group ID"
                   />
             <View style={styles.buttonsContainer}>
@@ -96,6 +68,7 @@ export class AskGroup extends Component {
                     onPress={handleSubmit}/>
             </View>
             </View>
+            {this.renderModal(values.groupID)}
             </View>
             </Fragment>
           )}

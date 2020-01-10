@@ -47,8 +47,8 @@ export class CreateGroup extends Component {
           validationSchema={yup.object().shape({
             groupName: yup
               .string()
-              .min(restrictions.minPassword)
-              .max(restrictions.maxPassword)
+              .min(restrictions.minGroupName)
+              .max(restrictions.maxGroupName)
               .required(),
           })}
         >
