@@ -42,6 +42,7 @@
 		30E4210735704AAD9E7C082D /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E4A64E0A3D6F41358A1CADB0 /* FontAwesome5_Brands.ttf */; };
 		313DD8E46038489DB23AF910 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 27F65B30DDD14B43B155F4F5 /* Octicons.ttf */; };
 		381C8B9FA50446A3B0405A89 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07715F0B599C438AA7493BDA /* SimpleLineIcons.ttf */; };
+		3D4B900D5E864AF98D02B1DB /* libreact-native-sha256.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 738279DC24E34AF290BAE02A /* libreact-native-sha256.a */; };
 		3EA2BF3CCD6C44C2B54F7F2D /* libRNSnackbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2ADB42E982B345BF8A701ECF /* libRNSnackbar.a */; };
 		500E4A032FA9466791AEA829 /* libRNVectorIcons-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD72EE51F0AC43C188617A13 /* libRNVectorIcons-tvOS.a */; };
 		58129CE4996041B3972A0395 /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 802BC47B0D6B4D9FB731D2F8 /* libReactNativePermissions.a */; };
@@ -292,6 +293,13 @@
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
 		};
+		691B217F23C7F6EC00E44C37 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B28323B933FB4E7EACDD0C55 /* react-native-sha256.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CD7408D71ECDFA2900866FA7;
+			remoteInfo = "react-native-sha256";
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -451,6 +459,7 @@
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		68B7EDF5070B4519B473322A /* ReactNativePermissions.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativePermissions.xcodeproj; path = "../node_modules/react-native-permissions/ios/ReactNativePermissions.xcodeproj"; sourceTree = "<group>"; };
 		6B6885E04DC146F88BAAD770 /* RNSnackbar.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSnackbar.xcodeproj; path = "../node_modules/react-native-snackbar/ios/RNSnackbar.xcodeproj"; sourceTree = "<group>"; };
+		738279DC24E34AF290BAE02A /* libreact-native-sha256.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libreact-native-sha256.a"; sourceTree = "<group>"; };
 		77444ABB7F5C47038D0156F4 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		78759DC9B6894DFF951C8AB4 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -464,6 +473,7 @@
 		A214B63B1270498AB4C76AF5 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		AD72EE51F0AC43C188617A13 /* libRNVectorIcons-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNVectorIcons-tvOS.a"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
+		B28323B933FB4E7EACDD0C55 /* react-native-sha256.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = "react-native-sha256.xcodeproj"; path = "../node_modules/react-native-sha256/ios/react-native-sha256.xcodeproj"; sourceTree = "<group>"; };
 		B92D65E799234607B63C0B5D /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		B9F7CE56C76F42E5AEA7D1A2 /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
 		BD6EE9D6AB0F45D49C2FFA61 /* libRNGestureHandler.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNGestureHandler.a; sourceTree = "<group>"; };
@@ -509,6 +519,7 @@
 				3EA2BF3CCD6C44C2B54F7F2D /* libRNSnackbar.a in Frameworks */,
 				59483D383CC444D68CDA6765 /* libRNSVG.a in Frameworks */,
 				D14E60303E4045709D8ED5F5 /* libRNVectorIcons.a in Frameworks */,
+				3D4B900D5E864AF98D02B1DB /* libreact-native-sha256.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -699,6 +710,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		691B217C23C7F6EC00E44C37 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				691B218023C7F6EC00E44C37 /* libreact-native-sha256.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -730,6 +749,7 @@
 				6B6885E04DC146F88BAAD770 /* RNSnackbar.xcodeproj */,
 				427825FA23C64426A3B90CEB /* RNSVG.xcodeproj */,
 				89D890743F0443C69321971A /* RNVectorIcons.xcodeproj */,
+				B28323B933FB4E7EACDD0C55 /* react-native-sha256.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -783,6 +803,7 @@
 				896B37B175FC44B1A1792D9D /* libRNGestureHandler-tvOS.a */,
 				564D771753504A899C645F68 /* libRNSVG-tvOS.a */,
 				AD72EE51F0AC43C188617A13 /* libRNVectorIcons-tvOS.a */,
+				738279DC24E34AF290BAE02A /* libreact-native-sha256.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1013,6 +1034,10 @@
 				{
 					ProductGroup = 139FDEE71B06529A00C62182 /* Products */;
 					ProjectRef = 139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */;
+				},
+				{
+					ProductGroup = 691B217C23C7F6EC00E44C37 /* Products */;
+					ProjectRef = B28323B933FB4E7EACDD0C55 /* react-native-sha256.xcodeproj */;
 				},
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
@@ -1266,6 +1291,13 @@
 			fileType = archive.ar;
 			path = libRCTAnimation.a;
 			remoteRef = 5E9157341DD0AC6500FF2AA8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		691B218023C7F6EC00E44C37 /* libreact-native-sha256.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libreact-native-sha256.a";
+			remoteRef = 691B217F23C7F6EC00E44C37 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
@@ -1549,12 +1581,14 @@
 					"$(SRCROOT)/../node_modules/react-native-snackbar/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-sha256/ios/**",
 				);
 				INFOPLIST_FILE = EthereumWalletTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1590,12 +1624,14 @@
 					"$(SRCROOT)/../node_modules/react-native-snackbar/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-sha256/ios/**",
 				);
 				INFOPLIST_FILE = EthereumWalletTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1633,6 +1669,7 @@
 					"$(SRCROOT)/../node_modules/react-native-snackbar/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-sha256/ios/**",
 				);
 				INFOPLIST_FILE = EthereumWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1662,6 +1699,7 @@
 					"$(SRCROOT)/../node_modules/react-native-snackbar/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-sha256/ios/**",
 				);
 				INFOPLIST_FILE = EthereumWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1697,11 +1735,13 @@
 					"$(SRCROOT)/../node_modules/react-native-snackbar/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-sha256/ios/**",
 				);
 				INFOPLIST_FILE = "EthereumWallet-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1746,11 +1786,13 @@
 					"$(SRCROOT)/../node_modules/react-native-snackbar/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-sha256/ios/**",
 				);
 				INFOPLIST_FILE = "EthereumWallet-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1794,11 +1836,13 @@
 					"$(SRCROOT)/../node_modules/react-native-snackbar/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-sha256/ios/**",
 				);
 				INFOPLIST_FILE = "EthereumWallet-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1842,11 +1886,13 @@
 					"$(SRCROOT)/../node_modules/react-native-snackbar/ios",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-sha256/ios/**",
 				);
 				INFOPLIST_FILE = "EthereumWallet-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

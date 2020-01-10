@@ -173,14 +173,26 @@ contract Togethers is Administration {
     {
       for(uint i = 0 ; i < getSize() ; i++)
       {
-        if (mappGiven[groupID][msg.sender][i] > 0 && disableCrypto[i] == false)
+        if (mappGiven[groupID][msg.sender][i] > 0)
         {
           if (i == 0)
           {
-            msg.sender.transfer(mappGiven[groupID][msg.sender][i]);
+            if (this.balance >= mappGiven[groupID][msg.sender][i])
+            {
+              msg.sender.transfer(mappGiven[groupID][msg.sender][i]);
+              mappGiven[groupID][msg.sender][i] = 0;
+            }
+            else emit withdrawIssue(msg.sender,i,mappGiven[groupID][msg.sender][i]);
           }
-          else External2(getTokenAddress(i)).transfer(msg.sender,mappGiven[groupID][msg.sender][i]);
-          mappGiven[groupID][msg.sender][i] = 0;
+          else
+          {
+            if (External2(getTokenAddress(i)).balanceOf(address(this)) >= mappGiven[groupID][msg.sender][i])
+            {
+              External2(getTokenAddress(i)).transfer(msg.sender,mappGiven[groupID][msg.sender][i]);
+              mappGiven[groupID][msg.sender][i] = 0;
+            }
+            else emit withdrawIssue(msg.sender,i,mappGiven[groupID][msg.sender][i]);
+          }
         }
       }
     }

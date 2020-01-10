@@ -9,6 +9,7 @@ import { Icon } from '@components/widgets';
 import { Wallet as WalletUtils } from '@common/utils';
 import * as yup from 'yup'
 import { Formik } from 'formik'
+import { sha256 } from 'react-native-sha256';
 
 export class Login extends React.Component {
 
@@ -39,7 +40,8 @@ export class Login extends React.Component {
               //nonce: 123,
               //value: utils.parseEther('1.0'),
               };
-          await this.props.navigation.getParam('togethers').setUser(pseudo, 1, password1, overrides);
+          const hashPassword = sha256(password1)
+          await this.props.navigation.getParam('togethers').setUser(pseudo, 1, hashPassword, overrides);
           this.exit()
           GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
         }
@@ -61,9 +63,10 @@ export class Login extends React.Component {
     async onPressContinueLogin() {
         Keyboard.dismiss();
         const { password } = this.state;
+        const hashPassword = sha256(password)
         try {
           this.setState({
-                          result : parseInt (await this.props.navigation.getParam('togethers').connectUser(password),10)
+                          result : parseInt (await this.props.navigation.getParam('togethers').connectUser(hashPassword),10)
                         })
         } catch (e) {
             GeneralActions.notify(e.message, 'long');

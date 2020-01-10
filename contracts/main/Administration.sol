@@ -16,6 +16,7 @@ contract Administration is Ownable {
   event newDemand(uint indexed ID, address indexed user);
   event payDemand(uint indexed ID);
   event endDemand(uint indexed ID);
+  event withdrawIssue(address user, uint crypto, uint amount);
 
   mapping (uint => bool) public disableCrypto;
   mapping (uint => mapping (address => mapping (uint => uint))) internal mappGiven;
@@ -189,7 +190,7 @@ contract Administration is Ownable {
     return mappStatsPeerToPeer[from][to][crypto];
   }
 
-  function blockAskForFunds() public view onlyOwner
+  function stopAskForFunds() public view onlyOwner
   {
     if (stop == false)
     {

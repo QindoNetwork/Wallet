@@ -7,6 +7,7 @@ import * as yup from 'yup'
 import { Formik } from 'formik'
 import Modal from 'react-native-modal';
 import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
+import { sha256 } from 'react-native-sha256';
 
 export class SecureTransaction extends React.Component {
 
@@ -30,7 +31,8 @@ export class SecureTransaction extends React.Component {
         try {
           let result
           if (this.state.registered === 1) {
-            result = parseInt (await this.props.togethers.connectUser(this.state.password),10)
+            const hashPassword = sha256(this.state.password)
+            result = parseInt (await this.props.togethers.connectUser(hashPassword),10)
           }
           else result = 1
           if (result === 1) {
