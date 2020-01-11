@@ -5,8 +5,9 @@ import { General as GeneralActions  } from '@common/actions';
 import { Button } from '@components/widgets';
 import ProfileCard from './ProfileCard';
 import { HeaderIcon } from '@components/widgets';
-import { Gas as gas } from '@common/constants';
+import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
 import { inject, observer } from 'mobx-react';
+import { SecureTransaction } from '@components/widgets';
 @inject('prices', 'wallet')
 @observer
 
@@ -31,13 +32,30 @@ export class Profiles extends React.Component {
         )
     })
 
-      state = { loading: 0, profiles: [], length: 0, owner: 0, active: 0, gasParam: this.props.navigation.getParam('gasParam'), functionIndex: gas.quitGroup };
+      state = { show: false, loading: 0, profiles: [], length: 0, owner: 0, active: 0 };
+
+      renderModal() {
+
+        const { gasParam, togethers, erc20s, address, item, groupID  } = this.props.navigation.state.params;
+        const limit = gasParam[gas.quitGroup].limit
+        const price = gasParam[gas.quitGroup].price
+
+        if (this.state.show === true) {
+        return (  <SecureTransaction
+              togethers={togethers}
+              values={{groupID}}
+              limit={limit}
+              price={price}
+              erc20s={erc20s}
+              address={address}
+              gasParam={gasParam}
+              navigation={this.props.navigation}
+              type={gas.quitGroup}/> )
+        }
+      }
 
       async componentDidMount() {
-        const togethers = this.props.navigation.getParam('togethers')
-        const address = this.props.navigation.getParam('address')
-        const item = this.props.navigation.getParam('item')
-        const gasParam = this.state.gasParam
+        const { gasParam, togethers, erc20s, address, item  } = this.props.navigation.state.params;
         let profiles = []
         try {
           this.setState({ length:  parseInt ( await togethers.getUsersLength(item.id),10),
@@ -59,45 +77,24 @@ export class Profiles extends React.Component {
         }
       }
 
-      demand(groupID, owner, togethers, address, ERC20s, gasParam) {
+      demand(groupID, owner, togethers, address, erc20s, gasParam) {
         if (this.state.active === 1){
-          this.props.navigation.navigate('CloseDemand',{ groupID, owner, togethers, address, ERC20s, gasParam })
+          this.props.navigation.navigate('CloseDemand',{ groupID, owner, togethers, address, erc20s, gasParam })
         }
-        else this.props.navigation.navigate('OpenDemand',{ groupID, owner, togethers, address, ERC20s, gasParam })
+        else this.props.navigation.navigate('OpenDemand',{ groupID, owner, togethers, address, erc20s, gasParam })
       }
 
-      async onPressQuit(groupID,togethers,price,limit) {
+      onPressQuit() {
         if (this.state.owner === 1){
           GeneralActions.notify("The owner have to be the last of the group to quit", 'long');
         }
-        let overrides = {
-        gasLimit: limit * this.state.length,
-        gasPrice: price * 1000000000,
-        //nonce: 123,
-        //value: utils.parseEther('1.0'),
-        };
-      try {
-        await togethers.quitGroup(groupID,overrides)
-        this.props.navigation.navigate('WalletDetails', { wallet: this.props.swallet.item, replaceRoute: true, leave: 3 });
-        GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
-      } catch (e) {
-          GeneralActions.notify(e.message, 'long');
-      }
+        else this.setState({ show: true })
   }
 
       render() {
         const { profiles, length, owner, active } = this.state
-        const { navigation } = this.props
-        const groupID = navigation.getParam('item').id
-        const togethers = navigation.getParam('togethers')
-        const address = this.props.navigation.getParam('address')
-        const ERC20s = this.props.navigation.getParam('ERC20s')
-        const gasParam = this.state.gasParam
-        const max = navigation.getParam('max')
-        const limit = gasParam[this.state.functionIndex].limit
-        const price = gasParam[this.state.functionIndex].price
-        const ethPrice = (price * limit * this.state.length) / 1000000000
-
+        const { gasParam, togethers, erc20s, address, item } = this.props.navigation.state.params
+        const groupID = item.id
 
         if (this.state.loading === 0){
 
@@ -118,7 +115,7 @@ export class Profiles extends React.Component {
         <View style={styles.buttonsContainer}>
             <Button
               children="My demand"
-              onPress={() => this.demand(groupID, owner, togethers, address, ERC20s, gasParam)}/>
+              onPress={() => this.demand(groupID, owner, togethers, address, erc20s, gasParam)}/>
         </View>
         <FlatList
             data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
@@ -126,7 +123,7 @@ export class Profiles extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => navigation.navigate('ProfileData',{ groupID, owner, item, togethers, address, ERC20s, gasParam })
+              onPress={() => this.props.navigation.navigate('ProfileData',{ groupID, owner, item, togethers, address, erc20s, gasParam })
               }>
                 <ProfileCard profile={item} groupID={groupID} togethers={togethers}/>
               </TouchableOpacity>
@@ -135,19 +132,9 @@ export class Profiles extends React.Component {
         <View style={styles.buttonsContainer}>
             <Button
               children="Quit"
-              onPress={() => {
-                  Alert.alert(
-                    'SignUp',
-                    'It will cost maximum ' + ethPrice + ' ETH',
-                    [
-                        { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                        { text: 'Confirm', onPress: () => this.onPressQuit(groupID,togethers,price,limit) }
-                    ],
-                    { cancelable: false }
-                );
-                }
-              }/>
+              onSubmit={() => onPressQuit()}/>
         </View>
+        {this.renderModal()}
         </View>
         )
 

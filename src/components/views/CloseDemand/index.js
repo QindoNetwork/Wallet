@@ -3,7 +3,8 @@ import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, Activit
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
-import { Gas as gas } from '@common/constants';
+import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
+import { SecureTransaction } from '@components/widgets';
 import CryptoCard from './CryptoCard';
 import { inject, observer } from 'mobx-react';
 @inject('prices', 'wallet')
@@ -13,18 +14,35 @@ export class CloseDemand extends React.Component {
 
   static navigationOptions = { title: "My demand" };
 
-  state = { loading: 0, size: 0, gasParam: this.props.navigation.getParam('gasParam'), functionIndex: gas.withdrawFunds };
+  state = { loading: 0, size: 0, show: false };
+
+  renderModal() {
+
+    const { gasParam, togethers, erc20s, address, groupID  } = this.props.navigation.state.params;
+    const limit = gasParam[gas.withdrawFunds].limit
+    const price = gasParam[gas.withdrawFunds].price
+
+    if (this.state.show === true) {
+    return (  <SecureTransaction
+          togethers={togethers}
+          values={{groupID}}
+          limit={limit}
+          price={price}
+          erc20s={erc20s}
+          address={address}
+          gasParam={gasParam}
+          navigation={this.props.navigation}
+          type={gas.withdrawFunds}/> )
+    }
+  }
 
   async componentDidMount() {
     const { navigation } = this.props
-    const ERC20s = navigation.getParam('ERC20s')
-    const groupID = navigation.getParam('groupID')
-    const togethers = navigation.getParam('togethers')
-    const address = navigation.getParam('address')
+    const { gasParam, togethers, erc20s, address  } = this.props.navigation.state.params;
     try {
       const size = 0
-      if ( ERC20s.length !== 0 ) {
-      for ( var i = 0; i < ERC20s.length; i++ ) {
+      if ( erc20s.length !== 0 ) {
+      for ( var i = 0; i < erc20s.length; i++ ) {
          given = parseInt ( await togethers.getCryptoGiven(groupID, address, i),10)
         if ( given !== 0 ) {
           size = size + 1
@@ -38,36 +56,8 @@ export class CloseDemand extends React.Component {
     }
   }
 
-  async demand() {
-    const togethers = this.props.navigation.getParam('togethers')
-    const groupID = this.props.navigation.getParam('groupID')
-    try {
-      let overrides = {
-          gasLimit: this.state.gasParam[this.state.withdrawFunds].limit,
-          gasPrice: this.state.gasParam[this.state.withdrawFunds].price * 1000000000,
-          //nonce: 123,
-          //value: utils.parseEther('1.0'),
-          };
-          await togethers.withdrawFunds(groupID,overrides)
-          this.props.navigation.navigate('WalletDetails', { wallet: this.props.wallet.item, replaceRoute: true, leave: 2 });
-          GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
-    } catch (e) {
-      GeneralActions.notify(e.message, 'long');
-    }
-}
-
   render() {
-
-    const { navigation } = this.props
-    const ERC20s = navigation.getParam('ERC20s')
-    const gasParam = this.state.gasParam
-    const address = navigation.getParam('address')
-    const togethers = navigation.getParam('togethers')
-    const groupID = navigation.getParam('groupID')
-    const limit = gasParam[this.state.withdrawFunds].limit
-    const price = gasParam[this.state.withdrawFunds].price
-    const ethPrice = (price * limit) / 1000000000
-
+    const { gasParam, togethers, erc20s, address  } = this.props.navigation.state.params;
 
     if (this.state.loading === 0){
 
@@ -87,24 +77,15 @@ export class CloseDemand extends React.Component {
       <View style={styles.buttonsContainer}>
           <Button
             children="Close"
-            onPress={() => {
-                Alert.alert(
-                  'SignUp',
-                  'It will cost maximum ' + ethPrice + ' ETH',
-                  [
-                      { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                      { text: 'Confirm', onPress: () => this.demand() }
-                  ],
-                  { cancelable: false }
-              );
-              }}/>
+            onPress={() => this.setState({ show: true })}/>
       </View>
           <FlatList
-            data={ERC20s}
+            data={erc20s}
             renderItem={({ item }) => (
             <CryptoCard togethers={togethers} address={address} item={item} groupID={groupID}/>
           )}
       />
+      {this.renderModal(values.groupName)}
     </View>
   )}
 

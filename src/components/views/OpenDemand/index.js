@@ -6,7 +6,8 @@ import React, { Component, Fragment } from 'react'
 import { colors, measures } from '@common/styles';
 import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
 import { inject, observer } from 'mobx-react';
-import { Gas as gas } from '@common/constants';
+import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
+import { SecureTransaction } from '@components/widgets';
 @inject('prices', 'wallet')
 @observer
 
@@ -14,53 +15,39 @@ export class OpenDemand extends Component {
 
   static navigationOptions = { title: "Open demand" };
 
-  state = { gasParam: this.props.navigation.getParam('gasParam'), functionIndex: gas.askForFunds };
+  state = { show: false };
 
-   async submitForm(value) {
-    Keyboard.dismiss();
-    const togethers = this.props.navigation.getParam('togethers')
-    const groupID = this.props.navigation.getParam('groupID')
-    try {
-      let overrides = {
-          gasLimit: this.state.gasParam[this.state.functionIndex].limit,
-          gasPrice: this.state.gasParam[this.state.functionIndex].price * 1000000000,
-          //nonce: 123,
-          //value: utils.parseEther('1.0'),
-          };
-          await togethers.askForFunds(groupID,value,overrides)
-          this.props.navigation.navigate('WalletDetails', { wallet: this.props.swallet.item, replaceRoute: true, leave: 3 });
-          GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
-    } catch (e) {
-      GeneralActions.notify(e.message, 'long');
+  renderModal(description) {
+
+    const { gasParam, togethers, erc20s, address, groupID  } = this.props.navigation.state.params;
+    const limit = gasParam[gas.askForFunds].limit
+    const price = gasParam[gas.askForFunds].price
+
+    if (this.state.show === true) {
+    return (  <SecureTransaction
+          togethers={togethers}
+          values={{groupID,description}}
+          limit={limit}
+          price={price}
+          erc20s={erc20s}
+          address={address}
+          gasParam={gasParam}
+          navigation={this.props.navigation}
+          type={gas.askForFunds}/> )
     }
   }
 
   render() {
 
-    const maxPrice =  this.state.gasParam[this.state.functionIndex].limit * this.state.gasParam[this.state.functionIndex].price
-
-    const EthPrice = maxPrice / 1000000000
-
     return (
         <Formik
           initialValues={{ description: '' }}
-          onSubmit={values => {
-            Alert.alert(
-              'SignUp',
-              'It will cost maximum ' + EthPrice + ' ETH',
-              [
-                  { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                  { text: 'Confirm', onPress: () => this.submitForm(values.description) }
-              ],
-              { cancelable: false }
-          );
-          }
-        }
+          onSubmit={() => this.setState({ show: true })}
           validationSchema={yup.object().shape({
             description: yup
               .string()
-              .min(2)
-              .max(300)
+              .min(restrictions.minDescription)
+              .max(restrictions.maxDescription)
               .required(),
           })}
         >
@@ -82,6 +69,7 @@ export class OpenDemand extends Component {
                           onPress={handleSubmit}/>
                   </View>
                   </View>
+                  {this.renderModal(values.description)}
                   </View>
             </Fragment>
           )}

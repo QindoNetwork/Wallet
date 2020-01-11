@@ -8,7 +8,8 @@ import CryptoCard1 from './CryptoCard1';
 import CryptoCard2 from './CryptoCard2';
 import ProfileCard from './ProfileCard';
 import { inject, observer } from 'mobx-react';
-import { Gas as gas } from '@common/constants';
+import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
+import { SecureTransaction } from '@components/widgets';
 @inject('prices', 'wallet')
 @observer
 
@@ -27,15 +28,54 @@ export class ProfileData extends React.Component {
                   togethers : navigation.getParam('togethers'),
                   groupID : navigation.getParam('groupID'),
                   gasParam : navigation.getParam('gasParam'),
-                  ERC20s : navigation.getParam('ERC20s')
+                  erc20s : navigation.getParam('erc20s')
                 })
               } />
 
         )
     })
 
-    state = { walletName: '', walletDescription: '', gasParam: this.props.navigation.getParam('gasParam'),
-              functionIndex: gas.transferGroupOwnership, functionIndex2: gas.removeMember };
+    state = { show: false, show2: false };
+
+    renderModal(type) {
+
+    const { gasParam, togethers, erc20s, address, item, groupID  } = this.props.navigation.state.params;
+    const target = item.id
+    if (type === 1) {
+      const limit = gasParam[gas.removeMember].limit
+      const price = gasParam[gas.removeMember].price
+    }
+    else {
+      const limit = gasParam[gas.transferGroupOwnership].limit
+      const price = gasParam[gas.transferGroupOwnership].price
+    }
+
+    if (this.state.show === true) {
+      return (  <SecureTransaction
+                      togethers={togethers}
+                      values={{groupID,target}}
+                      limit={limit}
+                      price={price}
+                      erc20s={erc20s}
+                      address={address}
+                      gasParam={gasParam}
+                      navigation={this.props.navigation}
+                      type={gas.quitGroup}/> )
+                }
+
+                if (this.state.show2 === true) {
+                  return (  <SecureTransaction
+                                  togethers={togethers}
+                                  values={{groupID,target}}
+                                  limit={limit}
+                                  price={price}
+                                  erc20s={erc20s}
+                                  address={address}
+                                  gasParam={gasParam}
+                                  navigation={this.props.navigation}
+                                  type={gas.transferGroupOwnership}/> )
+                            }
+        }
 
     async componentDidMount() {
       try {
@@ -50,59 +90,23 @@ export class ProfileData extends React.Component {
       }
     }
 
-    async transferGroupOwnership() {
-      const togethers = this.props.navigation.getParam('togethers')
-      const address = this.props.navigation.getParam('address')
-      const groupID = this.props.navigation.getParam('groupID')
-      try {
-        let overrides = {
-            gasLimit: this.state.gasParam[this.state.functionIndex].limit,
-            gasPrice: this.state.gasParam[this.state.functionIndex].price * 1000000000,
-            //nonce: 123,
-            //value: utils.parseEther('1.0'),
-            };
-            await togethers.transferGroupOwnership(address,groupID,overrides)
-            this.props.navigation.navigate('WalletDetails', { wallet: this.props.swallet.item, replaceRoute: true, leave: 3 });
-            GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
-      } catch (e) {
-        GeneralActions.notify(e.message, 'long');
+    onPressTransferGroupOwnership() {
+      if (this.state.owner === 1){
+        GeneralActions.notify("The owner have to be the last of the group to quit", 'long');
       }
-  }
+      else this.setState({ show: true })
+}
 
-  async removeMember() {
-    const togethers = this.props.navigation.getParam('togethers')
-    const address = this.props.navigation.getParam('address')
-    const groupID = this.props.navigation.getParam('groupID')
-    try {
-      let overrides = {
-          gasLimit: this.state.gasParam[this.state.functionIndex2].limit,
-          gasPrice: this.state.gasParam[this.state.functionIndex2].price * 1000000000,
-          //nonce: 123,
-          //value: utils.parseEther('1.0'),
-          };
-          await togethers.removeMember(address,groupID,overrides)
-          this.props.navigation.navigate('WalletDetails', { wallet: this.props.swallet.item, replaceRoute: true, leave: 3 });
-          GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
-    } catch (e) {
-      GeneralActions.notify(e.message, 'long');
-    }
+onPressRemove() {
+  if (this.state.owner === 1){
+    GeneralActions.notify("The owner have to be the last of the group to quit", 'long');
+  }
+  else this.setState({ show: true })
 }
 
   render() {
 
-    const { navigation } = this.props
-    const ERC20s = navigation.getParam('ERC20s')
-    const gasParam = this.state.gasParam
-    const address = navigation.getParam('address')
-    const togethers = navigation.getParam('togethers')
-    const profile = navigation.getParam('item')
-    const groupID = navigation.getParam('groupID')
-    const limit = gasParam[this.state.functionIndex].limit
-    const price = gasParam[this.state.functionIndex].price
-    const limit2 = gasParam[this.state.functionIndex2].limit
-    const price2 = gasParam[this.state.functionIndex2].price
-    const ethPrice = (price * limit) / 1000000000
-    const ethPrice2 = (price2 * limit2) / 1000000000
+    const { gasParam, togethers, erc20s, address, item, groupID, navigation  } = this.props.navigation.state.params;
 
     return(
       <View>
@@ -110,17 +114,7 @@ export class ProfileData extends React.Component {
       <View style={styles.buttonsContainer}>
           <Button
             children="Transfer ownership"
-            onPress={() => {
-                Alert.alert(
-                  'SignUp',
-                  'It will cost maximum ' + ethPrice + ' ETH',
-                  [
-                      { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                      { text: 'Confirm', onPress: () => this.transferGroupOwnership() }
-                  ],
-                  { cancelable: false }
-              );
-              }}/>
+            onPress={() => this.setState({ show2: true })}/>
       </View>
 
       <View style={styles.container}>
@@ -129,7 +123,7 @@ export class ProfileData extends React.Component {
       Stats
       </Text>
           <FlatList
-            data={ERC20s}
+            data={erc20s}
             renderItem={({ item }) => (
             <CryptoCard1 togethers={togethers} from={address} to={profile.id} item={item} groupID={groupID}/>
           )}
@@ -140,7 +134,7 @@ export class ProfileData extends React.Component {
         Current demand
         </Text>
       <FlatList
-        data={ERC20s}
+        data={erc20s}
         renderItem={({ item }) => (
         <CryptoCard2 togethers={togethers} address={address} item={item} groupID={groupID}/>
       )}
@@ -149,18 +143,9 @@ export class ProfileData extends React.Component {
   <View style={styles.buttonsContainer}>
       <Button
         children="Remove user"
-        onPress={() => {
-            Alert.alert(
-              'SignUp',
-              'It will cost maximum ' + ethPrice2 + ' ETH',
-              [
-                  { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                  { text: 'Confirm', onPress: () => this.removeMember() }
-              ],
-              { cancelable: false }
-          );
-          }}/>
+        onPress={() => this.setState({ show: true })}/>
   </View>
+  {this.renderModal()}
     </View>
   )}
 

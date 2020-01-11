@@ -140,10 +140,10 @@ export async function payForFunds(togethers, args, overrides) {
 }
 
 export async function askForFunds(togethers, args, overrides) {
-  const { groupID, value } = args
+  const { groupID, description } = args
   let result = "OK"
   try {
-  await togethers.askForFunds(groupID,value,overrides)
+  await togethers.askForFunds(groupID,description,overrides)
 }catch (e) {
   GeneralActions.notify(e.message, 'long');
   result = "KO"
@@ -164,10 +164,10 @@ export async function quitGroup(togethers, args, overrides) {
 }
 
 export async function transferGroupOwnership(togethers, args, overrides) {
-  const { address, groupID } = args
+  const { target, groupID } = args
   let result = "OK"
   try {
-  await togethers.transferGroupOwnership(address,groupID,overrides)
+  await togethers.transferGroupOwnership(target,groupID,overrides)
 }catch (e) {
   GeneralActions.notify(e.message, 'long');
   result = "KO"
@@ -176,10 +176,10 @@ export async function transferGroupOwnership(togethers, args, overrides) {
 }
 
 export async function removeMember(togethers, args, overrides) {
-  const { address, groupID } = args
+  const { target, groupID } = args
   let result = "OK"
   try {
-  await togethers.removeMember(address,groupID,overrides)
+  await togethers.removeMember(target,groupID,overrides)
 }catch (e) {
   GeneralActions.notify(e.message, 'long');
   result = "KO"

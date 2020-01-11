@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         color: colors.lightGray
     },
     avatar: {
-        width: 100,
-        height: 100
+        width: 20,
+        height: 20
     }
 });

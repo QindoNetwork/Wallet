@@ -56,6 +56,7 @@ contract Togethers is Administration {
 
   function changeUserName(string memory _pseudo) public
   {
+    require(userPassword[msg.sender] != 0);
     uint currentID = returnHash(_pseudo);
     require(checkNameUnicity[currentID] == address(0));
     checkNameUnicity[returnHash(mappAddressToUser[msg.sender])] = address(0);
