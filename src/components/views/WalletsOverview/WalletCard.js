@@ -38,7 +38,6 @@ export default class WalletCard extends React.Component {
                 </View>
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{wallet.name}</Text>
-                        <Text style={styles.description}>{wallet.description}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                     <Image style={styles.avatar}
@@ -107,6 +106,7 @@ const styles = StyleSheet.create({
         color: colors.lightGray
     },
     avatar: {
+        backgroundColor: colors.white,
         width: 100,
         height: 100
     }

@@ -18,8 +18,8 @@ export class CloseDemand extends React.Component {
 
   renderModal() {
 
-    const { gasParam, togethers, erc20s, address, groupID  } = this.props.navigation.state.params;
-    const limit = gasParam[gas.withdrawFunds].limit * erc20s.length
+    const { gasParam, togethers, erc20s, address, groupID } = this.props.navigation.state.params;
+    const limit = gasParam[gas.withdrawFunds].limit * (this.state.size + 1)
     const price = gasParam[gas.withdrawFunds].price
 
     if (this.state.show === true) {
@@ -37,8 +37,7 @@ export class CloseDemand extends React.Component {
   }
 
   async componentDidMount() {
-    const { navigation } = this.props
-    const { gasParam, togethers, erc20s, address  } = this.props.navigation.state.params;
+    const { gasParam, togethers, erc20s, address, groupID } = this.props.navigation.state.params;
     try {
       const size = 0
       if ( erc20s.length !== 0 ) {
@@ -57,7 +56,7 @@ export class CloseDemand extends React.Component {
   }
 
   render() {
-    const { gasParam, togethers, erc20s, address  } = this.props.navigation.state.params;
+    const { gasParam, togethers, erc20s, address, groupID } = this.props.navigation.state.params;
 
     if (this.state.loading === 0){
 
@@ -85,7 +84,7 @@ export class CloseDemand extends React.Component {
             <CryptoCard togethers={togethers} address={address} item={item} groupID={groupID}/>
           )}
       />
-      {this.renderModal(values.groupName)}
+      {this.renderModal()}
     </View>
   )}
 

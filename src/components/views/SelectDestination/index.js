@@ -120,7 +120,7 @@ export class SelectDestination extends React.Component {
                     modal
                     onClose={() => this.refs.camera.hide()}
                     onBarCodeRead={address => this.refs.input.onChangeText(address)} />
-                    <Text style={styles.message}>Or pick in the list of your friends</Text>
+                    <Text style={styles.message}>___________________________</Text>
                     <FlatList
                       data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
                       refreshControl={<RefreshControl refreshing={this.props.wallet.loading} onRefresh={() => this.update()} />}

@@ -4,22 +4,7 @@ import "../owner/Ownable.sol";
 
 contract Control is Ownable {
 
-  mapping (address => user) private mappAddressToOptionalUserInfo;
   mapping (uint => gasParameters) private mappFunctionToGasParameters;
-
-  struct user
-  {
-    string ipfsImage;
-    string snapShat;
-    string name;
-    uint phone;
-    string email;
-    uint birth;
-    string personalAddress;
-    uint language;
-    uint nationality;
-    bool gender;
-  }
 
   struct gasParameters
   {
@@ -92,71 +77,6 @@ contract Control is Ownable {
     TGTSToken = External3(_tgts);
   }
 
-  function setAllInformation(uint nationality, bool gender, string personalAddress,
-    uint birth, string email, uint phone, uint language, string ipfsImage string snapShat, string name) public
-  {
-    mappAddressToOptionalUserInfo[msg.sender].nationality = nationality;
-    mappAddressToOptionalUserInfo[msg.sender].gender = gender;
-    mappAddressToOptionalUserInfo[msg.sender].phone = phone;
-    mappAddressToOptionalUserInfo[msg.sender].email = email;
-    mappAddressToOptionalUserInfo[msg.sender].personalAddress = personalAddress;
-    mappAddressToOptionalUserInfo[msg.sender].language = _language;
-    mappAddressToOptionalUserInfo[msg.sender].ipfsImage = ipfsImage;
-    mappAddressToOptionalUserInfo[msg.sender].name = name;
-    mappAddressToOptionalUserInfo[msg.sender].snapShat = snapShat;
-    mappAddressToOptionalUserInfo[msg.sender].birth = birth;
-  }
-
-  function setNationality(uint nationality) public
-  {
-    mappAddressToOptionalUserInfo[msg.sender].nationality = nationality;
-  }
-
-  function setGender(uint gender) public
-  {
-    mappAddressToOptionalUserInfo[msg.sender].gender = gender;
-  }
-
-  function setPhone(uint phone) public
-  {
-    mappAddressToOptionalUserInfo[msg.sender].phone = phone;
-  }
-
-  function setEmail(string memory email) public
-  {
-    mappAddressToOptionalUserInfo[msg.sender].email = email;
-  }
-
-  function setBirth(uint birth) public
-  {
-    mappAddressToOptionalUserInfo[msg.sender].birth = birth;
-  }
-
-  function setPersonalAddress(string memory personalAddress) public
-  {
-    mappAddressToOptionalUserInfo[msg.sender].personalAddress = personalAddress;
-  }
-
-  function setLanguage(uint _language) public
-  {
-    mappAddressToOptionalUserInfo[msg.sender].language = _language;
-  }
-
-  function setImage(string memory ipfsImage) public
-  {
-    mappAddressToOptionalUserInfo[msg.sender].ipfsImage = ipfsImage;
-  }
-
-  function setName(string memory name) public
-  {
-    mappAddressToOptionalUserInfo[msg.sender].name = name;
-  }
-
-  function setSnapshat(string memory snapShat) public
-  {
-    mappAddressToOptionalUserInfo[msg.sender].snapShat = snapShat;
-  }
-
   function setGasLimit(uint limit, uint _function)  public onlyOwner
   {
     mappFunctionToGasParameters[_function].gasLimit = limit;
@@ -180,56 +100,6 @@ contract Control is Ownable {
   function getGasFunctionName(uint _function) view public returns (string memory)
   {
     return mappFunctionToGasParameters[_function].functionName;
-  }
-
-  function getIpfsImage(address _user) view public returns (string memory)
-  {
-    return mappAddressToOptionalUserInfo[_user].ipfsImage;
-  }
-
-  function getName(address _user) view public returns (string memory)
-  {
-    return mappAddressToOptionalUserInfo[_user].name;
-  }
-
-  function getSnapshat(address _user) view public returns (string memory)
-  {
-    return mappAddressToOptionalUserInfo[_user].snapShat;
-  }
-
-  function getLanguage(address _user) view public returns (uint)
-  {
-    return mappAddressToOptionalUserInfo[_user].language;
-  }
-
-  function getNationality(address _user) view public returns (string memory)
-  {
-    return mappAddressToOptionalUserInfo[_user].nationality = nationality;
-  }
-
-  function getGender(address _user) view public returns (bool)
-  {
-    return mappAddressToOptionalUserInfo[_user].gender = gender;
-  }
-
-  function getPhone(address _user) view public returns (uint)
-  {
-    return mappAddressToOptionalUserInfo[_user].phone = phone;
-  }
-
-  function getEmail(address _user) view public returns (string memory)
-  {
-    return mappAddressToOptionalUserInfo[_user].email = email;
-  }
-
-  function getPersonalAddress(address _user) view public returns (string memory)
-  {
-    return mappAddressToOptionalUserInfo[_user].personalAddress = personalAddress;
-  }
-
-  function getBirth(address _user) view public returns (uint)
-  {
-    return mappAddressToOptionalUserInfo[_user].birth = birth;
   }
 
 }

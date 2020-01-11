@@ -14,8 +14,6 @@ contract Administration is Ownable {
   uint public ERC20AllowanceExpiry;
 
   event newDemand(uint indexed ID, address indexed user);
-  event payDemand(uint indexed ID);
-  event endDemand(uint indexed ID);
   event withdrawIssue(address user, uint crypto, uint amount);
 
   mapping (uint => bool) public disableCrypto;

@@ -143,7 +143,6 @@ contract Togethers is Administration {
     }
     mappStatsPeerToPeer[msg.sender][_publicKey][_crypto].add(amount);
     mappGiven[groupID][_publicKey][_crypto].add(amount);
-    emit payDemand(mappProfileInGroup[groupID][_publicKey].DemandID);
   }
 
   function withdrawFunds(uint groupID) public
@@ -177,7 +176,6 @@ contract Togethers is Administration {
         }
       }
     }
-    emit endDemand(mappProfileInGroup[groupID][msg.sender].DemandID);
   }
 
   function removeMember(address _publicKey, uint groupID) public
@@ -289,7 +287,7 @@ contract Togethers is Administration {
   {
     return mappProfileInGroup[groupID][_user].DemandID;
   }
-  
+
   function isOwner(uint groupID, address _user) view public returns (uint)
   {
     if (mappProfileInGroup[groupID][_user].owner == true)

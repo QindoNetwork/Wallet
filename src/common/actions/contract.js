@@ -131,7 +131,7 @@ export async function payForFunds(togethers, args, overrides) {
   const { address, groupID, value, crypto } = args
   let result = "OK"
   try {
-    await togethers.withdrawFunds(address,groupID,value,crypto,overrides)
+    await togethers.payForFunds(address,groupID,value,crypto,overrides)
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
     result = "KO"
