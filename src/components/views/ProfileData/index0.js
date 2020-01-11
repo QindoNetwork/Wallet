@@ -35,29 +35,23 @@ export class ProfileData extends React.Component {
         )
     })
 
-    state = { show: false, show2: false, owner: false, spaceID: 0 };
+    state = { show: false, show2: false, owner: false, spaceID: 0, description: "" };
 
-    renderModal() {
+    renderModal(type) {
 
     const { gasParam, togethers, erc20s, address, item, groupID  } = this.props.navigation.state.params;
     const target = item.id
-    let limit = 0
-    let price = 0
-    let type
+    if (type === 1) {
+      const limit = gasParam[gas.removeMember].limit
+      const price = gasParam[gas.removeMember].price
+    }
+    else {
+      const limit = gasParam[gas.transferGroupOwnership].limit
+      const price = gasParam[gas.transferGroupOwnership].price
+    }
 
     if (this.state.show === true) {
-      limit = gasParam[gas.removeMember].limit * (this.props.length + this.props.profilesLength)
-      price = gasParam[gas.removeMember].price
-      type = gas.removeMember
-    }
-
-    if (this.state.show2 === true) {
-      limit = gasParam[gas.transferGroupOwnership].limit
-      price = gasParam[gas.transferGroupOwnership].price
-      type = gas.transferGroupOwnership
-    }
-
-    return (  <SecureTransaction
+      return (  <SecureTransaction
                       togethers={togethers}
                       values={{groupID,target}}
                       limit={limit}
@@ -66,59 +60,92 @@ export class ProfileData extends React.Component {
                       address={address}
                       gasParam={gasParam}
                       navigation={this.props.navigation}
-                      type={type}/> )
-    }
+                      type={gas.quitGroup}/> )
+                }
 
+                if (this.state.show2 === true) {
+                  return (  <SecureTransaction
+                                  togethers={togethers}
+                                  values={{groupID,target}}
+                                  limit={limit}
+                                  price={price}
+                                  erc20s={erc20s}
+                                  address={address}
+                                  gasParam={gasParam}
+                                  navigation={this.props.navigation}
+                                  type={gas.transferGroupOwnership}/> )
+                            }
+        }
 
     async componentDidMount() {
       try {
-        const { togethers, groupID, item } = this.props.navigation.state.params
-        this.setState({ spaceID:  parseInt ( await togethers.getSpaceID(groupID,item.id),10) })
-      } catch (e) {
+        const { togethers, groupID, address, item } = this.props
+          this.setState({ spaceID:  parseInt ( await togethers.getSpaceID(groupID,item.id),10) })
+
+          this.setState({ description:  togethers.getDescription(this.state.spaceID) })
+          } catch (e) {
       GeneralActions.notify(e.message, 'long');
       }
     }
 
     onPressTransferGroupOwnership() {
-      this.setState({ show2: true,
-                          show: false })
+      if (this.state.owner === 1){
+        GeneralActions.notify("The owner have to be the last of the group to quit", 'long');
+      }
+      else this.setState({ show: true })
 }
 
 onPressRemove() {
-  this.setState({ show: true,
-                        show2: false})
+  if (this.state.owner === 1){
+    GeneralActions.notify("The owner have to be the last of the group to quit", 'long');
+  }
+  else this.setState({ show: true })
 }
 
   render() {
 
     const { gasParam, togethers, erc20s, address, item, groupID, navigation  } = this.props.navigation.state.params;
 
-    if (this.state.owner === 1){
-      return(
-        <View style={styles.container}>
-
-        <View style={styles.buttonsContainer}>
-            <Button
-              children="Transfer ownership"
-              onPress={() => onPressTransferGroupOwnership()}/>
-        </View>
-        <ProfileCard togethers={togethers} spaceID={this.state.spaceID}/>
-    <View style={styles.buttonsContainer}>
-        <Button
-          children="Remove user"
-          onPress={() => onPressRemove()}/>
-    </View>
-    {this.renderModal()}
-      </View>)
-    }
-
     return(
+      <View>
+
+      <View style={styles.buttonsContainer}>
+          <Button
+            children="Transfer ownership"
+            onPress={() => this.setState({ show2: true })}/>
+      </View>
+
       <View style={styles.container}>
-<ProfileCard togethers={togethers} spaceID={this.state.spaceID}/>
-    </View>)
-
-
-  }
+      <ProfileCard togethers={togethers} spaceID={spaceID} description={description}/>
+      <Text style={styles.message}>
+      Stats
+      </Text>
+          <FlatList
+            data={erc20s}
+            renderItem={({ item }) => (
+            <CryptoCard1 togethers={togethers} from={address} to={profile.id} item={item} groupID={groupID}/>
+          )}
+      />
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.message}>
+        Current demand
+        </Text>
+      <FlatList
+        data={erc20s}
+        renderItem={({ item }) => (
+        <CryptoCard2 togethers={togethers} address={address} item={item} groupID={groupID}/>
+      )}
+  />
+  </View>
+  <View style={styles.buttonsContainer}>
+      <Button
+        children="Remove user"
+        onPress={() => this.setState({ show: true })}/>
+  </View>
+  {this.renderModal()}
+    </View>
+  )}
 
 }
 

@@ -27,6 +27,7 @@ export class Profiles extends React.Component {
                   address : navigation.getParam('address'),
                   ERC20s : navigation.getParam('ERC20s'),
                   gasParam : navigation.getParam('gasParam'),
+                  max : navigation.getParam('max'),
                 })
               } />
         )
@@ -36,8 +37,9 @@ export class Profiles extends React.Component {
 
       renderModal() {
 
-        const { gasParam, togethers, erc20s, address, item, groupID  } = this.props.navigation.state.params;
-        const limit = gasParam[gas.quitGroup].limit
+        const { gasParam, togethers, erc20s, address, item, groupID, length  } = this.props.navigation.state.params;
+        let limit = gasParam[gas.quitGroup].limit
+        limit = limit * ( this.state.length + length )
         const price = gasParam[gas.quitGroup].price
 
         if (this.state.show === true) {
@@ -92,8 +94,9 @@ export class Profiles extends React.Component {
   }
 
       render() {
-        const { profiles, length, owner, active } = this.state
-        const { gasParam, togethers, erc20s, address, item } = this.props.navigation.state.params
+        const { profiles, owner, active } = this.state
+        const profilesLength = this.state.length
+        const { gasParam, togethers, erc20s, address, item, length, max } = this.props.navigation.state.params
         const groupID = item.id
 
         if (this.state.loading === 0){
@@ -115,7 +118,7 @@ export class Profiles extends React.Component {
         <View style={styles.buttonsContainer}>
             <Button
               children="My demand"
-              onPress={() => this.demand(groupID, owner, togethers, address, erc20s, gasParam)}/>
+              onPress={() => this.demand(groupID, owner, togethers, address, erc20s, gasParam )}/>
         </View>
         <FlatList
             data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
@@ -123,7 +126,7 @@ export class Profiles extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('ProfileData',{ groupID, owner, item, togethers, address, erc20s, gasParam })
+              onPress={() => this.props.navigation.navigate('ProfileData',{ groupID, owner, item, togethers, address, erc20s, gasParam, length, profilesLength })
               }>
                 <ProfileCard profile={item} groupID={groupID} togethers={togethers}/>
               </TouchableOpacity>

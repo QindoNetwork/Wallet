@@ -21,22 +21,22 @@ export async function setUser(togethers, args, overrides) {
       const hashPassword = sha256(password1)
       await togethers.setUser(pseudo,hashPassword,overrides)
     }
-    }catch (e) {
-      GeneralActions.notify(e.message, 'long');
-      result = "KO"
-    }
-    return result
+  }catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    result = "KO"
+  }
+  return result
 }
 
 export async function createGroup(togethers, args, overrides) {
   const { groupName } = args
   let result = "OK"
   try {
-  await togethers.createGroup(groupName,overrides)
-}catch (e) {
-  GeneralActions.notify(e.message, 'long');
-  result = "KO"
-}
+    await togethers.createGroup(groupName,overrides)
+  }catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    result = "KO"
+  }
   return result
 }
 
@@ -78,16 +78,16 @@ export async function createProfile(togethers, args, overrides) {
   const { groupID, value } = args
   let result = "OK"
   try {
-  if(await parseInt ( togethers.verifyGroupAsked(groupID,value),10) === 1)
-  {
-    GeneralActions.notify("You cannot add this profile or he did not ask to apply", 'long');
-    return "KO"
+    if(await parseInt ( togethers.verifyGroupAsked(groupID,value),10) === 1)
+    {
+      GeneralActions.notify("You cannot add this profile or he did not ask to apply", 'long');
+      return "KO"
+    }
+    await togethers.createProfile(groupID,value,overrides)
+  }catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    result = "KO"
   }
-  await togethers.createProfile(groupID,value,overrides)
-}catch (e) {
-  GeneralActions.notify(e.message, 'long');
-  result = "KO"
-}
   return result
 }
 
@@ -95,23 +95,23 @@ export async function changePassword(togethers, args, overrides) {
   const { password1 } = args
   let result = "OK"
   try {
-  await togethers.changePassword(password1,overrides)
-}catch (e) {
-  GeneralActions.notify(e.message, 'long');
-  result = "KO"
-}
-  return result
-}
+    await togethers.changePassword(password1,overrides)
+  }catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    result = "KO"
+  }
+    return result
+  }
 
 export async function changeUserName(togethers, args, overrides) {
   const { name } = args
   let result = "OK"
   try {
-  await togethers.changeUserName(name,overrides)
-}catch (e) {
-  GeneralActions.notify(e.message, 'long');
-  result = "KO"
-}
+    await togethers.changeUserName(name,overrides)
+  }catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    result = "KO"
+  }
   return result
 }
 
@@ -119,11 +119,11 @@ export async function withdrawFunds(togethers, args, overrides) {
   const { groupID } = args
   let result = "OK"
   try {
-  await togethers.withdrawFunds(groupID,overrides)
-}catch (e) {
-  GeneralActions.notify(e.message, 'long');
-  result = "KO"
-}
+    await togethers.withdrawFunds(groupID,overrides)
+  }catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    result = "KO"
+  }
   return result
 }
 
@@ -131,11 +131,11 @@ export async function payForFunds(togethers, args, overrides) {
   const { address, groupID, value, crypto } = args
   let result = "OK"
   try {
-  await togethers.withdrawFunds(address,groupID,value,crypto,overrides)
-}catch (e) {
-  GeneralActions.notify(e.message, 'long');
-  result = "KO"
-}
+    await togethers.withdrawFunds(address,groupID,value,crypto,overrides)
+  }catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    result = "KO"
+  }
   return result
 }
 
@@ -143,11 +143,11 @@ export async function askForFunds(togethers, args, overrides) {
   const { groupID, description } = args
   let result = "OK"
   try {
-  await togethers.askForFunds(groupID,description,overrides)
-}catch (e) {
-  GeneralActions.notify(e.message, 'long');
-  result = "KO"
-}
+    await togethers.askForFunds(groupID,description,overrides)
+  }catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    result = "KO"
+  }
   return result
 }
 
@@ -155,11 +155,11 @@ export async function quitGroup(togethers, args, overrides) {
   const { groupID } = args
   let result = "OK"
   try {
-  await togethers.quitGroup(groupID,overrides)
-}catch (e) {
-  GeneralActions.notify(e.message, 'long');
-  result = "KO"
-}
+    await togethers.quitGroup(groupID,overrides)
+  }catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    result = "KO"
+  }
   return result
 }
 
@@ -167,11 +167,11 @@ export async function transferGroupOwnership(togethers, args, overrides) {
   const { target, groupID } = args
   let result = "OK"
   try {
-  await togethers.transferGroupOwnership(target,groupID,overrides)
-}catch (e) {
-  GeneralActions.notify(e.message, 'long');
-  result = "KO"
-}
+    await togethers.transferGroupOwnership(target,groupID,overrides)
+  }catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    result = "KO"
+  }
   return result
 }
 
@@ -179,10 +179,10 @@ export async function removeMember(togethers, args, overrides) {
   const { target, groupID } = args
   let result = "OK"
   try {
-  await togethers.removeMember(target,groupID,overrides)
-}catch (e) {
-  GeneralActions.notify(e.message, 'long');
-  result = "KO"
-}
+    await togethers.removeMember(target,groupID,overrides)
+  }catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    result = "KO"
+  }
   return result
 }

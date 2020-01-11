@@ -12,7 +12,13 @@ contract Control is Ownable {
     string ipfsImage;
     string snapShat;
     string name;
+    uint phone;
+    string email;
+    uint birth;
+    string personalAddress;
     uint language;
+    uint nationality;
+    bool gender;
   }
 
   struct gasParameters
@@ -86,6 +92,51 @@ contract Control is Ownable {
     TGTSToken = External3(_tgts);
   }
 
+  function setAllInformation(uint nationality, bool gender, string personalAddress,
+    uint birth, string email, uint phone, uint language, string ipfsImage string snapShat, string name) public
+  {
+    mappAddressToOptionalUserInfo[msg.sender].nationality = nationality;
+    mappAddressToOptionalUserInfo[msg.sender].gender = gender;
+    mappAddressToOptionalUserInfo[msg.sender].phone = phone;
+    mappAddressToOptionalUserInfo[msg.sender].email = email;
+    mappAddressToOptionalUserInfo[msg.sender].personalAddress = personalAddress;
+    mappAddressToOptionalUserInfo[msg.sender].language = _language;
+    mappAddressToOptionalUserInfo[msg.sender].ipfsImage = ipfsImage;
+    mappAddressToOptionalUserInfo[msg.sender].name = name;
+    mappAddressToOptionalUserInfo[msg.sender].snapShat = snapShat;
+    mappAddressToOptionalUserInfo[msg.sender].birth = birth;
+  }
+
+  function setNationality(uint nationality) public
+  {
+    mappAddressToOptionalUserInfo[msg.sender].nationality = nationality;
+  }
+
+  function setGender(uint gender) public
+  {
+    mappAddressToOptionalUserInfo[msg.sender].gender = gender;
+  }
+
+  function setPhone(uint phone) public
+  {
+    mappAddressToOptionalUserInfo[msg.sender].phone = phone;
+  }
+
+  function setEmail(string memory email) public
+  {
+    mappAddressToOptionalUserInfo[msg.sender].email = email;
+  }
+
+  function setBirth(uint birth) public
+  {
+    mappAddressToOptionalUserInfo[msg.sender].birth = birth;
+  }
+
+  function setPersonalAddress(string memory personalAddress) public
+  {
+    mappAddressToOptionalUserInfo[msg.sender].personalAddress = personalAddress;
+  }
+
   function setLanguage(uint _language) public
   {
     mappAddressToOptionalUserInfo[msg.sender].language = _language;
@@ -149,6 +200,36 @@ contract Control is Ownable {
   function getLanguage(address _user) view public returns (uint)
   {
     return mappAddressToOptionalUserInfo[_user].language;
+  }
+
+  function getNationality(address _user) view public returns (string memory)
+  {
+    return mappAddressToOptionalUserInfo[_user].nationality = nationality;
+  }
+
+  function getGender(address _user) view public returns (bool)
+  {
+    return mappAddressToOptionalUserInfo[_user].gender = gender;
+  }
+
+  function getPhone(address _user) view public returns (uint)
+  {
+    return mappAddressToOptionalUserInfo[_user].phone = phone;
+  }
+
+  function getEmail(address _user) view public returns (string memory)
+  {
+    return mappAddressToOptionalUserInfo[_user].email = email;
+  }
+
+  function getPersonalAddress(address _user) view public returns (string memory)
+  {
+    return mappAddressToOptionalUserInfo[_user].personalAddress = personalAddress;
+  }
+
+  function getBirth(address _user) view public returns (uint)
+  {
+    return mappAddressToOptionalUserInfo[_user].birth = birth;
   }
 
 }

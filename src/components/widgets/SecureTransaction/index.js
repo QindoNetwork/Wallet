@@ -116,7 +116,7 @@ export class SecureTransaction extends React.Component {
         else {
           this.setState({show: false})
           navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 0 });
-          GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
+          GeneralActions.notify('Success, wait for confirmation', 'short');
         }
     }
 

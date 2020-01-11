@@ -31,7 +31,7 @@ export class Groups extends React.Component {
 
     renderBody(){
       const { address, togethers, erc20s, gasParam, groupID  } = this.props;
-      const { max } = this.state;
+      const { max, length } = this.state;
       return      (
         <View style={styles.container}>
         <Header pseudo={this.state.pseudo}/>
@@ -41,7 +41,7 @@ export class Groups extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('Profiles',{ item, gasParam, address, erc20s, togethers, max })}>
+              onPress={() => this.props.navigation.navigate('Profiles',{ item, gasParam, address, erc20s, togethers, max, length })}>
                 <GroupCard group={item} address={address} togethers={togethers} />
               </TouchableOpacity>
             )}

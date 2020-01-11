@@ -19,7 +19,7 @@ export class CloseDemand extends React.Component {
   renderModal() {
 
     const { gasParam, togethers, erc20s, address, groupID  } = this.props.navigation.state.params;
-    const limit = gasParam[gas.withdrawFunds].limit
+    const limit = gasParam[gas.withdrawFunds].limit * erc20s.length
     const price = gasParam[gas.withdrawFunds].price
 
     if (this.state.show === true) {

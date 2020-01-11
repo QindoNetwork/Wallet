@@ -15,7 +15,7 @@ export class AddProfile extends Component {
 
   static navigationOptions = { title: "Add a friend" };
 
-  state = { show: false, loading: 0, owner: 0, address: '' };
+  state = { show: false, loading: 0, groupID: length, owner: 0, address: '' };
 
   renderModal(value) {
 
@@ -41,6 +41,7 @@ export class AddProfile extends Component {
     const { groupID, togethers, address  } = this.props.navigation.state.params;
     try {
         this.setState({ owner:  parseInt ( await togethers.isOwner(groupID,address),10),
+                        length:  parseInt ( await togethers.getUsersLength(groupID),10),
                         loading: 1})
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
@@ -63,7 +64,7 @@ export class AddProfile extends Component {
 
     }
 
-    if (this.state.owner === 1) {
+    if (this.state.owner === 1 || this.state.length >= this.props.max) {
 
     return (
       <View style={styles.container}>
@@ -89,7 +90,7 @@ export class AddProfile extends Component {
 
       <View style={styles.container}>
         <View style={styles.body}>
-          <Text style={styles.message}>You have to be administrator to add a member to the group</Text>
+          <Text style={styles.message}>You have to be administrator to add a member to the group, or there is too many membres in this group</Text>
         </View>
       </View>
 

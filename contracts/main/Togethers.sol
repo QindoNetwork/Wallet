@@ -289,7 +289,7 @@ contract Togethers is Administration {
   {
     return mappProfileInGroup[groupID][_user].DemandID;
   }
-
+  
   function isOwner(uint groupID, address _user) view public returns (uint)
   {
     if (mappProfileInGroup[groupID][_user].owner == true)
