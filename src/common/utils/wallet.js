@@ -37,6 +37,6 @@ export function reduceBigNumbers(items) {
     return items.reduce((prev, next) => prev.add(next), utils.bigNumberify('0'));
 }
 
-export function calculateFee({ gasUsed, gasPrice }) {
+export function estimateFee({ gasUsed, gasPrice }) {
     return gasUsed * Number(formatBalance(gasPrice));
 }

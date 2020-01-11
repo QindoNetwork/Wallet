@@ -4,6 +4,7 @@ import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import CryptoCard from './CryptoCard';
+import Header from './Header';
 
 export class Crypto extends React.Component {
 
@@ -14,6 +15,7 @@ export class Crypto extends React.Component {
       return(
 
         <View style={styles.container}>
+          <Header/>
             <FlatList
               data={ERC20s}
               renderItem={({ item }) => (

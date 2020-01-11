@@ -1,28 +1,22 @@
 import React from 'react';
 import { TouchableOpacity, RefreshControl, FlatList, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { Button } from '@components/widgets';
-import { inject, observer } from 'mobx-react';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import GroupCard from './GroupCard';
-
-@inject('wallet')
-@observer
+import Header from './Header';
 
 export class Groups extends React.Component {
 
-    state = {loading: 0, groups: [], length: 0, max: 0 };
+    state = {loading: 0, groups: [], length: 0, max: 0, pseudo: '' };
 
-   componentDidMount() {
-      this.update()
-    }
-
-    async update() {
+    async componentDidMount() {
       const { togethers, address } = this.props
       let groups = []
       try {
         this.setState({ length:  parseInt ( await togethers.getGroupsLength(address),10),
-                        max:  parseInt ( await togethers.MAX(),10)})
+                        max:  parseInt ( await togethers.MAX(),10),
+                        pseudo : await togethers.mappAddressToUser(address)})
         if ( this.state.length !== 0 ) {
           for ( var i = 0; i < this.state.length; i++ ) {
             groups.push({   id:  parseInt (await togethers.getGroupID(i),10),
@@ -40,9 +34,9 @@ export class Groups extends React.Component {
       const { max } = this.state;
       return      (
         <View style={styles.container}>
+        <Header pseudo={this.state.pseudo}/>
           <FlatList
             data={this.state.groups.sort((prev, next) => prev.name.localeCompare(next.name))}
-            refreshControl={<RefreshControl refreshing={this.props.wallet.loading} onRefresh={() => this.update()} />}
             renderItem={({ item }) => (
               <TouchableOpacity
               style={styles.content}
@@ -58,7 +52,7 @@ export class Groups extends React.Component {
 
     render() {
 
-      const { gasParam, togethers, address, erc20s, myPseudo } = this.props
+      const { gasParam, togethers, address, erc20s } = this.props
       const { max } = this.state;
 
       if (this.state.loading === 0){
@@ -93,7 +87,7 @@ export class Groups extends React.Component {
             <View style={styles.buttonsContainer}>
                 <Button
                   children="Add group"
-                  onPress={() => this.props.navigation.navigate('AddGroup', {togethers, address, gasParam, erc20s, myPseudo })}/>
+                  onPress={() => this.props.navigation.navigate('AddGroup', {togethers, address, gasParam, erc20s })}/>
               </View>
         </View>
       )

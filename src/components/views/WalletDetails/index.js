@@ -5,18 +5,18 @@ import { ReceiveCoins, WalletExtract, WalletSettings, Groups, Crypto } from '..'
 export class WalletDetails extends React.Component {
 
     static navigationOptions = ({ navigation }) => ({
-        title: navigation.getParam('myPseudo')
+        title: "Togethers"
     });
 
     tabs = [
         { id: 'extract', label: 'Historic', icon: 'list', content: <WalletExtract {...this.props}/> },
         { id: 'receive', label: 'Receive', icon: 'qrcode', type: 'fa', content: <ReceiveCoins {...this.props} /> },
         { id: 'send', label: 'Send', icon: 'cube-send', type: 'mdc', content: <Crypto address = {this.props.navigation.getParam('address')} togethers = {this.props.navigation.getParam('togethers')} navigation = {this.props.navigation}
-                                                                                      ERC20s = {this.props.navigation.getParam('erc20s')} gasParam = {this.props.navigation.getParam('gasParam')} myPseudo = {this.props.navigation.getParam('myPseudo')}/> },
+                                                                                      ERC20s = {this.props.navigation.getParam('erc20s')} gasParam = {this.props.navigation.getParam('gasParam')}/> },
         { id: 'network', label: 'Network', icon: 'contacts', content: <Groups navigation = {this.props.navigation} gasParam = {this.props.navigation.getParam('gasParam')} address = {this.props.navigation.getParam('address')}
-                                                                              ERC20s = {this.props.navigation.getParam('erc20s')} togethers = {this.props.navigation.getParam('togethers')} myPseudo = {this.props.navigation.getParam('myPseudo')}/> },
+                                                                              ERC20s = {this.props.navigation.getParam('erc20s')} togethers = {this.props.navigation.getParam('togethers')}/> },
         { id: 'settings', label: 'Settings', icon: 'settings', content: <WalletSettings navigation = {this.props.navigation} gasParam = {this.props.navigation.getParam('gasParam')} address = {this.props.navigation.getParam('address')}
-                                                                           togethers = {this.props.navigation.getParam('togethers')} myPseudo = {this.props.navigation.getParam('myPseudo')} /> }
+                                                                           togethers = {this.props.navigation.getParam('togethers')} /> }
     ];
 
     render() {

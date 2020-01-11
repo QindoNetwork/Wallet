@@ -53,7 +53,7 @@ export default class WalletCard extends React.Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'stretch',
-        backgroundColor: 'blue',
+        backgroundColor: colors.lightGray,
         borderRadius: 10,
         flexDirection: 'row',
         alignItems: 'center',
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     middleColumn: {
         flex: 2,
         justifyContent: 'center',
-        color: colors.white
+        color: colors.darkGray
     },
     rightColumn: {
         flex: 1,
@@ -81,11 +81,11 @@ const styles = StyleSheet.create({
         fontSize: measures.fontSizeLarge,
         color: colors.darkGray,
         fontWeight: 'bold',
-        color: colors.white
+        color: colors.darkGray
     },
     description: {
         fontSize: measures.fontSizeLarge - 2,
-        color: colors.white
+        color: colors.darkGray
     },
     balanceContainer: {
         alignItems: 'flex-end',

@@ -5,12 +5,11 @@ import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions, Wallets as WalletsActions } from '@common/actions';
 import ListItem from './ListItem';
+import Header from './Header';
 
 @inject('wallet')
 @observer
 export class WalletSettings extends React.Component {
-
-    static navigationOptions = { title: "Settings" };
 
     async removeWallet() {
         try {
@@ -62,6 +61,7 @@ export class WalletSettings extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+            <Header/>
                 <ListItem onPress={() => this.confirmRemoveWallet()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
@@ -70,7 +70,7 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Remove wallet</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.props.navigation.pop(2)>
+                <ListItem onPress={() => this.props.navigation.navigate('WalletsOverview', { replaceRoute: true })}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
                             <Icon name='wallet' type='ent' />

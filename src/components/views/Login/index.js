@@ -20,7 +20,7 @@ export class Login extends React.Component {
 
     renderModal(pseudo,password1,password2) {
 
-      const { gasParam, togethers, myPseudo, erc20s, address  } = this.props.navigation.state.params;
+      const { gasParam, togethers, erc20s, address  } = this.props.navigation.state.params;
       const limit = gasParam[gas.setUser].limit
       const price = gasParam[gas.setUser].price
 
@@ -30,7 +30,6 @@ export class Login extends React.Component {
             values={{pseudo,password1,password2}}
             limit={limit}
             price={price}
-            myPseudo={pseudo}
             erc20s={erc20s}
             address={address}
             gasParam={gasParam}
@@ -41,7 +40,7 @@ export class Login extends React.Component {
 
     async onPressContinueLogin() {
         Keyboard.dismiss();
-        const { gasParam, togethers, myPseudo, erc20s, address  } = this.props.navigation.state.params;
+        const { gasParam, togethers, erc20s, address  } = this.props.navigation.state.params;
         const { password } = this.state;
         const hashPassword = sha256(password)
         try {
@@ -52,7 +51,7 @@ export class Login extends React.Component {
             GeneralActions.notify(e.message, 'long');
         }
         if (this.state.result === 1) {
-          this.props.navigation.navigate('WalletDetails', { myPseudo, gasParam, address, erc20s, togethers, replaceRoute: true });
+          this.props.navigation.navigate('WalletDetails', { gasParam, address, erc20s, togethers, replaceRoute: true });
         }
         else {
           GeneralActions.notify("Password not good", 'long');

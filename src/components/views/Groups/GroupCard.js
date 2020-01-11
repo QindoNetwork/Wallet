@@ -60,7 +60,7 @@ export default class GroupsCard extends React.Component {
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{ length - 1 } members</Text>
+                            <Text style={styles.balance}>{ length - 1 } friends</Text>
                             <Text style={styles.fiatBalance}>{label2}</Text>
                         </View>
                     </View>

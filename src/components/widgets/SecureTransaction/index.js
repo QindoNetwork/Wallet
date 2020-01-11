@@ -51,7 +51,7 @@ export class SecureTransaction extends React.Component {
 
     async exit() {
 
-      const { togethers, limit, price , type, nonce, navigation, values, myPseudo, address } = this.props
+      const { togethers, limit, price , type, nonce, navigation, values, address } = this.props
       let overrides
 
       if (type === gas.payForFunds) {
@@ -68,7 +68,7 @@ export class SecureTransaction extends React.Component {
           gasPrice: price * conversions.gigaWeiToWei,
           };
       }
-        var tx = 0
+        var tx = "KO"
         switch (type) {
                 case gas.setUser:
                     tx = await ContractActions.setUser(togethers,values,overrides)
@@ -110,13 +110,14 @@ export class SecureTransaction extends React.Component {
                 GeneralActions.notify('unknown function', 'long');
                 break;
         }
-        this.setState({show: false})
-        if (tx === 1) {
+        if (tx === "KO") {
+          this.hide()
+        }
+        else {
+          this.setState({show: false})
           navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 0 });
           GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
         }
-        else this.hide()
-
     }
 
     hide() {

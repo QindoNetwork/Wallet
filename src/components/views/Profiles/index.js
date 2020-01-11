@@ -49,7 +49,7 @@ export class Profiles extends React.Component {
               currentAddress = await togethers.getUserAddress(item.id,i)
               if ( currentAddress !== address ) {
                 profiles.push({ id:  currentAddress,
-                                name: await togethers.getUserName(item.id,i) })
+                                name: await togethers.mappAddressToUser(currentAddress) })
               }
             }
           }

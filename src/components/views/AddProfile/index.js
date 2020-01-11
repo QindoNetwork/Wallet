@@ -15,11 +15,11 @@ export class AddProfile extends Component {
 
   static navigationOptions = { title: "Add a friend" };
 
-  state = { show: 0, loading: 0, owner: 0, address: '' };
+  state = { show: false, loading: 0, owner: 0, address: '' };
 
   renderModal(value) {
 
-    const { gasParam, togethers, myPseudo, erc20s, address, groupID  } = this.props.navigation.state.params;
+    const { gasParam, togethers, erc20s, address, groupID  } = this.props.navigation.state.params;
     const limit = gasParam[gas.createProfile].limit
     const price = gasParam[gas.createProfile].price
 
@@ -29,7 +29,6 @@ export class AddProfile extends Component {
           values={{groupID,value}}
           limit={limit}
           price={price}
-          myPseudo={myPseudo}
           erc20s={erc20s}
           address={address}
           gasParam={gasParam}
@@ -75,12 +74,13 @@ export class AddProfile extends Component {
           placeholder="Destination address"
           onChangeText={(address) => this.setState({ address })}
           onPressIcon={() => this.refs.camera.show()} />
-      <Button children="Continue" onPress={() =>this.renderModal(this.state.address)} />
+      <Button children="Continue" onPress={() => this.setState({ show: true })} />
       <Camera
           ref="camera"
           modal
           onClose={() => this.refs.camera.hide()}
           onBarCodeRead={address => this.refs.input.onChangeText(address)} />
+      {this.renderModal(this.state.address)}
       </View>
       );
 

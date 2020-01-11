@@ -72,7 +72,6 @@ export class WalletsOverview extends React.Component {
           const control = new ethers.Contract(contractsAddress.controlAddress, controlABI, connection);
           const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
           const erc20sLength = parseInt(await togethers.getSize(),10)
-          const myPseudo = await togethers.getUsersPseudo(wallet.address)
 
             var enable
             var tokenAddress
@@ -100,7 +99,7 @@ export class WalletsOverview extends React.Component {
 
           WalletActions.selectWallet(wallet)
           this.setState({ loading: 1 })
-          this.props.navigation.navigate('Login', { myPseudo, wallet, gasParam, control, togethers, erc20s, address: wallet.address });
+          this.props.navigation.navigate('Login', { gasParam, control, togethers, erc20s, address: wallet.address });
 
         } catch (e) {
           GeneralActions.notify(e.message, 'long');
@@ -150,7 +149,7 @@ const styles = StyleSheet.create({
         padding: measures.defaultPadding,
         alignItems: 'stretch',
         justifyContent: 'flex-start',
-        backgroundColor: colors.lightGray,
+        backgroundColor: colors.withe,
     },
     body: {
         flex: 1,

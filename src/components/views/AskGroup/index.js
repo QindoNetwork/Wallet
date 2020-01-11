@@ -19,7 +19,7 @@ export class AskGroup extends Component {
 
   renderModal(groupID) {
 
-    const { gasParam, togethers, myPseudo, erc20s, address  } = this.props.navigation.state.params;
+    const { gasParam, togethers, erc20s, address  } = this.props.navigation.state.params;
     const limit = gasParam[gas.ask].limit
     const price = gasParam[gas.ask].price
 
@@ -29,7 +29,6 @@ export class AskGroup extends Component {
           values={{groupID}}
           limit={limit}
           price={price}
-          myPseudo={myPseudo}
           erc20s={erc20s}
           address={address}
           gasParam={gasParam}
