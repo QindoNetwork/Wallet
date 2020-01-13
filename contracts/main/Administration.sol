@@ -19,7 +19,6 @@ contract Administration is Ownable {
   mapping (uint => bool) public disableCrypto;
   mapping (uint => mapping (address => mapping (uint => uint))) internal mappGiven;
   mapping (uint => spaceInfo) internal mappSpaceInfo;
-  mapping (address => mapping (address => mapping (uint => uint))) public mappStatsPeerToPeer;
   mapping (address => uint) public mapAddressToLastSpaceID;
 
   mapping (address => uint) private userPassword;

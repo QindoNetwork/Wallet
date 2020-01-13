@@ -41,6 +41,7 @@ const navigator = createStackNavigator(
     CryptoType1: { screen: Views.CryptoType1 },
     ChangePseudonyme: { screen: Views.ChangePseudonyme },
     ChangePassword: { screen: Views.ChangePassword },
+    AdminProfile: { screen: Views.AdminProfile },
 
   },
   {

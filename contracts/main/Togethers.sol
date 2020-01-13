@@ -141,7 +141,6 @@ contract Togethers is Administration {
       External2(getTokenAddress(_crypto)).transferFrom(msg.sender,address(this),_tokenAmount);
       amount = _tokenAmount;
     }
-    mappStatsPeerToPeer[msg.sender][_publicKey][_crypto].add(amount);
     mappGiven[groupID][_publicKey][_crypto].add(amount);
   }
 

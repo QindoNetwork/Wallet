@@ -4,86 +4,53 @@ import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import QRCode from 'react-native-qrcode-svg';
-import { Gas as gas } from '@common/constants';
 import { Icon } from '@components/widgets';
 import { Wallet as WalletUtils } from '@common/utils';
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import { inject, observer } from 'mobx-react';
+import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
+import { SecureTransaction } from '@components/widgets';
 @inject('prices', 'wallet')
 @observer
 
 export class ChangePseudonyme extends React.Component {
 
-    static navigationOptions = { title: 'Login' };
+    static navigationOptions = { title: 'Change pseudonyme' };
 
-    state = { gasParam: this.props.navigation.getParam('gasParam'), functionIndex: gas.changeUserName };
+    state = { show: false };
 
-    async onPressContinue(name) {
-      Keyboard.dismiss();
-      var isOK = 1;
-      try {
-        if (!name) {
-          isOK = 0;
-          GeneralActions.notify("Pseudo required", 'long');
-        }
-        if ( parseInt(await this.props.navigation.getParam('togethers').verifyUserAvailability(pseudo)) !== 1 ) {
-          isOK = 0;
-          GeneralActions.notify("pseudonyme already exists", 'long');
-        }
-        if ( isOK === 1 ) {
-          let overrides = {
-              gasLimit: this.state.gasParam[this.state.functionIndex].limit,
-              gasPrice: this.state.gasParam[this.state.functionIndex].price * 1000000000,
-              //nonce: 123,
-              //value: utils.parseEther('1.0'),
-              };
-          await this.props.navigation.getParam('togethers').changeUserName(name, overrides);
-          this.exit()
-          GeneralActions.notify('Your transaction was sent successfully and now is waiting for confirmation. Please wait', 'long');
-        }
-      } catch (e) {
-          GeneralActions.notify(e.message, 'long');
+    renderModal(value) {
+
+      const { gasParam, togethers, erc20s, address  } = this.props.navigation.state.params;
+      const limit = gasParam[gas.changeUserName].limit
+      const price = gasParam[gas.changeUserName].price
+
+      if (this.state.show === true) {
+      return (  <SecureTransaction
+            togethers={togethers}
+            values={{value}}
+            limit={limit}
+            price={price}
+            erc20s={erc20s}
+            address={address}
+            gasParam={gasParam}
+            navigation={this.props.navigation}
+            type={gas.changeUserName}/> )
       }
     }
 
-    exit() {
-        const { navigation } = this.props
-        const gasParam = this.state.gasParam
-        const address = navigation.getParam('address')
-        const erc20s = navigation.getParam('erc20s')
-        const togethers = navigation.getParam('togethers')
-        const myPseudo = navigation.getParam('myPseudo')
-        navigation.navigate('WalletDetails', { myPseudo, gasParam, address, erc20s, togethers, replaceRoute: true });
-    }
-
-
     render() {
-
-      const balance =  Number(WalletUtils.formatBalance(this.props.navigation.getParam('address')))
-      const maxPrice =  this.state.gasParam[this.state.functionIndex].limit * this.state.gasParam[this.state.functionIndex].price
-      const EthPrice = maxPrice / 1000000000
 
       return (
         <Formik
-          initialValues={{ password1: '', password2: '', pseudo: '' }}
-          onSubmit={values => {
-              Alert.alert(
-                'SignUp',
-                'It will cost maximum ' + EthPrice + ' ETH',
-                [
-                    { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                    { text: 'Confirm', onPress: () => this.onPressContinue(values.password1,values.password2,values.oldPassword) }
-                ],
-                { cancelable: false }
-            );
-            }
-          }
+          initialValues={{ pseudo: '' }}
+          onSubmit={() => this.setState({ show: true })}
           validationSchema={yup.object().shape({
             userName: yup
               .string()
-              .min(2, 'Too Short!')
-              .max(30, 'Too Long!')
+              .min(restrictions.minPseudonyme)
+              .max(restrictions.minPseudonyme)
               .required('Required')
           })}
         >
@@ -105,6 +72,7 @@ export class ChangePseudonyme extends React.Component {
               disabled={!isValid}
               onPress={handleSubmit}/>
       </View>
+        {this.renderModal(values.userName)}
   </View>
   </Fragment>
 )}

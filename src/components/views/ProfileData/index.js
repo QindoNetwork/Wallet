@@ -35,86 +35,60 @@ export class ProfileData extends React.Component {
         )
     })
 
-    state = { show: false, show2: false, owner: false, spaceID: 0 };
-
-    renderModal() {
-
-    const { gasParam, togethers, erc20s, address, item, groupID  } = this.props.navigation.state.params;
-    const target = item.id
-    let limit = 0
-    let price = 0
-    let type
-
-    if (this.state.show === true) {
-      limit = gasParam[gas.removeMember].limit * (this.props.length + this.props.profilesLength)
-      price = gasParam[gas.removeMember].price
-      type = gas.removeMember
-    }
-
-    if (this.state.show2 === true) {
-      limit = gasParam[gas.transferGroupOwnership].limit
-      price = gasParam[gas.transferGroupOwnership].price
-      type = gas.transferGroupOwnership
-    }
-
-    return (  <SecureTransaction
-                      togethers={togethers}
-                      values={{groupID,target}}
-                      limit={limit}
-                      price={price}
-                      erc20s={erc20s}
-                      address={address}
-                      gasParam={gasParam}
-                      navigation={this.props.navigation}
-                      type={type}/> )
-    }
-
+    state = { loading: false, spaceID: 0 };
 
     async componentDidMount() {
       try {
         const { togethers, groupID, item } = this.props.navigation.state.params
-        this.setState({ spaceID:  parseInt ( await togethers.getSpaceID(groupID,item.id),10) })
+        this.setState({ spaceID:  parseInt ( await togethers.getSpaceID(groupID,item.id),10),
+                        loading: 1})
       } catch (e) {
       GeneralActions.notify(e.message, 'long');
       }
     }
 
-    onPressTransferGroupOwnership() {
-      this.setState({ show2: true,
-                          show: false })
-}
-
-onPressRemove() {
-  this.setState({ show: true,
-                        show2: false})
-}
-
   render() {
 
-    const { gasParam, togethers, erc20s, address, item, groupID, navigation  } = this.props.navigation.state.params;
+    const { gasParam, togethers, erc20s, address, item, groupID  } = this.props.navigation.state.params;
+    const target = item.id
 
-    if (this.state.owner === 1){
+    if (this.state.loading === 0){
+
+      return(
+
+          <ActivityIndicator size="large"/>
+    )
+
+    }
+
+    if (this.props.owner === 1){
       return(
         <View style={styles.container}>
-
+        <View style={styles.leftColumn}>
+            <ProfileCard togethers={togethers} spaceID={this.state.spaceID} target={target} groupID={groupID}/>
+        </View>
+        <View style={styles.middleColumn}>
+            <ProfileCard togethers={togethers} spaceID={this.state.spaceID} target={target} groupID={groupID}/>
+        </View>
         <View style={styles.buttonsContainer}>
             <Button
-              children="Transfer ownership"
-              onPress={() => onPressTransferGroupOwnership()}/>
+              children="Admin profile"
+              onPress={() => navigation.navigate('AdminProfile',
+              {
+                ...this.props.navigation.state.params
+              })}/>
         </View>
-        <ProfileCard togethers={togethers} spaceID={this.state.spaceID}/>
-    <View style={styles.buttonsContainer}>
-        <Button
-          children="Remove user"
-          onPress={() => onPressRemove()}/>
-    </View>
-    {this.renderModal()}
       </View>)
     }
 
     return(
       <View style={styles.container}>
-<ProfileCard togethers={togethers} spaceID={this.state.spaceID}/>
+      <View style={styles.leftColumn}>
+          <ProfileCard togethers={togethers} spaceID={this.state.spaceID} target={target}/>
+      </View>
+      <View style={styles.middleColumn}>
+          <ProfileCard togethers={togethers} spaceID={this.state.spaceID} target={target}/>
+      </View>
     </View>)
 
 
@@ -129,6 +103,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: colors.defaultBackground,
         padding: measures.defaultPadding
+    },
+    middleColumn: {
+        flex: 2
+    },
+    rightColumn: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        flexDirection: 'row'
     },
     body: {
         flex: 1,

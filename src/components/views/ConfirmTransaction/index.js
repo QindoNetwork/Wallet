@@ -3,11 +3,10 @@ import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
 import { Button } from '@components/widgets';
 import { measures, colors } from '@common/styles';
 import { Gas as gas } from '@common/constants';
-import { Recents as RecentsActions, Transactions as TransactionActions } from '@common/actions';
+import { General as GeneralActions, Transactions as TransactionActions } from '@common/actions';
 import { Image as ImageUtils, Transaction as TransactionUtils, Wallet as WalletUtils } from '@common/utils';
-import ErrorMessage from './ErrorMessage';
-import SuccessMessage from './SuccessMessage';
 import { inject, observer } from 'mobx-react';
+import Modal from 'react-native-modal';
 @inject('prices', 'wallet')
 @observer
 
@@ -15,124 +14,148 @@ export class ConfirmTransaction extends React.Component {
 
     static navigationOptions = { title: 'Confirm transaction' };
 
-    state = { txn: null, error: null, value: 0, gasParam: this.props.navigation.getParam('gasParam'),
-              functionIndex: gas.payForFunds, functionIndex2: gas.eRC20allowance, functionIndex3: gas.defaultTransaction, functionIndex4: gas.eRC20transfer };
+    state = { show: false, password: '', registered: 0 };
 
-    get returnButton() {
-        return { title: 'Return to wallet', action: () => this.onPressReturn() };
+    async componentDidMount() {
+
+      try {
+        this.setState({
+                        registered: parseInt (await this.props.togethers.verifyRegistration(),10),
+                        loading: 1
+                      })
+      } catch (e) {
+          GeneralActions.notify(e.message, 'long');
+      }
     }
 
-    get confirmButton() {
-        return { title: 'Confirm & send', action: () => this.onPressSend() };
+    renderButtons() {
+
+        return(
+            <View style={styles.body}>
+              <View style={styles.buttonsContainer}>
+                <Button
+                  children="Continue"
+                  onPress={() => this.onPressContinue()}
+                  />
+              </View>
+              <View style={styles.buttonsContainer}>
+                <Button
+                  children="Cancel"
+                  onPress={() => this.hide()}
+                  />
+              </View>
+            </View>)
+      }
+
+    renderModal() {
+
+      if(this.state.registerd === 0)
+      {
+        return(
+            <View style={styles.container}>
+            <Text style={styles.message}>Confirm</Text>
+              {this.renderButtons()}
+            </View>)
+      }
+
+      return(
+          <View style={styles.container}>
+          <Text style={styles.message}>Confirm</Text>
+          <Text style={styles.message}>Password</Text>
+          <TextInput
+              style={styles.input}
+              secureTextEntry
+              underlineColorAndroid="transparent"
+              onChangeText={password => this.setState({ password })} />
+          {this.renderButtons()}
+          </View>)
+
     }
 
-    get actionButton() {
-        if (this.props.wallet.loading) return <ActivityIndicator loading />;
-        const buttonConfig = ((this.state.txn && this.state.txn.hash) || this.state.error) ?
-            this.returnButton : this.confirmButton;
-         return <Button children={buttonConfig.title} onPress={buttonConfig.action} />;
-    }
-
-    get estimatedFee() {
-        const estimate = WalletUtils.estimateFee(this.state.txn);
-        return WalletUtils.formatBalance(estimate);
-    }
-
-    get fiatLabel() {
-        return this.props.prices.selectedRate.toUpperCase();
-    }
-
-    get fiatAmount() {
-        const { txn } = this.state;
-        return Number(this.props.prices.usd * Number(WalletUtils.formatBalance(txn.value))).toFixed(2);
-    }
-
-    get fiatEstimatedFee() {
-        return Number(this.props.prices.usd * Number(this.estimatedFee)).toFixed(2);
-    }
-
-    componentDidMount() {
-        const { address, amount, crypto } = this.props.navigation.state.params;
-        const txn = TransactionUtils.createTransaction(address, amount);
-        this.setState({ txn });
-    }
-
-    async onPressSend() {
-        const { wallet, type, crypto } = this.props;
-        const value = this.props.navigation.getParam('value')
-        const address = this.props.navigation.getParam('address')
-        const ERC20s = this.props.navigation.getParam('ERC20s')
-        const gasParam = this.state.gasParam
-        const togethers = this.props.navigation.getParam('togethers')
-        const groupID = this.props.navigation.getParam('groupID')
-        wallet.isLoading(true);
-        let txn
+    async onPressContinue() {
+        const { item, togethers, erc20s, gasParam, address, amount, target, contract } = this.props.navigation.state.params;
         let overrides
         let nonce = TransactionActions.nextNonce(address)
+        let value
+        let result
+        if (this.state.registered === 1) {
+          const hashPassword = sha256(this.state.password)
+          result = parseInt (await togethers.connectUser(hashPassword),10)
+        }
+        else result = 1
+        if (result === 0) {
+          this.hide()
+          GeneralActions.notify("Password not good", 'long');
+        }
+        if(item.key === 0) {
+          value = amount * conversions.weiToEthereum
+        }
+        else value = amount * 10^decimal
         try {
-            if(togethers) {
+            if(contract) {
               if(crypto !== 0) {
                 overrides = {
-                    gasLimit: gasParam[this.state.functionIndex2].limit,
-                    gasPrice: gasParam[this.state.functionIndex2].price * 1000000000,
+                    gasLimit: gasParam[eRC20allowance].limit,
+                    gasPrice: gasParam[eRC20allowance].price * conversions.gigaWeiToWei,
                     nonce: nonce,
-                    //value: utils.parseEther('1.0'),
                     };
                 const delay = await togethers.ERC20AllowanceExpiry()
-                TransactionActions.erc20approve(this.state.value,ERC20s.instance.type,nonce,ERC20s.instance,delay,overrides)
+                TransactionActions.erc20approve(value,type,nonce,instance,delay,overrides)
                 nonce = nonce + 1
               }
               overrides = {
-                  gasLimit: gasParam[this.state.functionIndex].limit,
-                  gasPrice: gasParam[this.state.functionIndex].price * 1000000000,
+                  gasLimit: gasParam[payForFunds].limit,
+                  gasPrice: gasParam[payForFunds].price * conversions.gigaWeiToWei,
                   nonce: nonce,
-                  //value: utils.parseEther('1.0'),
                   };
-              txn = await togethers.payForFunds(address,groupID,this.state.value,crypto,overrides);
-              this.setState({ txn });
+                  await togethers.payForFunds(target,groupID,value,crypto,overrides);
             }
             else {
             if(crypto !== 0) {
               overrides = {
-                  gasLimit: gasParam[this.state.functionIndex4].limit,
-                  gasPrice: gasParam[this.state.functionIndex4].price * 1000000000,
-                  //nonce: 123,
-                  //value: utils.parseEther('1.0'),
+                  gasLimit: gasParam[gas.eRC20transfer].limit,
+                  gasPrice: gasParam[gas.eRC20transfer].price * conversions.gigaWeiToWei,
                   };
-                txn = await ERC20s.instance.transfer(address,this.state.value, overrides)
+                  await item.instance.transfer(address,value,overrides)
             }
             else {
               overrides = {
-                  gasLimit: gasParam[this.state.functionIndex3].limit,
-                  gasPrice: gasParam[this.state.functionIndex3].price * 1000000000,
-                  //nonce: 123,
-                  //value: utils.parseEther('1.0'),
+                  gasLimit: gasParam[gas.defaultTransaction].limit,
+                  gasPrice: gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei,
                   };
-            txn = await TransactionActions.sendTransaction(wallet.item, this.state.txn, overrides);
+                  wallet.isLoading(true);
+                  const txn = await TransactionUtils.createTransaction(address, value, gasLimit, gasPrice);
+                  await TransactionActions.sendTransaction(wallet.item, txn, overrides);
             }
-            this.setState({ txn });
             }
-        } catch (error) {
-            this.setState({ error });
+          }catch (e) {
+            GeneralActions.notify(e.message, 'long');
+            this.hide()
         } finally {
-            wallet.isLoading(false);
+          this.setState({show: false})
+          this.props.navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 0 });
+          GeneralActions.notify('Success, wait for confirmation in historic', 'short');
         }
     }
 
-    onPressReturn() {
-        const { wallet } = this.props;
-        const value = this.props.navigation.getParam('value')
-        const address = this.props.navigation.getParam('address')
-        const ERC20s = this.props.navigation.getParam('ERC20s')
-        const gasParam = this.state.gasParam
-        const togethers = this.props.navigation.getParam('togethers')
-        const groupID = this.props.navigation.getParam('groupID')
-        this.props.navigation.navigate('WalletDetails', { wallet: wallet.item, gasParam, address, erc20s, togethers, replaceRoute: true, leave: 2 });
+    hide() {
+      this.setState({show: false})
+      this.props.navigation.pop()
     }
 
     render() {
-        const { error, txn } = this.state;
-        return (!txn) ? null : (
+        const { amount, target, loading } = this.state;
+        if(loading === 0)
+        {
+          return(
+            <View style={styles.container}>
+                <View style={styles.body}>
+                  <ActivityIndicator size="large"/>
+                </View>
+              </View>
+        )
+        }
+        return (
             <View style={styles.container}>
                 <View style={styles.content}>
                     <View style={styles.row}>
@@ -141,19 +164,24 @@ export class ConfirmTransaction extends React.Component {
                             <Text style={styles.value}
                                 numberOfLines={1}
                                 ellipsizeMode="middle"
-                                children={txn.to} />
+                                children={target} />
                         </View>
                         <Image style={styles.avatar}
-                            source={{ uri: ImageUtils.generateAvatar(txn.to,500) }} />
+                            source={{ uri: ImageUtils.generateAvatar(target,500) }} />
                     </View>
                     <View style={styles.textColumn}>
                         <Text style={styles.title}>Amount (ETH)</Text>
-                        <Text style={styles.value}>{WalletUtils.formatBalance(txn.value)} ({this.fiatLabel} {this.fiatAmount})</Text>
+                        <Text style={styles.value}>{WalletUtils.formatBalance(amount)}</Text>
                     </View>
                 </View>
-                <SuccessMessage txn={txn} />
-                <ErrorMessage error={error} />
-                {this.actionButton}
+                <View style={styles.buttonsContainer}>
+                    <Button
+                      children="Confirm payment"
+                      onPress={() =>   this.setState({ show: true })}/>
+                  </View>
+                  <Modal
+                      isVisible={this.state.show}
+                      children={this.renderModal()} />
             </View>
         );
     }

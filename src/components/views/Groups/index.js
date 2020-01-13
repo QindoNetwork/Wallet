@@ -30,7 +30,7 @@ export class Groups extends React.Component {
     }
 
     renderBody(){
-      const { address, togethers, erc20s, gasParam, groupID  } = this.props;
+      const { address, togethers, erc20s, gasParam  } = this.props;
       const { max, length } = this.state;
       return      (
         <View style={styles.container}>

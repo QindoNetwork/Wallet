@@ -126,7 +126,7 @@ export class Profiles extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('ProfileData',{ groupID, owner, item, togethers, address, erc20s, gasParam, length, profilesLength })
+              onPress={() => this.props.navigation.navigate('ProfileData',{ groupID , owner, item, togethers, address, erc20s, gasParam, length, profilesLength })
               }>
                 <ProfileCard profile={item} groupID={groupID} togethers={togethers}/>
               </TouchableOpacity>

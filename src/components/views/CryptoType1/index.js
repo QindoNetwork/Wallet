@@ -10,9 +10,7 @@ export class CryptoType1 extends React.Component {
   state = { loading: 0, active: 0 };
 
   async componentDidMount() {
-    const address = this.props.navigation.getParam('address')
-    const togethers = this.props.navigation.getParam('togethers')
-    const groupID = this.props.navigation.getParam('groupID')
+    const { togethers, address, groupID } = this.props.navigation.state.params;
     try {
       this.setState({ active:   parseInt ( await togethers.isOpen(groupID,address),10),
                       loading: 1})
@@ -52,8 +50,7 @@ export class CryptoType1 extends React.Component {
 
       return(
 
-        <Crypto address = {this.props.navigation.getParam('address')} navigation = {this.props.navigation}
-        ERC20s = {this.props.navigation.getParam('erc20s')} gasParam = {this.props.navigation.getParam('gasParam')}/>
+        <Crypto {...this.props.navigation.state.params}/>
 
       )
 

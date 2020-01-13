@@ -15,11 +15,7 @@ export class SelectDestination extends React.Component {
 
     state = { address: '', loading: 0, profiles: [], length: 0, owner: 0 };
 
-    componentDidMount() {
-      this.update()
-    }
-
-    async update() {
+    async componentDidMount() {
        const { navigation } = this.props
        const togethers = navigation.getParam('togethers')
        const address = navigation.getParam('address')
@@ -57,34 +53,11 @@ export class SelectDestination extends React.Component {
        }
      }
 
-    async onPressContinue(id) {
+    onPressContinue() {
 
-        const { navigation } = this.props
-        const amount = navigation.getParam('amount')
-        const gasParam = navigation.getParam('gasParam')
-        const from = navigation.getParam('address')
-        const erc20s = navigation.getParam('erc20s')
-        const togethers = navigation.getParam('togethers')
-        const crypto = navigation.getParam('crypto')
-        const address = navigation.getParam('address')
-        const type = navigation.getParam('type')
+        const { item, togethers, erc20s, gasParam, address, amount } = this.props.navigation.state.params
 
-        try {
-          if (1 === 2) {
-            let overrides = {
-                gasLimit: this.props.navigation.getParam('gasParam')[11].limit,
-                gasPrice: this.props.navigation.getParam('gasParam')[11].price * 1000000000,
-                //nonce: 123,
-                //value: utils.parseEther('1.0'),
-                };
-          //  await this.props.navigation.getParam('togethers').payForFunds(pseudo, 1, overrides);
-            GeneralActions.notify('Wait for validation', 'long');
-          }
-        } catch (e) {
-            GeneralActions.notify(e.message, 'long');
-        }
-      //  navigation.navigate('WalletDetails', { max, gasParam, address, erc20s, control, togethers, replaceRoute: true });
-      this.props.navigation.navigate('ConfirmTransaction', { crypto, address: id, amount, type });
+        this.props.navigation.navigate('ConfirmTransaction', { item, togethers, erc20s, gasParam, address, amount, target:this.state.address });
 
     }
 
@@ -107,6 +80,7 @@ export class SelectDestination extends React.Component {
 
         return (
             <View style={styles.container}>
+            <Text style={styles.message}>{this.props.amount}</Text>
                 <InputWithIcon
                     ref="input"
                     autoFocus
@@ -114,7 +88,7 @@ export class SelectDestination extends React.Component {
                     placeholder="Destination address"
                     onChangeText={(address) => this.setState({ address })}
                     onPressIcon={() => this.refs.camera.show()} />
-                <Button children="Continue" onPress={() =>this.onPressContinue(this.state.address)} />
+                <Button children="Continue" onPress={() =>this.onPressContinue()} />
                 <Camera
                     ref="camera"
                     modal
@@ -123,7 +97,6 @@ export class SelectDestination extends React.Component {
                     <Text style={styles.message}>___________________________</Text>
                     <FlatList
                       data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
-                      refreshControl={<RefreshControl refreshing={this.props.wallet.loading} onRefresh={() => this.update()} />}
                       renderItem={({ item }) => (
                         <TouchableOpacity
                         style={styles.content}

@@ -91,9 +91,6 @@ export class SecureTransaction extends React.Component {
                 case gas.withdrawFunds:
                     tx = await ContractActions.withdrawFunds(togethers,values,overrides)
                     break;
-                case gas.payForFunds:
-                    tx = await ContractActions.payForFunds(togethers,values,overrides)
-                    break;
                 case gas.askForFunds:
                     tx = await ContractActions.askForFunds(togethers,values,overrides)
                     break;
@@ -116,7 +113,7 @@ export class SecureTransaction extends React.Component {
         else {
           this.setState({show: false})
           navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 0 });
-          GeneralActions.notify('Success, wait for confirmation', 'short');
+          GeneralActions.notify('Success, wait for confirmation in historic', 'short');
         }
     }
 
@@ -128,7 +125,7 @@ export class SecureTransaction extends React.Component {
     renderDescription(ethPrice) {
       return(
         <View>
-          <Text style={styles.message}>This action will cost maximum</Text>
+          <Text style={styles.message}>This action will cost maximum :</Text>
           <Text style={styles.message}>{ethPrice} ETH</Text>
         </View>)
     }

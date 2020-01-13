@@ -44,22 +44,22 @@ export async function ask(togethers, args, address, overrides) {
   const { groupID } = args
   let result = "OK"
   try {
-  if (await togethers.groupNumber() < groupID)
+  if (await parseInt (togethers.groupNumber(),10) < groupID)
   {
     result = "KO"
     GeneralActions.notify('this group does not exists', 'long');
   }
-  if (await togethers.getGroupsLength(address) >= togethers.MAX())
+  if (await parseInt (togethers.getGroupsLength(address),10) >= togethers.MAX())
   {
     result = "KO"
     GeneralActions.notify('you have too many groups', 'long');
   }
-  if (await togethers.getUsersLength(groupID) >= togethers.MAX())
+  if (parseInt (await togethers.getUsersLength(groupID),10) >= togethers.MAX())
   {
     result = "KO"
     GeneralActions.notify('there is too many members in this group', 'long');
   }
-  if (await togethers.verifyGroupAsked(groupID,address) === 1)
+  if (parseInt (await togethers.verifyGroupAsked(groupID,address),10) === 1)
   {
     result = "KO"
     GeneralActions.notify('you already asked', 'long');
@@ -92,10 +92,15 @@ export async function createProfile(togethers, args, overrides) {
 }
 
 export async function changePassword(togethers, args, overrides) {
-  const { password1 } = args
+  const { value, oldPassword } = args
   let result = "OK"
   try {
-    await togethers.changePassword(password1,overrides)
+    if (parseInt (await this.props.navigation.getParam('togethers').connectUser(hashPassword),10) === 1)
+    {
+      result = "KO"
+      GeneralActions.notify('password not good', 'long');
+    }
+    await togethers.changePassword(value,overrides)
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
     result = "KO"
@@ -104,10 +109,10 @@ export async function changePassword(togethers, args, overrides) {
   }
 
 export async function changeUserName(togethers, args, overrides) {
-  const { name } = args
+  const { value } = args
   let result = "OK"
   try {
-    await togethers.changeUserName(name,overrides)
+    await togethers.changeUserName(value,overrides)
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
     result = "KO"
@@ -120,18 +125,6 @@ export async function withdrawFunds(togethers, args, overrides) {
   let result = "OK"
   try {
     await togethers.withdrawFunds(groupID,overrides)
-  }catch (e) {
-    GeneralActions.notify(e.message, 'long');
-    result = "KO"
-  }
-  return result
-}
-
-export async function payForFunds(togethers, args, overrides) {
-  const { address, groupID, value, crypto } = args
-  let result = "OK"
-  try {
-    await togethers.payForFunds(address,groupID,value,crypto,overrides)
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
     result = "KO"

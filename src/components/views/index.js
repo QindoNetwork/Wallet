@@ -30,3 +30,4 @@ export * from './ComingSoon';
 export * from './CryptoType1';
 export * from './ChangePseudonyme';
 export * from './ChangePassword';
+export * from './AdminProfile';
