@@ -1,26 +1,29 @@
 import React from 'react';
-import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, Text, View, TextInput } from 'react-native';
 import { Button } from '@components/widgets';
 import { measures, colors } from '@common/styles';
-import { Gas as gas } from '@common/constants';
+import { Gas as gas, Conversions as conversions } from '@common/constants';
 import { General as GeneralActions, Transactions as TransactionActions } from '@common/actions';
 import { Image as ImageUtils, Transaction as TransactionUtils, Wallet as WalletUtils } from '@common/utils';
-import { inject, observer } from 'mobx-react';
 import Modal from 'react-native-modal';
-@inject('prices', 'wallet')
+import { inject, observer } from 'mobx-react';
+import { sha256 } from 'react-native-sha256';
+@inject('wallet')
 @observer
 
 export class ConfirmTransaction extends React.Component {
 
     static navigationOptions = { title: 'Confirm transaction' };
 
-    state = { show: false, password: '', registered: 0 };
+    state = { show: false, password: '', registered: 0, loading: 0, loading2: 1 };
 
     async componentDidMount() {
 
+              const { togethers } = this.props.navigation.state.params;
+
       try {
         this.setState({
-                        registered: parseInt (await this.props.togethers.verifyRegistration(),10),
+                        registered: parseInt (await togethers.verifyRegistration(),10),
                         loading: 1
                       })
       } catch (e) {
@@ -31,7 +34,7 @@ export class ConfirmTransaction extends React.Component {
     renderButtons() {
 
         return(
-            <View style={styles.body}>
+            <View>
               <View style={styles.buttonsContainer}>
                 <Button
                   children="Continue"
@@ -49,17 +52,31 @@ export class ConfirmTransaction extends React.Component {
 
     renderModal() {
 
+      if(this.state.loading2 === 0)
+      {
+        return(
+          <View style={styles.containerModal}>
+              <View style={styles.body}>
+                <ActivityIndicator size="large"/>
+              </View>
+            </View>
+      )
+      }
+
       if(this.state.registerd === 0)
       {
         return(
-            <View style={styles.container}>
+            <View style={styles.containerModal}>
+            <View style={styles.body}>
             <Text style={styles.message}>Confirm</Text>
+            </View>
               {this.renderButtons()}
             </View>)
       }
 
       return(
-          <View style={styles.container}>
+          <View style={styles.containerModal}>
+          <View style={styles.body}>
           <Text style={styles.message}>Confirm</Text>
           <Text style={styles.message}>Password</Text>
           <TextInput
@@ -67,33 +84,37 @@ export class ConfirmTransaction extends React.Component {
               secureTextEntry
               underlineColorAndroid="transparent"
               onChangeText={password => this.setState({ password })} />
+              </View>
           {this.renderButtons()}
           </View>)
 
     }
 
     async onPressContinue() {
-        const { item, togethers, erc20s, gasParam, address, amount, target, contract } = this.props.navigation.state.params;
+        this.setState({ loading2: 0 })
+        const { wallet } = this.props
+        const { item, togethers, erc20s, gasParam, address, amount, target, groupID } = this.props.navigation.state.params;
         let overrides
-        let nonce = TransactionActions.nextNonce(address)
+        let result = 0
         let value
-        let result
+        try {
+        let nonce
         if (this.state.registered === 1) {
           const hashPassword = sha256(this.state.password)
           result = parseInt (await togethers.connectUser(hashPassword),10)
-        }
-        else result = 1
-        if (result === 0) {
-          this.hide()
-          GeneralActions.notify("Password not good", 'long');
+          if (result === 0) {
+            this.hide()
+            GeneralActions.notify("Password not good", 'long');
+            return
+          }
         }
         if(item.key === 0) {
-          value = amount * conversions.weiToEthereum
+          value = amount
         }
-        else value = amount * 10^decimal
-        try {
-            if(contract) {
-              if(crypto !== 0) {
+        else value = (amount * (Math.pow(10,item.decimals))).toString()
+        if(groupID !== 0) {
+          nonce = await TransactionActions.nextNonce(address)
+              if(item.key !== 0) {
                 overrides = {
                     gasLimit: gasParam[eRC20allowance].limit,
                     gasPrice: gasParam[eRC20allowance].price * conversions.gigaWeiToWei,
@@ -108,44 +129,38 @@ export class ConfirmTransaction extends React.Component {
                   gasPrice: gasParam[payForFunds].price * conversions.gigaWeiToWei,
                   nonce: nonce,
                   };
-                  await togethers.payForFunds(target,groupID,value,crypto,overrides);
+                  await togethers.payForFunds(target,groupID,value,item.key,overrides);
             }
             else {
-            if(crypto !== 0) {
+            if(item.key !== 0) {
               overrides = {
                   gasLimit: gasParam[gas.eRC20transfer].limit,
                   gasPrice: gasParam[gas.eRC20transfer].price * conversions.gigaWeiToWei,
                   };
-                  await item.instance.transfer(address,value,overrides)
+                  await item.instance.transfer(target,value,overrides)
             }
             else {
-              overrides = {
-                  gasLimit: gasParam[gas.defaultTransaction].limit,
-                  gasPrice: gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei,
-                  };
-                  wallet.isLoading(true);
-                  const txn = await TransactionUtils.createTransaction(address, value, gasLimit, gasPrice);
-                  await TransactionActions.sendTransaction(wallet.item, txn, overrides);
+                  const gasLimit = gasParam[gas.defaultTransaction].limit
+                  const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
+                  const txn = TransactionUtils.createTransaction(target, value, gasLimit, gasPrice);
+                  await TransactionActions.sendTransaction(wallet.item, txn);
             }
             }
+            this.props.navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 0 });
+            GeneralActions.notify('Success, wait for confirmation in historic', 'short');
           }catch (e) {
-            GeneralActions.notify(e.message, 'long');
             this.hide()
-        } finally {
-          this.setState({show: false})
-          this.props.navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 0 });
-          GeneralActions.notify('Success, wait for confirmation in historic', 'short');
+            GeneralActions.notify(e.message, 'long');
         }
     }
 
     hide() {
-      this.setState({show: false})
       this.props.navigation.pop()
     }
 
     render() {
-        const { amount, target, loading } = this.state;
-        if(loading === 0)
+        const { amount, target, loading } = this.props.navigation.state.params;
+        if(this.state.loading === 0)
         {
           return(
             <View style={styles.container}>
@@ -171,7 +186,7 @@ export class ConfirmTransaction extends React.Component {
                     </View>
                     <View style={styles.textColumn}>
                         <Text style={styles.title}>Amount (ETH)</Text>
-                        <Text style={styles.value}>{WalletUtils.formatBalance(amount)}</Text>
+                        <Text style={styles.value}>{amount}</Text>
                     </View>
                 </View>
                 <View style={styles.buttonsContainer}>
@@ -188,6 +203,12 @@ export class ConfirmTransaction extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  containerModal: {
+      backgroundColor: colors.white,
+      paddingHorizontal: measures.defaultPadding,
+      maxHeight: 700,
+      borderRadius: 4
+  },
     container: {
         flex: 1,
         padding: measures.defaultPadding,

@@ -9,7 +9,7 @@ export class AddGroup extends Component {
 
   render() {
 
-    const { gasParam, togethers, myPseudo, erc20s, address  } = this.props.navigation.state.params;
+    const { gasParam, togethers, erc20s, address  } = this.props.navigation.state.params;
 
       return (
           <View style={styles.container}>
@@ -17,13 +17,13 @@ export class AddGroup extends Component {
                 <View style={styles.buttonsContainer}>
                   <Button
                     children="Create a new group"
-                    onPress={() => this.props.navigation.navigate('CreateGroup',{togethers,address,gasParam,myPseudo,erc20s})}
+                    onPress={() => this.props.navigation.navigate('CreateGroup',{togethers,address,gasParam,erc20s})}
                     />
                 </View>
                 <View style={styles.buttonsContainer}>
                   <Button
                     children="Apply for an existing one"
-                    onPress={() => this.props.navigation.navigate('AskGroup',{togethers,address,gasParam,myPseudo,erc20s})}
+                    onPress={() => this.props.navigation.navigate('AskGroup',{togethers,address,gasParam,erc20s})}
                     />
                 </View>
               </View>

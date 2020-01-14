@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 
 import "./Administration.sol";
 
@@ -7,7 +8,7 @@ contract Togethers is Administration {
   mapping (address => string) public mappAddressToUser;
   mapping (uint => string) private mappGroupIDToGroupName;
   mapping (uint => mapping (address => profile)) private mappProfileInGroup;
-  mapping (address => uint[]) private mappGroupsForAddress;
+  mapping (address => uint[]) public mappGroupsForAddress;
   mapping (uint => address[]) private mappUsersInGroup;
   mapping (uint => address) private checkNameUnicity;
   mapping (address => mapping (uint => bool)) private mappAskForAdd;
@@ -25,7 +26,6 @@ contract Togethers is Administration {
     MAX = 50;
     ID = 2;
     checkNameUnicity[returnHash("Togethers")] = address(this);
-    useNewToken("Ethers","ETH",address(this),0,0);
   }
 
   function ask(uint _groupID) public
@@ -127,7 +127,7 @@ contract Togethers is Administration {
     require(stop == false);
     require(mappProfileInGroup[groupID][_publicKey].open == true);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
-    require(_crypto < getSize() && disableCrypto[_crypto] == false);
+    require(_crypto <= TokenID && disableCrypto[_crypto] == false);
     uint amount;
     if (_crypto == 0)
     {
@@ -150,7 +150,7 @@ contract Togethers is Administration {
     mappProfileInGroup[groupID][msg.sender].open = false;
     if (checkIsEmpty(groupID) == false)
     {
-      for(uint i = 0 ; i < getSize() ; i++)
+      for(uint i = 0 ; i <= TokenID ; i++)
       {
         if (mappGiven[groupID][msg.sender][i] > 0)
         {

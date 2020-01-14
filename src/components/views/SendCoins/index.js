@@ -3,6 +3,13 @@ import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { Button, Calculator } from '@components/widgets';
 import { colors } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
+import { Wallet as WalletUtils } from '@common/utils';
+import { Conversions as conversions } from '@common/constants';
+
+import { inject, observer } from 'mobx-react';
+
+@inject('wallet')
+@observer
 
 export class SendCoins extends React.Component {
 
@@ -18,7 +25,7 @@ export class SendCoins extends React.Component {
       if (item.key !== 0){
         this.setState({ balance:  parseInt ( await item.instance.balanceOf(address),10) })
       }
-      else this.setState({ balance:  Number(WalletUtils.formatBalance(this.props.wallet.item.balance))})
+      else this.setState({ balance: this.props.wallet.item.balance })
 
       this.setState({ loading: 1 })
     } catch (e) {
@@ -27,15 +34,24 @@ export class SendCoins extends React.Component {
   }
 
     onPressContinue() {
-      const { item, erc20s, gasParam, address } = this.props.navigation.state.params
-      const { amount } = this.refs.calc;
-
+      const { item, erc20s, gasParam, address, togethers, contract, groupID } = this.props.navigation.state.params
+      var { amount } = this.refs.calc;
+      let isOK = true
         if (!amount) return;
-        if (amount < balance) {
+        if (item.type === 0) {
+          if (amount > this.state.balance) {
+          isOK === false
+        }
+        }else if (amount * (Math.pow(10,item.decimals)) > this.state.balance) {
+          isOK === false
+        }
+        if (isOK === false) {
         GeneralActions.notify("You don t have enough balance", 'long');
         }
-        this.props.navigation.navigate('SelectDestination', { amount, item, togethers, erc20s, gasParam, address });
-    }
+        else {
+          this.props.navigation.navigate('SelectDestination', { groupID, contract, amount, item, togethers, erc20s, gasParam, address });
+        }
+  }
 
     render() {
 

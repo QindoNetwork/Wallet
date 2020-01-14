@@ -30,7 +30,7 @@ export default class CryptoCard extends React.Component {
   balance(value) {
       const { crypto } = this.props
       if(crypto.name !== 'Ethers') {
-        return Number(value/(10^crypto.decimals))
+        return Number(value/(Math.pow(10, crypto.decimals)))
       }
       else return value
   }

@@ -8,7 +8,7 @@ import Header from './Header';
 
 export class Groups extends React.Component {
 
-    state = {loading: 0, groups: [], length: 0, max: 0, pseudo: '' };
+    state = { loading: 0, groups: [], length: 0, max: 0, pseudo: '' };
 
     async componentDidMount() {
       const { togethers, address } = this.props

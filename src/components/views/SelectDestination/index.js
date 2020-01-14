@@ -53,13 +53,38 @@ export class SelectDestination extends React.Component {
        }
      }
 
-    onPressContinue() {
+    onPressContinue(target) {
 
-        const { item, togethers, erc20s, gasParam, address, amount } = this.props.navigation.state.params
+        const { item, togethers, erc20s, gasParam, address, amount, contract, groupID } = this.props.navigation.state.params
 
-        this.props.navigation.navigate('ConfirmTransaction', { item, togethers, erc20s, gasParam, address, amount, target:this.state.address });
+        this.props.navigation.navigate('ConfirmTransaction', { groupID, contract, item, togethers, erc20s, gasParam, address, amount, target });
 
     }
+
+    renderInput() {
+
+        return(
+
+          <View>
+              <InputWithIcon
+                  ref="input"
+                  autoFocus
+                  icon="qr-scanner"
+                  placeholder="Destination address"
+                  onChangeText={(address) => this.setState({ address })}
+                  onPressIcon={() => this.refs.camera.show()} />
+              <Button children="Continue" onPress={() => this.onPressContinue(this.state.address)} />
+              <Camera
+                  ref="camera"
+                  modal
+                  onClose={() => this.refs.camera.hide()}
+                  onBarCodeRead={address => this.refs.input.onChangeText(address)} />
+          </View>
+
+
+      )
+
+      }
 
     render() {
       const { profiles } = this.state
@@ -68,11 +93,13 @@ export class SelectDestination extends React.Component {
 
         return(
 
-        <View style={styles.container}>
-          <View style={styles.body}>
-            <ActivityIndicator size="large"/>
+          <View style={styles.container}>
+          {this.renderInput()}
+                  <View style={styles.body}>
+                    <ActivityIndicator size="large"/>
+                  </View>
           </View>
-        </View>
+
 
       )
 
@@ -80,20 +107,7 @@ export class SelectDestination extends React.Component {
 
         return (
             <View style={styles.container}>
-            <Text style={styles.message}>{this.props.amount}</Text>
-                <InputWithIcon
-                    ref="input"
-                    autoFocus
-                    icon="qr-scanner"
-                    placeholder="Destination address"
-                    onChangeText={(address) => this.setState({ address })}
-                    onPressIcon={() => this.refs.camera.show()} />
-                <Button children="Continue" onPress={() =>this.onPressContinue()} />
-                <Camera
-                    ref="camera"
-                    modal
-                    onClose={() => this.refs.camera.hide()}
-                    onBarCodeRead={address => this.refs.input.onChangeText(address)} />
+            {this.renderInput()}
                     <Text style={styles.message}>___________________________</Text>
                     <FlatList
                       data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
@@ -101,7 +115,7 @@ export class SelectDestination extends React.Component {
                         <TouchableOpacity
                         style={styles.content}
                         activeOpacity={0.8}
-                        onPress={() =>this.onPressContinue(item.id)}>
+                        onPress={() => this.onPressContinue(item.id)}>
                           <ProfileCard profile={item} />
                         </TouchableOpacity>
                       )}

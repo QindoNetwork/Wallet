@@ -68,6 +68,7 @@ export class WalletsOverview extends React.Component {
         const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
 
           var erc20s = []
+          var erc20s2 = []
           var gasParam = []
           const control = new ethers.Contract(contractsAddress.controlAddress, controlABI, connection);
           const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
@@ -75,22 +76,36 @@ export class WalletsOverview extends React.Component {
 
             var enable
             var tokenAddress
-            for(var i = 0; i < erc20sLength ; i++)
+            var instance
+            var type
+
+            erc20s.push({ name: "Ethers",
+                          symbol: "ETH",
+                          type: 0,
+                          decimals: 0,
+                          instance: null,
+                          key: 0})
+
+            for(var i = 1; i < erc20sLength ; i++)
             {
+              type = parseInt(await togethers.getTokenType(i),10)
               enable = parseInt(await togethers.checkEnableCrypto(i),10)
               if(enable === 1)
               {
-                tokenAddress = await togethers.getTokenAddress(i)
-                erc20s.push({ name: await togethers.getTokenName(i),
-                              symbol: await togethers.getTokenSymbol(i),
-                              type: await togethers.getTokenType(i),
-                              decimals: parseInt(await togethers.getTokenDecimal(i),10),
-                              instance: new ethers.Contract(tokenAddress, erc20ABI, connection),
+                tokenAddress = parseInt(await togethers.getTokenAddress(i),10)
+                if(type === 1 || type === 2)
+                {
+                  instance = new ethers.Contract(tokenAddress, erc20ABI, connection)
+                }
+                erc20s.push({ name: await instance.name(),
+                              symbol: await instance.symbol(),
+                              type: type,
+                              decimals: parseInt(await instance.decimals(),10),
+                              instance: instance,
                               key: i})
               }
             }
-
-          for(var j = 0 ; j <= 11 ; j++)
+            for(var j = 0 ; j < 17 ; j++)
           {
             gasParam.push({ limit: parseInt(await control.getGasLimit(j),10),
                             price: parseInt(await control.getGasPrice(j),10)

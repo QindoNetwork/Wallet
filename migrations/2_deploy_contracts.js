@@ -10,13 +10,9 @@ module.exports = function(deployer) {
     return deployer.deploy(Togethers, {gas : gasLimit});
     }).then(function() {
       return Togethers.deployed();
-      }).then(function(instance) {
-        return instance.useNewToken("Ethers", "ETH", Togethers.address, 0, 0, {gas : gasLimit});
-        }).then(function() {
+      }).then(function() {
           return Togethers.deployed();
-          }).then(function(instance) {
-            return instance.useNewToken("TogethersCoin", "TGTC", TogethersCoin.address, 18, 1, {gas : gasLimit});
-            }).then(function() {
+          }).then(function() {
               return Togethers.deployed();
               }).then(function(instance) {
                 return instance.setUser("Inventor","", {gas : gasLimit});

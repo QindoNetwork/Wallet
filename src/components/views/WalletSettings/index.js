@@ -86,22 +86,6 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Password</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.ComingSoon()}>
-                    <View style={styles.itemContainer}>
-                        <View style={styles.icon}>
-                            <Icon name='shirt' />
-                        </View>
-                        <Text style={styles.itemTitle}>Snapshat</Text>
-                    </View>
-                </ListItem>
-                <ListItem onPress={() => this.ComingSoon()}>
-                    <View style={styles.itemContainer}>
-                        <View style={styles.icon}>
-                            <Icon name='shirt' />
-                        </View>
-                        <Text style={styles.itemTitle}>Profile image</Text>
-                    </View>
-                </ListItem>
                 <ListItem onPress={() => this.confirmExportPK()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
@@ -116,14 +100,6 @@ export class WalletSettings extends React.Component {
                             <Icon name='shirt' />
                         </View>
                         <Text style={styles.itemTitle}>User name</Text>
-                    </View>
-                </ListItem>
-                <ListItem onPress={() => this.ComingSoon()}>
-                    <View style={styles.itemContainer}>
-                        <View style={styles.icon}>
-                            <Icon name='shirt' />
-                        </View>
-                        <Text style={styles.itemTitle}>Advertisments language</Text>
                     </View>
                 </ListItem>
             </View>

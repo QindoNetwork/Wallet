@@ -25,7 +25,6 @@ const navigator = createStackNavigator(
     ShowPrivateKey: { screen: Views.ShowPrivateKey },
     WalletDetails: { screen: Views.WalletDetails },
     WalletsOverview: { screen: Views.WalletsOverview },
-
     AddProfile: { screen: Views.AddProfile },
     AskGroup: { screen: Views.AskGroup },
     CreateGroup: { screen: Views.CreateGroup },

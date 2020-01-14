@@ -9,6 +9,7 @@ contract Administration is Ownable {
 
   uint public ID;
   uint public MAX;
+  uint public TokenID;
   uint public groupNumber;
   bool public stop;
   uint public ERC20AllowanceExpiry;
@@ -16,12 +17,13 @@ contract Administration is Ownable {
   event newDemand(uint indexed ID, address indexed user);
   event withdrawIssue(address user, uint crypto, uint amount);
 
-  mapping (uint => bool) public disableCrypto;
+  mapping (uint => bool) internal disableCrypto;
   mapping (uint => mapping (address => mapping (uint => uint))) internal mappGiven;
   mapping (uint => spaceInfo) internal mappSpaceInfo;
-  mapping (address => uint) public mapAddressToLastSpaceID;
+  mapping (uint => tokenType) private mapTokenType;
+  mapping (address => uint[]) public mapPersonalTokenList;
 
-  mapping (address => uint) private userPassword;
+  mapping (address => uint) internal userPassword;
 
   function createPassword(string memory _password) internal
   {
@@ -59,21 +61,16 @@ contract Administration is Ownable {
     else return 0;
   }
 
-  Token[] list;
-
-  struct Token
-  {
-    string name;
-    string symbol;
-    address ID;
-    uint decimal;
-    uint category;
-  }
-
   struct spaceInfo
   {
     string description;
     address user;
+  }
+
+  struct tokenType
+  {
+    uint Type;
+    address ID;
   }
 
   address powerToken;
@@ -95,40 +92,53 @@ contract Administration is Ownable {
     ERC20AllowanceExpiry = _delai;
   }
 
-  function useNewToken(string memory name, string memory symbol, address _address, uint decimal, uint _type) public onlyOwner
+  function setTokenERC20List(address[] memory list) public onlyOwner
+  {
+    for (uint i = 0; i < list.length; i++)
+    {
+      TokenID += 1;
+      uint j = i + TokenID;
+      if (mapTokenType[j].Type == 0)
+      {
+        mapTokenType[j].Type = 1;
+        mapTokenType[j].ID = list[i];
+      }
+    }
+  }
+
+  function useNewToken(address _address, uint _type) public onlyOwner
   {
     require(_address != address(0));
-    list.push(Token(name,symbol,_address,decimal,_type));
+    require(_type != (0));
+    TokenID += 1;
+    mapTokenType[TokenID].Type = _type;
+    mapTokenType[TokenID].ID = _address;
   }
 
-  function getTokenAddress(uint256 index) public view returns (address)
+  function usePersonalToken(uint index) public
   {
-    return list[index].ID;
+    require(mapTokenType[index].Type != 0);
+    mapPersonalTokenList[msg.sender].push(index);
   }
 
-  function getTokenType(uint256 index) public view returns (uint)
+  function removePersonalToken(uint index) public
   {
-    return list[index].category;
+    require(mapPersonalTokenList[msg.sender].length > index);
+    for (uint k = index; k < mapPersonalTokenList[msg.sender].length-1; k++){
+            mapPersonalTokenList[msg.sender][k] = mapPersonalTokenList[msg.sender][k+1];
+    }
+    delete mapPersonalTokenList[msg.sender][mapPersonalTokenList[msg.sender].length-1];
+    mapPersonalTokenList[msg.sender].length --;
   }
 
-  function getTokenDecimal(uint256 index) public view returns (uint)
+  function getTokenAddress(uint index) public view returns (address)
   {
-    return list[index].decimal;
+    return mapTokenType[index].ID;
   }
 
-  function getTokenSymbol(uint256 index) public view returns (string memory)
+  function getTokenType(uint index) public view returns (uint)
   {
-    return list[index].symbol;
-  }
-
-  function getTokenName(uint256 index) public view returns (string memory)
-  {
-    return list[index].name;
-  }
-
-  function getSize() public view returns (uint)
-  {
-    return list.length;
+    return mapTokenType[index].Type;
   }
 
   function enableCrypto(uint _index) public onlyOwner
@@ -157,7 +167,7 @@ contract Administration is Ownable {
 
   function checkIsEmpty(uint groupID) internal view returns (bool)
   {
-    for(uint i = 0 ; i < getSize() ; i++)
+    for(uint i = 0 ; i <= TokenID ; i++)
     {
       if (mappGiven[groupID][msg.sender][i] > 0)
       {
@@ -175,11 +185,6 @@ contract Administration is Ownable {
   function getCryptoGiven(uint groupID, address to, uint crypto) view public returns (uint)
   {
     return mappGiven[groupID][to][crypto];
-  }
-
-  function getStats(address from, address to, uint crypto) view public returns (uint)
-  {
-    return mappStatsPeerToPeer[from][to][crypto];
   }
 
   function stopAskForFunds() public view onlyOwner
