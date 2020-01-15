@@ -50,7 +50,7 @@ export class CryptoType1 extends React.Component {
 
       return(
 
-        <Crypto contract = 'YES' {...this.props.navigation.state.params}/>
+        <Crypto navigation = {this.props.navigation} contract = 'YES' {...this.props.navigation.state.params}/>
 
       )
 

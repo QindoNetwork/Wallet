@@ -8,6 +8,9 @@ import { Image as ImageUtils, Transaction as TransactionUtils, Wallet as WalletU
 import Modal from 'react-native-modal';
 import { inject, observer } from 'mobx-react';
 import { sha256 } from 'react-native-sha256';
+import { ERC20ABI as erc20ABI } from '@common/ABIs';
+import { Contracts as contractsAddress } from '@common/constants';
+import { ethers } from 'ethers';
 @inject('wallet')
 @observer
 
@@ -93,10 +96,11 @@ export class ConfirmTransaction extends React.Component {
     async onPressContinue() {
         this.setState({ loading2: 0 })
         const { wallet } = this.props
-        const { item, togethers, erc20s, gasParam, address, amount, target, groupID } = this.props.navigation.state.params;
+        const { item, togethers, erc20s, gasParam, address, amount, target, groupID, contract, connection } = this.props.navigation.state.params;
         let overrides
         let result = 0
         let value
+        let instance
         try {
         let nonce
         if (this.state.registered === 1) {
@@ -108,13 +112,16 @@ export class ConfirmTransaction extends React.Component {
             return
           }
         }
-        if(item.key === 0) {
+        if(item.address === contractsAddress.nullAddress) {
           value = amount
         }
-        else value = (amount * (Math.pow(10,item.decimals))).toString()
-        if(groupID !== 0) {
+        else {
+        value = (amount * (Math.pow(10,item.decimals))).toString()
+        instance = new ethers.Contract(item.address, erc20ABI, connection)
+        }
+        if(groupID !== '0') {
           nonce = await TransactionActions.nextNonce(address)
-              if(item.key !== 0) {
+              if(item.address !== contractsAddress.nullAddress) {
                 overrides = {
                     gasLimit: gasParam[eRC20allowance].limit,
                     gasPrice: gasParam[eRC20allowance].price * conversions.gigaWeiToWei,
@@ -128,10 +135,10 @@ export class ConfirmTransaction extends React.Component {
                   gasPrice: gasParam[payForFunds].price * conversions.gigaWeiToWei,
                   nonce: nonce,
                   };
-                  await togethers.payForFunds(target,groupID,value,item.key,overrides);
+                  await togethers.payForFunds(target,groupID,value,item.address,overrides);
             }
             else {
-            if(item.key !== 0) {
+            if(item.address !== contractsAddress.nullAddress) {
               overrides = {
                   gasLimit: gasParam[gas.eRC20transfer].limit,
                   gasPrice: gasParam[gas.eRC20transfer].price * conversions.gigaWeiToWei,

@@ -13,7 +13,7 @@ export class Crypto extends React.Component {
 
     render() {
 
-      const { togethers, gasParam, address, navigation, contract, connection } = this.props
+      const { togethers, gasParam, address, navigation, connection, contract } = this.props
       const groupID = 0
 
       var erc20s = []
@@ -22,13 +22,13 @@ export class Crypto extends React.Component {
                     symbol: "ETH",
                     type: 0,
                     decimals: 0,
-                    instance: null,
+                    address: contractsAddress.nullAddress,
                     key: 0})
 
                     erc20s.push({ name: "TogethersCoin",
                                   symbol: "TGTC",
                                   decimals: 18,
-                                  instance: new ethers.Contract(contractsAddress.TGTCAddress, erc20ABI, connection),
+                                  address: contractsAddress.TGTCAddress,
                                   key: 1})
 
       return(
@@ -41,8 +41,8 @@ export class Crypto extends React.Component {
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('SendCoins', { groupID, contract, item, togethers, erc20s, gasParam, address, connection })}>
-                  <CryptoCard crypto={item} address={address}/>
+                onPress={() => navigation.navigate('SendCoins', { contract, groupID, contract, item, togethers, erc20s, gasParam, address, connection })}>
+                  <CryptoCard crypto={item} address={address} connection={connection}/>
               </TouchableOpacity>
             )}
         />

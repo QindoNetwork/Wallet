@@ -5,6 +5,9 @@ import { colors } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Wallet as WalletUtils } from '@common/utils';
 import { Conversions as conversions } from '@common/constants';
+import { ERC20ABI as erc20ABI } from '@common/ABIs';
+import { Contracts as contractsAddress } from '@common/constants';
+import { ethers } from 'ethers';
 
 import { inject, observer } from 'mobx-react';
 
@@ -20,10 +23,11 @@ export class SendCoins extends React.Component {
   state = { loading: 0, balance: 0 };
 
   async componentDidMount() {
-    const { item, address } = this.props.navigation.state.params;
+    const { item, address, connection } = this.props.navigation.state.params;
     try {
       if (item.key !== 0){
-        this.setState({ balance:  parseInt ( await item.instance.balanceOf(address),10) })
+        const instance = new ethers.Contract(item.address, erc20ABI, connection)
+        this.setState({ balance:  parseInt ( await instance.balanceOf(address),10) })
       }
       else this.setState({ balance: this.props.wallet.item.balance })
 
@@ -34,7 +38,7 @@ export class SendCoins extends React.Component {
   }
 
     onPressContinue() {
-      const { item, erc20s, gasParam, address, togethers, contract, groupID } = this.props.navigation.state.params
+      const { item, erc20s, gasParam, address, togethers, groupID, contract, connection } = this.props.navigation.state.params
       var { amount } = this.refs.calc;
       let isOK = true
         if (!amount) return;
@@ -49,7 +53,7 @@ export class SendCoins extends React.Component {
         GeneralActions.notify("You don t have enough balance", 'long');
         }
         else {
-          this.props.navigation.navigate('SelectDestination', { groupID, contract, amount, item, togethers, erc20s, gasParam, address });
+          this.props.navigation.navigate('SelectDestination', { contract, groupID, contract, amount, item, togethers, erc20s, gasParam, address });
         }
   }
 

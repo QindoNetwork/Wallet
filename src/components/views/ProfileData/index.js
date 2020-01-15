@@ -28,7 +28,8 @@ export class ProfileData extends React.Component {
                   togethers : navigation.getParam('togethers'),
                   groupID : navigation.getParam('groupID'),
                   gasParam : navigation.getParam('gasParam'),
-                  erc20s : navigation.getParam('erc20s')
+                  erc20s : navigation.getParam('erc20s'),
+                  connection : navigation.getParam('connection'),
                 })
               } />
 
@@ -84,10 +85,10 @@ export class ProfileData extends React.Component {
     return(
       <View style={styles.container}>
       <View style={styles.leftColumn}>
-          <ProfileCard togethers={togethers} spaceID={this.state.spaceID} target={target}/>
+          <ProfileCard togethers={togethers} spaceID={this.state.spaceID} target={target} groupID={groupID}/>
       </View>
       <View style={styles.middleColumn}>
-          <ProfileCard togethers={togethers} spaceID={this.state.spaceID} target={target}/>
+          <ProfileCard togethers={togethers} spaceID={this.state.spaceID} target={target} groupID={groupID}/>
       </View>
     </View>)
 

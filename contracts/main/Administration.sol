@@ -15,11 +15,11 @@ contract Administration is Ownable {
   event newDemand(uint indexed ID, address indexed user);
   event withdrawIssue(address user, address crypto, uint amount);
 
-  mapping (uint => mapping (address => uint)) internal mappGiven;
-  mapping (uint => address[]) internal mappCryptoGroupList;
-  mapping (uint => spaceInfo) internal mappSpaceInfo;
-  mapping (address => bool) internal mappCryptoEnable;
-  mapping (uint => address) private mappSymbolToCrypto;
+  mapping (uint => mapping (address => uint)) public mappGiven;
+  mapping (uint => address[]) public mappCryptoGroupList;
+  mapping (uint => spaceInfo) public mappSpaceInfo;
+  mapping (address => bool) public mappCryptoEnable;
+  mapping (uint => address) public mappSymbolToCrypto;
 
   address[] cryptoList;
 

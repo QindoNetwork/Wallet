@@ -71,11 +71,13 @@ export class WalletsOverview extends React.Component {
             var tokenAddress
             var instance
             var type
+            var gas
 
             for(var j = 0 ; j <= 14 ; j++)
             {
-            gasParam.push({ limit: parseInt(await control.getGasLimit(j),10),
-                            price: parseInt(await control.getGasPrice(j),10)
+            gas = await control.mappFunctionToGasParameters(j)
+            gasParam.push({ limit: parseInt(gas.gasLimit,10),
+                            price: parseInt(gas.gasPrice,10)
                           })
           }
 

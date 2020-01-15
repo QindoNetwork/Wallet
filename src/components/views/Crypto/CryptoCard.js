@@ -5,6 +5,9 @@ import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Wallet as WalletUtils } from '@common/utils';
+import { ERC20ABI as erc20ABI } from '@common/ABIs';
+import { Contracts as contractsAddress } from '@common/constants';
+import { ethers } from 'ethers';
 
 @inject('prices', 'wallet')
 @observer
@@ -16,7 +19,8 @@ export default class CryptoCard extends React.Component {
   async componentDidMount() {
     try {
       if (this.props.crypto.key !== 0){
-        this.setState({ balance:  parseInt ( await this.props.crypto.instance.balanceOf(this.props.address),10) })
+        const instance = new ethers.Contract(this.props.crypto.address, erc20ABI, this.props.connection)
+        this.setState({ balance:  parseInt ( await instance.balanceOf(this.props.address),10) })
       }
       else {
         this.setState({ balance:  Number(WalletUtils.formatBalance(this.props.wallet.item.balance))})

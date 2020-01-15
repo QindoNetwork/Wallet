@@ -6,12 +6,12 @@ import "./Administration.sol";
 contract Togethers is Administration {
 
   mapping (address => string) public mappAddressToUser;
-  mapping (uint => string) private mappGroupIDToGroupName;
-  mapping (uint => mapping (address => profile)) private mappProfileInGroup;
+  mapping (uint => string) public mappGroupIDToGroupName;
+  mapping (uint => mapping (address => profile)) public mappProfileInGroup;
   mapping (address => uint[]) public mappGroupsForAddress;
-  mapping (uint => address[]) private mappUsersInGroup;
-  mapping (uint => address) private checkNameUnicity;
-  mapping (address => mapping (uint => bool)) private mappAskForAdd;
+  mapping (uint => address[]) public mappUsersInGroup;
+  mapping (uint => address) public checkNameUnicity;
+  mapping (address => mapping (uint => bool)) public mappAskForAdd;
 
   struct profile
   {
@@ -166,15 +166,14 @@ contract Togethers is Administration {
     uint DemandID = mappProfileInGroup[groupID][msg.sender].DemandID;
     for(uint i = 0 ; i <= mappCryptoGroupList[groupID].length ; i++)
       {
-      address crypto = mappCryptoGroupList[groupID][i];
+        address crypto = mappCryptoGroupList[groupID][i];
         if (mappGiven[DemandID][crypto] > 0)
         {
-          if (i == 0)
+          if (crypto == address(0))
           {
             if (address(this).balance >= mappGiven[DemandID][crypto])
             {
               msg.sender.transfer(mappGiven[DemandID][crypto]);
-              mappGiven[DemandID][crypto] = 0;
             }
             else emit withdrawIssue(msg.sender,crypto,mappGiven[DemandID][crypto]);
           }
@@ -183,7 +182,6 @@ contract Togethers is Administration {
             if (External2(crypto).balanceOf(address(this)) >= mappGiven[DemandID][crypto])
             {
               External2(crypto).transfer(msg.sender,mappGiven[DemandID][crypto]);
-              mappGiven[DemandID][crypto] = 0;
             }
             else emit withdrawIssue(msg.sender,crypto,mappGiven[DemandID][crypto]);
           }
@@ -289,6 +287,16 @@ contract Togethers is Administration {
   function getGroupsLength(address _key) view public returns (uint)
   {
     return mappGroupsForAddress[_key].length;
+  }
+
+  function getUsersInGroup(uint groupID) view public returns (address[] memory)
+  {
+    return mappUsersInGroup[groupID];
+  }
+
+  function getUsersGroups() view public returns (uint[] memory)
+  {
+    return mappGroupsForAddress[msg.sender];
   }
 
   function getUsersLength(uint _group) view public returns (uint)

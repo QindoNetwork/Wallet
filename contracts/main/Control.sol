@@ -4,7 +4,7 @@ import "../owner/Ownable.sol";
 
 contract Control is Ownable {
 
-  mapping (uint => gasParameters) private mappFunctionToGasParameters;
+  mapping (uint => gasParameters) public mappFunctionToGasParameters;
 
   struct gasParameters
   {

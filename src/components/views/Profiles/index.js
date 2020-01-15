@@ -37,10 +37,11 @@ export class Profiles extends React.Component {
 
       renderModal() {
 
-        const { gasParam, togethers, erc20s, address, item, groupID, length  } = this.props.navigation.state.params;
+        const { gasParam, togethers, erc20s, address, item, length  } = this.props.navigation.state.params;
         let limit = gasParam[gas.quitGroup].limit
         limit = limit * ( this.state.length + length )
         const price = gasParam[gas.quitGroup].price
+        const groupID = item.id
 
         if (this.state.show === true) {
         return (  <SecureTransaction
@@ -79,11 +80,11 @@ export class Profiles extends React.Component {
         }
       }
 
-      demand(groupID, owner, togethers, address, erc20s, gasParam) {
+      demand(item, owner, togethers, address, erc20s, gasParam) {
         if (this.state.active === 1){
-          this.props.navigation.navigate('CloseDemand',{ groupID, owner, togethers, address, erc20s, gasParam })
+          this.props.navigation.navigate('CloseDemand',{ groupID:item.id , owner, togethers, address, erc20s, gasParam })
         }
-        else this.props.navigation.navigate('OpenDemand',{ groupID, owner, togethers, address, erc20s, gasParam })
+        else this.props.navigation.navigate('OpenDemand',{ groupID:item.id, owner, togethers, address, erc20s, gasParam })
       }
 
       onPressQuit() {
@@ -96,7 +97,7 @@ export class Profiles extends React.Component {
       render() {
         const { profiles, owner, active } = this.state
         const profilesLength = this.state.length
-        const { gasParam, togethers, erc20s, address, item, length, max } = this.props.navigation.state.params
+        const { gasParam, togethers, erc20s, address, item, length, max, connection } = this.props.navigation.state.params
         const groupID = item.id
 
         if (this.state.loading === 0){
@@ -126,7 +127,7 @@ export class Profiles extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('ProfileData',{ groupID , owner, item, togethers, address, erc20s, gasParam, length, profilesLength })
+              onPress={() => this.props.navigation.navigate('ProfileData',{ connection, groupID , owner, item, togethers, address, erc20s, gasParam, length, profilesLength })
               }>
                 <ProfileCard profile={item} groupID={groupID} togethers={togethers}/>
               </TouchableOpacity>
