@@ -8,7 +8,7 @@ import NoWallets from './NoWallets';
 import WalletCard from './WalletCard';
 import { ethers } from 'ethers';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
-import { ControlABI as controlABI, TogethersABI as togethersABI, ERC20ABI as erc20ABI } from '@common/ABIs';
+import { ControlABI as controlABI, TogethersABI as togethersABI } from '@common/ABIs';
 
 @inject('wallets')
 @observer
@@ -81,7 +81,7 @@ export class WalletsOverview extends React.Component {
 
           WalletActions.selectWallet(wallet)
           this.setState({ loading: 1 })
-          this.props.navigation.navigate('Login', { gasParam, control, togethers, address: wallet.address });
+          this.props.navigation.navigate('Login', { gasParam, control, togethers, address: wallet.address, connection });
 
         } catch (e) {
           GeneralActions.notify(e.message, 'long');

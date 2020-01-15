@@ -5,13 +5,31 @@ import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import CryptoCard from './CryptoCard';
 import Header from './Header';
+import { ERC20ABI as erc20ABI } from '@common/ABIs';
+import { Contracts as contractsAddress } from '@common/constants';
+import { ethers } from 'ethers';
 
 export class Crypto extends React.Component {
 
     render() {
 
-      const { togethers, erc20s, gasParam, address, navigation, contract } = this.props
+      const { togethers, gasParam, address, navigation, contract, connection } = this.props
       const groupID = 0
+
+      var erc20s = []
+
+      erc20s.push({ name: "Ethers",
+                    symbol: "ETH",
+                    type: 0,
+                    decimals: 0,
+                    instance: null,
+                    key: 0})
+
+                    erc20s.push({ name: "TogethersCoin",
+                                  symbol: "TGTC",
+                                  decimals: 18,
+                                  instance: new ethers.Contract(contractsAddress.TGTCAddress, erc20ABI, connection),
+                                  key: 1})
 
       return(
 
@@ -23,7 +41,7 @@ export class Crypto extends React.Component {
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('SendCoins', { groupID, contract, item, togethers, erc20s, gasParam, address })}>
+                onPress={() => navigation.navigate('SendCoins', { groupID, contract, item, togethers, erc20s, gasParam, address, connection })}>
                   <CryptoCard crypto={item} address={address}/>
               </TouchableOpacity>
             )}

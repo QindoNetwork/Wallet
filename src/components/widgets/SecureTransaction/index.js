@@ -51,7 +51,7 @@ export class SecureTransaction extends React.Component {
 
     async exit() {
 
-      const { togethers, limit, price , type, nonce, navigation, values, address } = this.props
+      const { togethers, limit, price , type, nonce, navigation, values, address, connection } = this.props
       let overrides
 
       if (type === gas.payForFunds) {
