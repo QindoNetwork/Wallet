@@ -1,5 +1,5 @@
 import Snackbar from 'react-native-snackbar';
-import { Recents as RecentsService, Wallets as WalletsService } from '@common/services';
+import { Wallets as WalletsService } from '@common/services';
 import * as store from '@common/stores';
 
 export async function notify(title, duration, driver=Snackbar) {
@@ -28,15 +28,10 @@ export async function eraseAllData() {
 }
 
 function cleanStorage() {
-    return Promise.all([
-        RecentsService.removeRecentAddresses(),
-        WalletsService.deleteWalletPKs()
-    ]);
+    return WalletsService.deleteWalletPKs()
 }
 
 function cleanStores() {
-    store.prices.reset();
-    store.recents.reset();
     store.wallet.reset();
     store.wallets.reset();
 }

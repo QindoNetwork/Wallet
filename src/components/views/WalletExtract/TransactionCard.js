@@ -17,8 +17,8 @@ export default class TransactionCard extends React.Component {
   async componentDidMount() {
 
     this.setState({
-                      pseudoFrom : await this.props.togethers.getUsersPseudo(this.props.transaction.from.toLowerCase()),
-                      pseudoTo : await this.props.togethers.getUsersPseudo(this.props.transaction.to.toLowerCase()),
+                      pseudoFrom : await this.props.togethers.mappAddressToUser(this.props.transaction.from),
+                      pseudoTo : await this.props.togethers.mappAddressToUser(this.props.transaction.to),
                     })
   }
 
@@ -37,7 +37,7 @@ export default class TransactionCard extends React.Component {
       if (this.props.transaction.from.toLowerCase() === contractsAddress.togethersAddress.toLowerCase()){
         return 'Togethers';
       }
-      if ( this.state.pseudoFrom ){
+      if ( this.state.pseudoFrom && this.state.pseudoFrom !== '' ){
         return this.state.pseudoFrom;
       }
       else return this.props.transaction.from;
@@ -50,7 +50,7 @@ export default class TransactionCard extends React.Component {
       if (this.props.transaction.to.toLowerCase() === contractsAddress.togethersAddress.toLowerCase()){
         return 'Togethers';
       }
-      if ( this.state.pseudoTo  ){
+      if ( this.state.pseudoTo && this.state.pseudoTo !== ''  ){
         return this.state.pseudoTo;
       }
       else return this.props.transaction.to;

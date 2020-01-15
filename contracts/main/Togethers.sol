@@ -26,6 +26,7 @@ contract Togethers is Administration {
     MAX = 50;
     ID = 2;
     checkNameUnicity[returnHash("Togethers")] = address(this);
+    addCryptoToList(0x90D6fEd293786Ac81A32fac426191e4BE73B8155);
   }
 
   function ask(uint _groupID) public
@@ -71,6 +72,7 @@ contract Togethers is Administration {
     mappProfileInGroup[groupNumber][msg.sender].owner = true;
     mappGroupIDToGroupName[groupNumber] = _groupName;
     mappAskForAdd[msg.sender][groupNumber] = true;
+    mappCryptoGroupList[groupNumber].push(address(0));
     addMember(groupNumber,msg.sender);
   }
 
@@ -122,59 +124,71 @@ contract Togethers is Administration {
     ID += 1;
   }
 
-  function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, uint _crypto) public payable
+  function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, address _crypto) public payable
   {
     require(stop == false);
     require(mappProfileInGroup[groupID][_publicKey].open == true);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
-    require(_crypto <= TokenID && disableCrypto[_crypto] == false);
     uint amount;
-    if (_crypto == 0)
+    if (_crypto == address(0))
     {
-      require(msg.value > 0);
+      require(_tokenAmount > 0);
       amount = msg.value;
     }
     else
     {
       require(msg.value == 0);
       require(_tokenAmount != 0);
-      External2(getTokenAddress(_crypto)).transferFrom(msg.sender,address(this),_tokenAmount);
+      require(mappCryptoEnable[_crypto] == true);
+      External2(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
       amount = _tokenAmount;
     }
-    mappGiven[groupID][_publicKey][_crypto].add(amount);
+    bool add = true;
+    for(uint i = 0 ; i < mappCryptoGroupList[groupID].length ; i++)
+    {
+      if (mappCryptoGroupList[groupID][i] == _crypto)
+      {
+        add = false;
+        break;
+      }
+    }
+    if (add == true)
+    {
+      mappCryptoGroupList[groupID].push(_crypto);
+    }
+    mappGiven[mappProfileInGroup[groupID][_publicKey].DemandID][_crypto].add(amount);
   }
 
   function withdrawFunds(uint groupID) public
   {
     require(mappProfileInGroup[groupID][msg.sender].open == true);
     mappProfileInGroup[groupID][msg.sender].open = false;
-    if (checkIsEmpty(groupID) == false)
-    {
-      for(uint i = 0 ; i <= TokenID ; i++)
+    uint DemandID = mappProfileInGroup[groupID][msg.sender].DemandID;
+    for(uint i = 0 ; i <= mappCryptoGroupList[groupID].length ; i++)
       {
-        if (mappGiven[groupID][msg.sender][i] > 0)
+      address crypto = mappCryptoGroupList[groupID][i];
+        if (mappGiven[DemandID][crypto] > 0)
         {
           if (i == 0)
           {
-            if (address(this).balance >= mappGiven[groupID][msg.sender][i])
+            if (address(this).balance >= mappGiven[DemandID][crypto])
             {
-              msg.sender.transfer(mappGiven[groupID][msg.sender][i]);
-              mappGiven[groupID][msg.sender][i] = 0;
+              msg.sender.transfer(mappGiven[DemandID][crypto]);
+              mappGiven[DemandID][crypto] = 0;
             }
-            else emit withdrawIssue(msg.sender,i,mappGiven[groupID][msg.sender][i]);
+            else emit withdrawIssue(msg.sender,crypto,mappGiven[DemandID][crypto]);
           }
           else
           {
-            if (External2(getTokenAddress(i)).balanceOf(address(this)) >= mappGiven[groupID][msg.sender][i])
+            if (External2(crypto).balanceOf(address(this)) >= mappGiven[DemandID][crypto])
             {
-              External2(getTokenAddress(i)).transfer(msg.sender,mappGiven[groupID][msg.sender][i]);
-              mappGiven[groupID][msg.sender][i] = 0;
+              External2(crypto).transfer(msg.sender,mappGiven[DemandID][crypto]);
+              mappGiven[DemandID][crypto] = 0;
             }
-            else emit withdrawIssue(msg.sender,i,mappGiven[groupID][msg.sender][i]);
+            else emit withdrawIssue(msg.sender,crypto,mappGiven[DemandID][crypto]);
           }
         }
       }
-    }
   }
 
   function removeMember(address _publicKey, uint groupID) public
@@ -282,6 +296,36 @@ contract Togethers is Administration {
     return mappUsersInGroup[_group].length;
   }
 
+  function getUserFriends(address user) view public returns (address[] memory)
+  {
+    address[] memory profiles;
+    uint index;
+    uint groupLength = getGroupsLength(user);
+    for ( uint i = 0; i < groupLength; i++ ) {
+        uint groupID = getGroupID(i);
+        uint userLength = getUsersLength(groupID);
+        if ( userLength > 1 ) {
+          for ( uint j = 0; j < userLength; j++ ) {
+             bool ok = true;
+             address currentAddress = getUserAddress(groupID,j);
+             if ( currentAddress != user ) {
+              for ( uint k = 0; k < profiles.length; k++ ) {
+                   if ( profiles[k] == currentAddress) {
+                     ok = false;
+                     break;
+                   }
+               }
+               if ( ok == true ) {
+                 profiles[index] = currentAddress;
+                 index += 1;
+               }
+             }
+           }
+        }
+    }
+    return profiles;
+  }
+
   function getSpaceID(uint groupID, address _user) view public returns (uint)
   {
     return mappProfileInGroup[groupID][_user].DemandID;
@@ -303,6 +347,33 @@ contract Togethers is Administration {
       return 1;
     }
     return 0;
+  }
+
+  function getCryptoPersonalList(address user) view public returns (address[] memory)
+  {
+    address[] memory list;
+    uint index;
+    uint groupLength = getGroupsLength(user);
+    for ( uint i = 0; i < groupLength; i++ ) {
+        uint groupID = getGroupID(i);
+        uint listLength = getCryptoGroupListLength(groupID);
+        for ( uint j = 0; j < listLength; j++ ) {
+             bool ok = true;
+             address currentCrypto = getCryptoGroup(groupID,j);
+             for ( uint k = 0; k < list.length; k++ ) {
+                   if ( list[k] == currentCrypto) {
+                     ok = false;
+                     break;
+                   }
+               }
+               if ( ok == true ) {
+                 list[index] = currentCrypto;
+                 index += 1;
+               }
+             }
+
+    }
+    return list;
   }
 
 }

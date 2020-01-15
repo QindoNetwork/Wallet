@@ -8,8 +8,8 @@ export class CreateWallet extends React.Component {
     static navigationOptions = { title: 'Create Wallet' };
 
     onPressProceed() {
-        const { walletName, walletDescription } = this.props.navigation.state.params;
-        this.props.navigation.navigate('CreateMnemonics', { walletName, walletDescription });
+        const { walletName } = this.props.navigation.state.params;
+        this.props.navigation.navigate('CreateMnemonics', { walletName });
     }
 
     render() {

@@ -9,19 +9,49 @@ contract Administration is Ownable {
 
   uint public ID;
   uint public MAX;
-  uint public TokenID;
   uint public groupNumber;
   bool public stop;
-  uint public ERC20AllowanceExpiry;
 
   event newDemand(uint indexed ID, address indexed user);
-  event withdrawIssue(address user, uint crypto, uint amount);
+  event withdrawIssue(address user, address crypto, uint amount);
 
-  mapping (uint => bool) internal disableCrypto;
-  mapping (uint => mapping (address => mapping (uint => uint))) internal mappGiven;
+  mapping (uint => mapping (address => uint)) internal mappGiven;
+  mapping (uint => address[]) internal mappCryptoGroupList;
   mapping (uint => spaceInfo) internal mappSpaceInfo;
-  mapping (uint => tokenType) private mapTokenType;
-  mapping (address => uint[]) public mapPersonalTokenList;
+  mapping (address => bool) internal mappCryptoEnable;
+  mapping (uint => address) private mappSymbolToCrypto;
+
+  address[] cryptoList;
+
+  function getCrypto(uint index) view public returns (address)
+  {
+    return cryptoList[index];
+  }
+
+  function getCryptoGroup(uint groupID, uint index) view public returns (address)
+  {
+    return mappCryptoGroupList[groupID][index];
+  }
+
+  function getCryptoListLength() view public returns (uint)
+  {
+    return cryptoList.length;
+  }
+
+  function getCryptoList() view public returns (address[] memory)
+  {
+    return cryptoList;
+  }
+
+  function getCryptoGroupListLength(uint groupID) view public returns (uint)
+  {
+    return mappCryptoGroupList[groupID].length;
+  }
+
+  function getCryptoAddress(uint groupID, uint index) view public returns (address)
+  {
+    return mappCryptoGroupList[groupID][index];
+  }
 
   mapping (address => uint) internal userPassword;
 
@@ -67,12 +97,6 @@ contract Administration is Ownable {
     address user;
   }
 
-  struct tokenType
-  {
-    uint Type;
-    address ID;
-  }
-
   address powerToken;
 
   function setPowerToken(address _tgts) public onlyOwner
@@ -82,109 +106,57 @@ contract Administration is Ownable {
     TGTSToken = External3(_tgts);
   }
 
+  function enableCrypto(address crypto) public onlyOwner view
+  {
+    require(crypto != address(0));
+    if (mappCryptoEnable[crypto] == false)
+    {
+      mappCryptoEnable[crypto] == true;
+    }
+    else
+    {
+      mappCryptoEnable[crypto] == false;
+    }
+  }
+
+  function getCryptoStatus(address crypto) public onlyOwner view returns (uint)
+  {
+    if (mappCryptoEnable[crypto] == false)
+    {
+      return 0;
+    }
+    else
+    {
+      return 1;
+    }
+  }
+
+  function addCryptoToList(address crypto) public onlyOwner
+  {
+    bool add = true;
+    for(uint i = 0 ; i < cryptoList.length ; i++)
+    {
+      if (cryptoList[i] == crypto)
+      {
+        add = false;
+        break;
+      }
+    }
+    if (add == true)
+    {
+      cryptoList.push(crypto);
+      mappSymbolToCrypto[returnHash(External2(crypto).symbol())] = crypto;
+    }
+  }
+
   function setMaxLength(uint _max) public onlyOwner
   {
     MAX = _max;
   }
 
-  function setExpiry(uint _delai) public onlyOwner
-  {
-    ERC20AllowanceExpiry = _delai;
-  }
-
-  function setTokenERC20List(address[] memory list) public onlyOwner
-  {
-    for (uint i = 0; i < list.length; i++)
-    {
-      TokenID += 1;
-      uint j = i + TokenID;
-      if (mapTokenType[j].Type == 0)
-      {
-        mapTokenType[j].Type = 1;
-        mapTokenType[j].ID = list[i];
-      }
-    }
-  }
-
-  function useNewToken(address _address, uint _type) public onlyOwner
-  {
-    require(_address != address(0));
-    require(_type != (0));
-    TokenID += 1;
-    mapTokenType[TokenID].Type = _type;
-    mapTokenType[TokenID].ID = _address;
-  }
-
-  function usePersonalToken(uint index) public
-  {
-    require(mapTokenType[index].Type != 0);
-    mapPersonalTokenList[msg.sender].push(index);
-  }
-
-  function removePersonalToken(uint index) public
-  {
-    require(mapPersonalTokenList[msg.sender].length > index);
-    for (uint k = index; k < mapPersonalTokenList[msg.sender].length-1; k++){
-            mapPersonalTokenList[msg.sender][k] = mapPersonalTokenList[msg.sender][k+1];
-    }
-    delete mapPersonalTokenList[msg.sender][mapPersonalTokenList[msg.sender].length-1];
-    mapPersonalTokenList[msg.sender].length --;
-  }
-
-  function getTokenAddress(uint index) public view returns (address)
-  {
-    return mapTokenType[index].ID;
-  }
-
-  function getTokenType(uint index) public view returns (uint)
-  {
-    return mapTokenType[index].Type;
-  }
-
-  function enableCrypto(uint _index) public onlyOwner
-  {
-    if (disableCrypto[_index] == false)
-    {
-      disableCrypto[_index] = true;
-    }
-    else
-    {
-      disableCrypto[_index] = false;
-    }
-  }
-
-  function checkEnableCrypto(uint _index) view public returns (uint)
-  {
-    if (disableCrypto[_index] == false)
-    {
-      return 1;
-    }
-    else
-    {
-      return 0;
-    }
-  }
-
-  function checkIsEmpty(uint groupID) internal view returns (bool)
-  {
-    for(uint i = 0 ; i <= TokenID ; i++)
-    {
-      if (mappGiven[groupID][msg.sender][i] > 0)
-      {
-        return false;
-      }
-    }
-    return true;
-  }
-
   function getDescription(uint id) view public returns (string memory)
   {
     return mappSpaceInfo[id].description;
-  }
-
-  function getCryptoGiven(uint groupID, address to, uint crypto) view public returns (uint)
-  {
-    return mappGiven[groupID][to][crypto];
   }
 
   function stopAskForFunds() public view onlyOwner

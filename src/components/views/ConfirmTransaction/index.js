@@ -120,8 +120,7 @@ export class ConfirmTransaction extends React.Component {
                     gasPrice: gasParam[eRC20allowance].price * conversions.gigaWeiToWei,
                     nonce: nonce,
                     };
-                const delay = await togethers.ERC20AllowanceExpiry()
-                TransactionActions.erc20approve(value,type,nonce,instance,delay,overrides)
+                TransactionActions.erc20approve(value,instance,overrides)
                 nonce = nonce + 1
               }
               overrides = {

@@ -25,7 +25,7 @@ export class Settings extends React.Component {
 
     confirmErase() {
         Alert.alert(
-            'Erase all data',
+            'Erase wallets',
             'This action cannot be undone. Are you sure?',
             [
                 { text: 'Cancel', onPress: () => {}, style: 'cancel' },

@@ -18,16 +18,12 @@ export const quitGroup = 8
 
 export const defaultTransaction = 9
 
-export const changeSnapshat = 10
+export const payForFunds = 10
 
-export const payForFunds = 11
+export const eRC20allowance = 11
 
-export const eRC20allowance = 12
+export const changePassword = 12
 
-export const changePassword = 13
+export const changeUserName = 13
 
-export const changeImage = 14
-
-export const changeUserName = 15
-
-export const eRC20transfer = 16
+export const eRC20transfer = 14

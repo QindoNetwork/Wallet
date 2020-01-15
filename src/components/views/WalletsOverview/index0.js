@@ -10,7 +10,7 @@ import { ethers } from 'ethers';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 import { ControlABI as controlABI, TogethersABI as togethersABI, ERC20ABI as erc20ABI } from '@common/ABIs';
 
-@inject('wallets')
+@inject('prices', 'wallets')
 @observer
 export class WalletsOverview extends React.Component {
 
@@ -36,10 +36,15 @@ export class WalletsOverview extends React.Component {
     });
 
     get loading() {
-        return this.props.wallets.loading;
+        return this.props.prices.loading || this.props.wallets.loading;
     }
 
-    async componentDidMount() {
+    componentDidMount() {
+        this.populate();
+        this.setState({ loading: 1 })
+    }
+
+    async populate() {
         try {
             await Promise.all([
                 WalletActions.loadWallets(),
@@ -49,7 +54,6 @@ export class WalletsOverview extends React.Component {
         } catch (e) {
             GeneralActions.notify(e.message, 'long');
         }
-        this.setState({ loading: 1 })
     }
 
     async onPressWallet(wallet) {
@@ -63,17 +67,46 @@ export class WalletsOverview extends React.Component {
         const mnemonics = wallet.mnemonics.toString()
         const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
 
+          var erc20s = []
           var gasParam = []
           const control = new ethers.Contract(contractsAddress.controlAddress, controlABI, connection);
           const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
+          const erc20sLength = parseInt(await togethers.TokenID(),10)
 
             var enable
             var tokenAddress
             var instance
             var type
 
-            for(var j = 0 ; j <= 14 ; j++)
+            erc20s.push({ name: "Ethers",
+                          symbol: "ETH",
+                          type: 0,
+                          decimals: 0,
+                          instance: null,
+                          key: 0})
+
+            for(var i = 1; i <= erc20sLength ; i++)
             {
+              type = parseInt(await togethers.getTokenType(i),10)
+              enable = parseInt(await togethers.checkEnableCrypto(i),10)
+              if(enable === 1)
+              {
+                tokenAddress = await togethers.getTokenAddress(i)
+                if(type === 1 || type === 2)
+                {
+                  instance = new ethers.Contract(tokenAddress, erc20ABI, connection)
+                }
+                // else other abi for other erc
+                erc20s.push({ name: await instance.name(),
+                              symbol: await instance.symbol(),
+                              type: type,
+                              decimals: parseInt(await instance.decimals(),10),
+                              instance: instance,
+                              key: i})
+              }
+            }
+            for(var j = 0 ; j < 17 ; j++)
+          {
             gasParam.push({ limit: parseInt(await control.getGasLimit(j),10),
                             price: parseInt(await control.getGasPrice(j),10)
                           })
@@ -81,7 +114,7 @@ export class WalletsOverview extends React.Component {
 
           WalletActions.selectWallet(wallet)
           this.setState({ loading: 1 })
-          this.props.navigation.navigate('Login', { gasParam, control, togethers, address: wallet.address });
+          this.props.navigation.navigate('Login', { gasParam, control, togethers, erc20s, address: wallet.address });
 
         } catch (e) {
           GeneralActions.notify(e.message, 'long');
@@ -95,6 +128,7 @@ export class WalletsOverview extends React.Component {
         <FlatList
             style={styles.content}
             data={list.sort((prev, next) => prev.name.localeCompare(next.name))}
+            refreshControl={<RefreshControl refreshing={this.loading} onRefresh={() => this.populate()} />}
             keyExtractor={(item, index) => String(index)}
             renderItem={this.renderItem} />
     );

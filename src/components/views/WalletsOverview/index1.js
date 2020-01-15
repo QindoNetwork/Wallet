@@ -35,17 +35,13 @@ export class WalletsOverview extends React.Component {
         )
     });
 
-    get loading() {
-        return this.props.wallets.loading;
-    }
-
     async componentDidMount() {
         try {
-            await Promise.all([
-                WalletActions.loadWallets(),
-                PricesActions.loadActiveRate()
-                    .then(() => PricesActions.getPrice())
-            ]);
+          await Promise.all([
+              WalletActions.loadWallets(),
+              PricesActions.loadActiveRate()
+                  .then(() => PricesActions.getPrice())
+          ]);
         } catch (e) {
             GeneralActions.notify(e.message, 'long');
         }
@@ -54,8 +50,6 @@ export class WalletsOverview extends React.Component {
 
     async onPressWallet(wallet) {
 
-        if (this.loading) return;
-
         this.setState({ loading: 0 })
 
         try {
@@ -63,6 +57,7 @@ export class WalletsOverview extends React.Component {
         const mnemonics = wallet.mnemonics.toString()
         const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
 
+          var erc20s = []
           var gasParam = []
           const control = new ethers.Contract(contractsAddress.controlAddress, controlABI, connection);
           const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
@@ -72,20 +67,45 @@ export class WalletsOverview extends React.Component {
             var instance
             var type
 
-            for(var j = 0 ; j <= 14 ; j++)
-            {
+            erc20s.push({ name: "Ethers",
+                          symbol: "ETH",
+                          type: 0,
+                          decimals: 0,
+                          instance: null,
+                          key: 0})
+
+            type = parseInt(await togethers.getTokenType(1),10)
+              enable = parseInt(await togethers.checkEnableCrypto(1),10)
+
+              if(enable === 1)
+              {
+                tokenAddress = await togethers.getTokenAddress(1)
+                if(type === 1 || type === 2)
+                {
+                  instance = new ethers.Contract(tokenAddress, erc20ABI, connection)
+                }
+                // else other abi for other erc
+                erc20s.push({ name: await instance.name(),
+                              symbol: await instance.symbol(),
+                              type: type,
+                              decimals: parseInt(await instance.decimals(),10),
+                              instance: instance,
+                              key: i})
+              }
+
+            for(var j = 0 ; j < 17 ; j++)
+          {
             gasParam.push({ limit: parseInt(await control.getGasLimit(j),10),
                             price: parseInt(await control.getGasPrice(j),10)
                           })
           }
-
-          WalletActions.selectWallet(wallet)
-          this.setState({ loading: 1 })
-          this.props.navigation.navigate('Login', { gasParam, control, togethers, address: wallet.address });
-
         } catch (e) {
           GeneralActions.notify(e.message, 'long');
         }
+
+          WalletActions.selectWallet(wallet)
+          this.setState({ loading: 1 })
+          this.props.navigation.navigate('Login', { gasParam, control, togethers, erc20s, address: wallet.address });
 
     }
 

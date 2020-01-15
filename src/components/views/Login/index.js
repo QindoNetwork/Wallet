@@ -3,6 +3,7 @@ import { Clipboard, Share, TouchableWithoutFeedback, Keyboard, StyleSheet, Text,
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions } from '@common/actions';
+import { inject, observer } from 'mobx-react';
 import QRCode from 'react-native-qrcode-svg';
 import { Gas as gas, Restrictions as restrictions } from '@common/constants';
 import { Icon } from '@components/widgets';
@@ -12,15 +13,40 @@ import { Formik } from 'formik'
 import { sha256 } from 'react-native-sha256';
 import { SecureTransaction } from '@components/widgets';
 
+@inject('wallet')
+@observer
 export class Login extends React.Component {
 
     static navigationOptions = { title: 'Login' };
 
     state = { show: false, loading: 0, registered: 0, password: '', result: 0 };
 
+    copyToClipboard() {
+        const { item } = this.props.wallet;
+        Clipboard.setString(item.address);
+        GeneralActions.notify('Copied to clipboard', 'short');
+    }
+
+    share() {
+        const { item } = this.props.wallet;
+        Share.share({
+            title: 'Wallet address:',
+            message: item.address
+        });
+    }
+
+    renderColumn = (icon, label, action) => (
+        <TouchableWithoutFeedback onPress={action}>
+            <View style={styles.actionColumn}>
+                <Icon name={icon} style={styles.actionIcon} />
+                <Text style={styles.actionLabel}>{label}</Text>
+            </View>
+        </TouchableWithoutFeedback>
+    );
+
     renderModal(pseudo,password1,password2) {
 
-      const { gasParam, togethers, erc20s, address  } = this.props.navigation.state.params;
+      const { gasParam, togethers, address  } = this.props.navigation.state.params;
       const limit = gasParam[gas.setUser].limit
       const price = gasParam[gas.setUser].price
 
@@ -30,7 +56,6 @@ export class Login extends React.Component {
             values={{pseudo,password1,password2}}
             limit={limit}
             price={price}
-            erc20s={erc20s}
             address={address}
             gasParam={gasParam}
             navigation={this.props.navigation}
@@ -40,7 +65,7 @@ export class Login extends React.Component {
 
     async onPressContinueLogin() {
         Keyboard.dismiss();
-        const { gasParam, togethers, erc20s, address  } = this.props.navigation.state.params;
+        const { gasParam, togethers, address  } = this.props.navigation.state.params;
         const { password } = this.state;
         const hashPassword = sha256(password)
         try {
@@ -51,7 +76,7 @@ export class Login extends React.Component {
             GeneralActions.notify(e.message, 'long');
         }
         if (this.state.result === 1) {
-          this.props.navigation.navigate('WalletDetails', { gasParam, address, erc20s, togethers, replaceRoute: true });
+          this.props.navigation.navigate('WalletDetails', { gasParam, address, togethers, replaceRoute: true });
         }
         else {
           GeneralActions.notify("Password not good", 'long');
@@ -71,7 +96,6 @@ export class Login extends React.Component {
     }
 
     renderLogin() {
-
 
         return ( <View style={styles.container}>
           <View style={styles.body}>
@@ -155,11 +179,12 @@ export class Login extends React.Component {
 }
 
     renderWalletEmpty() {
+      const { address  } = this.props.navigation.state.params;
       return (
         <View style={styles.container}>
         <Text style={styles.centered}>Low balance, you need ether to register, show the code below to receive ethers and enter to the community!</Text>
         <View style={styles.centered}>
-            <QRCode size={256} value={this.props.navigation.getParam('address')} />
+            <QRCode size={256} value={address} />
         </View>
           <View style={styles.actions}>
               <View style={styles.actionsBar}>
@@ -174,7 +199,7 @@ export class Login extends React.Component {
 
     render() {
 
-      const balance =  Number(WalletUtils.formatBalance(this.props.navigation.getParam('address')))
+      const balance = Number(WalletUtils.formatBalance(this.props.wallet.item.balance))
 
       if(this.state.loading === 0)
       {
@@ -194,15 +219,15 @@ export class Login extends React.Component {
         );
       }
 
-      if(balance === 0)
+      if(balance > 0)
       {
         return (
-                this.renderWalletEmpty()
+          this.renderNewWallet()
         );
       }
 
         return (
-                this.renderNewWallet()
+                this.renderWalletEmpty()
         );
     }
 
