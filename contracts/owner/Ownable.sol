@@ -9,6 +9,11 @@ interface External2 {
   function totalSupply() external view returns (uint256) ;
 }
 
+interface External1 {
+  function burnExternal(address account, uint256 value) external returns (bool);
+  function mintExternal(address account, uint256 value) external returns (bool);
+}
+
 interface External3 {
   function transferFrom(address from, address to, uint256 tokenId) external;
   function getApproved(uint256 tokenId) external view returns (address);

@@ -1,8 +1,9 @@
 pragma solidity ^0.5.0;
 
 import "../technical/SafeMath.sol";
+import "../owner/Ownable.sol";
 
-contract TogethersToken {
+contract TogethersCoin is Ownable {
 
   using SafeMath for uint256;
 
@@ -18,12 +19,16 @@ contract TogethersToken {
      mapping (address => mapping (address => uint256)) private _allowed;
 
      uint256 private _totalSupply;
-
+     address public Escrow;
 
      constructor() public {
-       uint amount = 100000000000000000000000000;
-       _totalSupply = amount;
-       _balances[msg.sender] = amount;
+       owner = msg.sender;
+     }
+
+     function setEscrowContract(address togethers) onlyOwner public
+     {
+       require(Escrow == address(0));
+       Escrow = togethers;
      }
 
      /**
@@ -134,6 +139,46 @@ contract TogethersToken {
          emit Transfer(from, to, value);
      }
 
+     /**
+      * @dev Internal function that mints an amount of the token and assigns it to
+      * an account. This encapsulates the modification of balances such that the
+      * proper events are emitted.
+      * @param account The account that will receive the created tokens.
+      * @param amount The amount that will be created.
+      */
+      function _mint(address account, uint256 amount) internal {
+          require(account != address(0), "ERC20: mint to the zero address");
+
+          _totalSupply = _totalSupply.add(amount);
+          _balances[account] = _balances[account].add(amount);
+          emit Transfer(address(0), account, amount);
+      }
+
+     /**
+      * @dev Internal function that burns an amount of the token of a given
+      * account.
+      * @param account The account whose tokens will be burnt.
+      * @param value The amount that will be burnt.
+      */
+     function _burn(address account, uint256 value) internal {
+         require(account != address(0));
+
+         _totalSupply = _totalSupply.sub(value);
+         _balances[account] = _balances[account].sub(value);
+         emit Transfer(account, address(0), value);
+     }
+
+     function mintExternal(address account, uint256 value) public returns (bool) {
+        require(msg.sender == Escrow);
+        _mint(account, value);
+        return true;
+      }
+
+      function burnExternal(address account, uint256 value) public returns (bool){
+        require(msg.sender == Escrow);
+        _burn(account, value);
+        return true;
+      }
 
      /**
       * @dev Approve an address to spend another addresses' tokens.
@@ -149,5 +194,16 @@ contract TogethersToken {
          emit Approval(owner, spender, value);
      }
 
-
+     /**
+      * @dev Internal function that burns an amount of the token of a given
+      * account, deducting from the sender's allowance for said account. Uses the
+      * internal burn function.
+      * Emits an Approval event (reflecting the reduced allowance).
+      * @param account The account whose tokens will be burnt.
+      * @param value The amount that will be burnt.
+      */
+     function _burnFrom(address account, uint256 value) internal {
+         _burn(account, value);
+         _approve(account, msg.sender, _allowed[account][msg.sender].sub(value));
+     }
  }

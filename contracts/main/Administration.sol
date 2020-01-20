@@ -13,10 +13,10 @@ contract Administration is Ownable {
   bool public stop;
 
   event newDemand(uint indexed ID, address indexed user);
-  event withdrawIssue(address user, address crypto, uint amount);
+  event payDemand(address indexed userIn, address indexed userOut);
 
-  mapping (uint => mapping (address => uint)) public mappGiven;
-  mapping (uint => address[]) public mappCryptoGroupList;
+  mapping (uint => mapping (uint => uint)) public mappGiven;
+  mapping (address => bool) public mappAllowCryptoForGroup;
   mapping (uint => spaceInfo) public mappSpaceInfo;
   mapping (address => bool) public mappCryptoEnable;
   mapping (uint => address) public mappSymbolToCrypto;
@@ -28,11 +28,6 @@ contract Administration is Ownable {
     return cryptoList[index];
   }
 
-  function getCryptoGroup(uint groupID, uint index) view public returns (address)
-  {
-    return mappCryptoGroupList[groupID][index];
-  }
-
   function getCryptoListLength() view public returns (uint)
   {
     return cryptoList.length;
@@ -41,16 +36,6 @@ contract Administration is Ownable {
   function getCryptoList() view public returns (address[] memory)
   {
     return cryptoList;
-  }
-
-  function getCryptoGroupListLength(uint groupID) view public returns (uint)
-  {
-    return mappCryptoGroupList[groupID].length;
-  }
-
-  function getCryptoAddress(uint groupID, uint index) view public returns (address)
-  {
-    return mappCryptoGroupList[groupID][index];
   }
 
   mapping (address => uint) internal userPassword;
@@ -149,6 +134,18 @@ contract Administration is Ownable {
     }
   }
 
+  function allowCryptoForGroup(address crypto) public onlyOwner
+  {
+    if (mappAllowCryptoForGroup[crypto] == false)
+    {
+      mappAllowCryptoForGroup[crypto] = true;
+    }
+    else
+    {
+      mappAllowCryptoForGroup[crypto] = false;
+    }
+  }
+
   function setMaxLength(uint _max) public onlyOwner
   {
     MAX = _max;
@@ -159,15 +156,15 @@ contract Administration is Ownable {
     return mappSpaceInfo[id].description;
   }
 
-  function stopAskForFunds() public view onlyOwner
+  function stopAskForFunds() public onlyOwner
   {
     if (stop == false)
     {
-      stop == true;
+      stop = true;
     }
     else
     {
-      stop == false;
+      stop = false;
     }
   }
 

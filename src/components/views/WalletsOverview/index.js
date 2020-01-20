@@ -10,7 +10,7 @@ import { ethers } from 'ethers';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 import { ControlABI as controlABI, TogethersABI as togethersABI } from '@common/ABIs';
 
-@inject('wallets')
+@inject('wallets','contacts')
 @observer
 export class WalletsOverview extends React.Component {
 
