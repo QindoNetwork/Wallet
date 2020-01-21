@@ -3,14 +3,14 @@ import { FlatList, RefreshControl, StyleSheet, View, ActivityIndicator } from 'r
 import { inject, observer } from 'mobx-react';
 import { HeaderIcon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions, Wallets as WalletActions, Prices as PricesActions } from '@common/actions';
+import { General as GeneralActions, Wallets as WalletActions, Prices as PricesActions, Contacts as ContactsActions } from '@common/actions';
 import NoWallets from './NoWallets';
 import WalletCard from './WalletCard';
 import { ethers } from 'ethers';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 import { ControlABI as controlABI, TogethersABI as togethersABI } from '@common/ABIs';
 
-@inject('wallets','contacts')
+@inject('wallets')
 @observer
 export class WalletsOverview extends React.Component {
 
@@ -43,6 +43,7 @@ export class WalletsOverview extends React.Component {
         try {
             await Promise.all([
                 WalletActions.loadWallets(),
+                ContactsActions.loadContacts(),
                 PricesActions.loadActiveRate()
                     .then(() => PricesActions.getPrice())
             ]);

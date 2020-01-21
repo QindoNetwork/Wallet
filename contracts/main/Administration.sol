@@ -16,12 +16,14 @@ contract Administration is Ownable {
   event payDemand(address indexed userIn, address indexed userOut);
 
   mapping (uint => mapping (uint => uint)) public mappGiven;
-  mapping (address => bool) public mappAllowCryptoForGroup;
+  mapping (address => bool) public mappAllowCryptoForEU;
+  mapping (address => bool) public mappAllowCryptoForUS;
   mapping (uint => spaceInfo) public mappSpaceInfo;
   mapping (address => bool) public mappCryptoEnable;
   mapping (uint => address) public mappSymbolToCrypto;
 
   address[] cryptoList;
+  address[] stablecoinList;
 
   function getCrypto(uint index) view public returns (address)
   {
@@ -134,16 +136,24 @@ contract Administration is Ownable {
     }
   }
 
-  function allowCryptoForGroup(address crypto) public onlyOwner
+  function addStablecoinToList(address crypto) public onlyOwner
   {
-    if (mappAllowCryptoForGroup[crypto] == false)
+    require(checkStablecoin(crypto) == true);
+    stablecoinList.push(crypto);
+  }
+
+  function checkStablecoin(address crypto) private returns (bool)
+  {
+    bool add = true;
+    for(uint i = 0 ; i < stablecoinList.length ; i++)
     {
-      mappAllowCryptoForGroup[crypto] = true;
+      if (stablecoinList[i] == crypto)
+      {
+        add = false;
+        break;
+      }
     }
-    else
-    {
-      mappAllowCryptoForGroup[crypto] = false;
-    }
+    return add;
   }
 
   function setMaxLength(uint _max) public onlyOwner
@@ -154,6 +164,32 @@ contract Administration is Ownable {
   function getDescription(uint id) view public returns (string memory)
   {
     return mappSpaceInfo[id].description;
+  }
+
+  function allowCryptoForUS(address crypto) public onlyOwner
+  {
+    require(checkStablecoin(crypto) == false);
+    if (mappAllowCryptoForUS[crypto] == false && mappAllowCryptoForEU[crypto] == false)
+    {
+      mappAllowCryptoForUS[crypto] = true;
+    }
+    else
+    {
+      mappAllowCryptoForUS[crypto] = false;
+    }
+  }
+
+  function allowCryptoForEU(address crypto) public onlyOwner
+  {
+    require(checkStablecoin(crypto) == false);
+    if (mappAllowCryptoForUS[crypto] == false && mappAllowCryptoForEU[crypto] == false)
+    {
+      mappAllowCryptoForEU[crypto] = true;
+    }
+    else
+    {
+      mappAllowCryptoForEU[crypto] = false;
+    }
   }
 
   function stopAskForFunds() public onlyOwner

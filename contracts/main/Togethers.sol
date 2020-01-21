@@ -21,14 +21,15 @@ contract Togethers is Administration {
     uint DemandID;
   }
 
-  External1 public TGTT;
+  External1 public TGTU;
+  External1 public TGTE;
 
   constructor() public {
     owner = msg.sender;
     ID = 2;
     checkNameUnicity[returnHash("Togethers")] = address(this);
-    addCryptoToList(0x90D6fEd293786Ac81A32fac426191e4BE73B8155);
-    TGTT = External1(0x90D6fEd293786Ac81A32fac426191e4BE73B8155); // change
+    TGTU = External1(0x90D6fEd293786Ac81A32fac426191e4BE73B8155); // change
+    TGTE = External1(0x90D6fEd293786Ac81A32fac426191e4BE73B8155); // change
   }
 
   function ask(uint _groupID) public
@@ -152,12 +153,19 @@ contract Togethers is Administration {
       require(msg.value == 0);
       require(_tokenAmount != 0);
       require(mappCryptoEnable[_crypto] == true);
-      require(mappAllowCryptoForGroup[_crypto] == true);
-      External2(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
       amount = _tokenAmount;
       index = 1;
+      if (mappAllowCryptoForUS[_crypto] == true)
+      {
+        mappGiven[mappProfileInGroup[groupID][_publicKey].DemandID][2].add(amount);
+        External2(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
+      }
+      if (mappAllowCryptoForEU[_crypto] == true)
+      {
+        mappGiven[mappProfileInGroup[groupID][_publicKey].DemandID][1].add(amount);
+        External2(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
+      }
     }
-    mappGiven[mappProfileInGroup[groupID][_publicKey].DemandID][index].add(amount);
     emit payDemand(msg.sender,_publicKey);
   }
 
@@ -172,15 +180,26 @@ contract Togethers is Administration {
     }
     if (mappGiven[DemandID][1] > 0)
     {
-      TGTT.mintExternal(msg.sender,mappGiven[DemandID][1]);
+      TGTE.mintExternal(msg.sender,mappGiven[DemandID][1]);
+    }
+    if (mappGiven[DemandID][2] > 0)
+    {
+      TGTU.mintExternal(msg.sender,mappGiven[DemandID][2]);
     }
   }
 
   function changeToken(uint _tokenAmount, address _crypto) public
   {
-    require(mappAllowCryptoForGroup[_crypto] == false);
-    TGTT.burnExternal(msg.sender,_tokenAmount);
-    External2(_crypto).transfer(msg.sender,_tokenAmount);
+    if (mappAllowCryptoForUS[_crypto] == true)
+    {
+      TGTU.burnExternal(msg.sender,_tokenAmount);
+      External2(_crypto).transfer(msg.sender,_tokenAmount);
+    }
+    if (mappAllowCryptoForEU[_crypto] == true)
+    {
+      TGTE.burnExternal(msg.sender,_tokenAmount);
+      External2(_crypto).transfer(msg.sender,_tokenAmount);
+    }
   }
 
   function removeMember(address _publicKey, uint groupID) public
@@ -194,9 +213,9 @@ contract Togethers is Administration {
   function quitGroup(uint _groupID) public
   {
     require(mappProfileInGroup[_groupID][msg.sender].owner == false || mappUsersInGroup[_groupID].length == 1);
-    if (mappProfileInGroup[_groupID][_publicKey].owner == true)
+    if (mappProfileInGroup[_groupID][msg.sender].owner == true)
     {
-      mappProfileInGroup[_groupID][_publicKey].owner = false;
+      mappProfileInGroup[_groupID][msg.sender].owner = false;
     }
     deleteProfile(_groupID,msg.sender);
   }
