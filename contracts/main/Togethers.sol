@@ -29,13 +29,25 @@ contract Togethers is Administration {
     owner = msg.sender;
     ID = 2;
     checkNameUnicity[returnHash("Togethers")] = address(this);
-    TTUSD = External1(0x90D6fEd293786Ac81A32fac426191e4BE73B8155); // change
-    TTEUR = External1(0x90D6fEd293786Ac81A32fac426191e4BE73B8155); // change
+    TTUSD = External1(0xB2cF75ac68F49976fA256905F6629d15AC76e851);
+    TTEUR = External1(0x6473EF312B1775fb06Ed44b1ce987171F81fDdE3);
+    addCryptoToList(0x935b36B0b591eFEF7D1293c333e294c8867CEB22);
+    addCryptoToList(0x6687708159B8165b793e6928868BE2627C412900);
+    addCryptoToList(0x7eF2665272DC22d477ca3b20f8d41b8110F94c48);
+    addStablecoinToList(0x935b36B0b591eFEF7D1293c333e294c8867CEB22);
+    addStablecoinToList(0x6687708159B8165b793e6928868BE2627C412900);
+    addStablecoinToList(0x7eF2665272DC22d477ca3b20f8d41b8110F94c48);
+    enableCrypto(0x935b36B0b591eFEF7D1293c333e294c8867CEB22);
+    enableCrypto(0x6687708159B8165b793e6928868BE2627C412900);
+    enableCrypto(0x7eF2665272DC22d477ca3b20f8d41b8110F94c48);
+    allowCryptoForUS(0x935b36B0b591eFEF7D1293c333e294c8867CEB22);
+    allowCryptoForEU(0x6687708159B8165b793e6928868BE2627C412900);
+    allowCryptoForEU(0x7eF2665272DC22d477ca3b20f8d41b8110F94c48);
   }
 
   function ask(uint _groupID) public
   {
-    require(getUsersLength(_groupID) > 0);
+    require(mappUsersInGroup[_groupID].length > 0);
     require(mappProfileInGroup[_groupID][msg.sender].isMember == false);
     require(mappAskForAdd[msg.sender][_groupID] == false);
     mappAskForAdd[msg.sender][_groupID] = true;
@@ -141,11 +153,11 @@ contract Togethers is Administration {
     require(mappProfileInGroup[groupID][_publicKey].open == true);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     uint amount;
+    uint family;
     if (_crypto == address(0))
     {
       require(_tokenAmount > 0);
       amount = msg.value;
-      mappGiven[mappProfileInGroup[groupID][_publicKey].DemandID][0].add(amount);
     }
     else
     {
@@ -155,15 +167,16 @@ contract Togethers is Administration {
       amount = _tokenAmount;
       if (mappAllowCryptoForUS[_crypto] == true)
       {
-        mappGiven[mappProfileInGroup[groupID][_publicKey].DemandID][2].add(amount);
-        External2(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
+        family = 2;
       }
       if (mappAllowCryptoForEU[_crypto] == true)
       {
-        mappGiven[mappProfileInGroup[groupID][_publicKey].DemandID][1].add(amount);
-        External2(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
+        family = 1;
       }
+      require(family != 0);
+      External2(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
     }
+    mappGiven[mappProfileInGroup[groupID][_publicKey].DemandID][family].add(amount);
     emit payDemand(msg.sender,_publicKey);
   }
 
@@ -230,47 +243,9 @@ contract Togethers is Administration {
     mappAskForAdd[_publicKey][_groupID] = false;
   }
 
-  function getUserName(uint _group, uint _num) view public returns (string memory)
-  {
-    if (_num >= getUsersLength(_group))
-    {
-      return "";
-    }
-    return mappAddressToUser[mappUsersInGroup[_group][_num]];
-  }
-
-  function getGroup(uint _num) view public returns (string memory)
-  {
-    return mappGroupIDToGroupName[mappGroupsForAddress[msg.sender][_num]];
-  }
-
   function getAddressFromName(string memory _name) view public returns (address)
   {
     return checkNameUnicity[returnHash(_name)];
-  }
-
-  function getUserAddress(uint _group, uint _num) view public returns (address)
-  {
-    if (_num >= getUsersLength(_group))
-    {
-      return address(0);
-    }
-    return mappUsersInGroup[_group][_num];
-  }
-
-  function getGroupID(uint _num) view public returns (uint)
-  {
-    return mappGroupsForAddress[msg.sender][_num];
-  }
-
-  function getGroupsLength(address _key) view public returns (uint)
-  {
-    return mappGroupsForAddress[_key].length;
-  }
-
-  function getUsersLength(uint _group) view public returns (uint)
-  {
-    return mappUsersInGroup[_group].length;
   }
 
   function getSpaceID(uint groupID, address _user) view public returns (uint)
@@ -278,7 +253,7 @@ contract Togethers is Administration {
     return mappProfileInGroup[groupID][_user].DemandID;
   }
 
-  function isMemmber(uint groupID, address _user) view public returns (uint)
+  function isMember(uint groupID, address _user) view public returns (uint)
   {
     if (mappProfileInGroup[groupID][_user].isMember == true)
     {

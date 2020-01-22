@@ -1,6 +1,21 @@
 export const TogethersABI = [
   {
     "constant": true,
+    "inputs": [],
+    "name": "TTUSD",
+    "outputs": [
+      {
+        "internalType": "contract External1",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
     "inputs": [
       {
         "internalType": "address",
@@ -14,32 +29,6 @@ export const TogethersABI = [
         "internalType": "string",
         "name": "",
         "type": "string"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "groupID",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "index",
-        "type": "uint256"
-      }
-    ],
-    "name": "getCryptoAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
       }
     ],
     "payable": false,
@@ -95,6 +84,52 @@ export const TogethersABI = [
     "constant": true,
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "mappProfileInGroup",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "isMember",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "open",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "owner",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "DemandID",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
         "internalType": "address",
         "name": "crypto",
         "type": "address"
@@ -106,6 +141,27 @@ export const TogethersABI = [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "mappCryptoEnable",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "payable": false,
@@ -135,11 +191,32 @@ export const TogethersABI = [
   },
   {
     "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "stablecoinList",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
     "inputs": [],
     "name": "stopAskForFunds",
     "outputs": [],
     "payable": false,
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -157,27 +234,6 @@ export const TogethersABI = [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      }
-    ],
-    "name": "getDescription",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
       }
     ],
     "payable": false,
@@ -204,21 +260,6 @@ export const TogethersABI = [
     "inputs": [],
     "name": "resetPassword",
     "outputs": [],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "getCryptoList",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
-      }
-    ],
     "payable": false,
     "stateMutability": "view",
     "type": "function"
@@ -274,6 +315,21 @@ export const TogethersABI = [
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "crypto",
+        "type": "address"
+      }
+    ],
+    "name": "addStablecoinToList",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "owner",
@@ -305,19 +361,60 @@ export const TogethersABI = [
   },
   {
     "constant": true,
+    "inputs": [],
+    "name": "powerToken1",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "mappAskForAdd",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "groupID",
+        "name": "",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "index",
+        "name": "",
         "type": "uint256"
       }
     ],
-    "name": "getCryptoGroup",
+    "name": "mappUsersInGroup",
     "outputs": [
       {
         "internalType": "address",
@@ -330,18 +427,18 @@ export const TogethersABI = [
     "type": "function"
   },
   {
-    "constant": true,
-    "inputs": [],
-    "name": "powerToken1",
-    "outputs": [
+    "constant": false,
+    "inputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "crypto",
+        "type": "address"
       }
     ],
+    "name": "allowCryptoForEU",
+    "outputs": [],
     "payable": false,
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -361,6 +458,27 @@ export const TogethersABI = [
   },
   {
     "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "checkNameUnicity",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
     "inputs": [],
     "name": "ID",
     "outputs": [
@@ -376,19 +494,13 @@ export const TogethersABI = [
   },
   {
     "constant": true,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "groupID",
-        "type": "uint256"
-      }
-    ],
-    "name": "getCryptoGroupListLength",
+    "inputs": [],
+    "name": "TTEUR",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "contract External1",
         "name": "",
-        "type": "uint256"
+        "type": "address"
       }
     ],
     "payable": false,
@@ -397,13 +509,40 @@ export const TogethersABI = [
   },
   {
     "constant": true,
-    "inputs": [],
-    "name": "MAX",
-    "outputs": [
+    "inputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "name": "mappGroupIDToGroupName",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "mappSymbolToCrypto",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "payable": false,
@@ -414,12 +553,12 @@ export const TogethersABI = [
     "constant": false,
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_max",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "crypto",
+        "type": "address"
       }
     ],
-    "name": "setMaxLength",
+    "name": "allowCryptoForUS",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -445,6 +584,95 @@ export const TogethersABI = [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "mappAllowCryptoForUS",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "cryptoList",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "mappGiven",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "mappAllowCryptoForEU",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "payable": false,
@@ -501,6 +729,12 @@ export const TogethersABI = [
         "internalType": "address",
         "name": "user",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "description",
+        "type": "string"
       }
     ],
     "name": "newDemand",
@@ -510,25 +744,19 @@ export const TogethersABI = [
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "userIn",
         "type": "address"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "crypto",
+        "name": "userOut",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
       }
     ],
-    "name": "withdrawIssue",
+    "name": "payDemand",
     "type": "event"
   },
   {
@@ -771,6 +999,26 @@ export const TogethersABI = [
     "constant": false,
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_tokenAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_crypto",
+        "type": "address"
+      }
+    ],
+    "name": "changeToken",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_publicKey",
         "type": "address"
@@ -806,53 +1054,6 @@ export const TogethersABI = [
     "constant": true,
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_group",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_num",
-        "type": "uint256"
-      }
-    ],
-    "name": "getUserName",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_num",
-        "type": "uint256"
-      }
-    ],
-    "name": "getGroup",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
         "internalType": "string",
         "name": "_name",
         "type": "string"
@@ -875,105 +1076,21 @@ export const TogethersABI = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_group",
+        "name": "groupID",
         "type": "uint256"
       },
       {
-        "internalType": "uint256",
-        "name": "_num",
-        "type": "uint256"
-      }
-    ],
-    "name": "getUserAddress",
-    "outputs": [
-      {
         "internalType": "address",
-        "name": "",
+        "name": "_user",
         "type": "address"
       }
     ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_num",
-        "type": "uint256"
-      }
-    ],
-    "name": "getGroupID",
+    "name": "getSpaceID",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_key",
-        "type": "address"
-      }
-    ],
-    "name": "getGroupsLength",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_group",
-        "type": "uint256"
-      }
-    ],
-    "name": "getUsersLength",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "getUserFriends",
-    "outputs": [
-      {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
       }
     ],
     "payable": false,
@@ -994,7 +1111,7 @@ export const TogethersABI = [
         "type": "address"
       }
     ],
-    "name": "getSpaceID",
+    "name": "isMember",
     "outputs": [
       {
         "internalType": "uint256",
@@ -1062,17 +1179,22 @@ export const TogethersABI = [
     "constant": true,
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "groupID",
+        "type": "uint256"
+      },
+      {
         "internalType": "address",
-        "name": "user",
+        "name": "_user",
         "type": "address"
       }
     ],
-    "name": "getCryptoPersonalList",
+    "name": "getDescription",
     "outputs": [
       {
-        "internalType": "address[]",
+        "internalType": "string",
         "name": "",
-        "type": "address[]"
+        "type": "string"
       }
     ],
     "payable": false,

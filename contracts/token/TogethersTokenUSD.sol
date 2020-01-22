@@ -10,7 +10,7 @@ contract TogethersTokenUSD is Ownable {
   event Transfer(address indexed from, address indexed to, uint256 value);
   event Approval(address indexed owner, address indexed spender, uint256 value);
 
-    string public constant name = "TogethersToken-EUR";
+    string public constant name = "TogethersToken-USD";
     string public constant symbol = "TTUSD";
     uint32 public constant decimals = 18;
 

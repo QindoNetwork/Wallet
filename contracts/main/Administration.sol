@@ -79,7 +79,7 @@ contract Administration is Ownable {
     TGTSToken = External3(_tgts);
   }
 
-  function enableCrypto(address crypto) public onlyOwner
+  function enableCrypto(address crypto) public onlyOwner view
   {
     require(crypto != address(0));
     require(checkCryptoToList(crypto) == false);

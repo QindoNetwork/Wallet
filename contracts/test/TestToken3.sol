@@ -2,7 +2,7 @@ pragma solidity ^0.5.0;
 
 import "../technical/SafeMath.sol";
 
-contract TestToken {
+contract TestToken3 {
 
   using SafeMath for uint256;
 
