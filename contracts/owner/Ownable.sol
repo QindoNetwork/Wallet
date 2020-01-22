@@ -12,12 +12,12 @@ interface External2 {
 interface External1 {
   function burnExternal(address account, uint256 value) external returns (bool);
   function mintExternal(address account, uint256 value) external returns (bool);
+  function balanceOf(address who) external view returns (uint256);
 }
 
 interface External3 {
   function transferFrom(address from, address to, uint256 tokenId) external;
   function getApproved(uint256 tokenId) external view returns (address);
-  function getLastSpaceID() external returns (uint);
 }
 
 contract Ownable {

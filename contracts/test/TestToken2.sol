@@ -19,6 +19,10 @@ contract TestToken {
 
      uint256 private _totalSupply;
 
+     constructor() public {
+       _mint(msg.sender, 100000000000000000000000000); // test
+     }
+
      /**
       * @dev Total number of tokens in existence
       */

@@ -3,7 +3,7 @@ import { FlatList, RefreshControl, StyleSheet, View, ActivityIndicator } from 'r
 import { inject, observer } from 'mobx-react';
 import { HeaderIcon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions, Wallets as WalletActions, Prices as PricesActions, Contacts as ContactsActions } from '@common/actions';
+import { General as GeneralActions, Wallets as WalletActions, Prices as PricesActions } from '@common/actions';
 import NoWallets from './NoWallets';
 import WalletCard from './WalletCard';
 import { ethers } from 'ethers';
@@ -43,7 +43,6 @@ export class WalletsOverview extends React.Component {
         try {
             await Promise.all([
                 WalletActions.loadWallets(),
-                ContactsActions.loadContacts(),
                 PricesActions.loadActiveRate()
                     .then(() => PricesActions.getPrice())
             ]);

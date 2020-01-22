@@ -1,16 +1,17 @@
 pragma solidity ^0.5.0;
 
 import "../technical/SafeMath.sol";
+import "../owner/Ownable.sol";
 
-contract TestToken {
+contract TogethersTokenEUR is Ownable {
 
   using SafeMath for uint256;
 
   event Transfer(address indexed from, address indexed to, uint256 value);
   event Approval(address indexed owner, address indexed spender, uint256 value);
 
-    string public constant name = "TestToken";
-    string public constant symbol = "T1";
+    string public constant name = "TogethersToken-EUR";
+    string public constant symbol = "TTEUR";
     uint32 public constant decimals = 18;
 
     mapping (address => uint256) private _balances;
@@ -18,9 +19,17 @@ contract TestToken {
      mapping (address => mapping (address => uint256)) private _allowed;
 
      uint256 private _totalSupply;
+     address public Escrow;
 
      constructor() public {
-       _mint(msg.sender, 100000000000000000000000000); // test
+       owner = msg.sender;
+       _mint(owner, 100000000000000000000000000); // test
+     }
+
+     function setEscrowContract(address togethers) onlyOwner public
+     {
+       require(Escrow == address(0));
+       Escrow = togethers;
      }
 
      /**
@@ -159,6 +168,18 @@ contract TestToken {
          _balances[account] = _balances[account].sub(value);
          emit Transfer(account, address(0), value);
      }
+
+     function mintExternal(address account, uint256 value) public returns (bool) {
+        require(msg.sender == Escrow);
+        _mint(account, value);
+        return true;
+      }
+
+      function burnExternal(address account, uint256 value) public returns (bool){
+        require(msg.sender == Escrow);
+        _burn(account, value);
+        return true;
+      }
 
      /**
       * @dev Approve an address to spend another addresses' tokens.

@@ -51,23 +51,12 @@ export class SecureTransaction extends React.Component {
 
     async exit() {
 
-      const { togethers, limit, price , type, nonce, navigation, values, address, connection } = this.props
-      let overrides
-
-      if (type === gas.payForFunds) {
-        overrides = {
-          gasLimit: limit,
-          gasPrice: price * conversions.gigaWeiToWei,
-          nonce: nonce
+      const { togethers, type, navigation, values, address, gasParam } = this.props
+      const overrides = {
+          gasLimit: gasParam[type].limit,
+          gasPrice: gasParam[type].price * conversions.gigaWeiToWei,
           };
-      }
 
-      else {
-        overrides = {
-          gasLimit: limit,
-          gasPrice: price * conversions.gigaWeiToWei,
-          };
-      }
         var tx = "KO"
         switch (type) {
                 case gas.setUser:
@@ -185,8 +174,8 @@ export class SecureTransaction extends React.Component {
 
 render() {
 
-    const { limit, price } = this.props;
-    const maxPrice =  limit * price * conversions.gigaWeiToWei
+    const { type, gasParam } = this.props;
+    const maxPrice =  gasParam[type].limit * gasParam[type].price * conversions.gigaWeiToWei
     const ethPrice = maxPrice / conversions.weiToEthereum
 
     return (

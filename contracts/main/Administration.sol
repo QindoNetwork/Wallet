@@ -8,22 +8,23 @@ contract Administration is Ownable {
   using SafeMath for uint256;
 
   uint public ID;
-  uint public MAX;
   uint public groupNumber;
   bool public stop;
 
-  event newDemand(uint indexed ID, address indexed user);
+  event newDemand(uint indexed ID, address indexed user, string description);
   event payDemand(address indexed userIn, address indexed userOut);
 
   mapping (uint => mapping (uint => uint)) public mappGiven;
   mapping (address => bool) public mappAllowCryptoForEU;
   mapping (address => bool) public mappAllowCryptoForUS;
-  mapping (uint => spaceInfo) public mappSpaceInfo;
   mapping (address => bool) public mappCryptoEnable;
   mapping (uint => address) public mappSymbolToCrypto;
 
-  address[] cryptoList;
-  address[] stablecoinList;
+  mapping (address => uint) internal userPassword;
+
+  address powerToken;
+  address[] public cryptoList;
+  address[] public stablecoinList;
 
   function getCrypto(uint index) view public returns (address)
   {
@@ -34,13 +35,6 @@ contract Administration is Ownable {
   {
     return cryptoList.length;
   }
-
-  function getCryptoList() view public returns (address[] memory)
-  {
-    return cryptoList;
-  }
-
-  mapping (address => uint) internal userPassword;
 
   function createPassword(string memory _password) internal
   {
@@ -78,14 +72,6 @@ contract Administration is Ownable {
     else return 0;
   }
 
-  struct spaceInfo
-  {
-    string description;
-    address user;
-  }
-
-  address powerToken;
-
   function setPowerToken(address _tgts) public onlyOwner
   {
     require(powerToken == address(0));
@@ -93,9 +79,10 @@ contract Administration is Ownable {
     TGTSToken = External3(_tgts);
   }
 
-  function enableCrypto(address crypto) public onlyOwner view
+  function enableCrypto(address crypto) public onlyOwner
   {
     require(crypto != address(0));
+    require(checkCryptoToList(crypto) == false);
     if (mappCryptoEnable[crypto] == false)
     {
       mappCryptoEnable[crypto] == true;
@@ -120,6 +107,14 @@ contract Administration is Ownable {
 
   function addCryptoToList(address crypto) public onlyOwner
   {
+    require(crypto != address(0));
+    require(checkCryptoToList(crypto) == true);
+    cryptoList.push(crypto);
+    mappSymbolToCrypto[returnHash(External2(crypto).symbol())] = crypto;
+  }
+
+  function checkCryptoToList(address crypto) private view returns (bool)
+  {
     bool add = true;
     for(uint i = 0 ; i < cryptoList.length ; i++)
     {
@@ -129,20 +124,18 @@ contract Administration is Ownable {
         break;
       }
     }
-    if (add == true)
-    {
-      cryptoList.push(crypto);
-      mappSymbolToCrypto[returnHash(External2(crypto).symbol())] = crypto;
-    }
+    return add;
   }
 
   function addStablecoinToList(address crypto) public onlyOwner
   {
+    require(crypto != address(0));
+    require(checkCryptoToList(crypto) == false);
     require(checkStablecoin(crypto) == true);
     stablecoinList.push(crypto);
   }
 
-  function checkStablecoin(address crypto) private returns (bool)
+  function checkStablecoin(address crypto) private view returns (bool)
   {
     bool add = true;
     for(uint i = 0 ; i < stablecoinList.length ; i++)
@@ -154,16 +147,6 @@ contract Administration is Ownable {
       }
     }
     return add;
-  }
-
-  function setMaxLength(uint _max) public onlyOwner
-  {
-    MAX = _max;
-  }
-
-  function getDescription(uint id) view public returns (string memory)
-  {
-    return mappSpaceInfo[id].description;
   }
 
   function allowCryptoForUS(address crypto) public onlyOwner

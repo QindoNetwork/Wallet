@@ -27,8 +27,6 @@ contract SpaceOperator is Ownable {
   function exchangeSpace(uint spaceFrom, uint spaceTo, uint optionalTGTCOffer) public
   {
     address addressTo = TGTSToken.getApproved(spaceTo);
-    uint spaceID = TGTSToken.getLastSpaceID();
-    require(spaceFrom > spaceID && spaceTo > spaceID);
     require(TGTSToken.getApproved(spaceFrom) == msg.sender
     && spaceFrom != powerToken1 && spaceFrom != powerToken2 && addressTo != address(0) && addressTo != msg.sender);
     if (swapOption[spaceTo].spaceID == spaceFrom)

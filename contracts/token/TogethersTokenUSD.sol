@@ -3,15 +3,15 @@ pragma solidity ^0.5.0;
 import "../technical/SafeMath.sol";
 import "../owner/Ownable.sol";
 
-contract TogethersTokenn is Ownable {
+contract TogethersTokenUSD is Ownable {
 
   using SafeMath for uint256;
 
   event Transfer(address indexed from, address indexed to, uint256 value);
   event Approval(address indexed owner, address indexed spender, uint256 value);
 
-    string public constant name = "TogethersToken";
-    string public constant symbol = "TGTT";
+    string public constant name = "TogethersToken-EUR";
+    string public constant symbol = "TTUSD";
     uint32 public constant decimals = 18;
 
     mapping (address => uint256) private _balances;
@@ -23,6 +23,7 @@ contract TogethersTokenn is Ownable {
 
      constructor() public {
        owner = msg.sender;
+       _mint(owner, 100000000000000000000000000); // test
      }
 
      function setEscrowContract(address togethers) onlyOwner public

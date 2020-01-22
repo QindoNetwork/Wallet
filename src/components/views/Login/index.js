@@ -47,16 +47,11 @@ export class Login extends React.Component {
     renderModal(pseudo,password1,password2) {
 
       const { gasParam, togethers, address } = this.props.navigation.state.params;
-      const limit = gasParam[gas.setUser].limit
-      const price = gasParam[gas.setUser].price
 
       if (this.state.show === true) {
       return (  <SecureTransaction
             togethers={togethers}
             values={{pseudo,password1,password2}}
-            limit={limit}
-            price={price}
-            connection={connection}
             address={address}
             gasParam={gasParam}
             navigation={this.props.navigation}
@@ -66,7 +61,7 @@ export class Login extends React.Component {
 
     async onPressContinueLogin() {
         Keyboard.dismiss();
-        const { gasParam, togethers, address, connection } = this.props.navigation.state.params;
+        const { gasParam, togethers, address } = this.props.navigation.state.params;
         const { password } = this.state;
         const hashPassword = sha256(password)
         try {
