@@ -49,16 +49,6 @@ export async function ask(togethers, args, address, overrides) {
     result = "KO"
     GeneralActions.notify('this group does not exists', 'long');
   }
-  if (await parseInt (togethers.getGroupsLength(address),10) >= togethers.MAX())
-  {
-    result = "KO"
-    GeneralActions.notify('you have too many groups', 'long');
-  }
-  if (parseInt (await togethers.getUsersLength(groupID),10) >= togethers.MAX())
-  {
-    result = "KO"
-    GeneralActions.notify('there is too many members in this group', 'long');
-  }
   if (parseInt (await togethers.verifyGroupAsked(groupID,address),10) === 1)
   {
     result = "KO"

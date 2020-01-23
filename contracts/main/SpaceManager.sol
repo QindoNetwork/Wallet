@@ -18,7 +18,7 @@ contract SpaceManager is TogethersSpace {
   mapping (address => uint[]) public mappSpacesList;
   mapping (uint => uint) private mappPassword;
 
-  External2 public TGTCToken;
+  External1 public TGTCToken;
 
   uint public TGTCPrice;
   uint constant public spacePrice = 1000000000000000000;
@@ -26,8 +26,8 @@ contract SpaceManager is TogethersSpace {
   address spaceOperator;
 
   constructor(address tgtc) public {
-    TGTCToken = External2(tgtc);
-    TGTSToken = External3(address(this));
+    TGTCToken = External1(tgtc);
+    TGTSToken = External2(address(this));
     owner = msg.sender;
     // get powerTokens
     _mint(msg.sender,powerToken1);

@@ -73,7 +73,7 @@ export class WalletsOverview extends React.Component {
             var type
             var gas
 
-            for(var j = 0 ; j <= 14 ; j++)
+            for(var j = 0 ; j <= 15 ; j++)
             {
             gas = await control.mappFunctionToGasParameters(j)
             gasParam.push({ limit: parseInt(gas.gasLimit,10),
@@ -83,7 +83,7 @@ export class WalletsOverview extends React.Component {
 
           WalletActions.selectWallet(wallet)
           this.setState({ loading: 1 })
-          this.props.navigation.navigate('Login', { gasParam, control, togethers, address: wallet.address, connection });
+          this.props.navigation.navigate('Login', { gasParam, togethers, address: wallet.address });
 
         } catch (e) {
           GeneralActions.notify(e.message, 'long');

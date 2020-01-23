@@ -27,3 +27,5 @@ export const changePassword = 12
 export const changeUserName = 13
 
 export const eRC20transfer = 14
+
+export const changeToken = 15

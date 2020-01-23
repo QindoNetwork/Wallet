@@ -173,27 +173,6 @@ export const TogethersABI = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "index",
-        "type": "uint256"
-      }
-    ],
-    "name": "getCrypto",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
@@ -266,8 +245,14 @@ export const TogethersABI = [
   },
   {
     "constant": true,
-    "inputs": [],
-    "name": "getCryptoListLength",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "crypto",
+        "type": "address"
+      }
+    ],
+    "name": "getStableUSStatus",
     "outputs": [
       {
         "internalType": "uint256",
@@ -350,7 +335,7 @@ export const TogethersABI = [
     "name": "TGTSToken",
     "outputs": [
       {
-        "internalType": "contract External3",
+        "internalType": "contract External2",
         "name": "",
         "type": "address"
       }
@@ -680,6 +665,27 @@ export const TogethersABI = [
     "type": "function"
   },
   {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "crypto",
+        "type": "address"
+      }
+    ],
+    "name": "getStableEUStatus",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "constant": false,
     "inputs": [
       {
@@ -732,9 +738,9 @@ export const TogethersABI = [
       },
       {
         "indexed": false,
-        "internalType": "string",
-        "name": "description",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "groupID",
+        "type": "uint256"
       }
     ],
     "name": "newDemand",
@@ -750,7 +756,7 @@ export const TogethersABI = [
         "type": "address"
       },
       {
-        "indexed": true,
+        "indexed": false,
         "internalType": "address",
         "name": "userOut",
         "type": "address"
@@ -1195,6 +1201,42 @@ export const TogethersABI = [
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getGroups",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_group",
+        "type": "uint256"
+      }
+    ],
+    "name": "getProfiles",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
       }
     ],
     "payable": false,

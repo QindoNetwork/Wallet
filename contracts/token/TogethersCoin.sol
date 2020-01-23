@@ -33,7 +33,7 @@ contract TogethersCoin is Ownable {
      {
        require(Escrow == address(0));
        Escrow = togethersSpace;
-       TGTSToken = External3(Escrow);
+       TGTSToken = External2(Escrow);
      }
 
      /**

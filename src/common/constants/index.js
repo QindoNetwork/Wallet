@@ -7,6 +7,5 @@ import * as Network from './network';
 import * as Gas from './gas';
 import * as Conversions from './conversions';
 import * as Restrictions from './restrictions';
-import * as Contact from './contact';
 
-export { Prices, Gas, Storage, Url, Wallet , Contracts, Network, Conversions, Restrictions, Contact };
+export { Prices, Gas, Storage, Url, Wallet , Contracts, Network, Conversions, Restrictions };

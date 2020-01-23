@@ -19,7 +19,7 @@ export class Login extends React.Component {
 
     static navigationOptions = { title: 'Login' };
 
-    state = { show: false, loading: 0, registered: 0, password: '', result: 0 };
+    state = { show: false, loading: 0, registered: 0, password: '', result: 0, pseudo: '' };
 
     copyToClipboard() {
         const { item } = this.props.wallet;
@@ -72,7 +72,7 @@ export class Login extends React.Component {
             GeneralActions.notify(e.message, 'long');
         }
         if (this.state.result === 1) {
-          this.props.navigation.navigate('WalletDetails', { gasParam, address, togethers, connection, replaceRoute: true });
+          this.props.navigation.navigate('WalletDetails', { gasParam, address, togethers, replaceRoute: true });
         }
         else {
           GeneralActions.notify("Password not good", 'long');
@@ -81,9 +81,12 @@ export class Login extends React.Component {
 
     async componentDidMount() {
 
+      const { togethers, address } = this.props.navigation.state.params;
+
       try {
         this.setState({
-                        registered: parseInt (await this.props.navigation.getParam('togethers').verifyRegistration(),10),
+                        pseudo : await togethers.mappAddressToUser(address),
+                        registered: parseInt (await togethers.verifyRegistration(),10),
                         loading: 1
                       })
       } catch (e) {
@@ -95,7 +98,7 @@ export class Login extends React.Component {
 
         return ( <View style={styles.container}>
           <View style={styles.body}>
-
+              <Text style={styles.message}>Welcome {this.state.pseudo}</Text>
               <Text style={styles.message}>Password</Text>
               <TextInput
                   style={styles.input}
@@ -175,7 +178,7 @@ export class Login extends React.Component {
 }
 
     renderWalletEmpty() {
-      const { address  } = this.props.navigation.state.params;
+      const { address } = this.props.navigation.state.params;
       return (
         <View style={styles.container}>
         <Text style={styles.centered}>Low balance, you need ether to register, show the code below to receive ethers and enter to the community!</Text>

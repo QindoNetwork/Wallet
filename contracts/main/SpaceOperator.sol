@@ -16,12 +16,12 @@ contract SpaceOperator is Ownable {
     uint offer;
   }
 
-  External2 TGTCToken;
+  External1 TGTCToken;
 
   constructor(address tgts, address tgtc) public {
     owner = msg.sender;
-    TGTSToken = External3(tgts);
-    TGTCToken = External2(tgtc);
+    TGTSToken = External2(tgts);
+    TGTCToken = External1(tgtc);
   }
 
   function exchangeSpace(uint spaceFrom, uint spaceTo, uint optionalTGTCOffer) public

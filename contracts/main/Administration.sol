@@ -11,8 +11,8 @@ contract Administration is Ownable {
   uint public groupNumber;
   bool public stop;
 
-  event newDemand(uint indexed ID, address indexed user, string description);
-  event payDemand(address indexed userIn, address indexed userOut);
+  event newDemand(uint indexed ID, address indexed user, uint groupID);
+  event payDemand(address indexed userIn, address userOut);
 
   mapping (uint => mapping (uint => uint)) public mappGiven;
   mapping (address => bool) public mappAllowCryptoForEU;
@@ -25,16 +25,6 @@ contract Administration is Ownable {
   address powerToken;
   address[] public cryptoList;
   address[] public stablecoinList;
-
-  function getCrypto(uint index) view public returns (address)
-  {
-    return cryptoList[index];
-  }
-
-  function getCryptoListLength() view public returns (uint)
-  {
-    return cryptoList.length;
-  }
 
   function createPassword(string memory _password) internal
   {
@@ -76,7 +66,7 @@ contract Administration is Ownable {
   {
     require(powerToken == address(0));
     powerToken = _tgts;
-    TGTSToken = External3(_tgts);
+    TGTSToken = External2(_tgts);
   }
 
   function enableCrypto(address crypto) public onlyOwner view
@@ -93,9 +83,33 @@ contract Administration is Ownable {
     }
   }
 
-  function getCryptoStatus(address crypto) public onlyOwner view returns (uint)
+  function getCryptoStatus(address crypto) public view returns (uint)
   {
     if (mappCryptoEnable[crypto] == false)
+    {
+      return 0;
+    }
+    else
+    {
+      return 1;
+    }
+  }
+
+  function getStableUSStatus(address crypto) public view returns (uint)
+  {
+    if (mappAllowCryptoForUS[crypto] == false)
+    {
+      return 0;
+    }
+    else
+    {
+      return 1;
+    }
+  }
+
+  function getStableEUStatus(address crypto) public view returns (uint)
+  {
+    if (mappAllowCryptoForEU[crypto] == false)
     {
       return 0;
     }
@@ -110,7 +124,7 @@ contract Administration is Ownable {
     require(crypto != address(0));
     require(checkCryptoToList(crypto) == true);
     cryptoList.push(crypto);
-    mappSymbolToCrypto[returnHash(External2(crypto).symbol())] = crypto;
+    mappSymbolToCrypto[returnHash(External1(crypto).symbol())] = crypto;
   }
 
   function checkCryptoToList(address crypto) private view returns (bool)

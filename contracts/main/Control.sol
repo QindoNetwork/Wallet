@@ -15,50 +15,53 @@ contract Control is Ownable {
 
   constructor() public {
     mappFunctionToGasParameters[0].functionName = "ask";
-    mappFunctionToGasParameters[0].gasPrice = 5;
+    mappFunctionToGasParameters[0].gasPrice = 6;
     mappFunctionToGasParameters[0].gasLimit = 5000000;
     mappFunctionToGasParameters[1].functionName = "transferGroupOwnership";
-    mappFunctionToGasParameters[1].gasPrice = 5;
+    mappFunctionToGasParameters[1].gasPrice = 6;
     mappFunctionToGasParameters[1].gasLimit = 5000000;
     mappFunctionToGasParameters[2].functionName = "setUser";
-    mappFunctionToGasParameters[2].gasPrice = 5;
+    mappFunctionToGasParameters[2].gasPrice = 6;
     mappFunctionToGasParameters[2].gasLimit = 1200000;
     mappFunctionToGasParameters[3].functionName = "createGroup";
-    mappFunctionToGasParameters[3].gasPrice = 5;
+    mappFunctionToGasParameters[3].gasPrice = 6;
     mappFunctionToGasParameters[3].gasLimit = 5000000;
     mappFunctionToGasParameters[4].functionName = "createProfile";
-    mappFunctionToGasParameters[4].gasPrice = 5;
+    mappFunctionToGasParameters[4].gasPrice = 6;
     mappFunctionToGasParameters[4].gasLimit = 5000000;
     mappFunctionToGasParameters[5].functionName = "askForFunds";
-    mappFunctionToGasParameters[5].gasPrice = 5;
+    mappFunctionToGasParameters[5].gasPrice = 6;
     mappFunctionToGasParameters[5].gasLimit = 5000000;
     mappFunctionToGasParameters[6].functionName = "withdrawFunds";
-    mappFunctionToGasParameters[6].gasPrice = 5;
+    mappFunctionToGasParameters[6].gasPrice = 6;
     mappFunctionToGasParameters[6].gasLimit = 5000000;
     mappFunctionToGasParameters[7].functionName = "removeMember";
-    mappFunctionToGasParameters[7].gasPrice = 5;
+    mappFunctionToGasParameters[7].gasPrice = 6;
     mappFunctionToGasParameters[7].gasLimit = 5000000;
     mappFunctionToGasParameters[8].functionName = "quitGroup";
-    mappFunctionToGasParameters[8].gasPrice = 5;
+    mappFunctionToGasParameters[8].gasPrice = 6;
     mappFunctionToGasParameters[8].gasLimit = 5000000;
     mappFunctionToGasParameters[9].functionName = "defaultTransaction";
-    mappFunctionToGasParameters[9].gasPrice = 5;
+    mappFunctionToGasParameters[9].gasPrice = 6;
     mappFunctionToGasParameters[9].gasLimit = 5000000;
     mappFunctionToGasParameters[10].functionName = "payForFunds";
-    mappFunctionToGasParameters[10].gasPrice = 5;
+    mappFunctionToGasParameters[10].gasPrice = 6;
     mappFunctionToGasParameters[10].gasLimit = 5000000;
     mappFunctionToGasParameters[11].functionName = "ERC20allowance";
-    mappFunctionToGasParameters[11].gasPrice = 5;
+    mappFunctionToGasParameters[11].gasPrice = 6;
     mappFunctionToGasParameters[11].gasLimit = 5000000;
     mappFunctionToGasParameters[12].functionName = "ChangePassword";
-    mappFunctionToGasParameters[12].gasPrice = 5;
+    mappFunctionToGasParameters[12].gasPrice = 6;
     mappFunctionToGasParameters[12].gasLimit = 5000000;
     mappFunctionToGasParameters[13].functionName = "ChangeUserName";
-    mappFunctionToGasParameters[13].gasPrice = 5;
+    mappFunctionToGasParameters[13].gasPrice = 6;
     mappFunctionToGasParameters[13].gasLimit = 5000000;
     mappFunctionToGasParameters[14].functionName = "ERC20transfer";
-    mappFunctionToGasParameters[14].gasPrice = 5;
+    mappFunctionToGasParameters[14].gasPrice = 6;
     mappFunctionToGasParameters[14].gasLimit = 5000000;
+    mappFunctionToGasParameters[15].functionName = "ChangeToken";
+    mappFunctionToGasParameters[15].gasPrice = 6;
+    mappFunctionToGasParameters[15].gasLimit = 5000000;
     owner = msg.sender;
   }
 
@@ -68,7 +71,7 @@ contract Control is Ownable {
   {
     require(powerToken == address(0));
     powerToken = _tgts;
-    TGTSToken = External3(_tgts);
+    TGTSToken = External2(_tgts);
   }
 
   function setGasLimit(uint limit, uint _function)  public onlyOwner

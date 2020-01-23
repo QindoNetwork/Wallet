@@ -7,9 +7,9 @@ contract Togethers is Administration {
 
   mapping (address => string) public mappAddressToUser;
   mapping (uint => string) public mappGroupIDToGroupName;
-  mapping (uint => mapping (address => profile)) public mappProfileInGroup;
-  mapping (address => uint[]) public mappGroupsForAddress;
-  mapping (uint => address[]) public mappUsersInGroup;
+  mapping (uint => mapping (address => profile)) private mappProfileInGroup;
+  mapping (address => uint[]) private mappGroupsForAddress;
+  mapping (uint => address[]) private mappUsersInGroup;
   mapping (uint => address) public checkNameUnicity;
   mapping (address => mapping (uint => bool)) public mappAskForAdd;
 
@@ -143,7 +143,7 @@ contract Togethers is Administration {
     mappProfileInGroup[groupID][msg.sender].open = true;
     mappProfileInGroup[groupID][msg.sender].DemandID = ID;
     mappProfileInGroup[groupID][msg.sender].description = _description;
-    emit newDemand(ID,msg.sender,_description);
+    emit newDemand(ID,msg.sender,groupID);
     ID += 1;
   }
 
@@ -174,7 +174,7 @@ contract Togethers is Administration {
         family = 1;
       }
       require(family != 0);
-      External2(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
+      External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
     }
     mappGiven[mappProfileInGroup[groupID][_publicKey].DemandID][family].add(amount);
     emit payDemand(msg.sender,_publicKey);
@@ -202,18 +202,18 @@ contract Togethers is Administration {
   function changeToken(uint _tokenAmount, address _crypto) public
   {
     require(mappCryptoEnable[_crypto] == true);
-    require(External2(_crypto).balanceOf(msg.sender) >= _tokenAmount);
+    require(External1(_crypto).balanceOf(msg.sender) >= _tokenAmount);
     if (mappAllowCryptoForUS[_crypto] == true)
     {
       require(TTUSD.balanceOf(msg.sender) >= _tokenAmount);
       TTUSD.burnExternal(msg.sender,_tokenAmount);
-      External2(_crypto).transfer(msg.sender,_tokenAmount);
+      External1(_crypto).transfer(msg.sender,_tokenAmount);
     }
     if (mappAllowCryptoForEU[_crypto] == true)
     {
       require(TTEUR.balanceOf(msg.sender) >= _tokenAmount);
       TTEUR.burnExternal(msg.sender,_tokenAmount);
-      External2(_crypto).transfer(msg.sender,_tokenAmount);
+      External1(_crypto).transfer(msg.sender,_tokenAmount);
     }
   }
 
@@ -241,11 +241,6 @@ contract Togethers is Administration {
     require(mappProfileInGroup[_groupID][_publicKey].open == false);
     mappProfileInGroup[_groupID][_publicKey].isMember = false;
     mappAskForAdd[_publicKey][_groupID] = false;
-  }
-
-  function getAddressFromName(string memory _name) view public returns (address)
-  {
-    return checkNameUnicity[returnHash(_name)];
   }
 
   function getSpaceID(uint groupID, address _user) view public returns (uint)
@@ -283,6 +278,16 @@ contract Togethers is Administration {
   function getDescription(uint groupID, address _user) view public returns (string memory)
   {
     return mappProfileInGroup[groupID][_user].description;
+  }
+
+  function getGroups() view public returns (uint[] memory)
+  {
+    return mappGroupsForAddress[msg.sender];
+  }
+
+  function getProfiles(uint _group) view public returns (address[] memory)
+  {
+    return mappUsersInGroup[_group];
   }
 
 }

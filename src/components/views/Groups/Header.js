@@ -1,11 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { inject, observer } from 'mobx-react';
 import { colors, measures } from '@common/styles';
-import { Wallet as WalletUtils } from '@common/utils';
 
-@inject('prices', 'wallet')
-@observer
 export default class Header extends React.Component {
 
     render() {
@@ -13,9 +9,6 @@ export default class Header extends React.Component {
             <View style={styles.container}>
                 <View style={styles.leftColumn}>
                     <Text style={styles.title}>Your groups</Text>
-                </View>
-                <View style={styles.rightColumn}>
-                    <Text style={styles.balance}>{this.props.pseudo}</Text>
                 </View>
             </View>
         );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, RefreshControl, FlatList, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { TouchableOpacity, RefreshControl, FlatList, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
@@ -8,52 +8,27 @@ import Header from './Header';
 
 export class Groups extends React.Component {
 
-    state = { loading: 0, groups: [], length: 0, max: 0, pseudo: '' };
+    state = { loading: 0, groups: [] };
 
     async componentDidMount() {
       const { togethers, address } = this.props
       let groups = []
       try {
-        this.setState({ length:  parseInt ( await togethers.getGroupsLength(address),10),
-                        max:  parseInt ( await togethers.MAX(),10),
-                        pseudo : await togethers.mappAddressToUser(address)})
-        if ( this.state.length !== 0 ) {
-          for ( var i = 0; i < this.state.length; i++ ) {
-            groups.push({   id:  parseInt (await togethers.getGroupID(i),10),
-                            name: await togethers.getGroup(i)  })
-          }
+        const req = await togethers.getGroups()
+        for ( var i = 0; i < req.length; i++ ) {
+          groupID = parseInt (req[i],10)
+          groups.push({   id:  groupID,
+                          name: await togethers.mappGroupIDToGroupName(groupID)  })
         }
-        this.setState({ groups, loading: 1})
+        this.setState({ groups, loading: 1 })
       } catch (e) {
       GeneralActions.notify(e.message, 'long');
       }
     }
 
-    renderBody(){
-      const { address, togethers, erc20s, gasParam, connection  } = this.props;
-      const { max, length } = this.state;
-      return      (
-        <View style={styles.container}>
-        <Header pseudo={this.state.pseudo}/>
-          <FlatList
-            data={this.state.groups.sort((prev, next) => prev.name.localeCompare(next.name))}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-              style={styles.content}
-              activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('Profiles',{ connection, item, gasParam, address, erc20s, togethers, max, length })}>
-                <GroupCard  group={item} address={address} togethers={togethers} />
-              </TouchableOpacity>
-            )}
-        />
-      </View>)
-
-        }
-
     render() {
 
-      const { gasParam, togethers, address, erc20s } = this.props
-      const { max } = this.state;
+      const { address, togethers, gasParam  } = this.props;
 
       if (this.state.loading === 0){
 
@@ -69,30 +44,29 @@ export class Groups extends React.Component {
 
       }
 
-      if (this.state.length >= max){
-
-        return(
+      return(
 
           <View style={styles.container}>
-              {this.renderBody()}
-          </View>
-
-      )
-
-      }
-
-      return (
-        <View style={styles.container}>
-            {this.renderBody()}
-            <View style={styles.buttonsContainer}>
+          <Header/>
+          <FlatList
+            data={this.state.groups.sort((prev, next) => prev.name.localeCompare(next.name))}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+              style={styles.content}
+              activeOpacity={0.8}
+              onPress={() => this.props.navigation.navigate('Profiles',{ item, gasParam, address, togethers })}>
+                <GroupCard  group={item} address={address} togethers={togethers} />
+              </TouchableOpacity>
+            )}
+        />
+        <View style={styles.buttonsContainer}>
                 <Button
                   children="Add group"
-                  onPress={() => this.props.navigation.navigate('AddGroup', {togethers, address, gasParam, erc20s })}/>
+                  onPress={() => this.props.navigation.navigate('AddGroup', { ...this.props })}/>
               </View>
-        </View>
-      )
+        </View>)
 
-    }
+      }
 
 }
 

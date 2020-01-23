@@ -7,15 +7,12 @@ import { General as GeneralActions  } from '@common/actions';
 
 export default class GroupsCard extends React.Component {
 
-  state = {active: 0, owner: 0, loading: 0, length:0 };
+  state = {active: 0, loading: 0 };
 
    async componentDidMount() {
      const { togethers, address, group } = this.props
      try {
-       var length = parseInt ( await togethers.getUsersLength(group.id),10)
-       this.setState({ owner:   parseInt ( await togethers.isOwner(group.id,address),10),
-                       length: parseInt ( await togethers.getUsersLength(group.id),10),
-                       active:  parseInt ( await togethers.isOpen(group.id,address),10),
+       this.setState({ active:  parseInt ( await togethers.isOpen(group.id,address),10),
                        loading: 1})
      } catch (e) {
      GeneralActions.notify(e.message, 'long');
@@ -25,14 +22,11 @@ export default class GroupsCard extends React.Component {
     render() {
 
       const { group } = this.props;
-      const { active, owner, length, loading } = this.state
-      var label1 = 'ID: ' + group.id
+      const { active, loading } = this.state
+      var label1 = '# ' + group.id
       var label2 = ''
       if ( active === 1) {
         label2 = "active"
-      }
-      if ( owner === 1) {
-        label1 = label1 + " (owner)"
       }
 
       if (loading === 0){
@@ -60,8 +54,7 @@ export default class GroupsCard extends React.Component {
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{ length - 1 } friends</Text>
-                            <Text style={styles.fiatBalance}>{label2}</Text>
+                            <Text style={styles.balance}>{label2}</Text>
                         </View>
                     </View>
                 </View>

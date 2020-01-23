@@ -15,21 +15,16 @@ export class AddProfile extends Component {
 
   static navigationOptions = { title: "Add a friend" };
 
-  state = { show: false, loading: 0, groupID: 0, length: 0, owner: 0, address: '' };
+  state = { show: false, loading: 0, groupID: 0, owner: 0, address: '' };
 
   renderModal(value) {
 
-    const { gasParam, togethers, erc20s, address, groupID  } = this.props.navigation.state.params;
-    const limit = gasParam[gas.createProfile].limit
-    const price = gasParam[gas.createProfile].price
+    const { gasParam, togethers, address, groupID  } = this.props.navigation.state.params;
 
     if (this.state.show === true) {
     return (  <SecureTransaction
           togethers={togethers}
           values={{groupID,value}}
-          limit={limit}
-          price={price}
-          erc20s={erc20s}
           address={address}
           gasParam={gasParam}
           navigation={this.props.navigation}
@@ -41,7 +36,6 @@ export class AddProfile extends Component {
     const { groupID, togethers, address  } = this.props.navigation.state.params;
     try {
         this.setState({ owner:  parseInt ( await togethers.isOwner(groupID,address),10),
-                        length:  parseInt ( await togethers.getUsersLength(groupID),10),
                         loading: 1})
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
