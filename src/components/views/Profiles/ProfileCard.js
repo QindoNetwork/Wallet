@@ -11,7 +11,7 @@ export default class ProfilesCard extends React.Component {
 
    async componentDidMount() {
 
-     const { togethers, address, profile, groupID } = this.props
+     const { togethers, profile, groupID } = this.props
      try {
        this.setState({ owner:   parseInt ( await togethers.isOwner(groupID,profile.id),10),
                        active:  parseInt ( await togethers.isOpen(groupID,profile.id),10),

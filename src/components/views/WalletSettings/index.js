@@ -27,13 +27,6 @@ export class WalletSettings extends React.Component {
         this.props.navigation.push('ShowPrivateKey', { wallet });
     }
 
-    ComingSoon() {
-        const { wallet } = this.props;
-        this.props.navigation.push('ComingSoon', { wallet });
-    }
-
-
-
     confirmRemoveWallet() {
         Alert.alert(
             'Remove wallet',
@@ -78,7 +71,7 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Wallets</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.props.navigation.navigate('ChangePassword')}>
+                <ListItem onPress={() => this.props.navigation.navigate('ChangePassword', { ...this.props })}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
                             <Icon name='finger-print' />
@@ -94,7 +87,7 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Export private hey</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.props.navigation.navigate('ChangePseudonyme')}>
+                <ListItem onPress={() => this.props.navigation.navigate('ChangePseudonyme', { ...this.props })}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
                             <Icon name='shirt' />

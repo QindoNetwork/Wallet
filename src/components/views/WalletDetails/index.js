@@ -9,17 +9,17 @@ export class WalletDetails extends React.Component {
     });
 
     tabs = [
-        { id: 'extract', label: 'Historic', icon: 'list',               content: <WalletExtract {...this.props}/> },
+        { id: 'extract', label: 'Historic', icon: 'list',               content: <WalletExtract {...this.props} /> },
         { id: 'receive', label: 'Receive', icon: 'qrcode', type: 'fa',  content: <ReceiveCoins {...this.props} /> },
         { id: 'send', label: 'Send', icon: 'cube-send', type: 'mdc',    content: <Crypto address = {this.props.navigation.getParam('address')}
                                                                                          togethers = {this.props.navigation.getParam('togethers')}
                                                                                          navigation = {this.props.navigation}
-                                                                                         gasParam = {this.props.navigation.getParam('gasParam')}
-                                                                                         groupID = '0'/> },
+                                                                                         groupID = '0'
+                                                                                         gasParam = {this.props.navigation.getParam('gasParam')} /> },
         { id: 'network', label: 'Network', icon: 'contacts',            content: <Groups navigation = {this.props.navigation}
                                                                                          gasParam = {this.props.navigation.getParam('gasParam')}
                                                                                          address = {this.props.navigation.getParam('address')}
-                                                                                         togethers = {this.props.navigation.getParam('togethers')}/> },
+                                                                                         togethers = {this.props.navigation.getParam('togethers')} /> },
         { id: 'settings', label: 'Settings', icon: 'settings',          content: <WalletSettings navigation = {this.props.navigation}
                                                                                                  gasParam = {this.props.navigation.getParam('gasParam')}
                                                                                                  address = {this.props.navigation.getParam('address')}

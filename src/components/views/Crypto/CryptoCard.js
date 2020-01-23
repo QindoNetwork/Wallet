@@ -18,9 +18,8 @@ export default class CryptoCard extends React.Component {
 
   async componentDidMount() {
     try {
-      if (this.props.crypto.key !== 0){
-        const instance = new ethers.Contract(this.props.crypto.address, erc20ABI, this.props.connection)
-        this.setState({ balance:  parseInt ( await instance.balanceOf(this.props.address),10) })
+      if (this.props.crypto.name !== 'Ethers'){
+        this.setState({ balance:  parseInt ( await this.props.crypto.instance.balanceOf(this.props.address),10) })
       }
       else {
         this.setState({ balance:  Number(WalletUtils.formatBalance(this.props.wallet.item.balance))})

@@ -18,17 +18,12 @@ export class CloseDemand extends React.Component {
 
   renderModal() {
 
-    const { gasParam, togethers, erc20s, address, groupID } = this.props.navigation.state.params;
-    const limit = gasParam[gas.withdrawFunds].limit * (this.state.size + 1)
-    const price = gasParam[gas.withdrawFunds].price
+    const { gasParam, togethers, address, groupID } = this.props.navigation.state.params;
 
     if (this.state.show === true) {
     return (  <SecureTransaction
           togethers={togethers}
           values={{groupID}}
-          limit={limit}
-          price={price}
-          erc20s={erc20s}
           address={address}
           gasParam={gasParam}
           navigation={this.props.navigation}
@@ -37,7 +32,7 @@ export class CloseDemand extends React.Component {
   }
 
   async componentDidMount() {
-    const { gasParam, togethers, erc20s, address, groupID } = this.props.navigation.state.params;
+    const { gasParam, togethers, address, groupID } = this.props.navigation.state.params;
     try {
       const size = 0
       if ( erc20s.length !== 0 ) {
@@ -56,7 +51,7 @@ export class CloseDemand extends React.Component {
   }
 
   render() {
-    const { gasParam, togethers, erc20s, address, groupID } = this.props.navigation.state.params;
+    const { gasParam, togethers, address, groupID } = this.props.navigation.state.params;
 
     if (this.state.loading === 0){
 

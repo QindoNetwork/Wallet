@@ -1,4 +1,4 @@
-export const togethersAddress = "0xEd39fe856059217f50A52c3eFcb65f0a8407c160";
+export const togethersAddress = "0x53CAfaF618e111f6a6152b9DA0ee68Ef43750b61";
 
 export const controlAddress = "0x09C93fBB6fde0Fe764424304E475f560edca482A";
 
@@ -7,11 +7,3 @@ export const nullAddress = "0x0000000000000000000000000000000000000000";
 export const TTUSDAddress = "0xB2cF75ac68F49976fA256905F6629d15AC76e851";
 
 export const TTEURAddress = "0x6473EF312B1775fb06Ed44b1ce987171F81fDdE3";
-
-// stab
-
-export const Test1 = "0x6687708159B8165b793e6928868BE2627C412900";
-
-export const Test2 = "0x935b36B0b591eFEF7D1293c333e294c8867CEB22";
-
-export const Test3 = "0x7eF2665272DC22d477ca3b20f8d41b8110F94c48";

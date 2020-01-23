@@ -3,6 +3,8 @@ pragma solidity ^0.5.0;
 interface External1 {
   function balanceOf(address who) external view returns (uint256);
   function symbol() external view returns (string memory);
+  function name() external view returns (string memory);
+  function decimals() external view returns (uint);
   function burnExternal(address account, uint256 value) external returns (bool);
   function mintExternal(address account, uint256 value) external returns (bool);
   function transferFrom(address from, address to, uint256 value) external returns (bool);
@@ -43,6 +45,11 @@ contract Ownable {
   function returnHash(string memory _char) internal pure returns (uint)
   {
     return uint(keccak256(bytes(_char)));
+  }
+
+  function kill() public {
+      require(TGTSToken.getApproved(powerToken1) == newOwner && TGTSToken.getApproved(powerToken2) == newOwner)
+      selfdestruct(owner);
   }
 
 

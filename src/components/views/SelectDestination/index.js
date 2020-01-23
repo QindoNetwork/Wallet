@@ -16,21 +16,17 @@ export class SelectDestination extends React.Component {
     state = { address: '', loading: 0, profiles: [], length: 0, owner: 0 };
 
     async componentDidMount() {
-       const { navigation } = this.props
-       const togethers = navigation.getParam('togethers')
-       const address = navigation.getParam('address')
+      const { address, togethers, groupID } = this.props.navigation.state.params
+
        let profiles = []
+       let temp = []
        try {
-         let groupLength = parseInt ( await togethers.getGroupsLength(address),10)
-         if ( groupLength !== 0 ) {
-           for ( var i = 0; i < groupLength; i++ ) {
-             let groupID = parseInt (await togethers.getGroupID(i),10)
-             let userLength = parseInt ( await togethers.getUsersLength(groupID),10)
-             if ( userLength > 1 ) {
-               for ( var j = 0; j < userLength; j++ ) {
+         const groups = await togethers.getGroups()
+           for ( var i = 0; i < groups.length; i++ ) {
+             temp = await togethers.getProfiles(parseInt (groups[i],10))
+               for ( var j = 0; j < temp.length; j++ ) {
                   var ok = 1
-                  var currentAddress = await togethers.getUserAddress(groupID,j)
-                  var currentName = await togethers.getUserName(groupID,j)
+                  var currentAddress = temp[j]
                   if ( currentAddress !== address ) {
                    for ( var k = 0; k < profiles.length; k++ ) {
                         if ( profiles[k].id === currentAddress) {
@@ -40,12 +36,10 @@ export class SelectDestination extends React.Component {
                     }
                     if ( ok === 1 ) {
                       profiles.push({   id:  currentAddress,
-                                       name:  currentName,  })
+                                       name:  await togethers.mappAddressToUser(currentAddress)  })
                     }
                   }
                 }
-             }
-           }
          }
          this.setState({ profiles, loading: 1})
        } catch (e) {
@@ -55,9 +49,9 @@ export class SelectDestination extends React.Component {
 
     onPressContinue(target) {
 
-        const { item, togethers, erc20s, gasParam, address, amount, contract, groupID } = this.props.navigation.state.params
+        const { item, togethers, gasParam, address, amount, groupID } = this.props.navigation.state.params
 
-        this.props.navigation.navigate('ConfirmTransaction', { groupID, contract, item, togethers, erc20s, gasParam, address, amount, target });
+        this.props.navigation.navigate('ConfirmTransaction', { groupID, item, togethers, gasParam, address, amount, target });
 
     }
 

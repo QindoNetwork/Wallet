@@ -290,4 +290,41 @@ contract Togethers is Administration {
     return mappUsersInGroup[_group];
   }
 
+  function getCryptoInfo(address _crypto) view public returns (erc20 memory)
+  {
+    uint decimals = External1(_crypto).decimals();
+    string memory symbol = External1(_crypto).symbol();
+    string memory name = External1(_crypto).name();
+    uint status;
+    uint statusU;
+    uint statusE;
+    if (mappCryptoEnable[_crypto] == false)
+    {
+      status = 0;
+    }
+    else status = 1;
+    if (mappAllowCryptoForUS[_crypto] == false)
+    {
+      statusU = 0;
+    }
+    else statusU = 1;
+    if (mappCryptoEnable[_crypto] == false)
+    {
+      statusE = 0;
+    }
+    else statusE = 1;
+    return erc20(symbol,name,decimals,status,statusU,statusE);
+  }
+
+  function getStablecoinList() view public returns (address[] memory)
+  {
+    return stablecoinList;
+  }
+
+  function getCryptoList() view public returns (address[] memory)
+  {
+    return cryptoList;
+  }
+
+
 }

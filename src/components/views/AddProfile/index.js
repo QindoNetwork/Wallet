@@ -8,8 +8,6 @@ import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, Ac
 import { inject, observer } from 'mobx-react';
 import { SecureTransaction } from '@components/widgets';
 import { Button, Camera, InputWithIcon } from '@components/widgets';
-@inject('prices', 'wallet')
-@observer
 
 export class AddProfile extends Component {
 
@@ -58,7 +56,7 @@ export class AddProfile extends Component {
 
     }
 
-    if (this.state.owner === 1 || this.state.length >= this.props.max) {
+    if (this.state.owner === 1) {
 
     return (
       <View style={styles.container}>

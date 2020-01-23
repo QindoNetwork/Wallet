@@ -55,15 +55,13 @@ export class Profiles extends React.Component {
           const req = await togethers.getProfiles(groupID)
           this.setState({ active:  parseInt ( await togethers.isOpen(groupID,address),10),
                           owner : parseInt ( await togethers.isOwner(groupID,address),10) })
-          if ( req.length > 1 ) {
-            let currentAddress
+          let currentAddress
             for ( var i = 0; i < req.length; i++ ) {
               currentAddress = req[i]
               if ( currentAddress !== address ) {
                 profiles.push({ id:  currentAddress,
                                 name: await togethers.mappAddressToUser(currentAddress) })
               }
-            }
           }
           this.setState({ profiles, loading: 1 })
         } catch (e) {
@@ -71,11 +69,11 @@ export class Profiles extends React.Component {
         }
       }
 
-      demand(item, owner, togethers, address, gasParam) {
+      demand(groupID, owner, togethers, address, gasParam) {
         if (this.state.active === 1){
-          this.props.navigation.navigate('CloseDemand',{ groupID:item.id , owner, togethers, address, gasParam })
+          this.props.navigation.navigate('CloseDemand',{ groupID , owner, togethers, address, gasParam })
         }
-        else this.props.navigation.navigate('OpenDemand',{ groupID:item.id, owner, togethers, address, gasParam })
+        else this.props.navigation.navigate('OpenDemand',{ groupID, owner, togethers, address, gasParam })
       }
 
       onPressQuit() {
@@ -87,8 +85,8 @@ export class Profiles extends React.Component {
 
       render() {
         const { profiles, owner, active } = this.state
-        const { gasParam, togethers, address, item } = this.props.navigation.state.params
-        const groupID = item.id
+        const { gasParam, togethers, address } = this.props.navigation.state.params
+        const groupID = this.props.navigation.state.params.item.id
 
         if (this.state.loading === 0){
 
@@ -117,7 +115,7 @@ export class Profiles extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('ProfileData',{ groupID , owner, item, togethers, address, gasParam })
+              onPress={() => this.props.navigation.navigate('ProfileData',{ groupID , owner, profile: item, togethers, address, gasParam })
               }>
                 <ProfileCard profile={item} groupID={groupID} togethers={togethers}/>
               </TouchableOpacity>

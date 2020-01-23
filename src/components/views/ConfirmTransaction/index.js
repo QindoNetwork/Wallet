@@ -96,7 +96,7 @@ export class ConfirmTransaction extends React.Component {
     async onPressContinue() {
         this.setState({ loading2: 0 })
         const { wallet } = this.props
-        const { item, togethers, erc20s, gasParam, address, amount, target, groupID, contract, connection } = this.props.navigation.state.params;
+        const { item, togethers, gasParam, address, amount, target, groupID } = this.props.navigation.state.params;
         let overrides
         let result = 0
         let value
@@ -112,22 +112,21 @@ export class ConfirmTransaction extends React.Component {
             return
           }
         }
-        if(item.address === contractsAddress.nullAddress) {
+        if(item.name === 'Ethers') {
           value = amount
         }
         else {
         value = (amount * (Math.pow(10,item.decimals))).toString()
-        instance = new ethers.Contract(item.address, erc20ABI, connection)
         }
         if(groupID !== '0') {
           nonce = await TransactionActions.nextNonce(address)
-              if(item.address !== contractsAddress.nullAddress) {
+              if(item.name !== 'Ethers') {
                 overrides = {
                     gasLimit: gasParam[eRC20allowance].limit,
                     gasPrice: gasParam[eRC20allowance].price * conversions.gigaWeiToWei,
                     nonce: nonce,
                     };
-                TransactionActions.erc20approve(value,instance,overrides)
+                TransactionActions.erc20approve(value,item.instance,overrides)
                 nonce = nonce + 1
               }
               overrides = {

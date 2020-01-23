@@ -4,8 +4,7 @@ import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { HeaderIcon } from '@components/widgets';
 import { General as GeneralActions  } from '@common/actions';
-import CryptoCard1 from './CryptoCard1';
-import CryptoCard2 from './CryptoCard2';
+import CryptoCard from './CryptoCard';
 import ProfileCard from './ProfileCard';
 import { inject, observer } from 'mobx-react';
 import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
@@ -24,12 +23,7 @@ export class ProfileData extends React.Component {
                 color={colors.white}
                 onPress={() => navigation.navigate('CryptoType1',
                 {
-                  address : navigation.getParam('address'),
-                  togethers : navigation.getParam('togethers'),
-                  groupID : navigation.getParam('groupID'),
-                  gasParam : navigation.getParam('gasParam'),
-                  erc20s : navigation.getParam('erc20s'),
-                  connection : navigation.getParam('connection'),
+                  ...navigation.state.params
                 })
               } />
 
@@ -40,8 +34,8 @@ export class ProfileData extends React.Component {
 
     async componentDidMount() {
       try {
-        const { togethers, groupID, item } = this.props.navigation.state.params
-        this.setState({ spaceID:  parseInt ( await togethers.getSpaceID(groupID,item.id),10),
+        const { togethers, groupID, profile } = this.props.navigation.state.params
+        this.setState({ spaceID:  parseInt ( await togethers.getSpaceID(groupID,profile.id),10),
                         loading: 1})
       } catch (e) {
       GeneralActions.notify(e.message, 'long');
@@ -50,14 +44,18 @@ export class ProfileData extends React.Component {
 
   render() {
 
-    const { gasParam, togethers, erc20s, address, item, groupID  } = this.props.navigation.state.params;
-    const target = item.id
+    const { gasParam, togethers, address, profile, groupID  } = this.props.navigation.state.params;
+    const target = profile.id
 
     if (this.state.loading === 0){
 
       return(
 
-          <ActivityIndicator size="large"/>
+        <View style={styles.container}>
+          <View style={styles.body}>
+            <ActivityIndicator size="large"/>
+          </View>
+        </View>
     )
 
     }
@@ -66,9 +64,6 @@ export class ProfileData extends React.Component {
       return(
         <View style={styles.container}>
         <View style={styles.leftColumn}>
-            <ProfileCard togethers={togethers} spaceID={this.state.spaceID} target={target} groupID={groupID}/>
-        </View>
-        <View style={styles.middleColumn}>
             <ProfileCard togethers={togethers} spaceID={this.state.spaceID} target={target} groupID={groupID}/>
         </View>
         <View style={styles.buttonsContainer}>
@@ -85,9 +80,6 @@ export class ProfileData extends React.Component {
     return(
       <View style={styles.container}>
       <View style={styles.leftColumn}>
-          <ProfileCard togethers={togethers} spaceID={this.state.spaceID} target={target} groupID={groupID}/>
-      </View>
-      <View style={styles.middleColumn}>
           <ProfileCard togethers={togethers} spaceID={this.state.spaceID} target={target} groupID={groupID}/>
       </View>
     </View>)
