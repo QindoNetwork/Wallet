@@ -13,30 +13,21 @@ export class AdminProfile extends Component {
 
   renderModal() {
 
-  const { gasParam, togethers, erc20s, address, item, groupID  } = this.props.navigation.state.params;
+  const { gasParam, togethers, address, item, groupID  } = this.props.navigation.state.params;
   const target = item.id
-  let limit = 0
-  let price = 0
   let type
 
   if (this.state.show === true) {
-    limit = gasParam[gas.removeMember].limit * (this.props.length + this.props.profilesLength)
-    price = gasParam[gas.removeMember].price
     type = gas.removeMember
   }
 
   if (this.state.show2 === true) {
-    limit = gasParam[gas.transferGroupOwnership].limit
-    price = gasParam[gas.transferGroupOwnership].price
     type = gas.transferGroupOwnership
   }
 
   return (  <SecureTransaction
                     togethers={togethers}
                     values={{groupID,target}}
-                    limit={limit}
-                    price={price}
-                    erc20s={erc20s}
                     address={address}
                     gasParam={gasParam}
                     navigation={this.props.navigation}

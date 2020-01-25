@@ -48,7 +48,7 @@ contract Ownable {
   }
 
   function kill() public {
-      require(TGTSToken.getApproved(powerToken1) == newOwner && TGTSToken.getApproved(powerToken2) == newOwner)
+      require(TGTSToken.getApproved(powerToken1) == msg.sender && TGTSToken.getApproved(powerToken2) == msg.sender);
       selfdestruct(owner);
   }
 

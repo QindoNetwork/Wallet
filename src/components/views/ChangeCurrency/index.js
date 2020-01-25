@@ -29,7 +29,7 @@ export class ChangeCurrency extends React.Component {
             <View style={styles.itemContainer}>
                 <Text style={styles.itemTitle}>{item.title}</Text>
                 {(this.selectedRate === item.label) && (
-                    <Icon name="checkmark" />
+                    <Icon name="checkmark" size='large'/>
                 )}
             </View>
         </ListItem>

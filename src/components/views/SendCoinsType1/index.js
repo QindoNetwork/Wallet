@@ -14,7 +14,7 @@ import { inject, observer } from 'mobx-react';
 @inject('wallet')
 @observer
 
-export class SendCoins extends React.Component {
+export class SendCoinsType1 extends React.Component {
 
   static navigationOptions = ({ navigation, screenProps }) => ({
       title: 'Amount'

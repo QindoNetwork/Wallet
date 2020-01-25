@@ -174,7 +174,9 @@ contract Togethers is Administration {
         family = 1;
       }
       require(family != 0);
+      require(External1(_crypto).balanceOf(msg.sender) >= _tokenAmount);
       External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
+      amount = _tokenAmount.mul(10**(18-(External1(_crypto).decimals())));
     }
     mappGiven[mappProfileInGroup[groupID][_publicKey].DemandID][family].add(amount);
     emit payDemand(msg.sender,_publicKey);
@@ -202,18 +204,19 @@ contract Togethers is Administration {
   function changeToken(uint _tokenAmount, address _crypto) public
   {
     require(mappCryptoEnable[_crypto] == true);
-    require(External1(_crypto).balanceOf(msg.sender) >= _tokenAmount);
+    uint cryptoAmount = _tokenAmount.mul(10**(-(18-(External1(_crypto).decimals()))));
+    require(External1(_crypto).balanceOf(address(this)) >= cryptoAmount);
     if (mappAllowCryptoForUS[_crypto] == true)
     {
       require(TTUSD.balanceOf(msg.sender) >= _tokenAmount);
       TTUSD.burnExternal(msg.sender,_tokenAmount);
-      External1(_crypto).transfer(msg.sender,_tokenAmount);
+      External1(_crypto).transfer(msg.sender,cryptoAmount);
     }
     if (mappAllowCryptoForEU[_crypto] == true)
     {
       require(TTEUR.balanceOf(msg.sender) >= _tokenAmount);
       TTEUR.burnExternal(msg.sender,_tokenAmount);
-      External1(_crypto).transfer(msg.sender,_tokenAmount);
+      External1(_crypto).transfer(msg.sender,cryptoAmount);
     }
   }
 

@@ -5,15 +5,34 @@ import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Crypto } from '..';
 
-export class CryptoType1 extends React.Component {
+export class CryptoType2 extends React.Component {
 
-  state = { loading: 0, active: 0 };
+  state = { loading: 0, erc20s: [] };
 
   async componentDidMount() {
-    const { togethers, address, groupID } = this.props.navigation.state.params;
+    const { togethers, wallet, type } = this.props
     try {
-      this.setState({ active:   parseInt ( await togethers.isOpen(groupID,address),10),
-                      loading: 1})
+    const mnemonics = wallet.item.mnemonics.toString()
+    const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
+    var erc20s = []
+    var currentAddress
+    var info
+    const req = await togethers.getStablecoinList()
+      for ( var i = 0; i < req.length; i++ ) {
+        currentAddress = req[i]
+        info = await togethers.getCryptoInfo(currentAddress)
+        if ( (type === 'TTE' && parseInt (info.statusE,10) === 1) ||
+            (type === 'TTU' && parseInt (info.statusU,10) === 1)) {
+              erc20s.push({ name: info.name,
+                      symbol: info.symbol,
+                      decimals: parseInt (info.decimals,10),
+                      instance: new ethers.Contract(currentAddress, erc20ABI, connection),
+                      status: parseInt (info.status,10),
+                      statusU: parseInt (info.statusU,10),
+                      statusE: parseInt (info.statusE,10) })
+        }
+      }
+      this.setState({ erc20s, loading: 1 })
     } catch (e) {
     GeneralActions.notify(e.message, 'long');
     }
@@ -50,7 +69,20 @@ export class CryptoType1 extends React.Component {
 
       return(
 
-        <Crypto navigation = {this.props.navigation} {...this.props.navigation.state.params}/>
+        <View style={styles.container}>
+          <Header/>
+            <FlatList
+              data={erc20s.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
+              renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.content}
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate('SendCoins', { type, item, togethers, gasParam, address })}>
+                  <CryptoCard crypto={item} address={address}/>
+              </TouchableOpacity>
+            )}
+        />
+      </View>
 
       )
 

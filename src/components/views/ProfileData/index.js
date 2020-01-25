@@ -44,7 +44,7 @@ export class ProfileData extends React.Component {
 
   render() {
 
-    const { gasParam, togethers, address, profile, groupID  } = this.props.navigation.state.params;
+    const { gasParam, togethers, address, profile, groupID, owner  } = this.props.navigation.state.params;
     const target = profile.id
 
     if (this.state.loading === 0){
@@ -60,7 +60,7 @@ export class ProfileData extends React.Component {
 
     }
 
-    if (this.props.owner === 1){
+    if (owner === 1){
       return(
         <View style={styles.container}>
         <View style={styles.leftColumn}>

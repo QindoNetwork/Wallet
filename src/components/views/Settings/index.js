@@ -50,8 +50,8 @@ export class Settings extends React.Component {
         return (
             <ScrollView style={styles.container}>
                 {this.renderItems([
-                    { title: 'Change currency', iconName: 'attach-money', iconType: 'md', action: () => this.goToChangeCurrencyPage() },
-                    { title: 'Erase all data', iconName: 'trash', iconType: '', action: () => this.confirmErase() },
+                    { title: 'Change compare currency', iconName: 'attach-money', iconType: 'md', action: () => this.goToChangeCurrencyPage() },
+                    { title: 'Erase wallets', iconName: 'trash', iconType: '', action: () => this.confirmErase() },
                 ])}
             </ScrollView>
         );

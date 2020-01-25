@@ -4,7 +4,6 @@ import { Prices as PricesConstants } from '@common/constants';
 const INITIAL = {
     usd: 0,
     eur: 0,
-    brl: 0,
     selectedRate: 'usd',
     loading: false
 };
@@ -13,7 +12,6 @@ export class PricesStore {
 
     @observable usd = INITIAL.usd;
     @observable eur = INITIAL.eur;
-    @observable brl = INITIAL.brl;
     @observable selectedRate = INITIAL.selectedRate;
     @observable loading = INITIAL.loading;
 
@@ -29,17 +27,12 @@ export class PricesStore {
         this.__validateInput(rate);
         this.usd = Number(rate);
     }
-    
+
     @action setEURRate(rate) {
         this.__validateInput(rate);
         this.eur = Number(rate);
     }
-    
-    @action setBRLRate(rate) {
-        this.__validateInput(rate);
-        this.brl = Number(rate);
-    }
-    
+
     @action setSelectedRate(rate) {
         rate = rate || INITIAL.selectedRate;
         this.__validateRate(rate);
@@ -49,7 +42,6 @@ export class PricesStore {
     @action reset() {
         this.usd = INITIAL.usd;
         this.eur = INITIAL.eur;
-        this.brl = INITIAL.brl;
         this.selectedRate = INITIAL.selectedRate;
         this.loading = INITIAL.loading;
     }

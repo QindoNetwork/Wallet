@@ -14,7 +14,7 @@ import { ethers } from 'ethers';
 @inject('wallet')
 @observer
 
-export class ConfirmTransaction extends React.Component {
+export class ConfirmChange extends React.Component {
 
     static navigationOptions = { title: 'Confirm transaction' };
 
@@ -95,12 +95,8 @@ export class ConfirmTransaction extends React.Component {
 
     async onPressContinue() {
         this.setState({ loading2: 0 })
-        const { wallet } = this.props
-        const { item, togethers, gasParam, address, amount, target, groupID } = this.props.navigation.state.params;
-        let overrides
+        const { togethers, gasParam, address, amount, target } = this.props.navigation.state.params;
         let result = 0
-        let value
-        let instance
         try {
         let nonce
         if (this.state.registered === 1) {
@@ -112,45 +108,12 @@ export class ConfirmTransaction extends React.Component {
             return
           }
         }
-        if(item.name === 'Ethers') {
-          value = amount
-        }
-        else {
-        value = (amount * (Math.pow(10,item.decimals))).toString()
-        }
-        if(groupID !== '0') {
-          nonce = await TransactionActions.nextNonce(address)
-              if(item.name !== 'Ethers') {
-                overrides = {
-                    gasLimit: gasParam[eRC20allowance].limit,
-                    gasPrice: gasParam[eRC20allowance].price * conversions.gigaWeiToWei,
-                    nonce: nonce,
-                    };
-                TransactionActions.erc20approve(value,item.instance,overrides)
-                nonce = nonce + 1
-              }
-              overrides = {
-                  gasLimit: gasParam[payForFunds].limit,
-                  gasPrice: gasParam[payForFunds].price * conversions.gigaWeiToWei,
-                  nonce: nonce,
-                  };
-                  await togethers.payForFunds(target,groupID,value,item.address,overrides);
-            }
-            else {
-            if(item.name !== 'Ethers') {
-              overrides = {
-                  gasLimit: gasParam[gas.eRC20transfer].limit,
-                  gasPrice: gasParam[gas.eRC20transfer].price * conversions.gigaWeiToWei,
-                  };
-                  await item.instance.transfer(target,value,overrides)
-            }
-            else {
-                  const gasLimit = gasParam[gas.defaultTransaction].limit
-                  const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
-                  const txn = TransactionUtils.createTransaction(target, value, gasLimit, gasPrice);
-                  await TransactionActions.sendTransaction(wallet.item, txn);
-            }
-            }
+        const value = (amount * (Math.pow(10,18))).toString()
+        const overrides = {
+            gasLimit: gasParam[changeToken].limit,
+            gasPrice: gasParam[changeToken].price * conversions.gigaWeiToWei,
+        };
+        await togethers.changeToken(amount,target,overrides)
             this.props.navigation.navigate('WalletDetails', { togethers, gasParam, address, replaceRoute: true, leave: 0 });
             GeneralActions.notify('Success, wait for confirmation in historic', 'short');
           }catch (e) {
