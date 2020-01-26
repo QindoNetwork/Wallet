@@ -14,7 +14,7 @@ export default class ProfilesCard extends React.Component {
             <View style={styles.container}>
                     <View style={styles.leftColumn}>
                     <Image style={styles.avatar}
-                        source={{ uri: ImageUtils.generateAvatar(profile.id,50) }} />
+                        source={{ uri: ImageUtils.generateAvatar(profile.id,100) }} />
                     </View>
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{profile.name}</Text>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
         color: colors.lightGray
     },
     avatar: {
-        width: 20,
-        height: 20
+        width: 50,
+        height: 50
     }
 });

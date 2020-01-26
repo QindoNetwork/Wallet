@@ -164,7 +164,7 @@ export class ConfirmTransaction extends React.Component {
     }
 
     render() {
-        const { amount, target, loading } = this.props.navigation.state.params;
+        const { amount, target, loading, item } = this.props.navigation.state.params;
         if(this.state.loading === 0)
         {
           return(
@@ -190,7 +190,7 @@ export class ConfirmTransaction extends React.Component {
                             source={{ uri: ImageUtils.generateAvatar(target,500) }} />
                     </View>
                     <View style={styles.textColumn}>
-                        <Text style={styles.title}>Amount (ETH)</Text>
+                        <Text style={styles.title}>Amount ({item.symbol}) </Text>
                         <Text style={styles.value}>{amount}</Text>
                     </View>
                 </View>

@@ -10,9 +10,9 @@ export class CryptoType1 extends React.Component {
   state = { loading: 0, active: 0 };
 
   async componentDidMount() {
-    const { togethers, address, groupID } = this.props.navigation.state.params;
+    const { togethers, profile, groupID } = this.props.navigation.state.params;
     try {
-      this.setState({ active:   parseInt ( await togethers.isOpen(groupID,address),10),
+      this.setState({ active:   parseInt ( await togethers.isOpen(groupID,profile.id),10),
                       loading: 1})
     } catch (e) {
     GeneralActions.notify(e.message, 'long');

@@ -25,12 +25,12 @@ export default class ProfilesCard extends React.Component {
         const { profile } = this.props;
         const { active, owner, loading } = this.state
         var label1 = ''
-        var label2 = ''
+        var label2 = 'Inactive'
         if ( active === 1 ) {
-          label2 = "active"
+          label2 = "Active"
         }
         if ( owner === 1 ) {
-          label1 = "owner"
+          label1 = "Owner"
         }
 
         if ( loading === 0 ){
@@ -48,15 +48,15 @@ export default class ProfilesCard extends React.Component {
             <View style={styles.container}>
                     <View style={styles.leftColumn}>
                     <Image style={styles.avatar}
-                        source={{ uri: ImageUtils.generateAvatar(profile.id,50) }} />
+                        source={{ uri: ImageUtils.generateAvatar(profile.id,100) }} />
                     </View>
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{profile.name}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{label1}</Text>
-                            <Text style={styles.fiatbalance}>{label2}</Text>
+                            <Text style={styles.balance}>{label2}</Text>
+                            <Text style={styles.fiatbalance}>{label1}</Text>
                         </View>
                     </View>
                 </View>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         color: colors.lightGray
     },
     avatar: {
-        width: 20,
-        height: 20
+        width: 50,
+        height: 50
     }
 });

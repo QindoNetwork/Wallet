@@ -25,13 +25,13 @@ export default class GroupsCard extends React.Component {
       const { group } = this.props;
       const { active, loading, owner } = this.state
       var label1 = '# ' + group.id
-      var label2 = ''
+      var label2 = 'Inactive'
       var label3 = ''
       if ( active === 1) {
         label2 = "Active"
       }
       if ( owner === 1) {
-        label3 = "owner"
+        label3 = "Owner"
       }
 
       if (loading === 0){
