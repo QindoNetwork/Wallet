@@ -66,7 +66,6 @@ export class WalletsOverview extends React.Component {
           var gasParam = []
           const control = new ethers.Contract(contractsAddress.controlAddress, controlABI, connection);
           const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
-
             var enable
             var tokenAddress
             var instance
@@ -80,7 +79,6 @@ export class WalletsOverview extends React.Component {
                             price: parseInt(gas.gasPrice,10)
                           })
           }
-
           WalletActions.selectWallet(wallet)
           this.setState({ loading: 1 })
           this.props.navigation.navigate('Login', { gasParam, togethers, address: wallet.address });

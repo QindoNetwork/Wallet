@@ -55,11 +55,41 @@ export const TogethersABI = [
     "inputs": [
       {
         "internalType": "address",
+        "name": "key",
+        "type": "address"
+      }
+    ],
+    "name": "deleteStablecoin",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "_tgts",
         "type": "address"
       }
     ],
     "name": "setPowerToken",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "key",
+        "type": "address"
+      }
+    ],
+    "name": "deleteCrypto",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -99,6 +129,15 @@ export const TogethersABI = [
     ],
     "payable": false,
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "kill",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -372,27 +411,6 @@ export const TogethersABI = [
         "internalType": "string",
         "name": "",
         "type": "string"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "mappSymbolToCrypto",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
       }
     ],
     "payable": false,

@@ -2,16 +2,16 @@ pragma solidity ^0.5.0;
 
 import "../technical/SafeMath.sol";
 
-contract TestToken2 {
+contract GeminiToken {
 
   using SafeMath for uint256;
 
   event Transfer(address indexed from, address indexed to, uint256 value);
   event Approval(address indexed owner, address indexed spender, uint256 value);
 
-    string public constant name = "TestToken2";
-    string public constant symbol = "T2";
-    uint32 public constant decimals = 18;
+    string public constant name = "Gemini";
+    string public constant symbol = "GUSD";
+    uint32 public constant decimals = 2;
 
     mapping (address => uint256) private _balances;
 
@@ -20,7 +20,7 @@ contract TestToken2 {
      uint256 private _totalSupply;
 
      constructor() public {
-       _mint(msg.sender, 100000000000000000000000000); // test
+       _mint(msg.sender, 10000); // test
      }
 
      /**

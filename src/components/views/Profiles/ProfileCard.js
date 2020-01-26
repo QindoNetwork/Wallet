@@ -26,14 +26,14 @@ export default class ProfilesCard extends React.Component {
         const { active, owner, loading } = this.state
         var label1 = ''
         var label2 = ''
-        if ( active === 1) {
+        if ( active === 1 ) {
           label2 = "active"
         }
-        if ( owner === 1) {
+        if ( owner === 1 ) {
           label1 = "owner"
         }
 
-        if (loading === 0){
+        if ( loading === 0 ){
 
           return(
 
@@ -52,11 +52,11 @@ export default class ProfilesCard extends React.Component {
                     </View>
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{profile.name}</Text>
-                        <Text style={styles.description}>{label1}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{label2}</Text>
+                            <Text style={styles.balance}>{label1}</Text>
+                            <Text style={styles.fiatbalance}>{label2}</Text>
                         </View>
                     </View>
                 </View>

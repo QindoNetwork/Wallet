@@ -122,47 +122,6 @@ contract Administration is Ownable {
     stablecoinList.push(crypto);
   }
 
-  function deleteStablecoin(address key) public onlyOwner
-  {
-    require(checkStablecoin(key) == false);
-    for(uint i = 0 ; i < stablecoinList.length ; i++)
-    {
-      if (stablecoinList[i] == key)
-      {
-        for (uint k = i; k < stablecoinList.length-1; k++){
-          stablecoinList[k] = stablecoinList[k+1];
-        }
-        delete stablecoinList[stablecoinList.length-1];
-        stablecoinList.length --;
-        break;
-      }
-  }
-  mappAllowCryptoForUS[key] = false;
-  mappAllowCryptoForEU[key] = false;
-}
-
-  function deleteCrypto(address key) public onlyOwner
-  {
-  require(checkCryptoToList(key) == false);
-  for(uint i = 0 ; i < cryptoList.length ; i++)
-  {
-    if (cryptoList[i] == key)
-    {
-      for (uint k = i; k < cryptoList.length-1; k++){
-          cryptoList[k] = cryptoList[k+1];
-      }
-      delete cryptoList[cryptoList.length-1];
-      cryptoList.length --;
-      break;
-    }
-  }
-  mappCryptoEnable[key] = false;
-  if (checkStablecoin(key) == false)
-  {
-    deleteStablecoin(key);
-  }
-  }
-
   function checkStablecoin(address crypto) private view returns (bool)
   {
     bool add = true;

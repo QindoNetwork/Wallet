@@ -114,7 +114,7 @@ export class SecureTransaction extends React.Component {
     renderDescription(ethPrice) {
       return(
         <View>
-          <Text style={styles.message}>This action will cost maximum :</Text>
+          <Text style={styles.message}>This action will cost approximatly :</Text>
           <Text style={styles.message}>{ethPrice} ETH</Text>
         </View>)
     }
@@ -176,7 +176,7 @@ render() {
 
     const { type, gasParam } = this.props;
     const maxPrice =  gasParam[type].limit * gasParam[type].price * conversions.gigaWeiToWei
-    const ethPrice = maxPrice / conversions.weiToEthereum
+    const ethPrice = (maxPrice / conversions.weiToEthereum) / 2
 
     return (
         <Modal

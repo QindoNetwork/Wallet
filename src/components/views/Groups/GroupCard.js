@@ -10,9 +10,10 @@ export default class GroupsCard extends React.Component {
   state = {active: 0, loading: 0 };
 
    async componentDidMount() {
-     const { togethers, address, group } = this.props
+     const { togethers, address, group, owner } = this.props
      try {
-       this.setState({ active:  parseInt ( await togethers.isOpen(group.id,address),10),
+       this.setState({ owner:   parseInt ( await togethers.isOwner(group.id,address),10),
+                       active:  parseInt ( await togethers.isOpen(group.id,address),10),
                        loading: 1})
      } catch (e) {
      GeneralActions.notify(e.message, 'long');
@@ -25,8 +26,12 @@ export default class GroupsCard extends React.Component {
       const { active, loading } = this.state
       var label1 = '# ' + group.id
       var label2 = ''
+      var label3 = ''
       if ( active === 1) {
-        label2 = "active"
+        label2 = "Active"
+      }
+      if ( owner === 1) {
+        label3 = "owner"
       }
 
       if (loading === 0){
@@ -55,6 +60,7 @@ export default class GroupsCard extends React.Component {
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
                             <Text style={styles.balance}>{label2}</Text>
+                            <Text style={styles.fiatbalance}>{label3}</Text>
                         </View>
                     </View>
                 </View>

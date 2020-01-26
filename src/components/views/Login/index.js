@@ -5,13 +5,12 @@ import { colors, measures } from '@common/styles';
 import { General as GeneralActions } from '@common/actions';
 import { inject, observer } from 'mobx-react';
 import QRCode from 'react-native-qrcode-svg';
-import { Gas as gas, Restrictions as restrictions } from '@common/constants';
+import { Gas as gas, Restrictions as restrictions, Conversions as conversions } from '@common/constants';
 import { Icon } from '@components/widgets';
 import { Wallet as WalletUtils } from '@common/utils';
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import { sha256 } from 'react-native-sha256';
-import { SecureTransaction } from '@components/widgets';
 
 @inject('wallet')
 @observer
@@ -43,21 +42,6 @@ export class Login extends React.Component {
             </View>
         </TouchableWithoutFeedback>
     );
-
-    renderModal(pseudo,password1,password2) {
-
-      const { gasParam, togethers, address } = this.props.navigation.state.params;
-
-      if (this.state.show === true) {
-      return (  <SecureTransaction
-            togethers={togethers}
-            values={{pseudo,password1,password2}}
-            address={address}
-            gasParam={gasParam}
-            navigation={this.props.navigation}
-            type={gas.setUser}/> )
-      }
-    }
 
     async onPressContinueLogin() {
         Keyboard.dismiss();
@@ -115,6 +99,9 @@ export class Login extends React.Component {
     }
 
     renderNewWallet() {
+      const maxPrice =  gasParam[gas.setUser].limit * gasParam[gas.setUser].price * conversions.gigaWeiToWei
+      const ethPrice = (maxPrice / conversions.weiToEthereum) / 2
+
       return (
         <Formik
           initialValues={{ password1: '', password2: '', pseudo: '' }}
@@ -169,7 +156,7 @@ export class Login extends React.Component {
               disabled={!isValid}
               onPress={handleSubmit}/>
       </View>
-      {this.renderModal(values.pseudo,values.password1,values.password2)}
+      <Text style={styles.message}>Approximatly {ethPrice} ETH</Text>
   </View>
   </Fragment>
 )}

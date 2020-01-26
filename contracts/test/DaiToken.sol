@@ -2,15 +2,15 @@ pragma solidity ^0.5.0;
 
 import "../technical/SafeMath.sol";
 
-contract TestToken3 {
+contract DaiToken {
 
   using SafeMath for uint256;
 
   event Transfer(address indexed from, address indexed to, uint256 value);
   event Approval(address indexed owner, address indexed spender, uint256 value);
 
-    string public constant name = "TestToken3";
-    string public constant symbol = "T3";
+    string public constant name = "Dai stablecoin";
+    string public constant symbol = "DAI";
     uint32 public constant decimals = 18;
 
     mapping (address => uint256) private _balances;
@@ -20,7 +20,7 @@ contract TestToken3 {
      uint256 private _totalSupply;
 
      constructor() public {
-       _mint(msg.sender, 100000000000000000000000000); // test
+       _mint(msg.sender, 100000000000000000000); // test
      }
 
      /**

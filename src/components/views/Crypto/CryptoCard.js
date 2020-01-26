@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View, Image } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
@@ -38,6 +38,18 @@ export default class CryptoCard extends React.Component {
       else return value
   }
 
+  renderIcon(symbol) {
+    switch (symbol) {
+        case 'DAI': return <Image style={styles.avatar} source={require('../../widgets/Logos/MCDDai_32.png')} />
+        case 'USDT': return <Image style={styles.avatar} source={require('../../widgets/Logos/tether28_2.png')} />
+        case 'GUSD': return <Image style={styles.avatar} source={require('../../widgets/Logos/gemini_28.png')} />
+        case 'EURS': return <Image style={styles.avatar} source={require('../../widgets/Logos/statiseuro_28.png')} />
+        case 'ETH': return <Image style={styles.avatar} source={require('../../widgets/Logos/1027.png')} />
+        default:
+        return(  <Icon name='cash' size='large'/>)
+    }
+  }
+
     render() {
 
         if (this.state.loading === 0){
@@ -51,9 +63,9 @@ export default class CryptoCard extends React.Component {
 
         return (
                 <View style={styles.container}>
-                    <View style={styles.leftColumn}>
-                        <Icon name='cash' size='large'/>
-                    </View>
+                <View style={styles.leftColumn}>
+                      {this.renderIcon(this.props.crypto.symbol)}
+                </View>
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{this.props.crypto.symbol}</Text>
                         <Text style={styles.description}>{this.props.crypto.name}</Text>
@@ -116,6 +128,10 @@ const styles = StyleSheet.create({
         fontSize: measures.fontSizeMedium - 3,
         color: colors.gray,
         marginLeft: measures.defaultMargin
+    },
+    avatar: {
+        width: 20,
+        height: 20
     },
     next: {
         color: colors.lightGray

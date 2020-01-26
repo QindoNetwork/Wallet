@@ -2,16 +2,16 @@ pragma solidity ^0.5.0;
 
 import "../technical/SafeMath.sol";
 
-contract TestToken {
+contract TetherToken {
 
   using SafeMath for uint256;
 
   event Transfer(address indexed from, address indexed to, uint256 value);
   event Approval(address indexed owner, address indexed spender, uint256 value);
 
-    string public constant name = "TestToken";
-    string public constant symbol = "T1";
-    uint32 public constant decimals = 18;
+    string public constant name = "Tether";
+    string public constant symbol = "USDT";
+    uint32 public constant decimals = 6;
 
     mapping (address => uint256) private _balances;
 
@@ -20,7 +20,7 @@ contract TestToken {
      uint256 private _totalSupply;
 
      constructor() public {
-       _mint(msg.sender, 100000000000000000000000000); // test
+       _mint(msg.sender, 100000000); // test
      }
 
      /**

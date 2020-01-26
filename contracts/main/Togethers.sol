@@ -31,18 +31,26 @@ contract Togethers is Administration {
     checkNameUnicity[returnHash("Togethers")] = address(this);
     TTUSD = External1(0xB2cF75ac68F49976fA256905F6629d15AC76e851);
     TTEUR = External1(0x6473EF312B1775fb06Ed44b1ce987171F81fDdE3);
-    addCryptoToList(0x935b36B0b591eFEF7D1293c333e294c8867CEB22);
-    addCryptoToList(0x6687708159B8165b793e6928868BE2627C412900);
-    addCryptoToList(0x7eF2665272DC22d477ca3b20f8d41b8110F94c48);
-    addStablecoinToList(0x935b36B0b591eFEF7D1293c333e294c8867CEB22);
-    addStablecoinToList(0x6687708159B8165b793e6928868BE2627C412900);
-    addStablecoinToList(0x7eF2665272DC22d477ca3b20f8d41b8110F94c48);
-    enableCrypto(0x935b36B0b591eFEF7D1293c333e294c8867CEB22);
-    enableCrypto(0x6687708159B8165b793e6928868BE2627C412900);
-    enableCrypto(0x7eF2665272DC22d477ca3b20f8d41b8110F94c48);
-    allowCryptoForUS(0x935b36B0b591eFEF7D1293c333e294c8867CEB22);
-    allowCryptoForEU(0x6687708159B8165b793e6928868BE2627C412900);
-    allowCryptoForEU(0x7eF2665272DC22d477ca3b20f8d41b8110F94c48);
+    address dai = 0xDE4B8a5e4b38f1137c75be7c1E0f721bE305B43C;
+    address Gemini = 0x93FB8cD569422D5e511d20fD220A1CC4816a6DCf;
+    address Tether = 0x1985927ee8A2Cb1f7bCA7db38035F329824d51f4;
+    address Stasis = 0x5Dd31875960F274d35c9F16edEa408b36285584F;
+    addCryptoToList(dai);
+    addCryptoToList(Gemini);
+    addCryptoToList(Tether);
+    addCryptoToList(Stasis);
+    addStablecoinToList(dai);
+    addStablecoinToList(Gemini);
+    addStablecoinToList(Tether);
+    addStablecoinToList(Stasis);
+    enableCrypto(dai);
+    enableCrypto(Gemini);
+    enableCrypto(Tether);
+    enableCrypto(Stasis);
+    allowCryptoForUS(dai);
+    allowCryptoForUS(Gemini);
+    allowCryptoForUS(Tether);
+    allowCryptoForEU(Stasis);
   }
 
   function ask(uint _groupID) public
