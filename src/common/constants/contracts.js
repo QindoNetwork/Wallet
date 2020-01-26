@@ -1,4 +1,4 @@
-export const togethersAddress = "0x55D32949c88D84B11521b3Ffbe88d4289C2ed9ec";
+export const togethersAddress = "0x6DC79559cd8bee5de75d2Bbf91EdaF795669C928";
 
 export const controlAddress = "0xA0Bc58AE8f7F35e8d99eC711166D7024b6004313";
 

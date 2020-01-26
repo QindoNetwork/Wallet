@@ -20,7 +20,7 @@ export default class Panel extends React.Component {
     get fiatAmount() {
         return (this.amount * this.props.prices.usd).toFixed(2);
     }
-    
+
     onChange(value) {
         let { amount } = this.state;
         switch (value) {
@@ -43,17 +43,29 @@ export default class Panel extends React.Component {
     }
 
     render() {
+        if (this.props.symbol === 'ETH')
+        {
         return (
             <View style={styles.container}>
                 <View style={styles.row}>
                     <Text style={styles.amount}>{this.amount}</Text>
-                    <Text style={styles.unit}>ETH</Text>
+                    <Text style={styles.unit}>{this.props.symbol}</Text>
                 </View>
                 <View style={styles.row}>
                     <Text style={styles.fiat}>{this.fiatLabel} {this.fiatAmount}</Text>
                 </View>
             </View>
         );
+        }
+        return (
+            <View style={styles.container}>
+                <View style={styles.row}>
+                    <Text style={styles.amount}>{this.amount}</Text>
+                    <Text style={styles.unit}>{this.props.symbol}</Text>
+                </View>
+            </View>
+        );
+
     }
 }
 

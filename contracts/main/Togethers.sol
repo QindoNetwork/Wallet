@@ -31,10 +31,10 @@ contract Togethers is Administration {
     checkNameUnicity[returnHash("Togethers")] = address(this);
     TTUSD = External1(0xB2cF75ac68F49976fA256905F6629d15AC76e851);
     TTEUR = External1(0x6473EF312B1775fb06Ed44b1ce987171F81fDdE3);
-    address dai = 0xDE4B8a5e4b38f1137c75be7c1E0f721bE305B43C;
-    address Gemini = 0x93FB8cD569422D5e511d20fD220A1CC4816a6DCf;
-    address Tether = 0x1985927ee8A2Cb1f7bCA7db38035F329824d51f4;
-    address Stasis = 0x5Dd31875960F274d35c9F16edEa408b36285584F;
+    address dai = 0xb3162F1d3E9071001c5286cc0Cd533C3958dc65f;
+    address Gemini = 0x6a36989540818bd8686873A2f36E39Ac9Da2e102;
+    address Tether = 0x92EB10B521fd63D0a2df10B36f284C150b1Ca17F;
+    address Stasis = 0xc3249b1240e44b19c42d8a6d27e15f80376e542d;
     addCryptoToList(dai);
     addCryptoToList(Gemini);
     addCryptoToList(Tether);

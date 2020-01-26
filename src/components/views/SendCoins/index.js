@@ -60,19 +60,23 @@ export class SendCoins extends React.Component {
   }
 
     render() {
+      const { item } = this.props.navigation.state.params
 
       if (this.state.loading === 0){
 
         return(
-
-            <ActivityIndicator size="large"/>
+          <View style={styles.container}>
+                  <View style={styles.body}>
+                    <ActivityIndicator size="large"/>
+                  </View>
+          </View>
       )
 
       }
 
         return (
             <View style={styles.container}>
-                <Calculator ref="calc" />
+                <Calculator ref="calc" symbol={item.symbol} />
                 <Button children="Continue" onPress={() => this.onPressContinue()} />
             </View>
         );

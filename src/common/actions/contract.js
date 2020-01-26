@@ -1,33 +1,6 @@
 import { sha256 } from 'react-native-sha256';
 import { General as GeneralActions  } from '@common/actions';
 
-export async function setUser(togethers, args, overrides) {
-  const { pseudo,password1,password2 } = args
-  let result = "OK"
-  try {
-    if (!pseudo) {
-      result = "KO"
-      GeneralActions.notify("Pseudo required", 'long');
-    }
-    if (password1 !== password2) {
-      result = "KO"
-      GeneralActions.notify("Passwords not equals", 'long');
-    }
-    if ( parseInt(await togethers.verifyUserAvailability(pseudo)) !== 1 ) {
-      result = "KO"
-      GeneralActions.notify("pseudonyme already exists", 'long');
-    }
-    if (result === "OK") {
-      const hashPassword = sha256(password1)
-      await togethers.setUser(pseudo,hashPassword,overrides)
-    }
-  }catch (e) {
-    GeneralActions.notify(e.message, 'long');
-    result = "KO"
-  }
-  return result
-}
-
 export async function createGroup(togethers, args, overrides) {
   const { groupName } = args
   let result = "OK"

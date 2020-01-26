@@ -43,6 +43,7 @@ const navigator = createStackNavigator(
     ConfirmChange: { screen: Views.ConfirmChange },
     ChangePseudonyme: { screen: Views.ChangePseudonyme },
     ChangePassword: { screen: Views.ChangePassword },
+    ChangeLanguage: { screen: Views.ChangeLanguage },
     AdminProfile: { screen: Views.AdminProfile },
 
   },

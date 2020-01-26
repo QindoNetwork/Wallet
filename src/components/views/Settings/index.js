@@ -18,6 +18,10 @@ export class Settings extends React.Component {
         this.props.navigation.navigate('ChangeCurrency');
     }
 
+    chooseLanguage() {
+        this.props.navigation.navigate('ChangeLanguage');
+    }
+
     eraseAllData() {
         GeneralActions.eraseAllData();
         this.props.navigation.pop();
@@ -52,6 +56,7 @@ export class Settings extends React.Component {
                 {this.renderItems([
                     { title: 'Change compare currency', iconName: 'attach-money', iconType: 'md', action: () => this.goToChangeCurrencyPage() },
                     { title: 'Erase wallets', iconName: 'trash', iconType: '', action: () => this.confirmErase() },
+                    { title: 'Change language', iconName: 'shirt', iconType: '', action: () => this.chooseLanguage() },
                 ])}
             </ScrollView>
         );

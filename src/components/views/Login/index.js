@@ -11,6 +11,7 @@ import { Wallet as WalletUtils } from '@common/utils';
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import { sha256 } from 'react-native-sha256';
+import { Languages as LanguagesActions } from '@common/actions';
 
 @inject('wallet')
 @observer
@@ -78,6 +79,33 @@ export class Login extends React.Component {
       }
     }
 
+    onPressSignUp = async(pseudo,password1,password2) => {
+        Keyboard.dismiss();
+        const { gasParam, togethers, address } = this.props.navigation.state.params;
+        const overrides = {
+            gasLimit: gasParam[gas.setUser].limit,
+            gasPrice: gasParam[gas.setUser].price * conversions.gigaWeiToWei,
+            };
+        try {
+            let result = "OK"
+            if (password1 !== password2) {
+              result = "KO"
+              GeneralActions.notify("Passwords not equals", 'long');
+            }
+            if ( parseInt(await togethers.verifyUserAvailability(pseudo)) !== 1 ) {
+              result = "KO"
+              GeneralActions.notify("pseudonyme already exists", 'long');
+            }
+            if (result === "OK") {
+              const hashPassword = sha256(password1)
+              await togethers.setUser(pseudo,hashPassword,overrides)
+              this.props.navigation.navigate('WalletDetails', { gasParam, address, togethers, replaceRoute: true });
+            }
+          }catch (e) {
+            GeneralActions.notify(e.message, 'long');
+          }
+        }
+
     renderLogin() {
 
         return ( <View style={styles.container}>
@@ -99,13 +127,14 @@ export class Login extends React.Component {
     }
 
     renderNewWallet() {
+      const { gasParam } = this.props.navigation.state.params;
       const maxPrice =  gasParam[gas.setUser].limit * gasParam[gas.setUser].price * conversions.gigaWeiToWei
       const ethPrice = (maxPrice / conversions.weiToEthereum) / 2
 
       return (
         <Formik
           initialValues={{ password1: '', password2: '', pseudo: '' }}
-          onSubmit={() => this.setState({ show: true })}
+          onSubmit={(values) => this.onPressSignUp(values.pseudo,values.password1,values.password2)}
           validationSchema={yup.object().shape({
             password1: yup
               .string()
@@ -126,7 +155,7 @@ export class Login extends React.Component {
             <Fragment>
         <View style={styles.container}>
           <View style={styles.body}>
-            <Text style={styles.message}>Choose a pseudonyme</Text>
+            <Text style={styles.message}>Pseudonyme</Text>
             <TextInput
               style={styles.input}
               value={values.pseudo}

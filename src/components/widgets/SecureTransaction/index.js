@@ -59,9 +59,6 @@ export class SecureTransaction extends React.Component {
 
         var tx = "KO"
         switch (type) {
-                case gas.setUser:
-                    tx = await ContractActions.setUser(togethers,values,overrides)
-                    break;
                 case gas.createGroup:
                     tx = await ContractActions.createGroup(togethers,values,overrides)
                     break;

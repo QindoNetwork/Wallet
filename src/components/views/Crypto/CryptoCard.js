@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         flex: 2
     },
     rightColumn: {
-        flex: 1,
+        flex: 2,
         justifyContent: 'flex-end',
         flexDirection: 'row'
     },

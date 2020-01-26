@@ -17,7 +17,7 @@ export class Calculator extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Panel ref="panel" />
+                <Panel ref="panel" symbol={this.props.symbol} />
                 <View style={styles.bottomContainer}>
                     <NumberGrid onPressNumber={(number) => this.onPressNumber(number)} />
                 </View>

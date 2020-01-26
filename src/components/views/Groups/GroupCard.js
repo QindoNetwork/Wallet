@@ -23,7 +23,7 @@ export default class GroupsCard extends React.Component {
     render() {
 
       const { group } = this.props;
-      const { active, loading } = this.state
+      const { active, loading, owner } = this.state
       var label1 = '# ' + group.id
       var label2 = ''
       var label3 = ''
