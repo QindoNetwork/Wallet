@@ -12,7 +12,7 @@ import { Contracts as contractsAddress } from '@common/constants';
 @observer
 export default class TransactionCard extends React.Component {
 
-  state = { pseudoFrom: null, pseudoTo: null };
+  state = { pseudoFrom: '', pseudoTo: '' };
 
   async componentDidMount() {
 
@@ -31,26 +31,20 @@ export default class TransactionCard extends React.Component {
     }
 
     get from() {
-      if (this.props.transaction.from.toLowerCase() === contractsAddress.controlAddress.toLowerCase()){
-        return 'Togethers';
-      }
       if (this.props.transaction.from.toLowerCase() === contractsAddress.togethersAddress.toLowerCase()){
         return 'Togethers';
       }
-      if ( this.state.pseudoFrom && this.state.pseudoFrom !== '' ){
+      if ( this.state.pseudoFrom !== '' ){
         return this.state.pseudoFrom;
       }
       else return this.props.transaction.from;
     }
 
     get to() {
-      if (this.props.transaction.to.toLowerCase() === contractsAddress.controlAddress.toLowerCase()){
-        return 'Togethers';
-      }
       if (this.props.transaction.to.toLowerCase() === contractsAddress.togethersAddress.toLowerCase()){
         return 'Togethers';
       }
-      if ( this.state.pseudoTo && this.state.pseudoTo !== ''  ){
+      if ( this.state.pseudoTo !== ''  ){
         return this.state.pseudoTo;
       }
       else return this.props.transaction.to;

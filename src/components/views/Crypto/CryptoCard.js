@@ -14,28 +14,12 @@ import { ethers } from 'ethers';
 
 export default class CryptoCard extends React.Component {
 
-  state = { loading: 0, balance: 0 };
-
-  async componentDidMount() {
-    try {
-      if (this.props.crypto.name !== 'Ethers'){
-        this.setState({ balance:  parseInt ( await this.props.crypto.instance.balanceOf(this.props.address),10) })
-      }
-      else {
-        this.setState({ balance:  Number(WalletUtils.formatBalance(this.props.wallet.item.balance))})
-    }
-                            this.setState({ loading: 1})
-    } catch (e) {
-    GeneralActions.notify(e.message, 'long');
-    }
-  }
-
   balance(value) {
       const { crypto } = this.props
       if(crypto.name !== 'Ethers') {
         return Number(value*(Math.pow(10, ((-1)*crypto.decimals))))
       }
-      else return value
+      else return Number(WalletUtils.formatBalance(value))
   }
 
   renderIcon(symbol) {
@@ -52,15 +36,6 @@ export default class CryptoCard extends React.Component {
 
     render() {
 
-        if (this.state.loading === 0){
-
-          return(
-
-              <ActivityIndicator size="large"/>
-        )
-
-        }
-
         return (
                 <View style={styles.container}>
                 <View style={styles.leftColumn}>
@@ -72,7 +47,7 @@ export default class CryptoCard extends React.Component {
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{this.balance(this.state.balance).toFixed(3)}</Text>
+                            <Text style={styles.balance}>{this.balance(this.props.crypto.balance).toFixed(3)}</Text>
                         </View>
                     </View>
                 </View>
@@ -92,7 +67,7 @@ const styles = StyleSheet.create({
         height: 70
     },
     leftColumn: {
-        width: 40,
+        width: 50,
         alignItems: 'flex-start',
         justifyContent: 'center'
     },
@@ -130,8 +105,8 @@ const styles = StyleSheet.create({
         marginLeft: measures.defaultMargin
     },
     avatar: {
-        width: 20,
-        height: 20
+        width: 40,
+        height: 40
     },
     next: {
         color: colors.lightGray

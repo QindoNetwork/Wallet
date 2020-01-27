@@ -23,7 +23,6 @@ contract TogethersTokenEUR is Ownable {
 
      constructor() public {
        owner = msg.sender;
-       _mint(owner, 100000000000000000000000000); // test
      }
 
      function setEscrowContract(address togethers) onlyOwner public

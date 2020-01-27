@@ -8,7 +8,10 @@ import { Formik } from 'formik'
 import Modal from 'react-native-modal';
 import { Gas as gas, Conversions as conversions } from '@common/constants';
 import { sha256 } from 'react-native-sha256';
+import { inject, observer } from 'mobx-react';
 
+@inject('wallet')
+@observer
 export class SecureTransaction extends React.Component {
 
     state = { show: true, loading: 0, registered: 0, password: '' };
@@ -51,13 +54,17 @@ export class SecureTransaction extends React.Component {
 
     async exit() {
 
-      const { togethers, type, navigation, values, address, gasParam } = this.props
+      const { togethers, type, navigation, values, address, gasParam, vallet } = this.props
       const overrides = {
           gasLimit: gasParam[type].limit,
           gasPrice: gasParam[type].price * conversions.gigaWeiToWei,
           };
 
+          const gasLimit = gasParam[type].limit
+          const gasPrice = gasParam[type].price * conversions.gigaWeiToWei
+
         var tx = "KO"
+      if (gasLimit * gasPrice < wallet.item.balance) {
         switch (type) {
                 case gas.createGroup:
                     tx = await ContractActions.createGroup(togethers,values,overrides)
@@ -93,6 +100,7 @@ export class SecureTransaction extends React.Component {
                 GeneralActions.notify('unknown function', 'long');
                 break;
         }
+      }else GeneralActions.notify('Low balance', 'long');
         if (tx === "KO") {
           this.hide()
         }

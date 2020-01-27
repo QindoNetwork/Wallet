@@ -24,7 +24,7 @@ export class WalletExtract extends React.Component {
       }
     }
 
-    renderItem = (address) => ({ item }) => <TransactionCard transaction={item} walletAddress={address} />
+    renderItem = (address) => ({ item }) => <TransactionCard transaction={item} walletAddress={address} togethers={this.props.togethers} />
 
     renderBody = ({ item, history, loading, pendingTransactions }) =>  (!history.length && !loading) ? <NoTransactions /> : (
         <View>

@@ -9,15 +9,21 @@ import { ERC20ABI as erc20ABI } from '@common/ABIs';
 import { inject, observer } from 'mobx-react';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 import { ethers } from 'ethers';
+import { Gas as gas, Conversions as conversions } from '@common/constants';
 
 @inject('wallet')
 @observer
 export class Crypto extends React.Component {
 
-  state = { loading: 0, erc20s: [] };
+  state = { loading: 0, erc20s: [], lowBalance: 0 };
 
   async componentDidMount() {
-    const { togethers, groupID, wallet } = this.props
+    const { togethers, groupID, wallet, gasParam } = this.props
+
+    const gasLimit = gasParam[gas.defaultTransaction].limit
+    const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
+
+    if ( gasLimit * gasPrice < wallet.item.balance ) {
     try {
     const mnemonics = wallet.item.mnemonics.toString()
     const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
@@ -25,10 +31,13 @@ export class Crypto extends React.Component {
     var req
     var currentAddress
     var info
+    var instance
+    var balance
     erc20s.push({ name: "Ethers",
                   symbol: "ETH",
                   decimals: 0,
                   instance: null,
+                  balance: wallet.item.balance,
                   status: 1,
                   statusU: 0,
                   statusE: 0 })
@@ -40,19 +49,26 @@ export class Crypto extends React.Component {
         currentAddress = req[i]
         info = await togethers.getCryptoInfo(currentAddress)
         if ( parseInt (info.status,10) === 1 ) {
-        erc20s.push({ name: info.name,
+          instance = new ethers.Contract(currentAddress, erc20ABI, connection)
+          balance = parseInt (await instance.balanceOf(wallet.item.address),10)
+          if ( balance > 0) {
+            erc20s.push({ name: info.name,
                       symbol: info.symbol,
                       decimals: parseInt (info.decimals,10),
-                      instance: new ethers.Contract(currentAddress, erc20ABI, connection),
+                      instance: instance,
+                      balance: balance,
                       status: parseInt (info.status,10),
                       statusU: parseInt (info.statusU,10),
                       statusE: parseInt (info.statusE,10) })
+                    }
         }
       }
       this.setState({ erc20s, loading: 1 })
     } catch (e) {
     GeneralActions.notify(e.message, 'long');
     }
+    }
+    else this.setState({ lowBalance: 1, loading: 1 })
   }
 
     render() {
@@ -67,6 +83,20 @@ export class Crypto extends React.Component {
         <View style={styles.container}>
           <View style={styles.body}>
             <ActivityIndicator size="large"/>
+          </View>
+        </View>
+
+      )
+
+      }
+
+      if (this.state.lowBalance === 1){
+
+        return(
+
+        <View style={styles.container}>
+          <View style={styles.body}>
+            <Text style={styles.title}>Low balance</Text>
           </View>
         </View>
 

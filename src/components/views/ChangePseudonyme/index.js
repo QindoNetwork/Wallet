@@ -50,7 +50,7 @@ export class ChangePseudonyme extends React.Component {
             userName: yup
               .string()
               .min(restrictions.minPseudonyme)
-              .max(restrictions.minPseudonyme)
+              .max(restrictions.maxPseudonyme)
               .required('Required')
           })}
         >

@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         height: 70
     },
     leftColumn: {
-        width: 40,
+        width: 50,
         alignItems: 'flex-start',
         justifyContent: 'center'
     },

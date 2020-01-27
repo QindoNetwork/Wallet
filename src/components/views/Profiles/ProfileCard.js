@@ -24,7 +24,7 @@ export default class ProfilesCard extends React.Component {
     render() {
         const { profile } = this.props;
         const { active, owner, loading } = this.state
-        var label1 = ''
+        var label1 = 'Member'
         var label2 = 'Inactive'
         if ( active === 1 ) {
           label2 = "Active"
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         height: 70
     },
     leftColumn: {
-        width: 40,
+        width: 60,
         alignItems: 'flex-start',
         justifyContent: 'center'
     },

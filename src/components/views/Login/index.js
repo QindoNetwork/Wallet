@@ -79,7 +79,7 @@ export class Login extends React.Component {
       }
     }
 
-    onPressSignUp = async(pseudo,password1,password2) => {
+    async onPressSignUp(pseudo,password1,password2) {
         Keyboard.dismiss();
         const { gasParam, togethers, address } = this.props.navigation.state.params;
         const overrides = {
@@ -185,7 +185,7 @@ export class Login extends React.Component {
               disabled={!isValid}
               onPress={handleSubmit}/>
       </View>
-      <Text style={styles.message}>Approximatly {ethPrice} ETH</Text>
+      <Text style={styles.detail}>Approximatly {ethPrice} ETH</Text>
   </View>
   </Fragment>
 )}
@@ -214,7 +214,12 @@ export class Login extends React.Component {
 
     render() {
 
+      const { gasParam } = this.props.navigation.state.params;
+
       const balance = Number(WalletUtils.formatBalance(this.props.wallet.item.balance))
+
+      const gasLimit = gasParam[gas.defaultTransaction].limit
+      const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
 
       if(this.state.loading === 0)
       {
@@ -234,7 +239,7 @@ export class Login extends React.Component {
         );
       }
 
-      if(balance > 0)
+      if(balance > gasLimit * gasPrice)
       {
         return (
           this.renderNewWallet()
@@ -266,6 +271,13 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: 'center',
         marginVertical: measures.defaultMargin,
+        marginHorizontal: 32
+    },
+    detail: {
+        color: colors.black,
+        fontSize: 10,
+        textAlign: 'center',
+        marginVertical: measures.defaultMargin/2,
         marginHorizontal: 32
     },
     buttonsContainer: {

@@ -20,32 +20,16 @@ export class SendCoins extends React.Component {
       title: 'Amount'
   });
 
-  state = { loading: 0, balance: 0 };
-
-  async componentDidMount() {
-    const { item, address } = this.props.navigation.state.params;
-    try {
-      if (item.name !== 'Ethers'){
-        this.setState({ balance:  parseInt ( await item.instance.balanceOf(address),10) })
-      }
-      else this.setState({ balance: this.props.wallet.item.balance })
-
-      this.setState({ loading: 1 })
-    } catch (e) {
-    GeneralActions.notify(e.message, 'long');
-    }
-  }
-
     onPressContinue() {
       const { item, gasParam, togethers, groupID, address, profile } = this.props.navigation.state.params
       var { amount } = this.refs.calc;
       let isOK = true
         if (!amount) return;
-        if (item.type === 0) {
-          if (amount > this.state.balance) {
+        if (item.name === 'Ethers') {
+          if (amount * conversions.weiToEthereum > item.balance) {
           isOK === false
         }
-        }else if (amount * (Math.pow(10,item.decimals)) > this.state.balance) {
+        }else if (amount * (Math.pow(10,item.decimals)) > item.balance) {
           isOK === false
         }
         if (isOK === false) {
@@ -61,18 +45,6 @@ export class SendCoins extends React.Component {
 
     render() {
       const { item } = this.props.navigation.state.params
-
-      if (this.state.loading === 0){
-
-        return(
-          <View style={styles.container}>
-                  <View style={styles.body}>
-                    <ActivityIndicator size="large"/>
-                  </View>
-          </View>
-      )
-
-      }
 
         return (
             <View style={styles.container}>
