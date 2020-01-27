@@ -7,7 +7,7 @@ import CryptoCard from './CryptoCard';
 import Header from './Header';
 import { ERC20ABI as erc20ABI } from '@common/ABIs';
 import { inject, observer } from 'mobx-react';
-import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
+import { Network as EthereumNetworks } from '@common/constants';
 import { ethers } from 'ethers';
 import { Gas as gas, Conversions as conversions } from '@common/constants';
 

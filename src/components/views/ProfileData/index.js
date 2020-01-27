@@ -69,9 +69,9 @@ export class ProfileData extends React.Component {
         <View style={styles.buttonsContainer}>
             <Button
               children="Admin profile"
-              onPress={() => navigation.navigate('AdminProfile',
+              onPress={() => this.props.navigation.navigate('AdminProfile',
               {
-                ...this.props.navigation.state.params
+                gasParam, togethers, address, profile, groupID
               })}/>
         </View>
       </View>)

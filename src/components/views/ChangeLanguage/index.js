@@ -20,8 +20,8 @@ export class ChangeLanguage extends React.Component {
         return this.props.languages.selectedLanguage;
     }
 
-    selectCurrency(language) {
-        PricesActions.selectActiveLanguage(language);
+    selectLanguage(language) {
+        LanguagesActions.selectActiveLanguage(language);
     }
 
     renderItems = (items) => items.map((item, index) => (

@@ -28,14 +28,15 @@ export class SendCoins extends React.Component {
         if (item.name === 'Ethers') {
           if (amount * conversions.weiToEthereum > item.balance) {
           isOK === false
-        }
-        }else if (amount * (Math.pow(10,item.decimals)) > item.balance) {
+          }
+        }else {
+          if (amount * (Math.pow(10,item.decimals)) > item.balance) {
           isOK === false
+          }
         }
         if (isOK === false) {
         GeneralActions.notify("You don t have enough balance", 'long');
-        }
-        else {
+        }else {
           if (groupID !== '0') {
               this.props.navigation.navigate('ConfirmTransaction', { item, groupID, amount, address, togethers, gasParam, target: profile.id });
           }

@@ -17,13 +17,13 @@ export class ChangeCrypto extends Component {
                 <View style={styles.buttonsContainer}>
                   <Button
                     children="TTE to Stablecoins"
-                    onPress={() => this.props.navigation.navigate('StablecoinList',{type:TTE,togethers,address,gasParam})}
+                    onPress={() => this.props.navigation.navigate('CryptoType2',{type:"TTE",togethers,address,gasParam})}
                     />
                 </View>
                 <View style={styles.buttonsContainer}>
                   <Button
                     children="TTU to Stablecoins"
-                    onPress={() => this.props.navigation.navigate('StablecoinList',{type:TTU,togethers,address,gasParam})}
+                    onPress={() => this.props.navigation.navigate('CryptoType2',{type:"TTU",togethers,address,gasParam})}
                     />
                 </View>
               </View>

@@ -4,13 +4,18 @@ import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Crypto } from '..';
+import { Network as EthereumNetworks } from '@common/constants';
+import { inject, observer } from 'mobx-react';
 
+@inject('wallet')
+@observer
 export class CryptoType2 extends React.Component {
 
   state = { loading: 0, erc20s: [] };
 
   async componentDidMount() {
-    const { togethers, wallet, type } = this.props
+    const { wallet } = this.props
+    const { togethers, type } = this.props.navigation.state.params
     try {
     const mnemonics = wallet.item.mnemonics.toString()
     const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
@@ -52,19 +57,6 @@ export class CryptoType2 extends React.Component {
 
       )
 
-      }
-
-      if (this.state.active === 0){
-
-        return(
-
-          <View style={styles.container}>
-          <View style={styles.body}>
-              <Text style={styles.message}>There is no demand</Text>
-              </View>
-          </View>
-
-      )
       }
 
       return(

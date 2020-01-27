@@ -35,16 +35,16 @@ export class CloseDemand extends React.Component {
     const { gasParam, togethers, address, groupID } = this.props.navigation.state.params;
     var erc20s = []
     try {
-      const given = await togethers.getGiven(groupID, address, groupID)
+      const given = await togethers.getGiven(address, groupID)
       erc20s.push({ name: "Ethers",
                     symbol: "ETH",
                     balance: parseInt (given.ETHIn ,10)})
       erc20s.push({ name: "Togethers-USD",
                     symbol: "TGTU",
-                    balance: parseInt (given.USDin ,10) })
+                    balance: parseInt (given.USDin ,10)})
       erc20s.push({ name: "Togethers-EUR",
                     symbol: "TGTE",
-                    balance: parseInt (given.EURin ,10) })
+                    balance: parseInt (given.EURin ,10)})
       const demandID = parseInt ( await togethers.getSpaceID(groupID,address),10)
       const description = await togethers.getDescription(groupID,address)
       this.setState({ erc20s,
@@ -55,14 +55,6 @@ export class CloseDemand extends React.Component {
     GeneralActions.notify(e.message, 'long');
     }
   }
-
-  renderItem = ({ item }) => <CryptoCard crypto={item} />
-
-  renderBody = (erc20s) => ( <FlatList
-          style={styles.content}
-          data={list.sort((prev, next) => prev.name.localeCompare(next.name))}
-          keyExtractor={(item, index) => String(index)}
-          renderItem={this.renderItem} /> )
 
   render() {
 
@@ -83,7 +75,11 @@ export class CloseDemand extends React.Component {
     return(
 
       <View style={styles.container}>
-      {this.renderBody(erc20s)}
+      <FlatList
+              style={styles.content}
+              data={erc20s.sort((prev, next) => prev.name.localeCompare(next.name))}
+              keyExtractor={(item, index) => String(index)}
+              renderItem={({ item }) => (<CryptoCard crypto={item} />)} />
             <View style={styles.buttonsContainer}>
                 <Button
                   children="Close"
@@ -124,6 +120,9 @@ const styles = StyleSheet.create({
     },
     buttonDisabled: {
         opacity: 0.5,
+    },
+    content: {
+        marginTop: measures.defaultMargin
     },
     input: {
         width: '90%',

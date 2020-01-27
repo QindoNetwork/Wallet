@@ -1,12 +1,25 @@
 import React from 'react';
 import { TabView } from '@components/widgets';
 import { ReceiveCoins, WalletExtract, WalletSettings, Groups, Crypto } from '..';
+import { HeaderIcon } from '@components/widgets';
+import { colors } from '@common/styles';
 
 export class WalletDetails extends React.Component {
 
     static navigationOptions = ({ navigation }) => ({
-        title: "Togethers"
-    });
+          title: "Togethers",
+          headerLeft: (
+              <HeaderIcon
+                  name='cash'
+                  size='medium'
+                  color={colors.white}
+                  onPress={() => navigation.navigate('ChangeCrypto',
+                  {
+                    ...navigation.state.params
+                  })
+                } />
+          )
+      })
 
     tabs = [
         { id: 'extract', label: 'Historic', icon: 'list',               content: <WalletExtract togethers = {this.props.navigation.getParam('togethers')} /> },

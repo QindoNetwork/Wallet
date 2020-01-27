@@ -168,6 +168,7 @@ contract Togethers is Administration {
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, address _crypto) public payable
   {
     require(stop == false);
+    require(_publicKey != msg.sender);
     require(mappProfileInGroup[groupID][_publicKey].open == true);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     uint amount;
