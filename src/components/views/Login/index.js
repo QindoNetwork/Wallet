@@ -216,7 +216,7 @@ export class Login extends React.Component {
 
       const { gasParam } = this.props.navigation.state.params;
 
-      const balance = Number(WalletUtils.formatBalance(this.props.wallet.item.balance))
+      const balance = this.props.wallet.item.balance
 
       const gasLimit = gasParam[gas.defaultTransaction].limit
       const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei

@@ -17,6 +17,7 @@ contract SpaceOperator is Ownable {
   }
 
   External1 TGTCToken;
+  External2 TGTSToken;
 
   constructor(address tgts, address tgtc) public {
     owner = msg.sender;
@@ -27,8 +28,7 @@ contract SpaceOperator is Ownable {
   function exchangeSpace(uint spaceFrom, uint spaceTo, uint optionalTGTCOffer) public
   {
     address addressTo = TGTSToken.getApproved(spaceTo);
-    require(TGTSToken.getApproved(spaceFrom) == msg.sender
-    && spaceFrom != powerToken1 && spaceFrom != powerToken2 && addressTo != address(0) && addressTo != msg.sender);
+    require(TGTSToken.getApproved(spaceFrom) == msg.sender && addressTo != address(0) && addressTo != msg.sender);
     if (swapOption[spaceTo].spaceID == spaceFrom)
     {
       TGTSToken.transferFrom(msg.sender,addressTo,spaceFrom);
@@ -51,16 +51,14 @@ contract SpaceOperator is Ownable {
 
   function sellSpace(uint spaceFrom, uint TGTCPrice) public
   {
-    require(TGTSToken.getApproved(spaceFrom) == msg.sender && TGTCPrice != 0
-    && spaceFrom != powerToken1 && spaceFrom != powerToken2);
+    require(TGTSToken.getApproved(spaceFrom) == msg.sender && TGTCPrice != 0);
     mappSpacePrice[spaceFrom] = TGTCPrice;
     emit onSale(spaceFrom,TGTCPrice);
   }
 
   function buySpace(uint spaceFrom, uint TGTCAmount) public
   {
-    require(TGTCAmount == mappSpacePrice[spaceFrom] && mappSpacePrice[spaceFrom] != 0
-    && spaceFrom != powerToken1 && spaceFrom != powerToken2);
+    require(TGTCAmount == mappSpacePrice[spaceFrom] && mappSpacePrice[spaceFrom] != 0);
     address target = TGTSToken.getApproved(spaceFrom);
     TGTCToken.transferFrom(msg.sender,target,TGTCAmount);
     TGTSToken.transferFrom(target,msg.sender,spaceFrom);

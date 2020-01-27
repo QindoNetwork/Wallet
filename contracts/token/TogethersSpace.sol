@@ -196,8 +196,6 @@ contract TogethersSpace is Context, ERC165, Ownable{
      * @param tokenId uint256 ID of the token being burned
      */
     function _burn(address owner, uint256 tokenId) internal {
-        require(tokenId != powerToken1);
-        require(tokenId != powerToken2);
         require(ownerOf(tokenId) == owner, "ERC721: burn of token that is not own");
 
         _clearApproval(tokenId);

@@ -115,7 +115,7 @@ export class Crypto extends React.Component {
                 style={styles.content}
                 activeOpacity={0.8}
                 onPress={() => navigation.navigate('SendCoins', { groupID, item, togethers, gasParam, address })}>
-                  <CryptoCard crypto={item} address={address}/>
+                  <CryptoCard crypto={item}/>
               </TouchableOpacity>
             )}
         />

@@ -54,16 +54,15 @@ export class SecureTransaction extends React.Component {
 
     async exit() {
 
-      const { togethers, type, navigation, values, address, gasParam, vallet } = this.props
+      const { togethers, type, navigation, values, address, gasParam, wallet } = this.props
+      const gasLimit = gasParam[type].limit
+      const gasPrice = gasParam[type].price * conversions.gigaWeiToWei
+
       const overrides = {
-          gasLimit: gasParam[type].limit,
-          gasPrice: gasParam[type].price * conversions.gigaWeiToWei,
+          gasLimit,gasPrice
           };
 
-          const gasLimit = gasParam[type].limit
-          const gasPrice = gasParam[type].price * conversions.gigaWeiToWei
-
-        var tx = "KO"
+      var tx = "KO"
       if (gasLimit * gasPrice < wallet.item.balance) {
         switch (type) {
                 case gas.createGroup:
@@ -100,7 +99,9 @@ export class SecureTransaction extends React.Component {
                 GeneralActions.notify('unknown function', 'long');
                 break;
         }
-      }else GeneralActions.notify('Low balance', 'long');
+      }else {
+        GeneralActions.notify('Low balance', 'long');
+        }
         if (tx === "KO") {
           this.hide()
         }

@@ -27,11 +27,7 @@ contract SpaceManager is TogethersSpace {
 
   constructor(address tgtc) public {
     TGTCToken = External1(tgtc);
-    TGTSToken = External2(address(this));
     owner = msg.sender;
-    // get powerTokens
-    _mint(msg.sender,powerToken1);
-    _mint(msg.sender,powerToken2);
   }
 
   struct society
@@ -108,7 +104,7 @@ contract SpaceManager is TogethersSpace {
   {
     for (uint i = 0; i < space.length; i++)
     {
-      if (getApproved(space[i]) == msg.sender && space[i] != powerToken1 && space[i] != powerToken2)
+      if (getApproved(space[i]) == msg.sender)
       {
         urls[space[i]] = url;
       }

@@ -21,11 +21,6 @@ contract Ownable {
 
   address payable public owner;
 
-  External2 public TGTSToken;
-
-  uint constant public powerToken1 = 0;
-  uint constant public powerToken2 = 1;
-
   event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
   /**
@@ -37,7 +32,6 @@ contract Ownable {
   }
 
   function transferOwnership(address payable newOwner) onlyOwner public {
-    require(TGTSToken.getApproved(powerToken1) == newOwner || TGTSToken.getApproved(powerToken2) == newOwner);
     emit OwnershipTransferred(owner, newOwner);
     owner = newOwner;
   }
@@ -45,11 +39,6 @@ contract Ownable {
   function returnHash(string memory _char) internal pure returns (uint)
   {
     return uint(keccak256(bytes(_char)));
-  }
-
-  function kill() public {
-      require(TGTSToken.getApproved(powerToken1) == msg.sender && TGTSToken.getApproved(powerToken2) == msg.sender);
-      selfdestruct(owner);
   }
 
 

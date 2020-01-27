@@ -82,13 +82,13 @@ export class AddProfile extends Component {
 
       <View style={styles.container}>
         <View style={styles.body}>
-          <Text style={styles.message}>You have to be administrator to add a member to the group, or there is too many membres in this group</Text>
+          <Text style={styles.message}>You have to be administrator to add a member to the group</Text>
         </View>
       </View>
 
     )
 
-  }s
+  }
 
 
   }

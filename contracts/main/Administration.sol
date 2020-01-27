@@ -11,17 +11,12 @@ contract Administration is Ownable {
   uint public groupNumber;
   bool public stop;
 
-  event newDemand(uint indexed ID, address indexed user, uint groupID);
-  event payDemand(address indexed userIn, address userOut);
-
-  mapping (uint => mapping (uint => uint)) public mappGiven;
   mapping (address => bool) public mappAllowCryptoForEU;
   mapping (address => bool) public mappAllowCryptoForUS;
   mapping (address => bool) public mappCryptoEnable;
 
   mapping (address => uint) internal userPassword;
 
-  address powerToken;
   address[] cryptoList;
   address[] stablecoinList;
 
@@ -69,13 +64,6 @@ contract Administration is Ownable {
       return 1;
     }
     else return 0;
-  }
-
-  function setPowerToken(address _tgts) public onlyOwner
-  {
-    require(powerToken == address(0));
-    powerToken = _tgts;
-    TGTSToken = External2(_tgts);
   }
 
   function enableCrypto(address crypto) public onlyOwner

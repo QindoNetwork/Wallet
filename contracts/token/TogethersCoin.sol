@@ -23,6 +23,8 @@ contract TogethersCoin is Ownable {
      address public Escrow;
      uint256 public MAX;
 
+     External2 TGTSToken; 
+
      constructor() public {
        owner = msg.sender;
        MAX = 100000000000000000000000000;

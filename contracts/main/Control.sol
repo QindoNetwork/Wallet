@@ -65,15 +65,6 @@ contract Control is Ownable {
     owner = msg.sender;
   }
 
-  address powerToken;
-
-  function setPowerToken(address _tgts) public onlyOwner
-  {
-    require(powerToken == address(0));
-    powerToken = _tgts;
-    TGTSToken = External2(_tgts);
-  }
-
   function setGasLimit(uint limit, uint _function)  public onlyOwner
   {
     mappFunctionToGasParameters[_function].gasLimit = limit;

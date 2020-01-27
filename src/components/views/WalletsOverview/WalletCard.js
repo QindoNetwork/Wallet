@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         color: colors.lightGray
     },
     middleColumn: {
-        flex: 2,
+        flex: 3,
         justifyContent: 'center',
         color: colors.darkGray
     },

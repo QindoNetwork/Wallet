@@ -11,7 +11,9 @@ contract Togethers is Administration {
   mapping (address => uint[]) private mappGroupsForAddress;
   mapping (uint => address[]) private mappUsersInGroup;
   mapping (uint => address) public checkNameUnicity;
-  mapping (address => mapping (uint => bool)) public mappAskForAdd;
+  mapping (address => mapping (uint => bool)) private mappAskForAdd;
+  mapping (uint => mapping (uint8 => uint)) private mappGiven;
+  mapping (address => mapping (address => mapping (uint8 => uint))) private mappStats;
 
   struct profile
   {
@@ -22,12 +24,21 @@ contract Togethers is Administration {
     string description;
   }
 
+  struct stats
+  {
+    uint USDin;
+    uint USDout;
+    uint EURin;
+    uint EURout;
+    uint ETHIn;
+    uint ETHOut;
+  }
+
   External1 public TTUSD;
   External1 public TTEUR;
 
   constructor() public {
     owner = msg.sender;
-    ID = 2;
     checkNameUnicity[returnHash("Togethers")] = address(this);
     TTUSD = External1(0xB2cF75ac68F49976fA256905F6629d15AC76e851);
     TTEUR = External1(0x6473EF312B1775fb06Ed44b1ce987171F81fDdE3);
@@ -151,7 +162,6 @@ contract Togethers is Administration {
     mappProfileInGroup[groupID][msg.sender].open = true;
     mappProfileInGroup[groupID][msg.sender].DemandID = ID;
     mappProfileInGroup[groupID][msg.sender].description = _description;
-    emit newDemand(ID,msg.sender,groupID);
     ID += 1;
   }
 
@@ -161,7 +171,7 @@ contract Togethers is Administration {
     require(mappProfileInGroup[groupID][_publicKey].open == true);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     uint amount;
-    uint family;
+    uint8 family;
     if (_crypto == address(0))
     {
       require(_tokenAmount > 0);
@@ -187,7 +197,7 @@ contract Togethers is Administration {
       amount = _tokenAmount.mul(10**(18-(External1(_crypto).decimals())));
     }
     mappGiven[mappProfileInGroup[groupID][_publicKey].DemandID][family].add(amount);
-    emit payDemand(msg.sender,_publicKey);
+    mappStats[msg.sender][_publicKey][family].add(amount);
   }
 
   function withdrawFunds(uint groupID) public
@@ -335,6 +345,26 @@ contract Togethers is Administration {
   function getCryptoList() view public returns (address[] memory)
   {
     return cryptoList;
+  }
+
+  function getStats(address _user) view public returns (stats memory)
+  {
+    uint USDin = mappStats[msg.sender][_user][2];
+    uint USDout = mappStats[_user][msg.sender][2];
+    uint EURin = mappStats[msg.sender][_user][1];
+    uint EURout = mappStats[_user][msg.sender][1];
+    uint ETHIn = mappStats[msg.sender][_user][0];
+    uint ETHOut = mappStats[_user][msg.sender][0];
+    return stats(USDin,USDout,EURin,EURout,ETHIn,ETHOut);
+  }
+
+  function getGiven(address _user, uint groupID) view public returns (stats memory)
+  {
+    uint spaceID = mappProfileInGroup[groupID][_user].DemandID;
+    uint USDin = mappGiven[spaceID][2];
+    uint EURin = mappGiven[spaceID][1];
+    uint ETHIn = mappGiven[spaceID][0];
+    return stats(USDin,0,EURin,0,ETHIn,0);
   }
 
 
