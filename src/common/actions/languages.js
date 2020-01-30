@@ -1,24 +1,16 @@
 import { Languages as LanguagesService } from '@common/services';
 import { languages as LanguagesStore } from '@common/stores';
 
-export function selectActiveLAnguage(language) {
+export function selectActiveLanguage(language) {
     return LanguagesService.saveActiveLanguage(language)
         .then(() => LanguagesStore.setSelectedLanguage(language));
 }
 
-export function choosePseudonyme() {
-  const language = LanguagesService.loadActiveLanguages()
-  let label = ""
+export function choosePseudonyme(language) {
   switch (language) {
       case 'en':
-      label = "Choose pseudonyme"
-      break
+      return "Choose pseudonyme"
       case 'fr':
-      label = "Choisir pseudonyme"
-      break
-      default:
-      label = "Choose pseudonyme"
-      break
+      return "Choisir pseudonyme"
   }
-  return label
 }

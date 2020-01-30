@@ -13,7 +13,7 @@ import { Formik } from 'formik'
 import { sha256 } from 'react-native-sha256';
 import { Languages as LanguagesActions } from '@common/actions';
 
-@inject('wallet')
+@inject('wallet','languages')
 @observer
 export class Login extends React.Component {
 
@@ -111,7 +111,7 @@ export class Login extends React.Component {
         return ( <View style={styles.container}>
           <View style={styles.body}>
               <Text style={styles.message}>Welcome {this.state.pseudo}</Text>
-              <Text style={styles.message}>Password</Text>
+              <Text style={styles.message}>{LanguagesActions.choosePseudonyme(this.props.languages.selectedLanguage)}</Text>
               <TextInput
                   style={styles.input}
                   secureTextEntry
@@ -155,7 +155,7 @@ export class Login extends React.Component {
             <Fragment>
         <View style={styles.container}>
           <View style={styles.body}>
-            <Text style={styles.message}>Pseudonyme</Text>
+            <Text style={styles.message}>{LanguagesActions.choosePseudonyme(this.props.languages.selectedLanguage)}</Text>
             <TextInput
               style={styles.input}
               value={values.pseudo}

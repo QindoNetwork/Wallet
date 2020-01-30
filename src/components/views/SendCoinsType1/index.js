@@ -9,6 +9,7 @@ import { ERC20ABI as erc20ABI } from '@common/ABIs';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 import { ethers } from 'ethers';
 import { inject, observer } from 'mobx-react';
+import { SecureTransaction } from '@components/widgets';
 
 @inject('wallet')
 @observer
@@ -66,7 +67,7 @@ export class SendCoinsType1 extends React.Component {
   }
 
     onPressContinue() {
-      const { item, gasParam, togethers, address } = this.props.navigation.state.params
+      const { item, gasParam, togethers, address, type } = this.props.navigation.state.params
       const { instance } = this.state
       var token
       if (type === "TTE") {
@@ -75,7 +76,7 @@ export class SendCoinsType1 extends React.Component {
       else token = contractsAddress.TTUSDAddress
       var { amount } = this.refs.calc;
       let isOK = true
-        if (!amount) return;
+        if (!amount || amount === 0 ) return;
         if (amount > this.state.max) {
         GeneralActions.notify("You or contract don t have enough balance", 'long');
         }
@@ -84,7 +85,7 @@ export class SendCoinsType1 extends React.Component {
 
     render() {
 
-      const { item } = this.props.navigation.state.params
+      const { item, type } = this.props.navigation.state.params
 
       if (this.state.loading === 0){
 

@@ -4,7 +4,7 @@ import { Languages as LanguagesConstants } from '@common/constants';
 const INITIAL = {
     fr: 0,
     en: 0,
-    selectedLanguage: 'eb',
+    selectedLanguage: 'en',
     loading: false
 };
 
@@ -12,7 +12,7 @@ export class LanguageStore {
 
     @observable en = INITIAL.en;
     @observable fr = INITIAL.fr;
-    @observable selectedLanguage = INITIAL.selectedLanguagee;
+    @observable selectedLanguage = INITIAL.selectedLanguage;
     @observable loading = INITIAL.loading;
 
     @computed get selectedLanguageValue() {

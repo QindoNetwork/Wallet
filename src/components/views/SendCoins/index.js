@@ -24,7 +24,7 @@ export class SendCoins extends React.Component {
       const { item, gasParam, togethers, groupID, address, profile } = this.props.navigation.state.params
       var { amount } = this.refs.calc;
       let isOK = true
-        if (!amount) return;
+        if (!amount || amount === 0) return;
         if (item.name === 'Ethers') {
           if (amount * conversions.weiToEthereum > item.balance) {
           isOK === false
