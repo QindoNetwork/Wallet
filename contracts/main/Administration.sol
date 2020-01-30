@@ -14,6 +14,8 @@ contract Administration is Ownable {
   mapping (address => bool) public mappAllowCryptoForEU;
   mapping (address => bool) public mappAllowCryptoForUS;
   mapping (address => bool) public mappCryptoEnable;
+  mapping (uint => address) public checkNameUnicity;
+  mapping (address => string) public mappAddressToUser;
 
   mapping (address => uint) internal userPassword;
 
@@ -52,9 +54,10 @@ contract Administration is Ownable {
     userPassword[msg.sender] = newHash;
   }
 
-  function resetPassword() public view
+  function resetPassword() public
   {
     userPassword[msg.sender] == 0;
+    checkNameUnicity[returnHash(mappAddressToUser[msg.sender])] = address(0);
   }
 
   function connectUser(string memory _password) public view returns (uint)
@@ -140,7 +143,7 @@ contract Administration is Ownable {
   function allowCryptoForEU(address crypto) public onlyOwner
   {
     require(checkStablecoin(crypto) == false);
-    if (mappAllowCryptoForUS[crypto] == false && mappAllowCryptoForEU[crypto] == false)
+    if (mappCryptoEnable[crypto] == true && mappAllowCryptoForUS[crypto] == false && mappAllowCryptoForEU[crypto] == false)
     {
       mappAllowCryptoForEU[crypto] = true;
     }

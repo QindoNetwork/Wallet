@@ -142,3 +142,15 @@ export async function removeMember(togethers, args, overrides) {
   }
   return result
 }
+
+export async function changeToken(togethers, args, overrides) {
+  const { amount,crypto } = args
+  let result = "OK"
+  try {
+    await togethers.removeMember(amount,crypto,overrides)
+  }catch (e) {
+    GeneralActions.notify(e.message, 'long');
+    result = "KO"
+  }
+  return result
+}

@@ -3,75 +3,57 @@ import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, Activit
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
-import CryptoCard from './CryptoCard';
-import Header from './Header';
-import { ERC20ABI as erc20ABI } from '@common/ABIs';
-import { inject, observer } from 'mobx-react';
+import { CryptoCard } from '../Crypto/CryptoCard';
 import { Network as EthereumNetworks } from '@common/constants';
+import { inject, observer } from 'mobx-react';
 import { ethers } from 'ethers';
-import { Gas as gas, Conversions as conversions } from '@common/constants';
+import { Contracts as contractsAddress } from '@common/constants';
+import { ERC20ABI as erc20ABI } from '@common/ABIs';
 
 @inject('wallet')
 @observer
-export class Crypto extends React.Component {
+export class CryptoType2 extends React.Component {
 
-  state = { loading: 0, erc20s: [], lowBalance: 0 };
+  state = { loading: 0, erc20s: [] };
 
   async componentDidMount() {
-    const { togethers, groupID, wallet, gasParam } = this.props
-
-    const gasLimit = gasParam[gas.defaultTransaction].limit
-    const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
-
-    if ( gasLimit * gasPrice < wallet.item.balance ) {
+    const { wallet } = this.props
+    const { togethers, type } = this.props.navigation.state.params
     try {
     const mnemonics = wallet.item.mnemonics.toString()
     const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
     var erc20s = []
-    var req
     var currentAddress
     var info
-    var instance
-    var balance
-    erc20s.push({ name: "Ethers",
-                  symbol: "ETH",
-                  decimals: 0,
-                  instance: null,
-                  balance: wallet.item.balance,
-                  status: 1,
-                  statusU: 0,
-                  statusE: 0 })
-      if ( groupID === '0' ) {
-        req = await togethers.getCryptoList()
-      }
-      else req = await togethers.getStablecoinList()
+    const req = await togethers.getStablecoinList()
       for ( var i = 0; i < req.length; i++ ) {
         currentAddress = req[i]
         info = await togethers.getCryptoInfo(currentAddress)
-        if ( parseInt (info.status,10) === 1 ) {
-          instance = new ethers.Contract(currentAddress, erc20ABI, connection)
-          balance = parseInt (await instance.balanceOf(wallet.item.address),10)
-          if ( balance > 0) {
-            erc20s.push({ name: info.name,
+        if ( (type === 'TTE' && parseInt (info.statusE,10) === 1) ||
+            (type === 'TTU' && parseInt (info.statusU,10) === 1)) {
+              instance = new ethers.Contract(currentAddress, erc20ABI, connection)
+              balance = parseInt (await instance.balanceOf(contractsAddress.togethersAddress),10)
+              erc20s.push({
+                      name: info.name,
                       symbol: info.symbol,
                       decimals: parseInt (info.decimals,10),
                       instance: instance,
-                      balance: balance,
-                      status: parseInt (info.status,10)})
-                    }
+                      status: parseInt (info.status,10),
+                      statusU: parseInt (info.statusU,10),
+                      statusE: parseInt (info.statusE,10),
+                      balance: balance
+                     })
         }
       }
       this.setState({ erc20s, loading: 1 })
     } catch (e) {
     GeneralActions.notify(e.message, 'long');
     }
-    }
-    else this.setState({ lowBalance: 1, loading: 1 })
   }
 
     render() {
 
-      const { togethers, gasParam, navigation, address, groupID } = this.props
+      const { togethers, gasParam, type, address, groupID } = this.props.navigation.state.params
       const { erc20s } = this.state
 
       if (this.state.loading === 0){
@@ -88,31 +70,16 @@ export class Crypto extends React.Component {
 
       }
 
-      if (this.state.lowBalance === 1){
-
-        return(
-
-        <View style={styles.container}>
-          <View style={styles.body}>
-            <Text style={styles.title}>Low balance</Text>
-          </View>
-        </View>
-
-      )
-
-      }
-
       return(
 
         <View style={styles.container}>
-          <Header/>
             <FlatList
               data={erc20s.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
               renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('SendCoins', { groupID, item, togethers, gasParam, address })}>
+                onPress={() => this.props.navigation.navigate('SendCoinsType1', { type, item, togethers, gasParam, address })}>
                   <CryptoCard crypto={item}/>
               </TouchableOpacity>
             )}

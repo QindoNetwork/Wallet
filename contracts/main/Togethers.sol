@@ -5,12 +5,10 @@ import "./Administration.sol";
 
 contract Togethers is Administration {
 
-  mapping (address => string) public mappAddressToUser;
   mapping (uint => string) public mappGroupIDToGroupName;
   mapping (uint => mapping (address => profile)) private mappProfileInGroup;
   mapping (address => uint[]) private mappGroupsForAddress;
   mapping (uint => address[]) private mappUsersInGroup;
-  mapping (uint => address) public checkNameUnicity;
   mapping (address => mapping (uint => bool)) private mappAskForAdd;
   mapping (uint => mapping (uint8 => uint)) private mappGiven;
   mapping (address => mapping (address => mapping (uint8 => uint))) private mappStats;
@@ -40,8 +38,10 @@ contract Togethers is Administration {
   constructor() public {
     owner = msg.sender;
     checkNameUnicity[returnHash("Togethers")] = address(this);
-    TTUSD = External1(0xB2cF75ac68F49976fA256905F6629d15AC76e851);
-    TTEUR = External1(0x6473EF312B1775fb06Ed44b1ce987171F81fDdE3);
+    address ttusd = 0xB2cF75ac68F49976fA256905F6629d15AC76e851;
+    address tteur = 0x6473EF312B1775fb06Ed44b1ce987171F81fDdE3;
+    TTUSD = External1(ttusd);
+    TTEUR = External1(tteur);
     address dai = 0xb3162F1d3E9071001c5286cc0Cd533C3958dc65f;
     address Gemini = 0x6a36989540818bd8686873A2f36E39Ac9Da2e102;
     address Tether = 0x92EB10B521fd63D0a2df10B36f284C150b1Ca17F;
@@ -50,6 +50,8 @@ contract Togethers is Administration {
     addCryptoToList(Gemini);
     addCryptoToList(Tether);
     addCryptoToList(Stasis);
+    addCryptoToList(ttusd);
+    addCryptoToList(tteur);
     addStablecoinToList(dai);
     addStablecoinToList(Gemini);
     addStablecoinToList(Tether);
@@ -58,6 +60,8 @@ contract Togethers is Administration {
     enableCrypto(Gemini);
     enableCrypto(Tether);
     enableCrypto(Stasis);
+    enableCrypto(ttusd);
+    enableCrypto(tteur);
     allowCryptoForUS(dai);
     allowCryptoForUS(Gemini);
     allowCryptoForUS(Tether);
@@ -175,13 +179,14 @@ contract Togethers is Administration {
     uint8 family;
     if (_crypto == address(0))
     {
-      require(_tokenAmount > 0);
+      require(_tokenAmount == 0);
+      require(msg.value > 0);
       amount = msg.value;
     }
     else
     {
       require(msg.value == 0);
-      require(_tokenAmount != 0);
+      require(_tokenAmount > 0);
       require(mappCryptoEnable[_crypto] == true);
       amount = _tokenAmount;
       if (mappAllowCryptoForUS[_crypto] == true)
@@ -330,7 +335,7 @@ contract Togethers is Administration {
       statusU = 0;
     }
     else statusU = 1;
-    if (mappCryptoEnable[_crypto] == false)
+    if (mappAllowCryptoForEU[_crypto] == false)
     {
       statusE = 0;
     }

@@ -38,7 +38,7 @@ const navigator = createStackNavigator(
     CloseDemand: { screen: Views.CloseDemand },
     CryptoType1: { screen: Views.CryptoType1 },
     CryptoType2: { screen: Views.CryptoType2 },
-    CryptoType2: { screen: Views.SendCoinsType1 },
+    SendCoinsType1: { screen: Views.SendCoinsType1 },
     ChangeCrypto: { screen: Views.ChangeCrypto },
     ConfirmChange: { screen: Views.ConfirmChange },
     ChangePseudonyme: { screen: Views.ChangePseudonyme },

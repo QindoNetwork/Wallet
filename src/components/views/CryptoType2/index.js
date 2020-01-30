@@ -3,9 +3,12 @@ import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, Activit
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
-import { Crypto } from '..';
+import CryptoCard from '../Crypto/CryptoCard';
 import { Network as EthereumNetworks } from '@common/constants';
 import { inject, observer } from 'mobx-react';
+import { ethers } from 'ethers';
+import { Contracts as contractsAddress } from '@common/constants';
+import { ERC20ABI as erc20ABI } from '@common/ABIs';
 
 @inject('wallet')
 @observer
@@ -28,13 +31,15 @@ export class CryptoType2 extends React.Component {
         info = await togethers.getCryptoInfo(currentAddress)
         if ( (type === 'TTE' && parseInt (info.statusE,10) === 1) ||
             (type === 'TTU' && parseInt (info.statusU,10) === 1)) {
-              erc20s.push({ name: info.name,
+              instance = new ethers.Contract(currentAddress, erc20ABI, connection)
+              balance = parseInt (await instance.balanceOf(contractsAddress.togethersAddress),10)
+              erc20s.push({
+                      name: info.name,
                       symbol: info.symbol,
                       decimals: parseInt (info.decimals,10),
-                      instance: new ethers.Contract(currentAddress, erc20ABI, connection),
-                      status: parseInt (info.status,10),
-                      statusU: parseInt (info.statusU,10),
-                      statusE: parseInt (info.statusE,10) })
+                      balance: balance,
+                      address: currentAddress
+                     })
         }
       }
       this.setState({ erc20s, loading: 1 })
@@ -44,6 +49,9 @@ export class CryptoType2 extends React.Component {
   }
 
     render() {
+
+      const { togethers, gasParam, type, address, groupID } = this.props.navigation.state.params
+      const { erc20s } = this.state
 
       if (this.state.loading === 0){
 
@@ -62,15 +70,14 @@ export class CryptoType2 extends React.Component {
       return(
 
         <View style={styles.container}>
-          <Header/>
             <FlatList
               data={erc20s.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
               renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('SendCoins', { type, item, togethers, gasParam, address })}>
-                  <CryptoCard crypto={item} address={address}/>
+                onPress={() => this.props.navigation.navigate('SendCoinsType1', { type, item, togethers, gasParam, address })}>
+                  <CryptoCard crypto={item}/>
               </TouchableOpacity>
             )}
         />

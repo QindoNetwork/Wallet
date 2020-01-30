@@ -31,7 +31,9 @@ contract Ownable {
     _;
   }
 
-  function transferOwnership(address payable newOwner) onlyOwner public {
+  function transferOwnership(address payable newOwner, uint _block) onlyOwner public {
+    require(_block == block.number + 2);
+    require(newOwner.balance == 10);
     emit OwnershipTransferred(owner, newOwner);
     owner = newOwner;
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import { Icon } from '@components/widgets';
@@ -90,7 +90,7 @@ export default class TransactionCard extends React.Component {
 
         if (this.balance > 0) {
         return (
-            <TouchableHighlight onPress={() => this.refs.details.wrappedInstance.show()}>
+            <TouchableOpacity onPress={() => this.refs.details.wrappedInstance.show()}>
                 <View style={styles.container}>
                     <View style={styles.leftColumn}>
                         <Icon name={this.iconName} type="fe" />
@@ -114,11 +114,11 @@ export default class TransactionCard extends React.Component {
                         transaction={transaction}
                         walletAddress={walletAddress} />
                 </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         );
         }
         return (
-            <TouchableHighlight onPress={() => this.refs.details.wrappedInstance.show()}>
+            <TouchableOpacity onPress={() => this.refs.details.wrappedInstance.show()}>
                 <View style={styles.container}>
                     <View style={styles.leftColumn}>
                         <Icon name={this.iconName} type="fe" />
@@ -132,7 +132,7 @@ export default class TransactionCard extends React.Component {
                         transaction={transaction}
                         walletAddress={walletAddress} />
                 </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
         );
     }
 }

@@ -5,11 +5,13 @@ import { View, StyleSheet } from 'react-native'
 
 export class ChangeCrypto extends Component {
 
-  static navigationOptions = { title: "Change token" };
+      static navigationOptions = ({ navigation, screenProps }) => ({
+          title: 'Change token'
+      });
 
   render() {
 
-    const { gasParam, togethers, address } = this.props.navigation.state.params;
+    const { togethers, address, gasParams } = this.props.navigation.state.params
 
       return (
           <View style={styles.container}>
@@ -17,13 +19,13 @@ export class ChangeCrypto extends Component {
                 <View style={styles.buttonsContainer}>
                   <Button
                     children="TTE to Stablecoins"
-                    onPress={() => this.props.navigation.navigate('CryptoType2',{type:"TTE",togethers,address,gasParam})}
+                    onPress={() => this.props.navigation.navigate('CryptoType2', { type: "TTE", togethers, address, gasParams } )}
                     />
                 </View>
                 <View style={styles.buttonsContainer}>
                   <Button
                     children="TTU to Stablecoins"
-                    onPress={() => this.props.navigation.navigate('CryptoType2',{type:"TTU",togethers,address,gasParam})}
+                    onPress={() => this.props.navigation.navigate('CryptoType2', { type: "TTU", togethers, address, gasParams } )}
                     />
                 </View>
               </View>

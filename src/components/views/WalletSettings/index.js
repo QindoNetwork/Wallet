@@ -79,14 +79,6 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Password</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.confirmExportPK()}>
-                    <View style={styles.itemContainer}>
-                        <View style={styles.icon}>
-                            <Icon name='lock' />
-                        </View>
-                        <Text style={styles.itemTitle}>Export private hey</Text>
-                    </View>
-                </ListItem>
                 <ListItem onPress={() => this.props.navigation.navigate('ChangePseudonyme', { ...this.props })}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>

@@ -19,17 +19,12 @@ export class CreateGroup extends Component {
 
   renderModal(groupName) {
 
-    const { gasParam, togethers, erc20s, address  } = this.props.navigation.state.params;
-    const limit = gasParam[gas.createGroup].limit
-    const price = gasParam[gas.createGroup].price
+    const { gasParam, togethers, address  } = this.props.navigation.state.params;
 
     if (this.state.show === true) {
     return (  <SecureTransaction
           togethers={togethers}
           values={{groupName}}
-          limit={limit}
-          price={price}
-          erc20s={erc20s}
           address={address}
           gasParam={gasParam}
           navigation={this.props.navigation}

@@ -1,9 +1,8 @@
 pragma solidity ^0.5.0;
 
 import "../technical/SafeMath.sol";
-import "../owner/Ownable.sol";
 
-contract TogethersTokenEUR is Ownable {
+contract TogethersTokenEUR {
 
   using SafeMath for uint256;
 
@@ -21,11 +20,7 @@ contract TogethersTokenEUR is Ownable {
      uint256 private _totalSupply;
      address public Escrow;
 
-     constructor() public {
-       owner = msg.sender;
-     }
-
-     function setEscrowContract(address togethers) onlyOwner public
+     function setEscrowContract(address togethers) public
      {
        require(Escrow == address(0));
        Escrow = togethers;

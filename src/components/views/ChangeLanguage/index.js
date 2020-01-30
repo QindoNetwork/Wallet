@@ -16,7 +16,7 @@ export class ChangeLanguage extends React.Component {
         title: 'Select language'
     });
 
-    get selectedRate() {
+    get selectedLanguage() {
         return this.props.languages.selectedLanguage;
     }
 

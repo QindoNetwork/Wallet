@@ -6,7 +6,7 @@ import { colors } from '@common/styles';
 
 export class WalletDetails extends React.Component {
 
-    static navigationOptions = ({ navigation }) => ({
+    static navigationOptions = ({ navigation, screenProps }) => ({
           title: "Togethers",
           headerLeft: (
               <HeaderIcon
@@ -15,7 +15,9 @@ export class WalletDetails extends React.Component {
                   color={colors.white}
                   onPress={() => navigation.navigate('ChangeCrypto',
                   {
-                    ...navigation.state.params
+                    togethers : navigation.getParam('togethers'),
+                    address : navigation.getParam('address'),
+                    gasParam : navigation.getParam('gasParam'),
                   })
                 } />
           )
