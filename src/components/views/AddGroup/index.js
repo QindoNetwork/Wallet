@@ -9,21 +9,19 @@ export class AddGroup extends Component {
 
   render() {
 
-    const { gasParam, togethers, address  } = this.props.navigation.state.params;
-
-      return (
+    return (
           <View style={styles.container}>
               <View style={styles.body}>
                 <View style={styles.buttonsContainer}>
                   <Button
                     children="Create a new group"
-                    onPress={() => this.props.navigation.navigate('CreateGroup',{togethers,address,gasParam})}
+                    onPress={() => this.props.navigation.navigate('CreateGroup',{ ...this.props.navigation.state.params })}
                     />
                 </View>
                 <View style={styles.buttonsContainer}>
                   <Button
                     children="Apply for an existing one"
-                    onPress={() => this.props.navigation.navigate('AskGroup',{togethers,address,gasParam})}
+                    onPress={() => this.props.navigation.navigate('AskGroup',{ ...this.props.navigation.state.params })}
                     />
                 </View>
               </View>
@@ -47,29 +45,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    message: {
-        color: colors.black,
-        fontSize: 16,
-        textAlign: 'center',
-        marginVertical: measures.defaultMargin,
-        marginHorizontal: 32
-    },
     buttonsContainer: {
         width: '100%',
         justifyContent: 'space-between',
         height: 52
-    },
-    buttonDisabled: {
-        opacity: 0.5,
-    },
-    input: {
-        width: '90%',
-        borderBottomWidth: 1,
-        borderBottomColor: colors.black,
-        padding: 4,
-        paddingLeft: 0,
-        marginRight: 2,
-        textAlign: 'center',
-        color: colors.black
     }
 });

@@ -1,15 +1,15 @@
 import React from 'react';
-import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator, Alert} from 'react-native';
+import { FlatList, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
-import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
+import { Gas as gas } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
-import { inject, observer } from 'mobx-react';
 import CryptoCard from '../Crypto/CryptoCard';
-@inject('prices', 'wallet')
-@observer
+import { inject, observer } from 'mobx-react';
 
+@inject('wallet')
+@observer
 export class CloseDemand extends React.Component {
 
   static navigationOptions = { title: "My demand" };
@@ -18,13 +18,12 @@ export class CloseDemand extends React.Component {
 
   renderModal() {
 
-    const { gasParam, togethers, address, groupID } = this.props.navigation.state.params;
+    const { gasParam, togethers, groupID } = this.props.navigation.state.params;
 
     if (this.state.show === true) {
     return (  <SecureTransaction
           togethers={togethers}
           values={{groupID}}
-          address={address}
           gasParam={gasParam}
           navigation={this.props.navigation}
           type={gas.withdrawFunds}/> )
@@ -32,10 +31,11 @@ export class CloseDemand extends React.Component {
   }
 
   async componentDidMount() {
-    const { gasParam, togethers, address, groupID } = this.props.navigation.state.params;
+    const { gasParam, togethers, groupID } = this.props.navigation.state.params;
+    const { wallet } = this.props;
     var erc20s = []
     try {
-      const given = await togethers.getGiven(address, groupID)
+      const given = await togethers.getGiven(wallet.item.address, groupID)
       erc20s.push({ name: "Ethers",
                     symbol: "ETH",
                     balance: parseInt (given.ETHIn ,10)})
@@ -45,8 +45,8 @@ export class CloseDemand extends React.Component {
       erc20s.push({ name: "Togethers-EUR",
                     symbol: "TGTE",
                     balance: parseInt (given.EURin ,10)})
-      const demandID = parseInt ( await togethers.getSpaceID(groupID,address),10)
-      const description = await togethers.getDescription(groupID,address)
+      const demandID = parseInt ( await togethers.getSpaceID(groupID,wallet.item.address),10)
+      const description = await togethers.getDescription(groupID,wallet.item.address)
       this.setState({ erc20s,
                       demandID,
                       description,
@@ -118,20 +118,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         height: 52
     },
-    buttonDisabled: {
-        opacity: 0.5,
-    },
     content: {
         marginTop: measures.defaultMargin
     },
-    input: {
-        width: '90%',
-        borderBottomWidth: 1,
-        borderBottomColor: colors.black,
-        padding: 4,
-        paddingLeft: 0,
-        marginRight: 2,
-        textAlign: 'center',
-        color: colors.black
-    }
 });

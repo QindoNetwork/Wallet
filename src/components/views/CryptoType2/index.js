@@ -50,7 +50,7 @@ export class CryptoType2 extends React.Component {
 
     render() {
 
-      const { togethers, gasParam, type, address, groupID } = this.props.navigation.state.params
+      const { togethers, gasParam, type, groupID } = this.props.navigation.state.params
       const { erc20s } = this.state
 
       if (this.state.loading === 0){
@@ -76,7 +76,7 @@ export class CryptoType2 extends React.Component {
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => this.props.navigation.navigate('SendCoinsType1', { type, item, togethers, gasParam, address })}>
+                onPress={() => this.props.navigation.navigate('SendCoinsType1', { type, item, togethers, gasParam })}>
                   <CryptoCard crypto={item}/>
               </TouchableOpacity>
             )}

@@ -1,16 +1,8 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View, Image } from 'react-native';
-import { inject, observer } from 'mobx-react';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions  } from '@common/actions';
 import { Wallet as WalletUtils } from '@common/utils';
-import { ERC20ABI as erc20ABI } from '@common/ABIs';
-import { Contracts as contractsAddress } from '@common/constants';
-import { ethers } from 'ethers';
-
-@inject('prices', 'wallet')
-@observer
 
 export default class CryptoCard extends React.Component {
 
@@ -99,16 +91,8 @@ const styles = StyleSheet.create({
         marginLeft: measures.defaultMargin,
         fontWeight: 'bold'
     },
-    fiatbalance: {
-        fontSize: measures.fontSizeMedium - 3,
-        color: colors.gray,
-        marginLeft: measures.defaultMargin
-    },
     avatar: {
         width: 40,
         height: 40
-    },
-    next: {
-        color: colors.lightGray
     }
 });

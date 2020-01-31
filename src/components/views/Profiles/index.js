@@ -9,6 +9,8 @@ import { Gas as gas, Conversions as conversions, Restrictions as restrictions } 
 import { inject, observer } from 'mobx-react';
 import { SecureTransaction } from '@components/widgets';
 
+@inject('wallet')
+@observer
 export class Profiles extends React.Component {
 
   static navigationOptions = ({ navigation }) => ({
@@ -22,7 +24,6 @@ export class Profiles extends React.Component {
                 {
                   groupID : navigation.getParam('item').id,
                   togethers : navigation.getParam('togethers'),
-                  address : navigation.getParam('address'),
                   gasParam : navigation.getParam('gasParam'),
                 })
               } />
@@ -33,14 +34,13 @@ export class Profiles extends React.Component {
 
       renderModal() {
 
-        const { gasParam, togethers, address, item  } = this.props.navigation.state.params;
+        const { gasParam, togethers, item  } = this.props.navigation.state.params;
         const groupID = item.id
 
         if (this.state.show === true) {
         return (  <SecureTransaction
               togethers={togethers}
               values={{groupID}}
-              address={address}
               gasParam={gasParam}
               navigation={this.props.navigation}
               type={gas.quitGroup}/> )
@@ -48,13 +48,14 @@ export class Profiles extends React.Component {
       }
 
       async componentDidMount() {
-        const { gasParam, togethers, address, item  } = this.props.navigation.state.params;
+        const { gasParam, togethers, item } = this.props.navigation.state.params;
+        const { wallet } = this.props;
         const groupID = item.id
         let profiles = []
         try {
           const req = await togethers.getProfiles(groupID)
-          this.setState({ active:  parseInt ( await togethers.isOpen(groupID,address),10),
-                          owner : parseInt ( await togethers.isOwner(groupID,address),10) })
+          this.setState({ active:  parseInt ( await togethers.isOpen(groupID,wallet.item.address),10),
+                          owner : parseInt ( await togethers.isOwner(groupID,wallet.itemaddress),10) })
           let currentAddress
             for ( var i = 0; i < req.length; i++ ) {
               currentAddress = req[i]
@@ -69,11 +70,11 @@ export class Profiles extends React.Component {
         }
       }
 
-      demand(groupID, owner, togethers, address, gasParam) {
+      demand(groupID, owner, togethers, gasParam) {
         if (this.state.active === 1){
-          this.props.navigation.navigate('CloseDemand',{ groupID , owner, togethers, address, gasParam })
+          this.props.navigation.navigate('CloseDemand',{ groupID , owner, togethers, gasParam })
         }
-        else this.props.navigation.navigate('OpenDemand',{ groupID, owner, togethers, address, gasParam })
+        else this.props.navigation.navigate('OpenDemand',{ groupID, owner, togethers, gasParam })
       }
 
       onPressQuit() {
@@ -85,7 +86,7 @@ export class Profiles extends React.Component {
 
       render() {
         const { profiles, owner, active } = this.state
-        const { gasParam, togethers, address } = this.props.navigation.state.params
+        const { gasParam, togethers } = this.props.navigation.state.params
         const groupID = this.props.navigation.state.params.item.id
 
         if (this.state.loading === 0){
@@ -107,7 +108,7 @@ export class Profiles extends React.Component {
         <View style={styles.buttonsContainer}>
             <Button
               children="My demand"
-              onPress={() => this.demand(groupID, owner, togethers, address, gasParam )}/>
+              onPress={() => this.demand(groupID, owner, togethers, gasParam )}/>
         </View>
         <FlatList
             data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
@@ -115,7 +116,7 @@ export class Profiles extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('ProfileData',{ groupID , owner, profile: item, togethers, address, gasParam })
+              onPress={() => this.props.navigation.navigate('ProfileData',{ groupID , owner, profile: item, togethers, gasParam })
               }>
                 <ProfileCard profile={item} groupID={groupID} togethers={togethers}/>
               </TouchableOpacity>

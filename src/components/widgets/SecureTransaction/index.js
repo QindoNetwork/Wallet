@@ -3,8 +3,6 @@ import { Keyboard, StyleSheet, Text, TextInput, View, ActivityIndicator} from 'r
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions, Contract as ContractActions  } from '@common/actions';
-import * as yup from 'yup'
-import { Formik } from 'formik'
 import Modal from 'react-native-modal';
 import { Gas as gas, Conversions as conversions } from '@common/constants';
 import { sha256 } from 'react-native-sha256';
@@ -54,7 +52,8 @@ export class SecureTransaction extends React.Component {
 
     async exit() {
 
-      const { togethers, type, navigation, values, address, gasParam, wallet } = this.props
+      const { togethers, type, navigation, values, gasParam, wallet } = this.props
+      const address = wallet.item.address
       const gasLimit = gasParam[type].limit
       const gasPrice = gasParam[type].price * conversions.gigaWeiToWei
 
@@ -225,40 +224,5 @@ container: {
     paddingHorizontal: measures.defaultPadding,
     maxHeight: 700,
     borderRadius: 4
-},
-header: {
-    paddingVertical: measures.defaultPadding,
-    alignItems: 'flex-end',
-    justifyContent: 'center'
-},
-content: {
-    justifyContent: 'flex-start',
-    flexDirection: 'column',
-    backgroundColor: colors.secondary
-},
-row: {
-    alignItems: 'center',
-    flexDirection: 'column',
-    marginVertical: measures.defaultMargin / 2
-},
-actions: {
-    height: 56
-},
-actionsBar: {
-    flexDirection: 'row',
-    flex: 3
-},
-actionColumn: {
-    flexDirection: 'column',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-},
-label: {
-    fontWeight: 'bold',
-    textAlign: 'center'
-},
-value: {
-    textAlign: 'center'
 }
 });

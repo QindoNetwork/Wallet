@@ -1,6 +1,5 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { inject, observer } from 'mobx-react';
 import moment from 'moment';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
@@ -8,8 +7,6 @@ import { Wallet as WalletUtils } from '@common/utils';
 import TransactionDetails from './TransactionDetails';
 import { Contracts as contractsAddress } from '@common/constants';
 
-@inject('prices')
-@observer
 export default class TransactionCard extends React.Component {
 
   state = { pseudoFrom: '', pseudoTo: '' };
@@ -56,14 +53,6 @@ export default class TransactionCard extends React.Component {
 
     get balance() {
         return Number(WalletUtils.formatBalance(this.props.transaction.value));
-    }
-
-    get fiatLabel() {
-        return this.props.prices.selectedRate.toUpperCase();
-    }
-
-    get fiatBalance() {
-        return Number(this.props.prices.usd * this.balance).toFixed(2);
     }
 
     get timestamp() {

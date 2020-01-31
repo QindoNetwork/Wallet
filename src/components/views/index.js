@@ -31,5 +31,4 @@ export * from './ChangeCrypto';
 export * from './ChangePseudonyme';
 export * from './ChangePassword';
 export * from './AdminProfile';
-export * from './ConfirmChange';
 export * from './ChangeLanguage';

@@ -1,9 +1,15 @@
-export const togethersAddress = "0xF0c58Bb7034d1fB448f419Dbf451A4dE98a23840";
+export const togethersAddress = "0x4e3DD2c2F218bde501C9b77c6C3C534E3dcb19C7";
 
-export const controlAddress = "0xA0Bc58AE8f7F35e8d99eC711166D7024b6004313";
+export const controlAddress = "0xeC213C3E884a4f699DBC82587243944C2470274e";
 
 export const nullAddress = "0x0000000000000000000000000000000000000000";
 
-export const TTUSDAddress = "0xB2cF75ac68F49976fA256905F6629d15AC76e851";
+export const TTUSDAddress = "0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292";
 
-export const TTEURAddress = "0x6473EF312B1775fb06Ed44b1ce987171F81fDdE3";
+export const TTEURAddress = "0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F";
+
+
+//address dai = 0xb3162F1d3E9071001c5286cc0Cd533C3958dc65f;
+//address Gemini = 0x6a36989540818bd8686873A2f36E39Ac9Da2e102;
+//address Tether = 0x92EB10B521fd63D0a2df10B36f284C150b1Ca17F;
+//address Stasis = 0xc3249b1240e44b19c42d8a6d27e15f80376e542d;

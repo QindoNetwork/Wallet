@@ -1,15 +1,11 @@
 import * as yup from 'yup'
 import { Formik } from 'formik'
-import { General as GeneralActions  } from '@common/actions';
 import React, { Component, Fragment } from 'react'
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { Gas as gas, Restrictions as restrictions } from '@common/constants';
-import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
-import { inject, observer } from 'mobx-react';
+import { Gas as gas } from '@common/constants';
+import { View, StyleSheet, TextInput, Text } from 'react-native'
 import { SecureTransaction } from '@components/widgets';
-@inject('prices', 'wallet')
-@observer
 
 export class AskGroup extends Component {
 
@@ -19,13 +15,12 @@ export class AskGroup extends Component {
 
   renderModal(groupID) {
 
-    const { gasParam, togethers, address  } = this.props.navigation.state.params;
+    const { gasParam, togethers  } = this.props.navigation.state.params;
 
     if (this.state.show === true) {
     return (  <SecureTransaction
           togethers={togethers}
           values={{groupID}}
-          address={address}
           gasParam={gasParam}
           navigation={this.props.navigation}
           type={gas.ask}/> )
@@ -95,9 +90,6 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-between',
         height: 52
-    },
-    buttonDisabled: {
-        opacity: 0.5,
     },
     input: {
         width: '90%',

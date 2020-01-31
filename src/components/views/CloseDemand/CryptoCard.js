@@ -3,16 +3,18 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
-import { Wallet as WalletUtils } from '@common/utils';
+import { inject, observer } from 'mobx-react';
 
+@inject('wallet')
+@observer
 export default class CryptoCard extends React.Component {
 
   state = { loading: 0, amount: 0 };
 
   async componentDidMount() {
-    const { togethers, address, item, groupID } = this.props
+    const { togethers, item, groupID, wallet } = this.props
     try {
-      this.setState({ amount:  parseInt ( await togethers.getCryptoGiven(groupID, address, item.key),10),
+      this.setState({ amount:  parseInt ( await togethers.getCryptoGiven(groupID, wallet.item.address, item.key),10),
                       loading: 1 })
     } catch (e) {
     GeneralActions.notify(e.message, 'long');
@@ -100,13 +102,5 @@ const styles = StyleSheet.create({
         color: colors.gray,
         marginLeft: measures.defaultMargin,
         fontWeight: 'bold'
-    },
-    fiatbalance: {
-        fontSize: measures.fontSizeMedium - 3,
-        color: colors.gray,
-        marginLeft: measures.defaultMargin
-    },
-    next: {
-        color: colors.lightGray
     }
 });

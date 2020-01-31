@@ -6,14 +6,16 @@ contract Control is Ownable {
 
   mapping (uint => gasParameters) public mappFunctionToGasParameters;
 
-  struct gasParameters
-  {
-    string functionName;
-    uint gasPrice;
-    uint gasLimit;
-  }
+uint public listLength;
 
-  constructor() public {
+struct gasParameters
+{
+  string functionName;
+  uint gasPrice;
+  uint gasLimit;
+}
+
+constructor() public {
     mappFunctionToGasParameters[0].functionName = "ask";
     mappFunctionToGasParameters[0].gasPrice = 6;
     mappFunctionToGasParameters[0].gasLimit = 5000000;
@@ -62,17 +64,38 @@ contract Control is Ownable {
     mappFunctionToGasParameters[15].functionName = "ChangeToken";
     mappFunctionToGasParameters[15].gasPrice = 6;
     mappFunctionToGasParameters[15].gasLimit = 5000000;
+    listLength = 16;
     owner = msg.sender;
   }
 
   function setGasLimit(uint limit, uint _function)  public onlyOwner
   {
+    require(15 <= _function &&  _function <= listLength);
+    if (_function == listLength)
+    {
+      listLength += 1;
+    }
     mappFunctionToGasParameters[_function].gasLimit = limit;
   }
 
   function setGasPrice(uint price, uint _function)  public onlyOwner
   {
+    require(15 <= _function &&  _function <= listLength);
+    if (_function == listLength)
+    {
+      listLength += 1;
+    }
     mappFunctionToGasParameters[_function].gasPrice = price;
+  }
+
+  function setGasFunctionName(string memory name, uint _function)  public onlyOwner
+  {
+    require(15 <= _function &&  _function <= listLength);
+    if (_function == listLength)
+    {
+      listLength += 1;
+    }
+    mappFunctionToGasParameters[_function].functionName = name;
   }
 
   function getGasPrice(uint _function) view public returns (uint)

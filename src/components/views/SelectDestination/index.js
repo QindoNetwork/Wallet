@@ -8,7 +8,6 @@ import ProfileCard from './ProfileCard';
 
 @inject('wallet')
 @observer
-
 export class SelectDestination extends React.Component {
 
     static navigationOptions = { title: 'Select destination' };
@@ -17,6 +16,7 @@ export class SelectDestination extends React.Component {
 
     async componentDidMount() {
       const { address, togethers, groupID } = this.props.navigation.state.params
+      const { item } = this.props.wallet
 
        let profiles = []
        let temp = []
@@ -27,7 +27,7 @@ export class SelectDestination extends React.Component {
                for ( var j = 0; j < temp.length; j++ ) {
                   var ok = 1
                   var currentAddress = temp[j]
-                  if ( currentAddress !== address ) {
+                  if ( currentAddress !== item.address ) {
                    for ( var k = 0; k < profiles.length; k++ ) {
                         if ( profiles[k].id === currentAddress) {
                           ok = 0
@@ -49,9 +49,9 @@ export class SelectDestination extends React.Component {
 
     onPressContinue(target) {
 
-        const { item, togethers, gasParam, address, amount, groupID } = this.props.navigation.state.params
+        const { item, togethers, gasParam, amount, groupID } = this.props.navigation.state.params
 
-        this.props.navigation.navigate('ConfirmTransaction', { groupID, item, togethers, gasParam, address, amount, target });
+        this.props.navigation.navigate('ConfirmTransaction', { groupID, item, togethers, gasParam, amount, target });
 
     }
 

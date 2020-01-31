@@ -1,6 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
-import { Button } from '@components/widgets';
+import { TouchableOpacity, FlatList, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import CryptoCard from './CryptoCard';
@@ -71,7 +70,7 @@ export class Crypto extends React.Component {
 
     render() {
 
-      const { togethers, gasParam, navigation, address, groupID } = this.props
+      const { togethers, gasParam, navigation, groupID } = this.props
       const { erc20s } = this.state
 
       if (this.state.loading === 0){
@@ -112,7 +111,7 @@ export class Crypto extends React.Component {
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('SendCoins', { groupID, item, togethers, gasParam, address })}>
+                onPress={() => navigation.navigate('SendCoins', { groupID, item, togethers, gasParam })}>
                   <CryptoCard crypto={item}/>
               </TouchableOpacity>
             )}
@@ -160,20 +159,5 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginVertical: measures.defaultMargin,
         marginHorizontal: 32
-    },
-    buttonsContainer: {
-        width: '100%',
-        justifyContent: 'space-between',
-        height: 52
-    },
-    input: {
-        width: '90%',
-        borderBottomWidth: 1,
-        borderBottomColor: colors.black,
-        padding: 4,
-        paddingLeft: 0,
-        marginRight: 2,
-        textAlign: 'center',
-        color: colors.black
     }
 });

@@ -96,7 +96,7 @@ export class ConfirmTransaction extends React.Component {
     async onPressContinue() {
         this.setState({ loading2: 0 })
         const { wallet } = this.props
-        const { item, togethers, gasParam, address, amount, target, groupID } = this.props.navigation.state.params;
+        const { item, togethers, gasParam, amount, target, groupID } = this.props.navigation.state.params;
         let overrides
         let result = 0
         let value
@@ -151,7 +151,7 @@ export class ConfirmTransaction extends React.Component {
                   await TransactionActions.sendTransaction(wallet.item, txn);
             }
             }
-            this.props.navigation.navigate('WalletDetails', { togethers, gasParam, address, replaceRoute: true, leave: 0 });
+            this.props.navigation.navigate('WalletDetails', { togethers, gasParam, replaceRoute: true, leave: 0 });
             GeneralActions.notify('Success, wait for confirmation in historic', 'short');
           }catch (e) {
             this.hide()

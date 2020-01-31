@@ -24,7 +24,7 @@ export class SendCoinsType1 extends React.Component {
 
   renderModal(value) {
 
-    const { gasParam, togethers, address, item  } = this.props.navigation.state.params;
+    const { gasParam, togethers, item  } = this.props.navigation.state.params;
     const crypto = item.address;
     const amount = value * (Math.pow(10,18))
 
@@ -41,7 +41,7 @@ export class SendCoinsType1 extends React.Component {
 
   async componentDidMount() {
     try {
-    const { item, address, type } = this.props.navigation.state.params;
+    const { item, type } = this.props.navigation.state.params;
     const { wallet } = this.props;
     const mnemonics = wallet.item.mnemonics.toString()
     const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
@@ -67,7 +67,7 @@ export class SendCoinsType1 extends React.Component {
   }
 
     onPressContinue() {
-      const { item, gasParam, togethers, address, type } = this.props.navigation.state.params
+      const { item, gasParam, togethers, type } = this.props.navigation.state.params
       const { instance } = this.state
       var token
       if (type === "TTE") {

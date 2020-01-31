@@ -1,17 +1,22 @@
 export const ControlABI = [
   {
-    "constant": true,
-    "inputs": [],
-    "name": "powerToken2",
-    "outputs": [
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address payable",
+        "name": "newOwner",
+        "type": "address"
+      },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "_block",
         "type": "uint256"
       }
     ],
+    "name": "transferOwnership",
+    "outputs": [],
     "payable": false,
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -23,36 +28,6 @@ export const ControlABI = [
         "internalType": "address payable",
         "name": "",
         "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "TGTSToken",
-    "outputs": [
-      {
-        "internalType": "contract External3",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "powerToken1",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "payable": false,
@@ -91,18 +66,18 @@ export const ControlABI = [
     "type": "function"
   },
   {
-    "constant": false,
-    "inputs": [
+    "constant": true,
+    "inputs": [],
+    "name": "listLength",
+    "outputs": [
       {
-        "internalType": "address payable",
-        "name": "newOwner",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
-    "name": "transferOwnership",
-    "outputs": [],
     "payable": false,
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -129,21 +104,6 @@ export const ControlABI = [
     ],
     "name": "OwnershipTransferred",
     "type": "event"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_tgts",
-        "type": "address"
-      }
-    ],
-    "name": "setPowerToken",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
   },
   {
     "constant": false,
@@ -180,6 +140,26 @@ export const ControlABI = [
       }
     ],
     "name": "setGasPrice",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_function",
+        "type": "uint256"
+      }
+    ],
+    "name": "setGasFunctionName",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",

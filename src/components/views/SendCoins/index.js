@@ -21,7 +21,7 @@ export class SendCoins extends React.Component {
   });
 
     onPressContinue() {
-      const { item, gasParam, togethers, groupID, address, profile } = this.props.navigation.state.params
+      const { item, gasParam, togethers, groupID, profile } = this.props.navigation.state.params
       var { amount } = this.refs.calc;
       let isOK = true
         if (!amount || amount === 0) return;
@@ -38,9 +38,9 @@ export class SendCoins extends React.Component {
         GeneralActions.notify("You don t have enough balance", 'long');
         }else {
           if (groupID !== '0') {
-              this.props.navigation.navigate('ConfirmTransaction', { item, groupID, amount, address, togethers, gasParam, target: profile.id });
+              this.props.navigation.navigate('ConfirmTransaction', { item, groupID, amount, togethers, gasParam, target: profile.id });
           }
-          else this.props.navigation.navigate('SelectDestination', { item, groupID, amount, address, togethers, gasParam });
+          else this.props.navigation.navigate('SelectDestination', { item, groupID, amount, togethers, gasParam });
         }
   }
 

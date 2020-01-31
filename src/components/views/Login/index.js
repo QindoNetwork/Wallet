@@ -3,7 +3,6 @@ import { Clipboard, Share, TouchableWithoutFeedback, Keyboard, StyleSheet, Text,
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions } from '@common/actions';
-import { inject, observer } from 'mobx-react';
 import QRCode from 'react-native-qrcode-svg';
 import { Gas as gas, Restrictions as restrictions, Conversions as conversions } from '@common/constants';
 import { Icon } from '@components/widgets';
@@ -12,6 +11,7 @@ import * as yup from 'yup'
 import { Formik } from 'formik'
 import { sha256 } from 'react-native-sha256';
 import { Languages as LanguagesActions } from '@common/actions';
+import { inject, observer } from 'mobx-react';
 
 @inject('wallet','languages')
 @observer
@@ -46,7 +46,7 @@ export class Login extends React.Component {
 
     async onPressContinueLogin() {
         Keyboard.dismiss();
-        const { gasParam, togethers, address } = this.props.navigation.state.params;
+        const { gasParam, togethers } = this.props.navigation.state.params;
         const { password } = this.state;
         const hashPassword = sha256(password)
         try {
@@ -57,7 +57,7 @@ export class Login extends React.Component {
             GeneralActions.notify(e.message, 'long');
         }
         if (this.state.result === 1) {
-          this.props.navigation.navigate('WalletDetails', { gasParam, address, togethers, replaceRoute: true });
+          this.props.navigation.navigate('WalletDetails', { gasParam, togethers, replaceRoute: true });
         }
         else {
           GeneralActions.notify("Password not good", 'long');
@@ -67,10 +67,11 @@ export class Login extends React.Component {
     async componentDidMount() {
 
       const { togethers, address } = this.props.navigation.state.params;
+      const { item } = this.props.wallet;
 
       try {
         this.setState({
-                        pseudo : await togethers.mappAddressToUser(address),
+                        pseudo : await togethers.mappAddressToUser(item.address),
                         registered: parseInt (await togethers.verifyRegistration(),10),
                         loading: 1
                       })
@@ -81,7 +82,7 @@ export class Login extends React.Component {
 
     async onPressSignUp(pseudo,password1,password2) {
         Keyboard.dismiss();
-        const { gasParam, togethers, address } = this.props.navigation.state.params;
+        const { gasParam, togethers } = this.props.navigation.state.params;
         const overrides = {
             gasLimit: gasParam[gas.setUser].limit,
             gasPrice: gasParam[gas.setUser].price * conversions.gigaWeiToWei,
@@ -99,7 +100,7 @@ export class Login extends React.Component {
             if (result === "OK") {
               const hashPassword = sha256(password1)
               await togethers.setUser(pseudo,hashPassword,overrides)
-              this.props.navigation.navigate('WalletDetails', { gasParam, address, togethers, replaceRoute: true });
+              this.props.navigation.navigate('WalletDetails', { gasParam, togethers, replaceRoute: true });
             }
           }catch (e) {
             GeneralActions.notify(e.message, 'long');

@@ -2,7 +2,7 @@ import { Button } from '@components/widgets';
 import React, { Component } from 'react'
 import { colors, measures } from '@common/styles';
 import { View, StyleSheet } from 'react-native'
-import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
+import { Gas as gas } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
 
 export class AdminProfile extends Component {
@@ -13,7 +13,7 @@ export class AdminProfile extends Component {
 
   renderModal() {
 
-  const { gasParam, togethers, address, profile, groupID  } = this.props.navigation.state.params;
+  const { gasParam, togethers, profile, groupID  } = this.props.navigation.state.params;
   const target = profile.id
   let type
 
@@ -28,7 +28,6 @@ export class AdminProfile extends Component {
   return (  <SecureTransaction
                     togethers={togethers}
                     values={{groupID,target}}
-                    address={address}
                     gasParam={gasParam}
                     navigation={this.props.navigation}
                     type={type}/> )
@@ -81,29 +80,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    message: {
-        color: colors.black,
-        fontSize: 16,
-        textAlign: 'center',
-        marginVertical: measures.defaultMargin,
-        marginHorizontal: 32
-    },
     buttonsContainer: {
         width: '100%',
         justifyContent: 'space-between',
         height: 52
-    },
-    buttonDisabled: {
-        opacity: 0.5,
-    },
-    input: {
-        width: '90%',
-        borderBottomWidth: 1,
-        borderBottomColor: colors.black,
-        padding: 4,
-        paddingLeft: 0,
-        marginRight: 2,
-        textAlign: 'center',
-        color: colors.black
     }
 });

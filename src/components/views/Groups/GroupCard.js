@@ -1,19 +1,21 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import { inject, observer } from 'mobx-react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';;
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
+import { inject, observer } from 'mobx-react';
 
+@inject('wallet')
+@observer
 export default class GroupsCard extends React.Component {
 
   state = {active: 0, loading: 0 };
 
    async componentDidMount() {
-     const { togethers, address, group, owner } = this.props
+     const { togethers, wallet, group, owner } = this.props
      try {
-       this.setState({ owner:   parseInt ( await togethers.isOwner(group.id,address),10),
-                       active:  parseInt ( await togethers.isOpen(group.id,address),10),
+       this.setState({ owner:   parseInt ( await togethers.isOwner(group.id,wallet.item.address),10),
+                       active:  parseInt ( await togethers.isOpen(group.id,wallet.item.address),10),
                        loading: 1})
      } catch (e) {
      GeneralActions.notify(e.message, 'long');

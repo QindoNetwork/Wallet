@@ -1,6 +1,5 @@
 import React from 'react';
 import { Clipboard, StyleSheet, ScrollView, Text, TouchableWithoutFeedback, View } from 'react-native';
-import { inject, observer } from 'mobx-react';
 import Modal from 'react-native-modal';
 import moment from 'moment';
 import { Icon } from '@components/widgets';
@@ -8,47 +7,12 @@ import { colors, measures } from '@common/styles';
 import { Wallet as WalletUtils } from '@common/utils';
 import { General as GeneralActions  } from '@common/actions';
 
-@inject('prices')
-@observer
 export default class TransactionDetails extends React.Component {
 
     state = { show: false };
 
-    get isReceiving() {
-        return this.to.toLowerCase() === this.props.walletAddress.toLowerCase();
-    }
-
-    get isConfirmed() {
-        return this.props.transaction.confirmations > 0;
-    }
-
-    get from() {
-        return this.props.transaction.from;
-    }
-
-    get to() {
-        return this.props.transaction.to;
-    }
-
-    get iconName() {
-        return (this.isReceiving) ? 'download' : 'upload';
-    }
-
     get balance() {
         return Number(WalletUtils.formatBalance(this.props.transaction.value));
-    }
-
-    get fiatLabel() {
-        return this.props.prices.selectedRate.toUpperCase();
-    }
-
-    get fiatBalance() {
-        return Number(this.props.prices.usd * this.balance).toFixed(2);
-    }
-
-    get timestamp() {
-        return (this.props.transaction.timeStamp) ?
-            moment.unix(this.props.transaction.timeStamp).format('DD/MM/YYYY hh:mm:ss') : 'Pending';
     }
 
     get transactionError() {

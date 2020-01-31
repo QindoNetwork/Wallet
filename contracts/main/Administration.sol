@@ -10,6 +10,7 @@ contract Administration is Ownable {
   uint public ID;
   uint public groupNumber;
   bool public stop;
+  bool public fees;
 
   event payDemand(address from, uint amount, address crypto, uint indexed ID);
 
@@ -18,7 +19,6 @@ contract Administration is Ownable {
   mapping (address => bool) public mappCryptoEnable;
   mapping (uint => address) public checkNameUnicity;
   mapping (address => string) public mappAddressToUser;
-  mapping (address => string) public mappTokenToIpfsImage;
 
   mapping (address => uint) internal userPassword;
 
@@ -33,11 +33,6 @@ contract Administration is Ownable {
     uint status;
     uint statusU;
     uint statusE;
-  }
-
-  function setTokenToIPFS(string memory ipfs, address token) onlyOwner public
-  {
-    mappTokenToIpfsImage[token] = ipfs;
   }
 
   function createPassword(string memory _password) internal
@@ -170,6 +165,18 @@ contract Administration is Ownable {
     else
     {
       stop = false;
+    }
+  }
+
+  function activateFees() public onlyOwner
+  {
+    if (fees == false)
+    {
+      fees = true;
+    }
+    else
+    {
+      fees = false;
     }
   }
 

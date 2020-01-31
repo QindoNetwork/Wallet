@@ -10,7 +10,7 @@ contract TogethersTokenUSD {
   event Approval(address indexed owner, address indexed spender, uint256 value);
 
     string public constant name = "TogethersToken-USD";
-    string public constant symbol = "TTUSD";
+    string public constant symbol = "TGTU";
     uint32 public constant decimals = 18;
 
     mapping (address => uint256) private _balances;

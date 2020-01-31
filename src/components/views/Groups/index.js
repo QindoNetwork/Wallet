@@ -11,7 +11,7 @@ export class Groups extends React.Component {
     state = { loading: 0, groups: [] };
 
     async componentDidMount() {
-      const { togethers, address } = this.props
+      const { togethers } = this.props
       let groups = []
       try {
         const req = await togethers.getGroups()
@@ -28,7 +28,7 @@ export class Groups extends React.Component {
 
     render() {
 
-      const { address, togethers, gasParam  } = this.props;
+      const { togethers, gasParam  } = this.props;
 
       if (this.state.loading === 0){
 
@@ -54,7 +54,7 @@ export class Groups extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('Profiles',{ item, gasParam, address, togethers })}>
+              onPress={() => this.props.navigation.navigate('Profiles',{ item, gasParam, togethers })}>
                 <GroupCard  group={item} address={address} togethers={togethers} />
               </TouchableOpacity>
             )}
@@ -62,7 +62,7 @@ export class Groups extends React.Component {
         <View style={styles.buttonsContainer}>
                 <Button
                   children="Add group"
-                  onPress={() => this.props.navigation.navigate('AddGroup', { ...this.props })}/>
+                  onPress={() => this.props.navigation.navigate('AddGroup', { gasParam, togethers })}/>
               </View>
         </View>)
 

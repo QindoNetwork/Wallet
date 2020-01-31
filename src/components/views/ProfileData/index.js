@@ -9,7 +9,7 @@ import ProfileCard from './ProfileCard';
 import { inject, observer } from 'mobx-react';
 import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
-@inject('prices', 'wallet')
+@inject('wallet')
 @observer
 
 export class ProfileData extends React.Component {
@@ -44,7 +44,7 @@ export class ProfileData extends React.Component {
 
   render() {
 
-    const { gasParam, togethers, address, profile, groupID, owner  } = this.props.navigation.state.params;
+    const { gasParam, togethers, profile, groupID, owner  } = this.props.navigation.state.params;
     const target = profile.id
 
     if (this.state.loading === 0){
@@ -71,7 +71,7 @@ export class ProfileData extends React.Component {
               children="Admin profile"
               onPress={() => this.props.navigation.navigate('AdminProfile',
               {
-                gasParam, togethers, address, profile, groupID
+                gasParam, togethers, profile, groupID
               })}/>
         </View>
       </View>)

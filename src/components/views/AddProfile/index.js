@@ -1,14 +1,14 @@
-import * as yup from 'yup'
-import { Formik } from 'formik'
 import { General as GeneralActions  } from '@common/actions';
-import React, { Component, Fragment } from 'react'
-import { Gas as gas, Restrictions as restrictions } from '@common/constants';
+import React, { Component } from 'react'
+import { Gas as gas } from '@common/constants';
 import { colors, measures } from '@common/styles';
-import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native'
-import { inject, observer } from 'mobx-react';
+import { View, StyleSheet, Text, ActivityIndicator } from 'react-native'
 import { SecureTransaction } from '@components/widgets';
 import { Button, Camera, InputWithIcon } from '@components/widgets';
+import { inject, observer } from 'mobx-react';
 
+@inject('wallet')
+@observer
 export class AddProfile extends Component {
 
   static navigationOptions = { title: "Add a friend" };
@@ -17,13 +17,12 @@ export class AddProfile extends Component {
 
   renderModal(value) {
 
-    const { gasParam, togethers, address, groupID  } = this.props.navigation.state.params;
+    const { gasParam, togethers, groupID  } = this.props.navigation.state.params;
 
     if (this.state.show === true) {
     return (  <SecureTransaction
           togethers={togethers}
           values={{groupID,value}}
-          address={address}
           gasParam={gasParam}
           navigation={this.props.navigation}
           type={gas.createProfile}/> )
@@ -31,9 +30,10 @@ export class AddProfile extends Component {
   }
 
   async componentDidMount() {
-    const { groupID, togethers, address  } = this.props.navigation.state.params;
+    const { groupID, togethers  } = this.props.navigation.state.params;
+    const { wallet  } = this.props;
     try {
-        this.setState({ owner:  parseInt ( await togethers.isOwner(groupID,address),10),
+        this.setState({ owner:  parseInt ( await togethers.isOwner(groupID,wallet.item.address),10),
                         loading: 1})
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
@@ -113,23 +113,5 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginVertical: measures.defaultMargin,
         marginHorizontal: 32
-    },
-    buttonsContainer: {
-        width: '100%',
-        justifyContent: 'space-between',
-        height: 52
-    },
-    buttonDisabled: {
-        opacity: 0.5,
-    },
-    input: {
-        width: '90%',
-        borderBottomWidth: 1,
-        borderBottomColor: colors.black,
-        padding: 4,
-        paddingLeft: 0,
-        marginRight: 2,
-        textAlign: 'center',
-        color: colors.black
     }
 });

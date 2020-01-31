@@ -8,7 +8,7 @@ import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, Ac
 import { inject, observer } from 'mobx-react';
 import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
-@inject('prices', 'wallet')
+@inject('wallet')
 @observer
 
 export class OpenDemand extends Component {
@@ -19,18 +19,12 @@ export class OpenDemand extends Component {
 
   renderModal(description) {
 
-    const { gasParam, togethers, erc20s, address, groupID  } = this.props.navigation.state.params;
-    const limit = gasParam[gas.askForFunds].limit
-    const price = gasParam[gas.askForFunds].price
+    const { gasParam, togethers, groupID  } = this.props.navigation.state.params;
 
     if (this.state.show === true) {
     return (  <SecureTransaction
           togethers={togethers}
           values={{groupID,description}}
-          limit={limit}
-          price={price}
-          erc20s={erc20s}
-          address={address}
           gasParam={gasParam}
           navigation={this.props.navigation}
           type={gas.askForFunds}/> )

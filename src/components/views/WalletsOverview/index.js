@@ -1,6 +1,5 @@
 import React from 'react';
 import { FlatList, RefreshControl, StyleSheet, View, ActivityIndicator } from 'react-native';
-import { inject, observer } from 'mobx-react';
 import { HeaderIcon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions, Wallets as WalletActions } from '@common/actions';
@@ -9,6 +8,7 @@ import WalletCard from './WalletCard';
 import { ethers } from 'ethers';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 import { ControlABI as controlABI, TogethersABI as togethersABI } from '@common/ABIs';
+import { inject, observer } from 'mobx-react';
 
 @inject('wallets')
 @observer
@@ -17,7 +17,7 @@ export class WalletsOverview extends React.Component {
     state = { loading: 0 };
 
     static navigationOptions = ({ navigation, screenProps }) => ({
-        title: 'Togethers',
+        title: 'Welcome',
         headerLeft: (
             <HeaderIcon
                 name='add'
@@ -70,7 +70,9 @@ export class WalletsOverview extends React.Component {
             var type
             var gas
 
-            for(var j = 0 ; j <= 15 ; j++)
+            const listLength = parseInt(await control.listLength(),10)
+
+            for(var j = 0 ; j < listLength ; j++)
             {
             gas = await control.mappFunctionToGasParameters(j)
             gasParam.push({ limit: parseInt(gas.gasLimit,10),
@@ -79,7 +81,7 @@ export class WalletsOverview extends React.Component {
           }
           WalletActions.selectWallet(wallet)
           this.setState({ loading: 1 })
-          this.props.navigation.navigate('Login', { gasParam, togethers, address: wallet.address });
+          this.props.navigation.navigate('Login', { gasParam, togethers });
 
         } catch (e) {
           GeneralActions.notify(e.message, 'long');
