@@ -14,10 +14,6 @@ export class Settings extends React.Component {
         title: 'Settings'
     });
 
-    goToChangeCurrencyPage() {
-        this.props.navigation.navigate('ChangeCurrency');
-    }
-
     chooseLanguage() {
         this.props.navigation.navigate('ChangeLanguage');
     }
@@ -54,7 +50,6 @@ export class Settings extends React.Component {
         return (
             <ScrollView style={styles.container}>
                 {this.renderItems([
-                    { title: 'Change compare currency', iconName: 'attach-money', iconType: 'md', action: () => this.goToChangeCurrencyPage() },
                     { title: 'Erase wallets', iconName: 'trash', iconType: '', action: () => this.confirmErase() },
                     { title: 'Change language', iconName: 'shirt', iconType: '', action: () => this.chooseLanguage() },
                 ])}

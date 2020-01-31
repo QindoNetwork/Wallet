@@ -4,21 +4,13 @@ import { inject, observer } from 'mobx-react';
 import { colors, measures } from '@common/styles';
 import { Wallet as WalletUtils } from '@common/utils';
 
-@inject('prices', 'wallet')
+@inject('wallet')
 @observer
 export default class Balance extends React.Component {
 
     get balance() {
         const { item } = this.props.wallet;
         return Number(WalletUtils.formatBalance(item.balance));
-    }
-
-    get fiatLabel() {
-        return this.props.prices.selectedRate.toUpperCase();
-    }
-
-    get fiatBalance() {
-        return Number(this.props.prices.usd * this.balance);
     }
 
     render() {
@@ -29,7 +21,6 @@ export default class Balance extends React.Component {
                 </View>
                 <View style={styles.rightColumn}>
                     <Text style={styles.balance}>ETH {this.balance.toFixed(3)}</Text>
-                    <Text style={styles.fiatBalance}>{this.fiatLabel} {this.fiatBalance.toFixed(2)}</Text>
                 </View>
             </View>
         );

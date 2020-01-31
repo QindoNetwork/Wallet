@@ -11,7 +11,6 @@ export const INITIAL_ROUTE = 'WalletsOverview';
 
 const navigator = createStackNavigator(
   {
-    ChangeCurrency: { screen: Views.ChangeCurrency },
     ConfirmMnemonics: { screen: Views.ConfirmMnemonics },
     ConfirmTransaction: { screen: Views.ConfirmTransaction },
     CreateMnemonics: { screen: Views.CreateMnemonics },
@@ -22,7 +21,6 @@ const navigator = createStackNavigator(
     SelectDestination: { screen: Views.SelectDestination },
     SendCoins: { screen: Views.SendCoins },
     Settings: { screen: Views.Settings },
-    ShowPrivateKey: { screen: Views.ShowPrivateKey },
     WalletDetails: { screen: Views.WalletDetails },
     WalletsOverview: { screen: Views.WalletsOverview },
     AddProfile: { screen: Views.AddProfile },

@@ -7,22 +7,8 @@ import { Wallet as WalletUtils } from '@common/utils';
 import { Wallets as WalletActions } from '@common/actions';
 import { Image as ImageUtils } from '@common/utils';
 
-@inject('prices')
-@observer
+
 export default class WalletCard extends React.Component {
-
-    get balance() {
-        if (!this.props.wallet.balance) return 0;
-        return Number(WalletUtils.formatBalance(this.props.wallet.balance));
-    }
-
-    get fiatLabel() {
-        return this.props.prices.selectedRate.toUpperCase();
-    }
-
-    get fiatBalance() {
-        return Number(this.props.prices.usd * this.balance);
-    }
 
     componentDidMount() {
         WalletActions.updateBalance(this.props.wallet);

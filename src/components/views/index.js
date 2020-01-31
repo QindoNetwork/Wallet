@@ -1,4 +1,3 @@
-export * from './ChangeCurrency';
 export * from './ConfirmMnemonics';
 export * from './ConfirmTransaction';
 export * from './CreateMnemonics';
@@ -9,7 +8,6 @@ export * from './NewWalletName';
 export * from './ReceiveCoins';
 export * from './SendCoins';
 export * from './Settings';
-export * from './ShowPrivateKey';
 export * from './SelectDestination';
 export * from './WalletDetails';
 export * from './WalletExtract';

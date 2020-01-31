@@ -1,4 +1,3 @@
-import * as Prices from './prices';
 import * as Storage from './storage';
 import * as Url from './url';
 import * as Wallet from './wallet';
@@ -9,4 +8,4 @@ import * as Conversions from './conversions';
 import * as Restrictions from './restrictions';
 import * as Languages from './languages';
 
-export { Prices, Gas, Storage, Languages, Url, Wallet , Contracts, Network, Conversions, Restrictions };
+export { Gas, Storage, Languages, Url, Wallet , Contracts, Network, Conversions, Restrictions };
