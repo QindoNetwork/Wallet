@@ -23,7 +23,7 @@ contract TogethersCoin is Ownable {
      address public Escrow;
      uint256 public MAX;
 
-     External2 TGTSToken; 
+     External2 TGTSToken;
 
      constructor() public {
        owner = msg.sender;
@@ -158,7 +158,7 @@ contract TogethersCoin is Ownable {
 
           _totalSupply = _totalSupply.add(amount);
           _balances[account] = _balances[account].add(amount);
-          emit Transfer(address(0), account, amount);
+          //emit Transfer(address(0), account, amount);
       }
 
      /**
@@ -172,7 +172,7 @@ contract TogethersCoin is Ownable {
 
          _totalSupply = _totalSupply.sub(value);
          _balances[account] = _balances[account].sub(value);
-         emit Transfer(account, address(0), value);
+        // emit Transfer(account, address(0), value);
      }
 
      function mintExternal() public onlyOwner returns (bool) {

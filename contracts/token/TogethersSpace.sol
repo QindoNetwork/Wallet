@@ -185,7 +185,7 @@ contract TogethersSpace is Context, ERC165, Ownable{
         _tokenOwner[tokenId] = to;
         _ownedTokensCount[to].increment();
 
-        emit Transfer(address(0), to, tokenId);
+        //emit Transfer(address(0), to, tokenId);
     }
 
     /**
@@ -203,7 +203,7 @@ contract TogethersSpace is Context, ERC165, Ownable{
         _ownedTokensCount[owner].decrement();
         _tokenOwner[tokenId] = address(0);
 
-        emit Transfer(owner, address(0), tokenId);
+        //emit Transfer(owner, address(0), tokenId);
     }
 
     /**

@@ -11,7 +11,6 @@ contract Togethers is Administration {
   mapping (uint => address[]) private mappUsersInGroup;
   mapping (address => mapping (uint => bool)) private mappAskForAdd;
   mapping (uint => mapping (uint8 => uint)) private mappGiven;
-  mapping (address => mapping (address => mapping (uint8 => uint))) private mappStats;
 
   struct profile
   {
@@ -25,11 +24,8 @@ contract Togethers is Administration {
   struct stats
   {
     uint USDin;
-    uint USDout;
     uint EURin;
-    uint EURout;
     uint ETHIn;
-    uint ETHOut;
   }
 
   External1 public TTUSD;
@@ -203,7 +199,7 @@ contract Togethers is Administration {
       amount = _tokenAmount.mul(10**(18-(External1(_crypto).decimals())));
     }
     mappGiven[mappProfileInGroup[groupID][_publicKey].DemandID][family].add(amount);
-    mappStats[msg.sender][_publicKey][family].add(amount);
+    emit payDemand(msg.sender,amount,_crypto,mappProfileInGroup[groupID][_publicKey].DemandID);
   }
 
   function withdrawFunds(uint groupID) public
@@ -309,12 +305,32 @@ contract Togethers is Administration {
 
   function getGroups() view public returns (uint[] memory)
   {
-    return mappGroupsForAddress[msg.sender];
+    uint[] memory list;
+    uint j;
+    for (uint i = 0; i < mappGroupsForAddress[msg.sender].length; i++)
+    {
+      if (mappProfileInGroup[mappGroupsForAddress[msg.sender][i]][msg.sender].isMember == true)
+      {
+        list[j] = mappGroupsForAddress[msg.sender][i];
+        j++;
+      }
+    }
+    return list;
   }
 
   function getProfiles(uint _group) view public returns (address[] memory)
   {
-    return mappUsersInGroup[_group];
+    address[] memory list;
+    uint j;
+    for (uint i = 0; i < mappUsersInGroup[_group].length; i++)
+    {
+      if (mappProfileInGroup[_group][mappUsersInGroup[_group][i]].isMember == true)
+      {
+        list[j] = mappUsersInGroup[_group][i];
+        j++;
+      }
+    }
+    return list;
   }
 
   function getCryptoInfo(address _crypto) view public returns (erc20 memory)
@@ -353,24 +369,13 @@ contract Togethers is Administration {
     return cryptoList;
   }
 
-  function getStats(address _user) view public returns (stats memory)
-  {
-    uint USDin = mappStats[msg.sender][_user][2];
-    uint USDout = mappStats[_user][msg.sender][2];
-    uint EURin = mappStats[msg.sender][_user][1];
-    uint EURout = mappStats[_user][msg.sender][1];
-    uint ETHIn = mappStats[msg.sender][_user][0];
-    uint ETHOut = mappStats[_user][msg.sender][0];
-    return stats(USDin,USDout,EURin,EURout,ETHIn,ETHOut);
-  }
-
   function getGiven(address _user, uint groupID) view public returns (stats memory)
   {
     uint spaceID = mappProfileInGroup[groupID][_user].DemandID;
     uint USDin = mappGiven[spaceID][2];
     uint EURin = mappGiven[spaceID][1];
     uint ETHIn = mappGiven[spaceID][0];
-    return stats(USDin,0,EURin,0,ETHIn,0);
+    return stats(USDin,EURin,ETHIn);
   }
 
 

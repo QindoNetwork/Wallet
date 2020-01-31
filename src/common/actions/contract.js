@@ -27,7 +27,7 @@ export async function ask(togethers, args, address, overrides) {
     result = "KO"
     GeneralActions.notify('you already asked', 'long');
   }
-  if (result = "OK") {
+  if (result === "OK") {
     await togethers.ask(groupID,overrides)
   }
 }catch (e) {

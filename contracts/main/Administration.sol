@@ -11,6 +11,8 @@ contract Administration is Ownable {
   uint public groupNumber;
   bool public stop;
 
+  event payDemand(address from, uint amount, address crypto, uint indexed ID);
+
   mapping (address => bool) public mappAllowCryptoForEU;
   mapping (address => bool) public mappAllowCryptoForUS;
   mapping (address => bool) public mappCryptoEnable;

@@ -102,9 +102,6 @@ export class SecureTransaction extends React.Component {
                 GeneralActions.notify('unknown function', 'long');
                 break;
         }
-      }else {
-        GeneralActions.notify('Low balance', 'long');
-        }
         if (tx === "KO") {
           this.hide()
         }
@@ -112,6 +109,9 @@ export class SecureTransaction extends React.Component {
           this.setState({show: false})
           navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 0 });
           GeneralActions.notify('Success, wait for confirmation in historic', 'short');
+        }
+      }else {
+        GeneralActions.notify('Low balance', 'long');
         }
     }
 

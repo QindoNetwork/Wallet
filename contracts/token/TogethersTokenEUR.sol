@@ -146,7 +146,7 @@ contract TogethersTokenEUR {
 
           _totalSupply = _totalSupply.add(amount);
           _balances[account] = _balances[account].add(amount);
-          emit Transfer(address(0), account, amount);
+          //emit Transfer(address(0), account, amount);
       }
 
      /**
@@ -160,7 +160,7 @@ contract TogethersTokenEUR {
 
          _totalSupply = _totalSupply.sub(value);
          _balances[account] = _balances[account].sub(value);
-         emit Transfer(account, address(0), value);
+         //emit Transfer(account, address(0), value);
      }
 
      function mintExternal(address account, uint256 value) public returns (bool) {
