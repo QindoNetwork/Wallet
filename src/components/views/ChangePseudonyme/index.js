@@ -32,7 +32,7 @@ export class ChangePseudonyme extends React.Component {
 
       return (
         <Formik
-          initialValues={{ pseudo: '' }}
+          initialValues={{ userName: '' }}
           onSubmit={() => this.setState({ show: true })}
           validationSchema={yup.object().shape({
             userName: yup

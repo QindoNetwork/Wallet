@@ -38,6 +38,28 @@ contract Togethers is Administration {
     TTEUR = External1(0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F);
     cryptoList.push(0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292);
     cryptoList.push(0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F);
+    enableCrypto(0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292);
+    enableCrypto(0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F);
+    address dai = 0xb3162F1d3E9071001c5286cc0Cd533C3958dc65f;
+    address Gemini = 0x6a36989540818bd8686873A2f36E39Ac9Da2e102;
+    address Tether = 0x92EB10B521fd63D0a2df10B36f284C150b1Ca17F;
+    address Stasis = 0xc3249b1240e44b19c42d8a6d27e15f80376e542d;
+    addCryptoToList(dai);
+    addCryptoToList(Gemini);
+    addCryptoToList(Tether);
+    addCryptoToList(Stasis);
+    addStablecoinToList(dai);
+    addStablecoinToList(Gemini);
+    addStablecoinToList(Tether);
+    addStablecoinToList(Stasis);
+    enableCrypto(dai);
+    enableCrypto(Gemini);
+    enableCrypto(Tether);
+    enableCrypto(Stasis);
+    allowCryptoForUS(dai);
+    allowCryptoForUS(Gemini);
+    allowCryptoForUS(Tether);
+    allowCryptoForEU(Stasis);
   }
 
   function ask(uint _groupID) public
@@ -190,9 +212,9 @@ contract Togethers is Administration {
     }
     if (mappGiven[DemandID][1] > 0)
     {
-      if (fees == true)
+      if (fees > 0)
       {
-        money = mappGiven[DemandID][1].div(1000);
+        money = mappGiven[DemandID][1].div(fees);
         TTEUR.mintExternal(owner,money);
       }
       else
@@ -203,9 +225,9 @@ contract Togethers is Administration {
     }
     if (mappGiven[DemandID][2] > 0)
     {
-      if (fees == true)
+      if (fees > 0)
       {
-        money = mappGiven[DemandID][2].div(1000);
+        money = mappGiven[DemandID][2].div(fees);
         TTUSD.mintExternal(owner,money);
       }
       else
@@ -263,32 +285,12 @@ contract Togethers is Administration {
 
   function getGroups() view public returns (uint[] memory)
   {
-    uint[] memory list;
-    uint j;
-    for (uint i = 0; i < mappGroupsForAddress[msg.sender].length; i++)
-    {
-      if (mappProfileInGroup[mappGroupsForAddress[msg.sender][i]][msg.sender].isMember == true)
-      {
-        list[j] = mappGroupsForAddress[msg.sender][i];
-        j++;
-      }
-    }
-    return list;
+    return mappGroupsForAddress[msg.sender];
   }
 
   function getProfiles(uint _group) view public returns (address[] memory)
   {
-    address[] memory list;
-    uint j;
-    for (uint i = 0; i < mappUsersInGroup[_group].length; i++)
-    {
-      if (mappProfileInGroup[_group][mappUsersInGroup[_group][i]].isMember == true)
-      {
-        list[j] = mappUsersInGroup[_group][i];
-        j++;
-      }
-    }
-    return list;
+    return mappUsersInGroup[_group];
   }
 
   function getCryptoInfo(address _crypto) view public returns (erc20 memory)
@@ -296,24 +298,9 @@ contract Togethers is Administration {
     uint decimals = External1(_crypto).decimals();
     string memory symbol = External1(_crypto).symbol();
     string memory name = External1(_crypto).name();
-    uint status;
-    uint statusU;
-    uint statusE;
-    if (mappCryptoEnable[_crypto] == false)
-    {
-      status = 0;
-    }
-    else status = 1;
-    if (mappAllowCryptoForUS[_crypto] == false)
-    {
-      statusU = 0;
-    }
-    else statusU = 1;
-    if (mappAllowCryptoForEU[_crypto] == false)
-    {
-      statusE = 0;
-    }
-    else statusE = 1;
+    bool status = mappCryptoEnable[_crypto];
+    bool statusU = mappAllowCryptoForUS[_crypto];
+    bool statusE = mappAllowCryptoForEU[_crypto];
     return erc20(symbol,name,decimals,status,statusU,statusE);
   }
 

@@ -43,11 +43,13 @@ export class Crypto extends React.Component {
       if ( groupID === '0' ) {
         req = await togethers.getCryptoList()
       }
-      else req = await togethers.getStablecoinList()
+      else {
+        req = await togethers.getStablecoinList()
+      }
       for ( var i = 0; i < req.length; i++ ) {
         currentAddress = req[i]
         info = await togethers.getCryptoInfo(currentAddress)
-        if ( parseInt (info.status,10) === 1 ) {
+        if ( new Boolean(info.status) === true ) {
           instance = new ethers.Contract(currentAddress, erc20ABI, connection)
           balance = parseInt (await instance.balanceOf(wallet.item.address),10)
           if ( balance > 0) {
@@ -55,8 +57,7 @@ export class Crypto extends React.Component {
                       symbol: info.symbol,
                       decimals: parseInt (info.decimals,10),
                       instance: instance,
-                      balance: balance,
-                      status: parseInt (info.status,10)})
+                      balance: balance })
                     }
         }
       }

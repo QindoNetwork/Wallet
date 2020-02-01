@@ -7,42 +7,16 @@ import { Image as ImageUtils } from '@common/utils';
 
 export default class ProfilesCard extends React.Component {
 
-  state = {active: 0, owner: 0, loading: 0 };
-
-   async componentDidMount() {
-
-     const { togethers, profile, groupID } = this.props
-     try {
-       this.setState({ owner:   parseInt ( await togethers.isOwner(groupID,profile.id),10),
-                       active:  parseInt ( await togethers.isOpen(groupID,profile.id),10),
-                       loading: 1 })
-     } catch (e) {
-     GeneralActions.notify(e.message, 'long');
-     }
-   }
-
     render() {
-        const { profile } = this.props;
-        const { active, owner, loading } = this.state
+        const { profile, active, owner } = this.props;
         var label1 = 'Member'
         var label2 = 'Inactive'
-        if ( active === 1 ) {
+        if ( active === true ) {
           label2 = "Active"
         }
-        if ( owner === 1 ) {
+        if ( owner === true ) {
           label1 = "Owner"
         }
-
-        if ( loading === 0 ){
-
-          return(
-
-          <View style={styles.container}>
-            <View style={styles.body}>
-              <ActivityIndicator size="large"/>
-            </View>
-          </View>
-        )}
 
         return (
             <View style={styles.container}>

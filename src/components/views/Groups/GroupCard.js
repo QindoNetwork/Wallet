@@ -3,51 +3,20 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';;
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
-import { inject, observer } from 'mobx-react';
 
-@inject('wallet')
-@observer
 export default class GroupsCard extends React.Component {
-
-  state = {active: 0, loading: 0 };
-
-   async componentDidMount() {
-     const { togethers, wallet, group, owner } = this.props
-     try {
-       this.setState({ owner:   parseInt ( await togethers.isOwner(group.id,wallet.item.address),10),
-                       active:  parseInt ( await togethers.isOpen(group.id,wallet.item.address),10),
-                       loading: 1})
-     } catch (e) {
-     GeneralActions.notify(e.message, 'long');
-     }
-   }
 
     render() {
 
       const { group } = this.props;
-      const { active, loading, owner } = this.state
       var label1 = '# ' + group.id
       var label2 = 'Inactive'
       var label3 = 'Member'
-      if ( active === 1) {
+      if ( group.active === true) {
         label2 = "Active"
       }
-      if ( owner === 1) {
+      if ( group.owner === true) {
         label3 = "Owner"
-      }
-
-      if (loading === 0){
-
-        return(
-
-        <View style={styles.container}>
-          <View style={styles.body}>
-            <ActivityIndicator size="large"/>
-          </View>
-        </View>
-
-      )
-
       }
 
         return (

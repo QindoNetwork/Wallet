@@ -10,7 +10,7 @@ contract Administration is Ownable {
   uint public ID;
   uint public groupNumber;
   bool public stop;
-  bool public fees;
+  uint public fees;
 
   event payDemand(address from, uint amount, address crypto, uint indexed ID);
 
@@ -30,9 +30,9 @@ contract Administration is Ownable {
     string symbol;
     string name;
     uint decimals;
-    uint status;
-    uint statusU;
-    uint statusE;
+    bool status;
+    bool statusU;
+    bool statusE;
   }
 
   function createPassword(string memory _password) internal
@@ -168,16 +168,10 @@ contract Administration is Ownable {
     }
   }
 
-  function activateFees() public onlyOwner
+  function activateFees(uint _fees) public onlyOwner
   {
-    if (fees == false)
-    {
-      fees = true;
-    }
-    else
-    {
-      fees = false;
-    }
+    require(_fees >= 100);
+    fees = _fees;
   }
 
 }

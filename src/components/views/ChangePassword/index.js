@@ -33,14 +33,24 @@ export class ChangePassword extends React.Component {
 
       return (
         <Formik
-          initialValues={{ password1: '', password2: '' }}
+          initialValues={{ password1: '', password2: '', oldPassword: '' }}
           onSubmit={() => this.setState({ show: true })}
           validationSchema={yup.object().shape({
-            userName: yup
+            oldPassword: yup
               .string()
               .min(restrictions.minPassword)
               .max(restrictions.minPassword)
-              .required('Required')
+              .required('Required'),
+              password1: yup
+                .string()
+                .min(restrictions.minPassword)
+                .max(restrictions.minPassword)
+                .required('Required'),
+                password2: yup
+                  .string()
+                  .min(restrictions.minPassword)
+                  .max(restrictions.minPassword)
+                  .required('Required')
           })}
         >
           {({handleChange, values, errors, isValid, handleSubmit}) => (
@@ -52,6 +62,7 @@ export class ChangePassword extends React.Component {
               style={styles.input}
               value={values.oldPassword}
               onChangeText={handleChange('oldPassword')}
+              secureTextEntry
               placeholder="old password"
               />
             <Text style={styles.message}>New Password</Text>

@@ -5,20 +5,28 @@ import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import GroupCard from './GroupCard';
 import Header from './Header';
+import { inject, observer } from 'mobx-react';
 
+@inject('wallet')
+@observer
 export class Groups extends React.Component {
 
     state = { loading: 0, groups: [] };
 
     async componentDidMount() {
-      const { togethers } = this.props
+      const { togethers, wallet } = this.props
       let groups = []
       try {
         const req = await togethers.getGroups()
         for ( var i = 0; i < req.length; i++ ) {
           groupID = parseInt (req[i],10)
-          groups.push({   id:  groupID,
-                          name: await togethers.mappGroupIDToGroupName(groupID)  })
+          const profile = await togethers.mappProfileInGroup(groupID,wallet.item.address)
+         if (new Boolean(profile.isMember) == true){
+            groups.push({   id:  groupID,
+                            name: await togethers.mappGroupIDToGroupName(groupID),
+                            owner:   new Boolean(profile.owner),
+                            active:  new Boolean(profile.open)})
+          }
         }
         this.setState({ groups, loading: 1 })
       } catch (e) {
@@ -55,7 +63,7 @@ export class Groups extends React.Component {
               style={styles.content}
               activeOpacity={0.8}
               onPress={() => this.props.navigation.navigate('Profiles',{ item, gasParam, togethers })}>
-                <GroupCard  group={item} address={address} togethers={togethers} />
+                <GroupCard  group={item} togethers={togethers} />
               </TouchableOpacity>
             )}
         />

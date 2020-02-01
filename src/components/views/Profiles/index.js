@@ -30,7 +30,7 @@ export class Profiles extends React.Component {
         )
     })
 
-      state = { show: false, loading: 0, profiles: [], owner: 0, active: 0 };
+      state = { show: false, loading: 0, profiles: [] };
 
       renderModal() {
 
@@ -54,14 +54,15 @@ export class Profiles extends React.Component {
         let profiles = []
         try {
           const req = await togethers.getProfiles(groupID)
-          this.setState({ active:  parseInt ( await togethers.isOpen(groupID,wallet.item.address),10),
-                          owner : parseInt ( await togethers.isOwner(groupID,wallet.itemaddress),10) })
           let currentAddress
             for ( var i = 0; i < req.length; i++ ) {
               currentAddress = req[i]
-              if ( currentAddress !== address ) {
+              var profile = await togethers.mappProfileInGroup(groupID,currentAddress)
+              if ( currentAddress !== address && new Boolean(profile.isMember) === true) {
                 profiles.push({ id:  currentAddress,
-                                name: await togethers.mappAddressToUser(currentAddress) })
+                                name: await togethers.mappAddressToUser(currentAddress),
+                                owner: new Boolean(profile.owner),
+                                active: new Boolean(profile.open)})
               }
           }
           this.setState({ profiles, loading: 1 })
@@ -71,7 +72,7 @@ export class Profiles extends React.Component {
       }
 
       demand(groupID, owner, togethers, gasParam) {
-        if (this.state.active === 1){
+        if (this.props.navigation.state.params.item.active == true){
           this.props.navigation.navigate('CloseDemand',{ groupID , owner, togethers, gasParam })
         }
         else this.props.navigation.navigate('OpenDemand',{ groupID, owner, togethers, gasParam })
@@ -85,9 +86,11 @@ export class Profiles extends React.Component {
   }
 
       render() {
-        const { profiles, owner, active } = this.state
-        const { gasParam, togethers } = this.props.navigation.state.params
-        const groupID = this.props.navigation.state.params.item.id
+        const { profiles } = this.state
+        const { gasParam, togethers, item } = this.props.navigation.state.params
+        const groupID = item.id
+        const owner = item.owner
+        const active = item.active
 
         if (this.state.loading === 0){
 
