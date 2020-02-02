@@ -3,7 +3,6 @@ import { FlatList, RefreshControl, StyleSheet, View, Text } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { measures, colors } from '@common/styles';
 import { Wallets as WalletActions } from '@common/actions';
-import Balance from './Balance';
 import TransactionCard from './TransactionCard';
 import NoTransactions from './NoTransactions';
 import { GeneralActions } from '@common/actions';
@@ -40,8 +39,6 @@ export class WalletExtract extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-
-                <Balance />
                 {this.renderBody(this.props.wallet)}
             </View>
         );

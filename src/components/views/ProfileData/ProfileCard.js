@@ -7,30 +7,7 @@ import { Wallet as WalletUtils } from '@common/utils';
 
 export default class ProfileCard extends React.Component {
 
-  state = { loading: 0, owner: 0, active: 0 };
-
-  async componentDidMount() {
-    try {
-      const { togethers, spaceID, target, groupID } = this.props
-      this.setState({
-                      owner:  await togethers.isOwner(groupID,target),
-                      active:  await togethers.isOpen(groupID,target),
-                      loading: 1 })
-    } catch (e) {
-    GeneralActions.notify(e.message, 'long');
-    }
-  }
-
     render() {
-
-        if (this.state.loading === 0){
-
-          return(
-
-              <ActivityIndicator size="large"/>
-        )
-
-        }
 
         return (
                 <View style={styles.container}>
@@ -38,7 +15,7 @@ export default class ProfileCard extends React.Component {
                         <Icon name='cash' size='large'/>
                     </View>
                     <View style={styles.middleColumn}>
-                        <Text style={styles.title}>{this.state.description}</Text>
+                        <Text style={styles.title}>{this.props.profile.description}</Text>
                     </View>
                 </View>
         );

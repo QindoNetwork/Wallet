@@ -25,6 +25,7 @@ export class Profiles extends React.Component {
                   groupID : navigation.getParam('item').id,
                   togethers : navigation.getParam('togethers'),
                   gasParam : navigation.getParam('gasParam'),
+                  owner : navigation.getParam('item').owner,
                 })
               } />
         )
@@ -58,11 +59,12 @@ export class Profiles extends React.Component {
             for ( var i = 0; i < req.length; i++ ) {
               currentAddress = req[i]
               var profile = await togethers.mappProfileInGroup(groupID,currentAddress)
-              if ( currentAddress !== address && new Boolean(profile.isMember) === true) {
+              if ( currentAddress !== wallet.item.address && new Boolean(profile.isMember) === true) {
                 profiles.push({ id:  currentAddress,
                                 name: await togethers.mappAddressToUser(currentAddress),
                                 owner: new Boolean(profile.owner),
-                                active: new Boolean(profile.open)})
+                                active: new Boolean(profile.open),
+                                description: profile.description})
               }
           }
           this.setState({ profiles, loading: 1 })

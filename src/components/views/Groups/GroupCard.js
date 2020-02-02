@@ -12,10 +12,10 @@ export default class GroupsCard extends React.Component {
       var label1 = '# ' + group.id
       var label2 = 'Inactive'
       var label3 = 'Member'
-      if ( group.active === true) {
+      if ( group.active == true) {
         label2 = "Active"
       }
-      if ( group.owner === true) {
+      if ( group.owner == true) {
         label3 = "Owner"
       }
 

@@ -5,15 +5,12 @@ import { colors, measures } from '@common/styles';
 import { View, StyleSheet, Text, ActivityIndicator } from 'react-native'
 import { SecureTransaction } from '@components/widgets';
 import { Button, Camera, InputWithIcon } from '@components/widgets';
-import { inject, observer } from 'mobx-react';
 
-@inject('wallet')
-@observer
 export class AddProfile extends Component {
 
   static navigationOptions = { title: "Add a friend" };
 
-  state = { show: false, loading: 0, groupID: 0, owner: 0, address: '' };
+  state = { show: false };
 
   renderModal(value) {
 
@@ -29,34 +26,9 @@ export class AddProfile extends Component {
     }
   }
 
-  async componentDidMount() {
-    const { groupID, togethers  } = this.props.navigation.state.params;
-    const { wallet  } = this.props;
-    try {
-        this.setState({ owner:  parseInt ( await togethers.isOwner(groupID,wallet.item.address),10),
-                        loading: 1})
-      } catch (e) {
-          GeneralActions.notify(e.message, 'long');
-      }
-  }
-
   render() {
 
-    if (this.state.loading === 0){
-
-      return(
-
-      <View style={styles.container}>
-        <View style={styles.body}>
-          <ActivityIndicator size="large"/>
-        </View>
-      </View>
-
-    )
-
-    }
-
-    if (this.state.owner === 1) {
+    if (this.props.navigation.state.params.owner == true) {
 
     return (
       <View style={styles.container}>
@@ -76,7 +48,7 @@ export class AddProfile extends Component {
       {this.renderModal(this.state.address)}
       </View>
       );
-
+}
 
       return(
 
@@ -87,8 +59,6 @@ export class AddProfile extends Component {
       </View>
 
     )
-
-  }
 
 
   }

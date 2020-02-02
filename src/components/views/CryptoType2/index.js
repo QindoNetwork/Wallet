@@ -29,8 +29,8 @@ export class CryptoType2 extends React.Component {
       for ( var i = 0; i < req.length; i++ ) {
         currentAddress = req[i]
         info = await togethers.getCryptoInfo(currentAddress)
-        if ( (type === 'TTE' && new Boolean(info.statusE) === 1) ||
-            (type === 'TTU' && new Boolean(info.statusU) === 1)) {
+        if ( (type === 'TTE' && new Boolean(info.statusE) == true) ||
+            (type === 'TTU' && new Boolean(info.statusU) == true)) {
               instance = new ethers.Contract(currentAddress, erc20ABI, connection)
               balance = parseInt (await instance.balanceOf(contractsAddress.togethersAddress),10)
               erc20s.push({

@@ -1,16 +1,13 @@
 import React from 'react';
-import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator, Alert} from 'react-native';
+import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, Alert} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { HeaderIcon } from '@components/widgets';
 import { General as GeneralActions  } from '@common/actions';
 import CryptoCard from './CryptoCard';
 import ProfileCard from './ProfileCard';
-import { inject, observer } from 'mobx-react';
 import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
-@inject('wallet')
-@observer
 
 export class ProfileData extends React.Component {
 
@@ -30,49 +27,21 @@ export class ProfileData extends React.Component {
         )
     })
 
-    state = { loading: false, spaceID: 0 };
-
-    async componentDidMount() {
-      try {
-        const { togethers, groupID, profile } = this.props.navigation.state.params
-        this.setState({ spaceID:  parseInt ( await togethers.getSpaceID(groupID,profile.id),10),
-                        loading: 1})
-      } catch (e) {
-      GeneralActions.notify(e.message, 'long');
-      }
-    }
-
   render() {
 
-    const { gasParam, togethers, profile, groupID, owner  } = this.props.navigation.state.params;
-    const target = profile.id
-
-    if (this.state.loading === 0){
-
-      return(
-
-        <View style={styles.container}>
-          <View style={styles.body}>
-            <ActivityIndicator size="large"/>
-          </View>
-        </View>
-    )
-
-    }
+    const { owner } = this.props.navigation.state.params;
 
     if (owner === 1){
       return(
         <View style={styles.container}>
         <View style={styles.leftColumn}>
-            <ProfileCard togethers={togethers} spaceID={this.state.spaceID} target={target} groupID={groupID}/>
+            <ProfileCard { ...this.props.navigation.state.params }/>
         </View>
         <View style={styles.buttonsContainer}>
             <Button
               children="Admin profile"
               onPress={() => this.props.navigation.navigate('AdminProfile',
-              {
-                gasParam, togethers, profile, groupID
-              })}/>
+              { ...this.props.navigation.state.params })}/>
         </View>
       </View>)
     }
@@ -80,7 +49,7 @@ export class ProfileData extends React.Component {
     return(
       <View style={styles.container}>
       <View style={styles.leftColumn}>
-          <ProfileCard togethers={togethers} spaceID={this.state.spaceID} target={target} groupID={groupID}/>
+          <ProfileCard { ...this.props.navigation.state.params }/>
       </View>
     </View>)
 

@@ -7,12 +7,9 @@ contract Administration is Ownable {
 
   using SafeMath for uint256;
 
-  uint public ID;
   uint public groupNumber;
   bool public stop;
   uint public fees;
-
-  event payDemand(address from, uint amount, address crypto, uint indexed ID);
 
   mapping (address => bool) public mappAllowCryptoForEU;
   mapping (address => bool) public mappAllowCryptoForUS;
@@ -170,7 +167,6 @@ contract Administration is Ownable {
 
   function activateFees(uint _fees) public onlyOwner
   {
-    require(_fees >= 100);
     fees = _fees;
   }
 

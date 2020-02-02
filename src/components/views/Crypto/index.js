@@ -49,7 +49,7 @@ export class Crypto extends React.Component {
       for ( var i = 0; i < req.length; i++ ) {
         currentAddress = req[i]
         info = await togethers.getCryptoInfo(currentAddress)
-        if ( new Boolean(info.status) === true ) {
+        if ( new Boolean(info.status) == true ) {
           instance = new ethers.Contract(currentAddress, erc20ABI, connection)
           balance = parseInt (await instance.balanceOf(wallet.item.address),10)
           if ( balance > 0) {

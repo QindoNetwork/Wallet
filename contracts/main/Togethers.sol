@@ -10,19 +10,14 @@ contract Togethers is Administration {
   mapping (address => uint[]) private mappGroupsForAddress;
   mapping (uint => address[]) private mappUsersInGroup;
   mapping (address => mapping (uint => bool)) private mappAskForAdd;
-  mapping (uint => mapping (uint8 => uint)) private mappGiven;
+  mapping (address => mapping (address => mapping (uint8 => uint))) public mappPeerToPeerStats;
 
   struct profile
   {
     bool isMember;
     bool open;
     bool owner;
-    uint DemandID;
     string description;
-  }
-
-  struct stats
-  {
     uint USDin;
     uint EURin;
     uint ETHIn;
@@ -158,9 +153,7 @@ contract Togethers is Administration {
     require(mappProfileInGroup[groupID][msg.sender].open == false);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     mappProfileInGroup[groupID][msg.sender].open = true;
-    mappProfileInGroup[groupID][msg.sender].DemandID = ID;
     mappProfileInGroup[groupID][msg.sender].description = _description;
-    ID += 1;
   }
 
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, address _crypto) public payable
@@ -196,45 +189,58 @@ contract Togethers is Administration {
       External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
       amount = _tokenAmount.mul(10**(18-(External1(_crypto).decimals())));
     }
-    mappGiven[mappProfileInGroup[groupID][_publicKey].DemandID][family].add(amount);
-    emit payDemand(msg.sender,amount,_crypto,mappProfileInGroup[groupID][_publicKey].DemandID);
+    if (family == 0)
+    {
+       mappProfileInGroup[groupID][_publicKey].ETHIn.add(amount);
+    }
+    if (family == 1)
+    {
+       mappProfileInGroup[groupID][_publicKey].EURin.add(amount);
+    }
+    if (family == 2)
+    {
+       mappProfileInGroup[groupID][_publicKey].USDin.add(amount);
+    }
+    mappPeerToPeerStats[msg.sender][_publicKey][family].add(amount);
   }
 
   function withdrawFunds(uint groupID) public
   {
     require(mappProfileInGroup[groupID][msg.sender].open == true);
     mappProfileInGroup[groupID][msg.sender].open = false;
-    uint DemandID = mappProfileInGroup[groupID][msg.sender].DemandID;
     uint money;
-    if (mappGiven[DemandID][0] > 0)
+    if (mappProfileInGroup[groupID][msg.sender].ETHIn > 0)
     {
-      msg.sender.transfer(mappGiven[DemandID][0]);
+      msg.sender.transfer(mappProfileInGroup[groupID][msg.sender].ETHIn);
+      mappProfileInGroup[groupID][msg.sender].ETHIn = 0;
     }
-    if (mappGiven[DemandID][1] > 0)
+    if (mappProfileInGroup[groupID][msg.sender].EURin > 0)
     {
       if (fees > 0)
       {
-        money = mappGiven[DemandID][1].div(fees);
+        money = mappProfileInGroup[groupID][msg.sender].EURin.div(fees);
+        mappProfileInGroup[groupID][msg.sender].EURin = 0;
         TTEUR.mintExternal(owner,money);
       }
       else
       {
         money = 0;
       }
-      TTEUR.mintExternal(msg.sender,mappGiven[DemandID][1].sub(money));
+      TTEUR.mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].EURin.sub(money));
     }
-    if (mappGiven[DemandID][2] > 0)
+    if (mappProfileInGroup[groupID][msg.sender].USDin > 0)
     {
       if (fees > 0)
       {
-        money = mappGiven[DemandID][2].div(fees);
+        mappProfileInGroup[groupID][msg.sender].USDin = 0;
+        money = mappProfileInGroup[groupID][msg.sender].USDin.div(fees);
         TTUSD.mintExternal(owner,money);
       }
       else
       {
         money = 0;
       }
-      TTUSD.mintExternal(msg.sender,mappGiven[DemandID][2].sub(money));
+      TTUSD.mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].USDin.sub(money));
     }
   }
 
@@ -312,15 +318,6 @@ contract Togethers is Administration {
   function getCryptoList() view public returns (address[] memory)
   {
     return cryptoList;
-  }
-
-  function getGiven(address _user, uint groupID) view public returns (stats memory)
-  {
-    uint spaceID = mappProfileInGroup[groupID][_user].DemandID;
-    uint USDin = mappGiven[spaceID][2];
-    uint EURin = mappGiven[spaceID][1];
-    uint ETHIn = mappGiven[spaceID][0];
-    return stats(USDin,EURin,ETHIn);
   }
 
 }

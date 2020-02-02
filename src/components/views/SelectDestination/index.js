@@ -12,7 +12,7 @@ export class SelectDestination extends React.Component {
 
     static navigationOptions = { title: 'Select destination' };
 
-    state = { address: '', loading: 0, profiles: [], length: 0, owner: 0 };
+    state = { loading: 0, profiles: [] };
 
     async componentDidMount() {
       const { address, togethers, groupID } = this.props.navigation.state.params

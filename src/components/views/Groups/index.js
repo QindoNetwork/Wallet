@@ -25,7 +25,9 @@ export class Groups extends React.Component {
             groups.push({   id:  groupID,
                             name: await togethers.mappGroupIDToGroupName(groupID),
                             owner:   new Boolean(profile.owner),
-                            active:  new Boolean(profile.open)})
+                            active:  new Boolean(profile.open),
+                            description: profile.description,
+                            DemandID: profile.DemandID })
           }
         }
         this.setState({ groups, loading: 1 })
