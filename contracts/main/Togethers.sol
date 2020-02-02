@@ -10,7 +10,7 @@ contract Togethers is Administration {
   mapping (address => uint[]) private mappGroupsForAddress;
   mapping (uint => address[]) private mappUsersInGroup;
   mapping (address => mapping (uint => bool)) private mappAskForAdd;
-  mapping (address => mapping (address => mapping (uint8 => uint))) public mappPeerToPeerStats;
+  mapping (address => mapping (address => Stats)) public mappPeerToPeerStats;
 
   struct profile
   {
@@ -18,6 +18,11 @@ contract Togethers is Administration {
     bool open;
     bool owner;
     string description;
+    Stats stats;
+  }
+
+  struct Stats
+  {
     uint USDin;
     uint EURin;
     uint ETHIn;
@@ -25,6 +30,8 @@ contract Togethers is Administration {
 
   External1 public TTUSD;
   External1 public TTEUR;
+
+  uint groupNumber;
 
   constructor() public {
     owner = msg.sender;
@@ -191,17 +198,19 @@ contract Togethers is Administration {
     }
     if (family == 0)
     {
-       mappProfileInGroup[groupID][_publicKey].ETHIn.add(amount);
+       mappProfileInGroup[groupID][_publicKey].stats.ETHIn.add(amount);
+       mappPeerToPeerStats[msg.sender][_publicKey].ETHIn.add(amount);
     }
     if (family == 1)
     {
-       mappProfileInGroup[groupID][_publicKey].EURin.add(amount);
+       mappProfileInGroup[groupID][_publicKey].stats.EURin.add(amount);
+       mappPeerToPeerStats[msg.sender][_publicKey].EURin.add(amount);
     }
     if (family == 2)
     {
-       mappProfileInGroup[groupID][_publicKey].USDin.add(amount);
+       mappProfileInGroup[groupID][_publicKey].stats.USDin.add(amount);
+       mappPeerToPeerStats[msg.sender][_publicKey].USDin.add(amount);
     }
-    mappPeerToPeerStats[msg.sender][_publicKey][family].add(amount);
   }
 
   function withdrawFunds(uint groupID) public
@@ -209,38 +218,38 @@ contract Togethers is Administration {
     require(mappProfileInGroup[groupID][msg.sender].open == true);
     mappProfileInGroup[groupID][msg.sender].open = false;
     uint money;
-    if (mappProfileInGroup[groupID][msg.sender].ETHIn > 0)
+    if (mappProfileInGroup[groupID][msg.sender].stats.ETHIn > 0)
     {
-      msg.sender.transfer(mappProfileInGroup[groupID][msg.sender].ETHIn);
-      mappProfileInGroup[groupID][msg.sender].ETHIn = 0;
+      msg.sender.transfer(mappProfileInGroup[groupID][msg.sender].stats.ETHIn);
+      mappProfileInGroup[groupID][msg.sender].stats.ETHIn = 0;
     }
-    if (mappProfileInGroup[groupID][msg.sender].EURin > 0)
+    if (mappProfileInGroup[groupID][msg.sender].stats.EURin > 0)
     {
       if (fees > 0)
       {
-        money = mappProfileInGroup[groupID][msg.sender].EURin.div(fees);
-        mappProfileInGroup[groupID][msg.sender].EURin = 0;
+        money = mappProfileInGroup[groupID][msg.sender].stats.EURin.div(fees);
         TTEUR.mintExternal(owner,money);
       }
       else
       {
         money = 0;
       }
-      TTEUR.mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].EURin.sub(money));
+      TTEUR.mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats.EURin.sub(money));
+      mappProfileInGroup[groupID][msg.sender].stats.EURin = 0;
     }
-    if (mappProfileInGroup[groupID][msg.sender].USDin > 0)
+    if (mappProfileInGroup[groupID][msg.sender].stats.USDin > 0)
     {
       if (fees > 0)
       {
-        mappProfileInGroup[groupID][msg.sender].USDin = 0;
-        money = mappProfileInGroup[groupID][msg.sender].USDin.div(fees);
+        money = mappProfileInGroup[groupID][msg.sender].stats.USDin.div(fees);
         TTUSD.mintExternal(owner,money);
       }
       else
       {
         money = 0;
       }
-      TTUSD.mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].USDin.sub(money));
+      TTUSD.mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats.USDin.sub(money));
+      mappProfileInGroup[groupID][msg.sender].stats.USDin = 0;
     }
   }
 
@@ -273,7 +282,16 @@ contract Togethers is Administration {
 
   function quitGroup(uint _groupID) public
   {
-    require(mappProfileInGroup[_groupID][msg.sender].owner == false || mappUsersInGroup[_groupID].length == 1);
+    bool notlastOne;
+    for (uint i = 0; i < mappUsersInGroup[_groupID].length; i++)
+    {
+      if (mappProfileInGroup[_groupID][mappUsersInGroup[_groupID][i]].isMember == true && mappUsersInGroup[_groupID][i] != msg.sender)
+      {
+        notlastOne = true;
+        break;
+      }
+    }
+    require(mappProfileInGroup[_groupID][msg.sender].owner == false || notlastOne == false);
     if (mappProfileInGroup[_groupID][msg.sender].owner == true)
     {
       mappProfileInGroup[_groupID][msg.sender].owner = false;

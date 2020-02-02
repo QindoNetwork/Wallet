@@ -107,19 +107,26 @@ export const TogethersABI = [
         "type": "string"
       },
       {
-        "internalType": "uint256",
-        "name": "USDin",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "EURin",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "ETHIn",
-        "type": "uint256"
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "USDin",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "EURin",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "ETHIn",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Togethers.Stats",
+        "name": "stats",
+        "type": "tuple"
       }
     ],
     "payable": false,
@@ -249,37 +256,6 @@ export const TogethersABI = [
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "name": "mappPeerToPeerStats",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -465,6 +441,42 @@ export const TogethersABI = [
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "mappPeerToPeerStats",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "USDin",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "EURin",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "ETHIn",
+        "type": "uint256"
       }
     ],
     "payable": false,

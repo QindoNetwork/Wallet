@@ -27,7 +27,9 @@ export class Groups extends React.Component {
                             owner:   new Boolean(profile.owner),
                             active:  new Boolean(profile.open),
                             description: profile.description,
-                            DemandID: profile.DemandID })
+                            USDin: parseInt(profile.stats.USDin,10),
+                            EURin: parseInt(profile.stats.EURin,10),
+                            ETHIn: parseInt(profile.stats.ETHIn,10) })
           }
         }
         this.setState({ groups, loading: 1 })
@@ -57,7 +59,7 @@ export class Groups extends React.Component {
       return(
 
           <View style={styles.container}>
-          <Header/>
+          <Header length={this.state.groups.length}/>
           <FlatList
             data={this.state.groups.sort((prev, next) => prev.name.localeCompare(next.name))}
             renderItem={({ item }) => (

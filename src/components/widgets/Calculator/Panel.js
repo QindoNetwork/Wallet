@@ -1,24 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { inject, observer } from 'mobx-react';
 import { colors, measures } from '@common/styles';
 
-@inject('prices')
-@observer
 export default class Panel extends React.Component {
 
     state = { amount: '' };
 
     get amount() {
         return this.state.amount || 0;
-    }
-
-    get fiatLabel() {
-        return this.props.prices.selectedRate.toUpperCase();
-    }
-
-    get fiatAmount() {
-        return (this.amount * this.props.prices.usd).toFixed(2);
     }
 
     onChange(value) {
@@ -43,20 +32,6 @@ export default class Panel extends React.Component {
     }
 
     render() {
-        if (this.props.symbol === 'ETH')
-        {
-        return (
-            <View style={styles.container}>
-                <View style={styles.row}>
-                    <Text style={styles.amount}>{this.amount}</Text>
-                    <Text style={styles.unit}>{this.props.symbol}</Text>
-                </View>
-                <View style={styles.row}>
-                    <Text style={styles.fiat}>{this.fiatLabel} {this.fiatAmount}</Text>
-                </View>
-            </View>
-        );
-        }
         return (
             <View style={styles.container}>
                 <View style={styles.row}>

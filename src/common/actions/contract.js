@@ -46,6 +46,13 @@ export async function createProfile(togethers, args, overrides) {
       GeneralActions.notify("You cannot add this profile or he did not ask to apply", 'long');
       return "KO"
     }
+    const profile = await togethers.mappProfileInGroup(groupID,value)
+    const isMember = new Boolean(profile.isMember)
+    if(isMember == true)
+    {
+      GeneralActions.notify("Is member already", 'long');
+      return "KO"
+    }
     await togethers.createProfile(groupID,value,overrides)
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
@@ -110,8 +117,26 @@ export async function askForFunds(togethers, args, overrides) {
 export async function quitGroup(togethers, args, overrides) {
   const { groupID } = args
   let result = "OK"
+  let notlastOne = 0
+  const owner = new Boolean (await togethers.mappUsersInGroup(groupID).owner)
   try {
-    await togethers.quitGroup(groupID,overrides)
+    for (let i = 0; i < await togethers.mappUsersInGroup(groupID).length; i++)
+    {
+      if (mappProfileInGroup[_groupID][mappUsersInGroup[_groupID][i]].isMember == true && mappUsersInGroup[_groupID][i] != msg.sender)
+      {
+        notlastOne = 1;
+        break;
+      }
+    }
+    if (owner == false || notlastOne === 0)
+    {
+      GeneralActions.notify("you cannot quit", 'long');
+      result = "KO"
+    }
+    else
+    {
+      await togethers.quitGroup(groupID,overrides)
+    }
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
     result = "KO"

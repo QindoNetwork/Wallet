@@ -18,19 +18,19 @@ struct gasParameters
 constructor() public {
     mappFunctionToGasParameters[0].functionName = "ask";
     mappFunctionToGasParameters[0].gasPrice = 6;
-    mappFunctionToGasParameters[0].gasLimit = 5000000;
+    mappFunctionToGasParameters[0].gasLimit = 50000;
     mappFunctionToGasParameters[1].functionName = "transferGroupOwnership";
     mappFunctionToGasParameters[1].gasPrice = 6;
     mappFunctionToGasParameters[1].gasLimit = 5000000;
     mappFunctionToGasParameters[2].functionName = "setUser";
     mappFunctionToGasParameters[2].gasPrice = 6;
-    mappFunctionToGasParameters[2].gasLimit = 1200000;
+    mappFunctionToGasParameters[2].gasLimit = 90000;
     mappFunctionToGasParameters[3].functionName = "createGroup";
     mappFunctionToGasParameters[3].gasPrice = 6;
-    mappFunctionToGasParameters[3].gasLimit = 5000000;
+    mappFunctionToGasParameters[3].gasLimit = 200000;
     mappFunctionToGasParameters[4].functionName = "createProfile";
     mappFunctionToGasParameters[4].gasPrice = 6;
-    mappFunctionToGasParameters[4].gasLimit = 5000000;
+    mappFunctionToGasParameters[4].gasLimit = 110000;
     mappFunctionToGasParameters[5].functionName = "askForFunds";
     mappFunctionToGasParameters[5].gasPrice = 6;
     mappFunctionToGasParameters[5].gasLimit = 5000000;
@@ -70,7 +70,7 @@ constructor() public {
 
   function setGasLimit(uint limit, uint _function)  public onlyOwner
   {
-    require(15 <= _function &&  _function <= listLength);
+    require(_function <= listLength);
     if (_function == listLength)
     {
       listLength += 1;
@@ -80,7 +80,7 @@ constructor() public {
 
   function setGasPrice(uint price, uint _function)  public onlyOwner
   {
-    require(15 <= _function &&  _function <= listLength);
+    require(_function <= listLength);
     if (_function == listLength)
     {
       listLength += 1;
@@ -90,7 +90,7 @@ constructor() public {
 
   function setGasFunctionName(string memory name, uint _function)  public onlyOwner
   {
-    require(15 <= _function &&  _function <= listLength);
+    require(_function <= listLength);
     if (_function == listLength)
     {
       listLength += 1;

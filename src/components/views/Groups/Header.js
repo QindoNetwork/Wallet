@@ -9,6 +9,7 @@ export default class Header extends React.Component {
             <View style={styles.container}>
                 <View style={styles.leftColumn}>
                     <Text style={styles.title}>Your groups</Text>
+                    <Text style={styles.title}>{this.props.length}</Text>
                 </View>
             </View>
         );

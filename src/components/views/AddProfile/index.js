@@ -10,7 +10,7 @@ export class AddProfile extends Component {
 
   static navigationOptions = { title: "Add a friend" };
 
-  state = { show: false };
+  state = { show: false, address: '' };
 
   renderModal(value) {
 

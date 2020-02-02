@@ -95,8 +95,8 @@ export class SecureTransaction extends React.Component {
                     tx = await ContractActions.removeMember(togethers,values,overrides)
                     break;
                     case gas.changeToken:
-                        tx = await ContractActions.changeToken(togethers,values,overrides)
-                        break;
+                    tx = await ContractActions.changeToken(togethers,values,overrides)
+                    break;
             default:
                 GeneralActions.notify('unknown function', 'long');
                 break;

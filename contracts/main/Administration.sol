@@ -7,7 +7,6 @@ contract Administration is Ownable {
 
   using SafeMath for uint256;
 
-  uint public groupNumber;
   bool public stop;
   uint public fees;
 
@@ -167,7 +166,14 @@ contract Administration is Ownable {
 
   function activateFees(uint _fees) public onlyOwner
   {
-    fees = _fees;
+    if (_fees < 100)
+    {
+      fees = 0;
+    }
+    else
+    {
+      fees = _fees;
+    }
   }
 
 }

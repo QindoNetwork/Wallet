@@ -6,15 +6,12 @@ import { General as GeneralActions  } from '@common/actions';
 import { Gas as gas } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
 import CryptoCard from '../Crypto/CryptoCard';
-import { inject, observer } from 'mobx-react';
 
-@inject('wallet')
-@observer
 export class CloseDemand extends React.Component {
 
   static navigationOptions = { title: "My demand" };
 
-  state = { loading: 0, erc20s: [], description: '', demandID: 0,  show: false };
+  state = { show: false };
 
   renderModal() {
 
@@ -30,47 +27,21 @@ export class CloseDemand extends React.Component {
     }
   }
 
-  async componentDidMount() {
-    const { gasParam, togethers, groupID } = this.props.navigation.state.params;
-    const { wallet } = this.props;
-    var erc20s = []
-    try {
-      const given = await togethers.getGiven(wallet.item.address, groupID)
-      erc20s.push({ name: "Ethers",
-                    symbol: "ETH",
-                    balance: parseInt (given.ETHIn ,10)})
-      erc20s.push({ name: "Togethers-USD",
-                    symbol: "TGTU",
-                    balance: parseInt (given.USDin ,10)})
-      erc20s.push({ name: "Togethers-EUR",
-                    symbol: "TGTE",
-                    balance: parseInt (given.EURin ,10)})
-      const demandID = parseInt ( await togethers.getSpaceID(groupID,wallet.item.address),10)
-      const description = await togethers.getDescription(groupID,wallet.item.address)
-      this.setState({ erc20s,
-                      demandID,
-                      description,
-                      loading: 1 })
-    } catch (e) {
-    GeneralActions.notify(e.message, 'long');
-    }
-  }
-
   render() {
 
-    const { erc20s, description, demandID } = this.state
-
-    if (this.state.loading === 0){
-
-      return(
-        <View style={styles.container}>
-          <View style={styles.body}>
-            <ActivityIndicator size="large"/>
-          </View>
-        </View>
-    )
-
-    }
+    const { USDin, EURin, ETHIn } = this.props.navigation.state.params;
+    var erc20s = []
+    erc20s.push({ name: "Ethers",
+                    symbol: "ETH",
+                    balance: ETHIn ,})
+    erc20s.push({ name: "Togethers-USD",
+                    symbol: "TGTU",
+                    balance: USDin,
+                   decimals: 18})
+    erc20s.push({ name: "Togethers-EUR",
+                    symbol: "TGTE",
+                    balance: EURin,
+                    decimals: 18})
 
     return(
 
@@ -78,7 +49,6 @@ export class CloseDemand extends React.Component {
       <FlatList
               style={styles.content}
               data={erc20s.sort((prev, next) => prev.name.localeCompare(next.name))}
-              keyExtractor={(item, index) => String(index)}
               renderItem={({ item }) => (<CryptoCard crypto={item} />)} />
             <View style={styles.buttonsContainer}>
                 <Button

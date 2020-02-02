@@ -57,14 +57,18 @@ export class Profiles extends React.Component {
           const req = await togethers.getProfiles(groupID)
           let currentAddress
             for ( var i = 0; i < req.length; i++ ) {
+              this.setState({ length: req.length })
               currentAddress = req[i]
               var profile = await togethers.mappProfileInGroup(groupID,currentAddress)
-              if ( currentAddress !== wallet.item.address && new Boolean(profile.isMember) === true) {
+              if ( currentAddress !== wallet.item.address && new Boolean(profile.isMember) == true) {
                 profiles.push({ id:  currentAddress,
                                 name: await togethers.mappAddressToUser(currentAddress),
                                 owner: new Boolean(profile.owner),
                                 active: new Boolean(profile.open),
-                                description: profile.description})
+                                description: profile.description,
+                                USDin: parseInt(profile.stats.USDin,10),
+                                EURin: parseInt(profile.stats.EURin,10),
+                                ETHIn: parseInt(profile.stats.ETHIn,10)})
               }
           }
           this.setState({ profiles, loading: 1 })
@@ -73,11 +77,11 @@ export class Profiles extends React.Component {
         }
       }
 
-      demand(groupID, owner, togethers, gasParam) {
+      demand(groupID, togethers, gasParam, item) {
         if (this.props.navigation.state.params.item.active == true){
-          this.props.navigation.navigate('CloseDemand',{ groupID , owner, togethers, gasParam })
+          this.props.navigation.navigate('CloseDemand',{ groupID, togethers, gasParam, USDin: item.USDin, EURin: item.EURin, ETHIn: item.ETHin })
         }
-        else this.props.navigation.navigate('OpenDemand',{ groupID, owner, togethers, gasParam })
+        else this.props.navigation.navigate('OpenDemand',{ groupID, togethers, gasParam })
       }
 
       onPressQuit() {
@@ -113,7 +117,7 @@ export class Profiles extends React.Component {
         <View style={styles.buttonsContainer}>
             <Button
               children="My demand"
-              onPress={() => this.demand(groupID, owner, togethers, gasParam )}/>
+              onPress={() => this.demand(groupID, togethers, gasParam, item )}/>
         </View>
         <FlatList
             data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
