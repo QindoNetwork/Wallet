@@ -6,6 +6,7 @@ export function selectActiveLanguage(language) {
         .then(() => LanguagesStore.setSelectedLanguage(language));
 }
 
+// Login';
 export function choosePseudonyme(language) {
   switch (language) {
       case 'en':
@@ -16,3 +17,38 @@ export function choosePseudonyme(language) {
       return "Choose pseudonyme"
   }
 }
+
+
+// ConfirmMnemonics';
+// ConfirmTransaction';
+// CreateMnemonics';
+// CreateWallet';
+// LoadMnemonics';
+// NewWallet';
+// NewWalletName';
+// ReceiveCoins';
+// SendCoins';
+// Settings';
+// SelectDestination';
+// WalletDetails';
+// WalletExtract';
+// WalletSettings';
+// WalletsOverview';
+// AddProfile';
+// AskGroup';
+// CreateGroup';
+// Crypto';
+// ProfileData';
+// Profiles';
+// Groups';
+// AddGroup';
+// OpenDemand';
+// CloseDemand';
+// CryptoType1';
+// CryptoType2';
+// SendCoinsType1';
+// ChangeCrypto';
+// ChangePseudonyme';
+// ChangePassword';
+// AdminProfile';
+// ChangeLanguage';

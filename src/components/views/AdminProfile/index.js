@@ -1,7 +1,7 @@
 import { Button } from '@components/widgets';
 import React, { Component } from 'react'
 import { colors, measures } from '@common/styles';
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { Gas as gas } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
 
@@ -13,8 +13,9 @@ export class AdminProfile extends Component {
 
   renderModal() {
 
-  const { gasParam, togethers, profile, groupID  } = this.props.navigation.state.params;
+  const { gasParam, togethers, profile, user  } = this.props.navigation.state.params;
   const target = profile.id
+  const groupID = user.id
   let type
 
   if (this.state.show === true) {
@@ -44,6 +45,14 @@ this.setState({ show: true,
 }
 
   render() {
+
+    if (this.props.user.owner == false){
+      return(
+        <Text>
+You must be owner of the group
+        </Text>
+)
+    }
 
       return (
           <View style={styles.container}>

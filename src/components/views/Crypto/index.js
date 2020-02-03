@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, FlatList, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
+import { TouchableOpacity, FlatList, StyleSheet, Text, View, ActivityIndicator, RefreshControl} from 'react-native';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import CryptoCard from './CryptoCard';
@@ -16,7 +16,11 @@ export class Crypto extends React.Component {
 
   state = { loading: 0, erc20s: [], lowBalance: 0 };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.updateData()
+  }
+
+  async updateData() {
     const { togethers, groupID, wallet, gasParam } = this.props
 
     const gasLimit = gasParam[gas.defaultTransaction].limit
@@ -71,7 +75,7 @@ export class Crypto extends React.Component {
 
     render() {
 
-      const { togethers, gasParam, navigation, groupID } = this.props
+      const { togethers, gasParam, navigation, groupID, wallet } = this.props
       const { erc20s } = this.state
 
       if (this.state.loading === 0){
@@ -108,6 +112,7 @@ export class Crypto extends React.Component {
           <Header/>
             <FlatList
               data={erc20s.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
+              refreshControl={<RefreshControl refreshing={wallet.item.loading} onRefresh={() => this.updateData()} />}
               renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.content}

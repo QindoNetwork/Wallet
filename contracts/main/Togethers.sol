@@ -1,4 +1,4 @@
-pragma solidity ^0.6.0;
+pragma solidity ^0.5.0;
 pragma experimental ABIEncoderV2;
 
 import "./Administration.sol";
@@ -118,9 +118,9 @@ contract Togethers is Administration {
     return 0;
   }
 
-  function verifyGroupAsked(uint groupNumber, address _key) public view returns (uint)
+  function verifyGroupAsked(uint _groupNumber, address _key) public view returns (uint)
   {
-    if (mappAskForAdd[_key][groupNumber] == true)
+    if (mappAskForAdd[_key][_groupNumber] == true)
     {
       return 1;
     }
@@ -192,8 +192,6 @@ contract Togethers is Administration {
         family = 1;
       }
       require(family != 0);
-      require(External1(_crypto).balanceOf(msg.sender) >= _tokenAmount);
-      require(External1(_crypto).allowance(msg.sende,address(this)) >= _tokenAmount);
       External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
       amount = _tokenAmount.mul(10**(18-(External1(_crypto).decimals())));
     }
@@ -258,16 +256,13 @@ contract Togethers is Administration {
   {
     require(mappCryptoEnable[_crypto] == true);
     uint cryptoAmount = _tokenAmount.mul(10**(-(18-(External1(_crypto).decimals()))));
-    require(External1(_crypto).balanceOf(address(this)) >= cryptoAmount);
     if (mappAllowCryptoForUS[_crypto] == true)
     {
-      require(TTUSD.balanceOf(msg.sender) >= _tokenAmount);
       TTUSD.burnExternal(msg.sender,_tokenAmount);
       External1(_crypto).transfer(msg.sender,cryptoAmount);
     }
     if (mappAllowCryptoForEU[_crypto] == true)
     {
-      require(TTEUR.balanceOf(msg.sender) >= _tokenAmount);
       TTEUR.burnExternal(msg.sender,_tokenAmount);
       External1(_crypto).transfer(msg.sender,cryptoAmount);
     }

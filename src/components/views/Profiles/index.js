@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, TouchableOpacity, RefreshControl,FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { Alert, TouchableOpacity, RefreshControl, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Button } from '@components/widgets';
@@ -8,13 +8,14 @@ import { HeaderIcon } from '@components/widgets';
 import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
 import { inject, observer } from 'mobx-react';
 import { SecureTransaction } from '@components/widgets';
+import Header from './Header';
 
 @inject('wallet')
 @observer
 export class Profiles extends React.Component {
 
   static navigationOptions = ({ navigation }) => ({
-        title: navigation.getParam('item').name,
+        title: navigation.getParam('profile').name,
         headerRight: (
             <HeaderIcon
                 name='person-add'
@@ -22,10 +23,10 @@ export class Profiles extends React.Component {
                 color={colors.white}
                 onPress={() => navigation.navigate('AddProfile',
                 {
-                  groupID : navigation.getParam('item').id,
+                  groupID : navigation.getParam('profile').id,
                   togethers : navigation.getParam('togethers'),
                   gasParam : navigation.getParam('gasParam'),
-                  owner : navigation.getParam('item').owner,
+                  owner : navigation.getParam('profile').owner,
                 })
               } />
         )
@@ -35,8 +36,8 @@ export class Profiles extends React.Component {
 
       renderModal() {
 
-        const { gasParam, togethers, item  } = this.props.navigation.state.params;
-        const groupID = item.id
+        const { gasParam, togethers, profile  } = this.props.navigation.state.params;
+        const groupID = profile.id
 
         if (this.state.show === true) {
         return (  <SecureTransaction
@@ -48,10 +49,14 @@ export class Profiles extends React.Component {
         }
       }
 
-      async componentDidMount() {
-        const { gasParam, togethers, item } = this.props.navigation.state.params;
+      componentDidMount() {
+        this.updateData()
+      }
+
+      async updateData() {
+        const { gasParam, togethers, profile } = this.props.navigation.state.params;
         const { wallet } = this.props;
-        const groupID = item.id
+        const groupID = profile.id
         let profiles = []
         try {
           const req = await togethers.getProfiles(groupID)
@@ -59,16 +64,16 @@ export class Profiles extends React.Component {
             for ( var i = 0; i < req.length; i++ ) {
               this.setState({ length: req.length })
               currentAddress = req[i]
-              var profile = await togethers.mappProfileInGroup(groupID,currentAddress)
-              if ( currentAddress !== wallet.item.address && new Boolean(profile.isMember) == true) {
+              var temp = await togethers.mappProfileInGroup(groupID,currentAddress)
+              if ( currentAddress !== wallet.item.address && new Boolean(temp.isMember) == true) {
                 profiles.push({ id:  currentAddress,
                                 name: await togethers.mappAddressToUser(currentAddress),
-                                owner: new Boolean(profile.owner),
-                                active: new Boolean(profile.open),
-                                description: profile.description,
-                                USDin: parseInt(profile.stats.USDin,10),
-                                EURin: parseInt(profile.stats.EURin,10),
-                                ETHin: parseInt(profile.stats.ETHIn,10)})
+                                owner: new Boolean(temp.owner),
+                                active: new Boolean(temp.open),
+                                description: temp.description,
+                                USDin: parseInt(temp.stats.USDin,10),
+                                EURin: parseInt(temp.stats.EURin,10),
+                                ETHin: parseInt(temp.stats.ETHIn,10)})
               }
           }
           this.setState({ profiles, loading: 1 })
@@ -77,9 +82,9 @@ export class Profiles extends React.Component {
         }
       }
 
-      demand(groupID, togethers, gasParam, item) {
-        if (this.props.navigation.state.params.item.active == true){
-          this.props.navigation.navigate('CloseDemand',{ groupID, togethers, gasParam, item })
+      demand(groupID, togethers, gasParam, profile) {
+        if (this.props.navigation.state.params.profile.active == true){
+          this.props.navigation.navigate('CloseDemand',{ groupID, togethers, gasParam, profile })
         }
         else this.props.navigation.navigate('OpenDemand',{ groupID, togethers, gasParam })
       }
@@ -93,10 +98,8 @@ export class Profiles extends React.Component {
 
       render() {
         const { profiles } = this.state
-        const { gasParam, togethers, item } = this.props.navigation.state.params
-        const groupID = item.id
-        const owner = item.owner
-        const active = item.active
+        const { wallet } = this.props
+        const { gasParam, togethers, profile } = this.props.navigation.state.params
 
         if (this.state.loading === 0){
 
@@ -114,18 +117,20 @@ export class Profiles extends React.Component {
 
       return(
         <View style={styles.container}>
+        <Header length={this.state.profiles.length}/>
         <View style={styles.buttonsContainer}>
             <Button
               children="My demand"
-              onPress={() => this.demand(groupID, togethers, gasParam, item )}/>
+              onPress={() => this.demand(groupID, togethers, gasParam, profile )}/>
         </View>
         <FlatList
             data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
+            refreshControl={<RefreshControl refreshing={wallet.item.loading} onRefresh={() => this.updateData()} />}
             renderItem={({ item }) => (
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('ProfileData',{ groupID, active, owner, profile: item, togethers, gasParam })
+              onPress={() => this.props.navigation.navigate('ProfileData',{ user: profile, item, togethers, gasParam })
               }>
                 <ProfileCard profile={item} groupID={groupID} togethers={togethers}/>
               </TouchableOpacity>

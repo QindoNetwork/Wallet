@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
+import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator, RefreshControl} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
@@ -16,7 +16,11 @@ export class CryptoType2 extends React.Component {
 
   state = { loading: 0, erc20s: [] };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.updateData()
+  }
+
+  async updateData() {
     const { wallet } = this.props
     const { togethers, type } = this.props.navigation.state.params
     try {
@@ -51,6 +55,7 @@ export class CryptoType2 extends React.Component {
     render() {
 
       const { togethers, gasParam, type, groupID } = this.props.navigation.state.params
+      const { wallet } = this.props
       const { erc20s } = this.state
 
       if (this.state.loading === 0){
@@ -72,6 +77,7 @@ export class CryptoType2 extends React.Component {
         <View style={styles.container}>
             <FlatList
               data={erc20s.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
+              refreshControl={<RefreshControl refreshing={wallet.item.loading} onRefresh={() => this.updateData()} />}
               renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.content}

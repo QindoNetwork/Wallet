@@ -13,7 +13,11 @@ export class Groups extends React.Component {
 
     state = { loading: 0, groups: [] };
 
-    async componentDidMount() {
+    componentDidMount() {
+      this.updateData()
+    }
+
+    async updateData() {
       const { togethers, wallet } = this.props
       let groups = []
       try {
@@ -40,7 +44,7 @@ export class Groups extends React.Component {
 
     render() {
 
-      const { togethers, gasParam  } = this.props;
+      const { togethers, gasParam, wallet  } = this.props;
 
       if (this.state.loading === 0){
 
@@ -62,11 +66,12 @@ export class Groups extends React.Component {
           <Header length={this.state.groups.length}/>
           <FlatList
             data={this.state.groups.sort((prev, next) => prev.name.localeCompare(next.name))}
+            refreshControl={<RefreshControl refreshing={wallet.item.loading} onRefresh={() => this.updateData()} />}
             renderItem={({ item }) => (
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('Profiles',{ item, gasParam, togethers })}>
+              onPress={() => this.props.navigation.navigate('Profiles',{ profile:item, gasParam, togethers })}>
                 <GroupCard  group={item} togethers={togethers} />
               </TouchableOpacity>
             )}

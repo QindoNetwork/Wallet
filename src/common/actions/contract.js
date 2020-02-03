@@ -53,7 +53,10 @@ export async function createProfile(togethers, args, overrides) {
       GeneralActions.notify("Is member already", 'long');
       return "KO"
     }
+    if (result === "OK")
+    {
     await togethers.createProfile(groupID,value,overrides)
+    }
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
     result = "KO"
@@ -70,7 +73,7 @@ export async function changePassword(togethers, args, overrides) {
       result = "KO"
       GeneralActions.notify('password not good', 'long');
     }
-    await togethers.changePassword(value,overrides)
+    else await togethers.changePassword(value,overrides)
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
     result = "KO"
@@ -118,8 +121,9 @@ export async function quitGroup(togethers, args, overrides) {
   const { groupID } = args
   let result = "OK"
   let notlastOne = 0
-  const owner = new Boolean (await togethers.mappUsersInGroup(groupID).owner)
   try {
+    const active = new Boolean (await togethers.mappUsersInGroup(groupID).active)
+    const owner = new Boolean (await togethers.mappUsersInGroup(groupID).owner)
     for (let i = 0; i < await togethers.mappUsersInGroup(groupID).length; i++)
     {
       if (mappProfileInGroup[_groupID][mappUsersInGroup[_groupID][i]].isMember == true && mappUsersInGroup[_groupID][i] != msg.sender)
@@ -128,12 +132,17 @@ export async function quitGroup(togethers, args, overrides) {
         break;
       }
     }
-    if (owner == false || notlastOne === 0)
+    if (owner == true && notlastOne === 0)
     {
-      GeneralActions.notify("you cannot quit", 'long');
+      GeneralActions.notify("admin cannot quit if is not last", 'long');
       result = "KO"
     }
-    else
+    if (active == true)
+    {
+      GeneralActions.notify("close your demand before", 'long');
+      result = "KO"
+    }
+    if (result === "OK")
     {
       await togethers.quitGroup(groupID,overrides)
     }
@@ -160,7 +169,13 @@ export async function removeMember(togethers, args, overrides) {
   const { target, groupID } = args
   let result = "OK"
   try {
-    await togethers.removeMember(target,groupID,overrides)
+    const active = new Boolean (await togethers.mappUsersInGroup(groupID).active)
+    if (active == true)
+    {
+      GeneralActions.notify("the user have to close his demand", 'long');
+      result = "KO"
+    }
+    else await togethers.removeMember(target,groupID,overrides)
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
     result = "KO"
