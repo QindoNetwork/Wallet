@@ -12,5 +12,7 @@ export function choosePseudonyme(language) {
       return "Choose pseudonyme"
       case 'fr':
       return "Choisir pseudonyme"
+      default:
+      return "Choose pseudonyme"
   }
 }

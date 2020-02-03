@@ -197,7 +197,7 @@ export class Login extends React.Component {
     renderWalletEmpty() {
       const { address } = this.props.navigation.state.params;
       return (
-        <View style={styles.container}>
+        <View style={styles.container1}>
         <Text style={styles.centered}>Low balance, you need ether to register, show the code below to receive ethers and enter to the community!</Text>
         <View style={styles.centered}>
             <QRCode size={256} value={address} />
@@ -216,9 +216,7 @@ export class Login extends React.Component {
     render() {
 
       const { gasParam } = this.props.navigation.state.params;
-
       const balance = this.props.wallet.item.balance
-
       const gasLimit = gasParam[gas.defaultTransaction].limit
       const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
 
@@ -255,6 +253,13 @@ export class Login extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  container1: {
+      flex: 1,
+      alignItems: 'stretch',
+      justifyContent: 'space-between',
+      backgroundColor: 'white',
+      padding: measures.defaultPadding
+  },
     container: {
         flex: 1,
         alignItems: 'stretch',

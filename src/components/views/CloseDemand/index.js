@@ -29,7 +29,12 @@ export class CloseDemand extends React.Component {
 
   render() {
 
-    const { USDin, EURin, ETHin } = this.props.navigation.state.params;
+    const { item } = this.props.navigation.state.params;
+    const USDin = item.USDin
+    const EURin = item.EURin
+    const ETHin = item.ETHin
+    const description = item.description
+
     var erc20s = []
     erc20s.push({ name: "Ethers",
                     symbol: "ETH",
@@ -46,6 +51,7 @@ export class CloseDemand extends React.Component {
     return(
 
       <View style={styles.container}>
+      <Text style={styles.message}>{description}</Text>
       <FlatList
               style={styles.content}
               data={erc20s.sort((prev, next) => prev.name.localeCompare(next.name))}

@@ -3,7 +3,6 @@ import { StyleSheet, View, ActivityIndicator, Text } from 'react-native';
 import { Button, Calculator } from '@components/widgets';
 import { colors } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
-import { Wallet as WalletUtils } from '@common/utils';
 import { Conversions as conversions } from '@common/constants';
 import { ERC20ABI as erc20ABI } from '@common/ABIs';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
@@ -13,7 +12,6 @@ import { SecureTransaction } from '@components/widgets';
 
 @inject('wallet')
 @observer
-
 export class SendCoinsType1 extends React.Component {
 
   static navigationOptions = ({ navigation, screenProps }) => ({

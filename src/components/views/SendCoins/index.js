@@ -1,18 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Button, Calculator } from '@components/widgets';
 import { colors } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
-import { Wallet as WalletUtils } from '@common/utils';
 import { Conversions as conversions } from '@common/constants';
-import { ERC20ABI as erc20ABI } from '@common/ABIs';
-import { Contracts as contractsAddress } from '@common/constants';
-import { ethers } from 'ethers';
-
-import { inject, observer } from 'mobx-react';
-
-@inject('wallet')
-@observer
 
 export class SendCoins extends React.Component {
 
