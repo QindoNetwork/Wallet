@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
 import "./Administration.sol";
@@ -193,6 +193,7 @@ contract Togethers is Administration {
       }
       require(family != 0);
       require(External1(_crypto).balanceOf(msg.sender) >= _tokenAmount);
+      require(External1(_crypto).allowance(msg.sende,address(this)) >= _tokenAmount);
       External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
       amount = _tokenAmount.mul(10**(18-(External1(_crypto).decimals())));
     }

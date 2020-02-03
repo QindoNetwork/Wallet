@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 import "../technical/Context.sol";
 import "../technical/Counters.sol";

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
 import "../owner/Ownable.sol";
 
@@ -21,7 +21,7 @@ constructor() public {
     mappFunctionToGasParameters[0].gasLimit = 50000;
     mappFunctionToGasParameters[1].functionName = "transferGroupOwnership";
     mappFunctionToGasParameters[1].gasPrice = 6;
-    mappFunctionToGasParameters[1].gasLimit = 5000000;
+    mappFunctionToGasParameters[1].gasLimit = 50000;
     mappFunctionToGasParameters[2].functionName = "setUser";
     mappFunctionToGasParameters[2].gasPrice = 6;
     mappFunctionToGasParameters[2].gasLimit = 90000;

@@ -29,11 +29,11 @@ export class CloseDemand extends React.Component {
 
   render() {
 
-    const { USDin, EURin, ETHIn } = this.props.navigation.state.params;
+    const { USDin, EURin, ETHin } = this.props.navigation.state.params;
     var erc20s = []
     erc20s.push({ name: "Ethers",
                     symbol: "ETH",
-                    balance: ETHIn ,})
+                    balance: ETHin ,})
     erc20s.push({ name: "Togethers-USD",
                     symbol: "TGTU",
                     balance: USDin,

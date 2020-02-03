@@ -7,35 +7,9 @@ import { Crypto } from '..';
 
 export class CryptoType1 extends React.Component {
 
-  state = { loading: 0, active: 0 };
-
-  async componentDidMount() {
-    const { togethers, profile, groupID } = this.props.navigation.state.params;
-    try {
-      this.setState({ active:   parseInt ( await togethers.isOpen(groupID,profile.id),10),
-                      loading: 1})
-    } catch (e) {
-    GeneralActions.notify(e.message, 'long');
-    }
-  }
-
     render() {
 
-      if (this.state.loading === 0){
-
-        return(
-
-        <View style={styles.container}>
-          <View style={styles.body}>
-            <ActivityIndicator size="large"/>
-          </View>
-        </View>
-
-      )
-
-      }
-
-      if (this.state.active === 0){
+      if (this.props.active === 0){
 
         return(
 

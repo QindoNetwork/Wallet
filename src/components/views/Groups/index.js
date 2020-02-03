@@ -29,7 +29,7 @@ export class Groups extends React.Component {
                             description: profile.description,
                             USDin: parseInt(profile.stats.USDin,10),
                             EURin: parseInt(profile.stats.EURin,10),
-                            ETHIn: parseInt(profile.stats.ETHIn,10) })
+                            ETHin: parseInt(profile.stats.ETHIn,10) })
           }
         }
         this.setState({ groups, loading: 1 })

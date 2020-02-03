@@ -68,7 +68,7 @@ export class Profiles extends React.Component {
                                 description: profile.description,
                                 USDin: parseInt(profile.stats.USDin,10),
                                 EURin: parseInt(profile.stats.EURin,10),
-                                ETHIn: parseInt(profile.stats.ETHIn,10)})
+                                ETHin: parseInt(profile.stats.ETHIn,10)})
               }
           }
           this.setState({ profiles, loading: 1 })
@@ -79,7 +79,7 @@ export class Profiles extends React.Component {
 
       demand(groupID, togethers, gasParam, item) {
         if (this.props.navigation.state.params.item.active == true){
-          this.props.navigation.navigate('CloseDemand',{ groupID, togethers, gasParam, USDin: item.USDin, EURin: item.EURin, ETHIn: item.ETHin })
+          this.props.navigation.navigate('CloseDemand',{ groupID, togethers, gasParam, USDin: item.USDin, EURin: item.EURin, ETHin: item.ETHin })
         }
         else this.props.navigation.navigate('OpenDemand',{ groupID, togethers, gasParam })
       }
@@ -125,7 +125,7 @@ export class Profiles extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('ProfileData',{ groupID , owner, profile: item, togethers, gasParam })
+              onPress={() => this.props.navigation.navigate('ProfileData',{ groupID, active, owner, profile: item, togethers, gasParam })
               }>
                 <ProfileCard profile={item} groupID={groupID} togethers={togethers}/>
               </TouchableOpacity>
