@@ -169,12 +169,6 @@ contract TogethersTokenUSD {
         return true;
       }
 
-      function burnExternal(address account, uint256 value) public returns (bool){
-        require(msg.sender == Escrow);
-        _burn(account, value);
-        return true;
-      }
-
      /**
       * @dev Approve an address to spend another addresses' tokens.
       * @param owner The address that owns the tokens.

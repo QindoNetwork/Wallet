@@ -7,11 +7,8 @@ import { Conversions as conversions } from '@common/constants';
 import { ERC20ABI as erc20ABI } from '@common/ABIs';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 import { ethers } from 'ethers';
-import { inject, observer } from 'mobx-react';
 import { SecureTransaction } from '@components/widgets';
 
-@inject('wallet')
-@observer
 export class SendCoinsType1 extends React.Component {
 
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -22,14 +19,14 @@ export class SendCoinsType1 extends React.Component {
 
   renderModal(value) {
 
-    const { gasParam, togethers, item  } = this.props.navigation.state.params;
+    const { gasParam, togethers, item, cryptoOne  } = this.props.navigation.state.params;
     const crypto = item.address;
     const amount = value * (Math.pow(10,18))
 
     if (this.state.show === true) {
     return (  <SecureTransaction
           togethers={togethers}
-          values={{amount,crypto}}
+          values={{amount,crypto,cryptoOne}}
           address={address}
           gasParam={gasParam}
           navigation={this.props.navigation}
@@ -39,20 +36,9 @@ export class SendCoinsType1 extends React.Component {
 
   async componentDidMount() {
     try {
-    const { item, type } = this.props.navigation.state.params;
-    const { wallet } = this.props;
-    const mnemonics = wallet.item.mnemonics.toString()
-    const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
-    var token
-      if (type === "TTE") {
-        token = contractsAddress.TTEURAddress
-      }
-      else {
-        token = contractsAddress.TTUSDAddress
-      }
-      const instance = new ethers.Contract(token, erc20ABI, connection)
-      var balance1 = item.balance * (Math.pow(10,-(item.decimals)))
-      var balance2 = parseInt (await instance.balanceOf(wallet.item.address),10) * (Math.pow(10,-18))
+    const { item, cryptoOne } = this.props.navigation.state.params;
+      var balance1 = cryptoOne.balance * (Math.pow(10,-(cryptoOne.decimals)))
+      var balance2 = item.instance.balanceOf(contractsAddress.togethersAddress) * (Math.pow(10,-(item.decimals)))
       if (balance1 > balance2) {
         this.setState({ max : balance2, loading: 1  })
       }
@@ -65,15 +51,7 @@ export class SendCoinsType1 extends React.Component {
   }
 
     onPressContinue() {
-      const { item, gasParam, togethers, type } = this.props.navigation.state.params
-      const { instance } = this.state
-      var token
-      if (type === "TTE") {
-        token = contractsAddress.TTEURAddress
-      }
-      else token = contractsAddress.TTUSDAddress
       var { amount } = this.refs.calc;
-      let isOK = true
         if (!amount || amount === 0 ) return;
         if (amount > this.state.max) {
         GeneralActions.notify("You or contract don t have enough balance", 'long');

@@ -21,7 +21,7 @@ export class SendCoins extends React.Component {
           isOK === false
           }
         }else {
-          if (amount * (Math.pow(10,item.decimals)) > item.balance) {
+          if (amount * (Math.pow(10,18)) > item.balance) {
           isOK === false
           }
         }

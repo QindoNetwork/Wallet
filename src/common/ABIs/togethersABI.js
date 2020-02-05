@@ -735,7 +735,12 @@ export const TogethersABI = [
       },
       {
         "internalType": "address",
-        "name": "_crypto",
+        "name": "_crypto1",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_crypto2",
         "type": "address"
       }
     ],

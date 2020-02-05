@@ -194,15 +194,8 @@ contract Togethers is Administration {
         family = 1;
       }
       require(family != 0);
-      if ( _crypto == ttusd ||_crypto == tteur )
-      {
-        External1(_crypto).burnExternal(msg.sender,_tokenAmount);
-      }
-      else
-      {
-        External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
-      }
-      amount = _tokenAmount.mul(10**(18-(External1(_crypto).decimals())));
+      External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
+      amount = _tokenAmount.mul(10**(-(18-(External1(_crypto).decimals()))));
     }
     if (family == 0)
     {
@@ -233,48 +226,35 @@ contract Togethers is Administration {
     }
     if (mappProfileInGroup[groupID][msg.sender].stats.EURin > 0)
     {
-      if (fees > 0)
-      {
-        money = mappProfileInGroup[groupID][msg.sender].stats.EURin.div(fees);
-        External1(tteur).mintExternal(owner,money);
-      }
-      else
-      {
-        money = 0;
-      }
-      External1(tteur).mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats.EURin.sub(money));
+      External1(tteur).mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats.EURin);
       mappProfileInGroup[groupID][msg.sender].stats.EURin = 0;
     }
     if (mappProfileInGroup[groupID][msg.sender].stats.USDin > 0)
     {
-      if (fees > 0)
-      {
-        money = mappProfileInGroup[groupID][msg.sender].stats.USDin.div(fees);
-        External1(ttusd).mintExternal(owner,money);
-      }
-      else
-      {
-        money = 0;
-      }
-      External1(ttusd).mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats.USDin.sub(money));
+      External1(ttusd).mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats.USDin);
       mappProfileInGroup[groupID][msg.sender].stats.USDin = 0;
     }
   }
 
-  function changeToken(uint _tokenAmount, address _crypto) public
+  function changeToken(uint _tokenAmount, address _crypto1, address _crypto2) public
   {
-    require(mappCryptoEnable[_crypto] == true);
-    uint cryptoAmount = _tokenAmount.mul(10**(-(18-(External1(_crypto).decimals()))));
-    if (mappAllowCryptoForUS[_crypto] == true)
+    require(mappCryptoEnable[_crypto1] == true && mappCryptoEnable[_crypto2] == true);
+    require(_crypto1 != _crypto2);
+    require((mappAllowCryptoForUS[_crypto1] == true && mappAllowCryptoForUS[_crypto2] == true) ||
+            (mappAllowCryptoForEU[_crypto1] == true && mappAllowCryptoForEU[_crypto2] == true));
+    uint cryptoAmount1 = _tokenAmount.mul(10**(-(18-(External1(_crypto1).decimals()))));
+    uint cryptoAmount2 = _tokenAmount.mul(10**(-(18-(External1(_crypto2).decimals()))));
+    External1(_crypto1).transferFrom(msg.sender,address(this),cryptoAmount1);
+    if (fees > 0)
     {
-      External1(ttusd).burnExternal(msg.sender,_tokenAmount);
-      External1(_crypto).transfer(msg.sender,cryptoAmount);
+      money = cryptoAmount2.div(fees);
     }
-    if (mappAllowCryptoForEU[_crypto] == true)
+    else
     {
-      External1(tteur).burnExternal(msg.sender,_tokenAmount);
-      External1(_crypto).transfer(msg.sender,cryptoAmount);
+      money = 0;
     }
+    External1(_crypto2).transfer(owner,money);
+    External1(_crypto2).transfer(msg.sender,cryptoAmount2.sub(money));
   }
 
   function removeMember(address _publicKey, uint groupID) public

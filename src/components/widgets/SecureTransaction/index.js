@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { Keyboard, StyleSheet, Text, TextInput, View, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions, Contract as ContractActions  } from '@common/actions';
+import { General as GeneralActions, Contract as ContractActions, Transaction as TransactionActions  } from '@common/actions';
 import Modal from 'react-native-modal';
 import { Gas as gas, Conversions as conversions } from '@common/constants';
 import { sha256 } from 'react-native-sha256';
@@ -56,7 +56,6 @@ export class SecureTransaction extends React.Component {
       const address = wallet.item.address
       const gasLimit = gasParam[type].limit
       const gasPrice = gasParam[type].price * conversions.gigaWeiToWei
-
       const overrides = {
           gasLimit,gasPrice
           };
@@ -94,8 +93,18 @@ export class SecureTransaction extends React.Component {
                 case gas.removeMember:
                     tx = await ContractActions.removeMember(togethers,values,overrides)
                     break;
-                    case gas.changeToken:
-                    tx = await ContractActions.changeToken(togethers,values,overrides)
+                case gas.changeToken:
+                    let nonce = await TransactionActions.nextNonce(address)
+                    const { amount, cryptoOne } = values
+                    const  overrides2 = {
+                              gasLimit: gasParam[eRC20allowance].limit,
+                              gasPrice: gasParam[eRC20allowance].price * conversions.gigaWeiToWei,
+                              nonce: nonce,
+                              };
+                    TransactionActions.erc20approve(amount,cryptoOne.instance,overrides2)
+                    nonce = nonce + 1
+                    const overrides1 = { gasLimit,gasPrice,nonce }
+                    tx = await ContractActions.changeToken(togethers,values,overrides1)
                     break;
             default:
                 GeneralActions.notify('unknown function', 'long');

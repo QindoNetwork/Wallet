@@ -184,10 +184,10 @@ export async function removeMember(togethers, args, overrides) {
 }
 
 export async function changeToken(togethers, args, overrides) {
-  const { amount,crypto } = args
+  const { amount,crypto,cryptoOne } = args
   let result = "OK"
   try {
-    await togethers.changeToken(amount,crypto,overrides)
+    await togethers.changeToken(amount,cryptoOne.address,crypto,overrides)
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
     result = "KO"

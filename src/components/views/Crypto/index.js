@@ -40,10 +40,7 @@ export class Crypto extends React.Component {
                   symbol: "ETH",
                   decimals: 0,
                   instance: null,
-                  balance: wallet.item.balance,
-                  status: 1,
-                  statusU: 0,
-                  statusE: 0 })
+                  balance: wallet.item.balance })
       if ( groupID === '0' ) {
         req = await togethers.getCryptoList()
       }

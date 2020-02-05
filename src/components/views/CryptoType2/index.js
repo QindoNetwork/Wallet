@@ -22,7 +22,7 @@ export class CryptoType2 extends React.Component {
 
   async updateData() {
     const { wallet } = this.props
-    const { togethers, type } = this.props.navigation.state.params
+    const { togethers, cryptoOne } = this.props.navigation.state.params
     try {
     const mnemonics = wallet.item.mnemonics.toString()
     const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
@@ -33,17 +33,16 @@ export class CryptoType2 extends React.Component {
       for ( var i = 0; i < req.length; i++ ) {
         currentAddress = req[i]
         info = await togethers.getCryptoInfo(currentAddress)
-        if ( ((type === 'TTE' && new Boolean(info.statusE) == true) ||
-            (type === 'TTU' && new Boolean(info.statusU) == true)) &&
-            currentAddress !== contractsAddress.TTUSDAddress &&
-            currentAddress !== contractsAddress.TTEURAddress ) {
+        if ( ((cryptoOne.statusE == true && new Boolean(info.statusE) == true) ||
+            (cryptoOne.statusU === true && new Boolean(info.statusU) == true)) &&
+            currentAddress !== cryptoOne.address ) {
               instance = new ethers.Contract(currentAddress, erc20ABI, connection)
               balance = parseInt (await instance.balanceOf(contractsAddress.togethersAddress),10)
               erc20s.push({
                       name: info.name,
                       symbol: info.symbol,
                       decimals: parseInt (info.decimals,10),
-                      balance: balance,
+                      instance: instance,
                       address: currentAddress
                      })
         }
@@ -56,7 +55,7 @@ export class CryptoType2 extends React.Component {
 
     render() {
 
-      const { togethers, gasParam, type, groupID } = this.props.navigation.state.params
+      const { togethers, gasParam, cryptoOne } = this.props.navigation.state.params
       const { wallet } = this.props
       const { erc20s } = this.state
 
@@ -84,7 +83,7 @@ export class CryptoType2 extends React.Component {
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => this.props.navigation.navigate('SendCoinsType1', { type, item, togethers, gasParam })}>
+                onPress={() => this.props.navigation.navigate('SendCoinsType1', { cryptoOne, item, togethers, gasParam })}>
                   <CryptoCard crypto={item}/>
               </TouchableOpacity>
             )}
