@@ -13,8 +13,8 @@ export class AdminProfile extends Component {
 
   renderModal() {
 
-  const { gasParam, togethers, profile, user  } = this.props.navigation.state.params;
-  const target = profile.id
+  const { gasParam, togethers, item, user  } = this.props.navigation.state.params;
+  const target = item.id
   const groupID = user.id
   let type
 

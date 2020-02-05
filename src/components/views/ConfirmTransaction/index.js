@@ -4,7 +4,7 @@ import { Button } from '@components/widgets';
 import { measures, colors } from '@common/styles';
 import { Gas as gas, Conversions as conversions } from '@common/constants';
 import { General as GeneralActions, Transactions as TransactionActions } from '@common/actions';
-import { Image as ImageUtils, Transaction as TransactionUtils, Wallet as WalletUtils } from '@common/utils';
+import { Image as ImageUtils, Transaction as TransactionUtils } from '@common/utils';
 import Modal from 'react-native-modal';
 import { inject, observer } from 'mobx-react';
 import { sha256 } from 'react-native-sha256';
@@ -18,7 +18,7 @@ export class ConfirmTransaction extends React.Component {
 
     static navigationOptions = { title: 'Confirm transaction' };
 
-    state = { show: false, password: '', registered: 0, loading: 0, loading2: 1 };
+    state = { show: false, password: '', registered: 0, loading: 0, loading2: 1, price: 0 };
 
     async componentDidMount() {
 
@@ -39,6 +39,7 @@ export class ConfirmTransaction extends React.Component {
         return(
             <View>
               <View style={styles.buttonsContainer}>
+              <Text style={styles.message}>{ this.state.price }</Text>
                 <Button
                   children="Continue"
                   onPress={() => this.onPressContinue()}
@@ -120,6 +121,8 @@ export class ConfirmTransaction extends React.Component {
         }
         if(groupID !== '0') {
           nonce = await TransactionActions.nextNonce(address)
+          let price1
+          let price2
               if(item.name !== 'Ethers') {
                 overrides = {
                     gasLimit: gasParam[eRC20allowance].limit,
@@ -128,13 +131,18 @@ export class ConfirmTransaction extends React.Component {
                     };
                 TransactionActions.erc20approve(value,item.instance,overrides)
                 nonce = nonce + 1
+                price1 = overrides.gasLimit * overrides.gasPrice
               }
               overrides = {
                   gasLimit: gasParam[payForFunds].limit,
                   gasPrice: gasParam[payForFunds].price * conversions.gigaWeiToWei,
                   nonce: nonce,
                   };
+                  price2 = overrides.gasLimit * overrides.gasPrice
                   await togethers.payForFunds(target,groupID,value,item.address,overrides);
+                  if(item.name !== 'Ethers') {
+                    this.setState({ price: (price1 + price2)/2 })
+                  }
             }
             else {
             if(item.name !== 'Ethers') {
@@ -143,12 +151,14 @@ export class ConfirmTransaction extends React.Component {
                   gasPrice: gasParam[gas.eRC20transfer].price * conversions.gigaWeiToWei,
                   };
                   await item.instance.transfer(target,value,overrides)
+                  this.setState({ price: (overrides.gasLimit * overrides.gasPrice)/2 })
             }
             else {
                   const gasLimit = gasParam[gas.defaultTransaction].limit
                   const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
                   const txn = TransactionUtils.createTransaction(target, value, gasLimit, gasPrice);
                   await TransactionActions.sendTransaction(wallet.item, txn);
+                  this.setState({ price: (overrides.gasLimit * overrides.gasPrice)/2 })
             }
             }
             this.props.navigation.navigate('WalletDetails', { togethers, gasParam, replaceRoute: true, leave: 0 });

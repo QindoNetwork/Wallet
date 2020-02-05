@@ -8,13 +8,13 @@ import { Image as ImageUtils } from '@common/utils';
 export default class ProfilesCard extends React.Component {
 
     render() {
-        const { profile, active, owner } = this.props;
+        const { profile } = this.props;
         var label1 = 'Member'
         var label2 = 'Inactive'
-        if ( active === true ) {
+        if ( profile.active == true ) {
           label2 = "Active"
         }
-        if ( owner === true ) {
+        if ( profile.owner == true ) {
           label1 = "Owner"
         }
 

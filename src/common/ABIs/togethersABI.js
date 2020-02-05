@@ -1,21 +1,6 @@
 export const TogethersABI = [
   {
     "constant": true,
-    "inputs": [],
-    "name": "TTUSD",
-    "outputs": [
-      {
-        "internalType": "contract External1",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
     "inputs": [
       {
         "internalType": "address",
@@ -226,12 +211,12 @@ export const TogethersABI = [
   {
     "constant": true,
     "inputs": [],
-    "name": "groupNumber",
+    "name": "ttusd",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "address",
         "name": "",
-        "type": "uint256"
+        "type": "address"
       }
     ],
     "payable": false,
@@ -357,10 +342,10 @@ export const TogethersABI = [
   {
     "constant": true,
     "inputs": [],
-    "name": "TTEUR",
+    "name": "tteur",
     "outputs": [
       {
-        "internalType": "contract External1",
+        "internalType": "address",
         "name": "",
         "type": "address"
       }
@@ -634,7 +619,7 @@ export const TogethersABI = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "groupNumber",
+        "name": "_groupNumber",
         "type": "uint256"
       },
       {

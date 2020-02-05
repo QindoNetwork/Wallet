@@ -132,7 +132,7 @@ export class Profiles extends React.Component {
               activeOpacity={0.8}
               onPress={() => this.props.navigation.navigate('ProfileData',{ user: profile, item, togethers, gasParam })
               }>
-                <ProfileCard profile={item} groupID={groupID} togethers={togethers}/>
+                <ProfileCard profile={item} togethers={togethers}/>
               </TouchableOpacity>
             )}
         />

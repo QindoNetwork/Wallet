@@ -28,20 +28,18 @@ contract Togethers is Administration {
     uint ETHIn;
   }
 
-  External1 public TTUSD;
-  External1 public TTEUR;
+  address public constant ttusd = 0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292;
+  address public constant tteur = 0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F;
 
   uint groupNumber;
 
   constructor() public {
     owner = msg.sender;
     checkNameUnicity[returnHash("Togethers")] = address(this);
-    TTUSD = External1(0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292);
-    TTEUR = External1(0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F);
-    cryptoList.push(0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292);
-    cryptoList.push(0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F);
-    enableCrypto(0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292);
-    enableCrypto(0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F);
+    cryptoList.push(ttusd);
+    cryptoList.push(tteur);
+    enableCrypto(ttusd);
+    enableCrypto(tteur);
     address dai = 0xb3162F1d3E9071001c5286cc0Cd533C3958dc65f;
     address Gemini = 0x6a36989540818bd8686873A2f36E39Ac9Da2e102;
     address Tether = 0x92EB10B521fd63D0a2df10B36f284C150b1Ca17F;
@@ -54,6 +52,8 @@ contract Togethers is Administration {
     addStablecoinToList(Gemini);
     addStablecoinToList(Tether);
     addStablecoinToList(Stasis);
+    addStablecoinToList(ttusd);
+    addStablecoinToList(tteur);
     enableCrypto(dai);
     enableCrypto(Gemini);
     enableCrypto(Tether);
@@ -62,6 +62,8 @@ contract Togethers is Administration {
     allowCryptoForUS(Gemini);
     allowCryptoForUS(Tether);
     allowCryptoForEU(Stasis);
+    allowCryptoForUS(ttusd);
+    allowCryptoForEU(tteur);
   }
 
   function ask(uint _groupID) public
@@ -192,7 +194,14 @@ contract Togethers is Administration {
         family = 1;
       }
       require(family != 0);
-      External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
+      if ( _crypto == ttusd ||_crypto == tteur )
+      {
+        External1(_crypto).burnExternal(msg.sender,_tokenAmount);
+      }
+      else
+      {
+        External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
+      }
       amount = _tokenAmount.mul(10**(18-(External1(_crypto).decimals())));
     }
     if (family == 0)
@@ -227,13 +236,13 @@ contract Togethers is Administration {
       if (fees > 0)
       {
         money = mappProfileInGroup[groupID][msg.sender].stats.EURin.div(fees);
-        TTEUR.mintExternal(owner,money);
+        External1(tteur).mintExternal(owner,money);
       }
       else
       {
         money = 0;
       }
-      TTEUR.mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats.EURin.sub(money));
+      External1(tteur).mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats.EURin.sub(money));
       mappProfileInGroup[groupID][msg.sender].stats.EURin = 0;
     }
     if (mappProfileInGroup[groupID][msg.sender].stats.USDin > 0)
@@ -241,13 +250,13 @@ contract Togethers is Administration {
       if (fees > 0)
       {
         money = mappProfileInGroup[groupID][msg.sender].stats.USDin.div(fees);
-        TTUSD.mintExternal(owner,money);
+        External1(ttusd).mintExternal(owner,money);
       }
       else
       {
         money = 0;
       }
-      TTUSD.mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats.USDin.sub(money));
+      External1(ttusd).mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats.USDin.sub(money));
       mappProfileInGroup[groupID][msg.sender].stats.USDin = 0;
     }
   }
@@ -258,12 +267,12 @@ contract Togethers is Administration {
     uint cryptoAmount = _tokenAmount.mul(10**(-(18-(External1(_crypto).decimals()))));
     if (mappAllowCryptoForUS[_crypto] == true)
     {
-      TTUSD.burnExternal(msg.sender,_tokenAmount);
+      External1(ttusd).burnExternal(msg.sender,_tokenAmount);
       External1(_crypto).transfer(msg.sender,cryptoAmount);
     }
     if (mappAllowCryptoForEU[_crypto] == true)
     {
-      TTEUR.burnExternal(msg.sender,_tokenAmount);
+      External1(tteur).burnExternal(msg.sender,_tokenAmount);
       External1(_crypto).transfer(msg.sender,cryptoAmount);
     }
   }

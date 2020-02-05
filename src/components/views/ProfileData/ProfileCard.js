@@ -15,7 +15,7 @@ export default class ProfileCard extends React.Component {
                         <Icon name='cash' size='large'/>
                     </View>
                     <View style={styles.middleColumn}>
-                        <Text style={styles.title}>{this.props.item.description}</Text>
+                        <Text style={styles.title}>{this.props.profile.description}</Text>
                     </View>
                 </View>
         );

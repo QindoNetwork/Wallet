@@ -75,10 +75,10 @@ export class Crypto extends React.Component {
 
     render() {
 
-      const { togethers, gasParam, navigation, groupID, wallet } = this.props
-      const { erc20s } = this.state
+      const { togethers, gasParam, navigation, groupID, wallet, item } = this.props
+      const { erc20s, loading, lowBalance } = this.state
 
-      if (this.state.loading === 0){
+      if (loading === 0){
 
         return(
 
@@ -92,7 +92,7 @@ export class Crypto extends React.Component {
 
       }
 
-      if (this.state.lowBalance === 1){
+      if (lowBalance === 1){
 
         return(
 

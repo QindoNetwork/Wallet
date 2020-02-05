@@ -47,38 +47,39 @@ export class ProfileData extends React.Component {
 
     renderData() {
 
-      const { item } = this.props.navigation.state.params;
+      const profile = this.props.navigation.state.params.item
+
       var erc20s = []
       var erc20s2 = []
       erc20s.push({ name: "Ethers",
-                      symbol: "ETH",
-                      balance: item.ETHin })
+                    symbol: "ETH",
+                    balance: profile.ETHin })
       erc20s.push({ name: "Togethers-USD",
-                      symbol: "TGTU",
-                      balance: item.USDin,
-                     decimals: 18})
+                    symbol: "TGTU",
+                    balance: profile.USDin,
+                    decimals: 18})
       erc20s.push({ name: "Togethers-EUR",
-                      symbol: "TGTE",
-                      balance: item.EURin,
+                    symbol: "TGTE",
+                    balance: profile.EURin,
+                    decimals: 18})
+
+
+      erc20s2.push({ name: "Ethers",
+                     symbol: "ETH",
+                     balance: this.state.statsETH })
+      erc20s2.push({ name: "Togethers-USD",
+                      symbol: "TGTU",
+                      balance: this.state.statsUSD,
                       decimals: 18})
-
-
-                      erc20s2.push({ name: "Ethers",
-                                      symbol: "ETH",
-                                      balance: this.state.statsETH })
-                      erc20s2.push({ name: "Togethers-USD",
-                                      symbol: "TGTU",
-                                      balance: this.state.statsUSD,
-                                     decimals: 18})
-                      erc20s2.push({ name: "Togethers-EUR",
-                                      symbol: "TGTE",
-                                      balance: this.state.statsEUR,
-                                      decimals: 18})
+      erc20s2.push({ name: "Togethers-EUR",
+                      symbol: "TGTE",
+                      balance: this.state.statsEUR,
+                      decimals: 18})
 
         return(
           <View style={styles.container}>
           <View style={styles.leftColumn}>
-              <ProfileCard profile={item}/>
+              <ProfileCard profile={profile}/>
               <FlatList
                 data={erc20s.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
                 renderItem={({ item }) => (
@@ -97,7 +98,7 @@ export class ProfileData extends React.Component {
 
   render() {
 
-    const { item } = this.props.navigation.state.params;
+    const { item, togethers, user, gasParam } = this.props.navigation.state.params;
 
     if (this.state.loading === 0){
 
@@ -121,7 +122,7 @@ export class ProfileData extends React.Component {
             <Button
               children="Send"
               onPress={() => this.props.navigation.navigate('CryptoType1',
-              { ...this.props.navigation.state.params })}/>
+              { togethers, groupID: user.id, profile: item, gasParam })}/>
         </View>
       </View>)
     }
