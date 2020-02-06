@@ -95,7 +95,6 @@ contract Administration is Ownable {
   {
     require(crypto != address(0));
     require(crypto != address(0));
-    require(External1(crypto).totalSupply() > 0);
     cryptoList.push(crypto);
   }
 

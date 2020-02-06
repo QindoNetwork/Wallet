@@ -34,7 +34,8 @@ export class CryptoType2 extends React.Component {
         currentAddress = req[i]
         info = await togethers.getCryptoInfo(currentAddress)
         if ( ((cryptoOne.statusE == true && new Boolean(info.statusE) == true) ||
-            (cryptoOne.statusU === true && new Boolean(info.statusU) == true)) &&
+            (cryptoOne.statusU === true && new Boolean(info.statusU) == true) ||
+          (cryptoOne.statusO === true && new Boolean(info.statusO) == true)) &&
             currentAddress !== cryptoOne.address ) {
               instance = new ethers.Contract(currentAddress, erc20ABI, connection)
               balance = parseInt (await instance.balanceOf(contractsAddress.togethersAddress),10)

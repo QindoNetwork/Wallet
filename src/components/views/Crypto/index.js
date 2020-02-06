@@ -31,7 +31,6 @@ export class Crypto extends React.Component {
     const mnemonics = wallet.item.mnemonics.toString()
     const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
     var erc20s = []
-    var req
     var currentAddress
     var info
     var instance
@@ -41,16 +40,12 @@ export class Crypto extends React.Component {
                   decimals: 0,
                   instance: null,
                   balance: wallet.item.balance })
-      if ( groupID === '0' ) {
-        req = await togethers.getCryptoList()
-      }
-      else {
-        req = await togethers.getStablecoinList()
-      }
+    const req = await togethers.getCryptoList()
       for ( var i = 0; i < req.length; i++ ) {
         currentAddress = req[i]
         info = await togethers.getCryptoInfo(currentAddress)
-        if ( new Boolean(info.status) == true ) {
+        if ( (groupID === '0' && new Boolean(info.status) == true) ||
+       (new Boolean(info.statusE) == true) || (new Boolean(info.statusU) == true) || (new Boolean(info.statusO) == true) ) {
           instance = new ethers.Contract(currentAddress, erc20ABI, connection)
           balance = parseInt (await instance.balanceOf(wallet.item.address),10)
           if ( balance > 0) {

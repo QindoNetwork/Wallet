@@ -6,6 +6,11 @@ export function selectActiveLanguage(language) {
         .then(() => LanguagesStore.setSelectedLanguage(language));
 }
 
+export function loadLanguage() {
+    return LanguagesService.loadActiveLanguage()
+        .then(language => LanguagesStore.setSelectedLanguage(language));
+}
+
 // Login';
 export function choosePseudonyme(language) {
   switch (language) {
@@ -52,3 +57,4 @@ export function choosePseudonyme(language) {
 // ChangePassword';
 // AdminProfile';
 // ChangeLanguage';
+// ConfirmSwap';

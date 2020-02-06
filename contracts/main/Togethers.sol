@@ -9,7 +9,7 @@ contract Togethers is Administration {
   mapping (uint => mapping (address => profile)) public mappProfileInGroup;
   mapping (address => uint[]) private mappGroupsForAddress;
   mapping (uint => address[]) private mappUsersInGroup;
-  mapping (address => mapping (uint => bool)) private mappAskForAdd;
+  mapping (address => mapping (uint => bool)) public mappAskForAdd;
   mapping (address => mapping (address => Stats)) public mappPeerToPeerStats;
 
   struct profile
@@ -36,8 +36,31 @@ contract Togethers is Administration {
 
   constructor() public {
     owner = msg.sender;
+    checkNameUnicity[returnHash("Togethers")] = address(this);
+    cryptoList.push(ttusd);
+    cryptoList.push(tteur);
+    enableCrypto(ttusd);
+    enableCrypto(tteur);
+    address dai = 0xb3162F1d3E9071001c5286cc0Cd533C3958dc65f;
+    address Gemini = 0x6a36989540818bd8686873A2f36E39Ac9Da2e102;
+    address Tether = 0x92EB10B521fd63D0a2df10B36f284C150b1Ca17F;
+    address Stasis = 0xc3249b1240e44b19c42d8a6d27e15f80376e542d;
+    cryptoList.push(dai);
+    cryptoList.push(Gemini);
+    cryptoList.push(Tether);
+    cryptoList.push(Stasis);
+    enableCrypto(dai);
+    enableCrypto(Gemini);
+    enableCrypto(Tether);
+    enableCrypto(Stasis);
+    allowCryptoForUS(dai);
+    allowCryptoForUS(Gemini);
+    allowCryptoForUS(Tether);
+    allowCryptoForEU(Stasis);
+    allowCryptoForUS(ttusd);
+    allowCryptoForEU(tteur);
   }
-
+  
   function ask(uint _groupID) public
   {
     require(mappUsersInGroup[_groupID].length > 0);

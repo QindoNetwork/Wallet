@@ -1,5 +1,6 @@
 import { sha256 } from 'react-native-sha256';
 import { General as GeneralActions  } from '@common/actions';
+import { Contracts as contractsAddress } from '@common/constants';
 
 export async function createGroup(togethers, args, overrides) {
   const { groupName } = args
@@ -22,7 +23,7 @@ export async function ask(togethers, args, address, overrides) {
     result = "KO"
     GeneralActions.notify('this group does not exists', 'long');
   }
-  if (parseInt (await togethers.verifyGroupAsked(groupID,address),10) === 1)
+  if (new Boolean (await togethers.mappAskForAdd(groupID,address)) == true)
   {
     result = "KO"
     GeneralActions.notify('you already asked', 'long');
@@ -85,7 +86,15 @@ export async function changeUserName(togethers, args, overrides) {
   const { value } = args
   let result = "OK"
   try {
-    await togethers.changeUserName(value,overrides)
+    checkNameUnicity[currentID] == address(0)
+    if (await togethers.checkNameUnicity(value) !== contractsAddress.nullAddress )
+    {
+      result = "KO"
+      GeneralActions.notify('Username unavailable', 'long');
+    }
+    else {
+      await togethers.changeUserName(value,overrides)
+    }
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
     result = "KO"
@@ -176,18 +185,6 @@ export async function removeMember(togethers, args, overrides) {
       result = "KO"
     }
     else await togethers.removeMember(target,groupID,overrides)
-  }catch (e) {
-    GeneralActions.notify(e.message, 'long');
-    result = "KO"
-  }
-  return result
-}
-
-export async function changeToken(togethers, args, overrides) {
-  const { amount,crypto,cryptoOne } = args
-  let result = "OK"
-  try {
-    await togethers.changeToken(amount,cryptoOne.address,crypto,overrides)
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
     result = "KO"

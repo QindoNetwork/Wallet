@@ -42,6 +42,7 @@ const navigator = createStackNavigator(
     ChangePassword: { screen: Views.ChangePassword },
     ChangeLanguage: { screen: Views.ChangeLanguage },
     AdminProfile: { screen: Views.AdminProfile },
+    ConfirmSwap: { screen: Views.ConfirmSwap },
 
   },
   {

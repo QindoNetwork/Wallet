@@ -93,19 +93,6 @@ export class SecureTransaction extends React.Component {
                 case gas.removeMember:
                     tx = await ContractActions.removeMember(togethers,values,overrides)
                     break;
-                case gas.changeToken:
-                    let nonce = await TransactionActions.nextNonce(address)
-                    const { amount, cryptoOne } = values
-                    const  overrides2 = {
-                              gasLimit: gasParam[eRC20allowance].limit,
-                              gasPrice: gasParam[eRC20allowance].price * conversions.gigaWeiToWei,
-                              nonce: nonce,
-                              };
-                    TransactionActions.erc20approve(amount,cryptoOne.instance,overrides2)
-                    nonce = nonce + 1
-                    const overrides1 = { gasLimit,gasPrice,nonce }
-                    tx = await ContractActions.changeToken(togethers,values,overrides1)
-                    break;
             default:
                 GeneralActions.notify('unknown function', 'long');
                 break;

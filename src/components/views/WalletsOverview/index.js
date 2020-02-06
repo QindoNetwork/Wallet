@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, RefreshControl, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { HeaderIcon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions, Wallets as WalletActions } from '@common/actions';
+import { General as GeneralActions, Wallets as WalletActions, Languages as LanguagesActions } from '@common/actions';
 import NoWallets from './NoWallets';
 import WalletCard from './WalletCard';
 import { ethers } from 'ethers';
@@ -43,6 +43,7 @@ export class WalletsOverview extends React.Component {
         try {
             await Promise.all([
                 WalletActions.loadWallets(),
+                LanguagesActions.loadLanguage()
             ]);
         } catch (e) {
             GeneralActions.notify(e.message, 'long');

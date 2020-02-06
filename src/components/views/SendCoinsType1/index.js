@@ -15,24 +15,7 @@ export class SendCoinsType1 extends React.Component {
       title: 'Amount'
   });
 
-  state = { loading: 0, max: 0, show: false  };
-
-  renderModal(value) {
-
-    const { gasParam, togethers, item, cryptoOne  } = this.props.navigation.state.params;
-    const crypto = item.address;
-    const amount = value * (Math.pow(10,18))
-
-    if (this.state.show === true) {
-    return (  <SecureTransaction
-          togethers={togethers}
-          values={{amount,crypto,cryptoOne}}
-          address={address}
-          gasParam={gasParam}
-          navigation={this.props.navigation}
-          type={gas.changeToken}/> )
-    }
-  }
+  state = { loading: 0, max: 0 };
 
   async componentDidMount() {
     try {
@@ -56,12 +39,14 @@ export class SendCoinsType1 extends React.Component {
         if (amount > this.state.max) {
         GeneralActions.notify("You or contract don t have enough balance", 'long');
         }
-        else this.setState({ show : true })
+        else {
+          this.props.navigation.navigate('ConfirmSwap', { togethers, gasParam, amount, item, cryptoOne });
+          }
   }
 
     render() {
 
-      const { item, type } = this.props.navigation.state.params
+      const { item, cryptoOne } = this.props.navigation.state.params
 
       if (this.state.loading === 0){
 
@@ -78,10 +63,9 @@ export class SendCoinsType1 extends React.Component {
 
         return (
             <View style={styles.container}>
-            <Text style={styles.title}>Transform {type} into {item.symbol} ( maximum : {this.state.max} ) </Text>
+            <Text style={styles.title}>Transform {cryptoOne.symbol} into {item.symbol} ( maximum : {this.state.max} ) </Text>
                 <Calculator ref="calc" symbol={item.symbol}/>
                 <Button children="Continue" onPress={() => this.onPressContinue()} />
-                {this.renderModal(this.refs.calc)}
             </View>
         );
     }

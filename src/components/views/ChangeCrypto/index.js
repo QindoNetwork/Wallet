@@ -31,16 +31,18 @@ export class ChangeCrypto extends React.Component {
     const mnemonics = wallet.item.mnemonics.toString()
     const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
     var erc20s = []
-    var req
     var currentAddress
     var info
     var instance
     var balance
-        req = await togethers.getStablecoinList()
+      const req = await togethers.getCryptoList()
       for ( var i = 0; i < req.length; i++ ) {
         currentAddress = req[i]
         info = await togethers.getCryptoInfo(currentAddress)
-        if ( new Boolean(info.status) == true ) {
+        let e = new Boolean(info.statusE)
+        let u = new Boolean(info.statusU)
+        let o = new Boolean(info.statusO)
+        if(e == true ||u == true || o == true){
           instance = new ethers.Contract(currentAddress, erc20ABI, connection)
           balance = parseInt (await instance.balanceOf(wallet.item.address),10)
           if ( balance > 0) {
@@ -50,8 +52,9 @@ export class ChangeCrypto extends React.Component {
                       instance: instance,
                       address: currentAddress,
                       balance: balance,
-                      statusU: new Boolean(info.statusU),
-                      statusE: new Boolean(info.statusE) })
+                      statusU: u,
+                      statusE: e,
+                      statusO: o,  })
                     }
         }
       }
