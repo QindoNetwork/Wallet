@@ -1,6 +1,6 @@
 import * as yup from 'yup'
 import { Formik } from 'formik'
-import { General as GeneralActions  } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
 import { Button } from '@components/widgets';
 import React, { Component, Fragment } from 'react'
 import { colors, measures } from '@common/styles';
@@ -8,9 +8,9 @@ import {Keyboard, View, StyleSheet, TextInput, Text, TouchableOpacity, Alert, Ac
 import { inject, observer } from 'mobx-react';
 import { Gas as gas, Conversions as conversions, Restrictions as restrictions } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
-@inject('wallet')
-@observer
 
+@inject('wallet','languages')
+@observer
 export class OpenDemand extends Component {
 
   static navigationOptions = { title: "Open demand" };

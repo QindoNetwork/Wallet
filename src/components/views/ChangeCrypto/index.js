@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, Text, View, ActivityIndicator, RefreshControl} from 'react-native';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions  } from '@common/actions';
+import { General as GeneralActions } from '@common/actions';
 import CryptoCard from '../Crypto/CryptoCard';
 import Header from './Header';
 import { ERC20ABI as erc20ABI } from '@common/ABIs';
@@ -42,7 +42,7 @@ export class ChangeCrypto extends React.Component {
         let e = new Boolean(info.statusE)
         let u = new Boolean(info.statusU)
         let o = new Boolean(info.statusO)
-        if(e == true ||u == true || o == true){
+        if(e == true || u == true || o == true){
           instance = new ethers.Contract(currentAddress, erc20ABI, connection)
           balance = parseInt (await instance.balanceOf(wallet.item.address),10)
           if ( balance > 0) {
@@ -84,20 +84,6 @@ export class ChangeCrypto extends React.Component {
 
       }
 
-      if (lowBalance === 1){
-
-        return(
-
-        <View style={styles.container}>
-          <View style={styles.body}>
-            <Text style={styles.title}>Low balance</Text>
-          </View>
-        </View>
-
-      )
-
-      }
-
       return(
 
         <View style={styles.container}>
@@ -109,7 +95,7 @@ export class ChangeCrypto extends React.Component {
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('CryptoType2', { cryptoOne: item, togethers, gasParam })}>
+                onPress={() => navigation.navigate('CryptoType2', { erc20s, cryptoOne: item, togethers, gasParam })}>
                   <CryptoCard crypto={item}/>
               </TouchableOpacity>
             )}

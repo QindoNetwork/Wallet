@@ -3,14 +3,13 @@ import { FlatList, RefreshControl, StyleSheet, View, ActivityIndicator } from 'r
 import { HeaderIcon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions, Wallets as WalletActions, Languages as LanguagesActions } from '@common/actions';
-import NoWallets from './NoWallets';
 import WalletCard from './WalletCard';
 import { ethers } from 'ethers';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 import { ControlABI as controlABI, TogethersABI as togethersABI } from '@common/ABIs';
 import { inject, observer } from 'mobx-react';
 
-@inject('wallets')
+@inject('wallets','languages')
 @observer
 export class WalletsOverview extends React.Component {
 
@@ -92,7 +91,11 @@ export class WalletsOverview extends React.Component {
 
     renderItem = ({ item }) => <WalletCard wallet={item} onPress={() => this.onPressWallet(item)} />
 
-    renderBody = (list) => (!list.length && !this.loading) ? <NoWallets /> : (
+    renderBody = (list) => (!list.length && !this.loading) ? (<View style={styles.container}>
+        <Text style={styles.message}>
+            There are no wallets configured. Click on the + button to add a new one.
+        </Text>
+    </View>) : (
         <FlatList
             style={styles.content}
             data={list.sort((prev, next) => prev.name.localeCompare(next.name))}

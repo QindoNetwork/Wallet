@@ -13,7 +13,7 @@ contract Administration is Ownable {
   mapping (address => bool) public mappAllowCryptoForUS;
   mapping (address => bool) public mappAllowCryptoForOther;
   mapping (address => bool) public mappCryptoEnable;
-  mapping (uint => address) public checkNameUnicity;
+  mapping (uint => address) internal checkNameUnicity;
   mapping (address => string) public mappAddressToUser;
 
   mapping (address => uint) internal userPassword;
@@ -21,7 +21,6 @@ contract Administration is Ownable {
   address public other;
 
   address[] cryptoList;
-  address[] stablecoinList;
 
   struct erc20
   {
@@ -53,6 +52,16 @@ contract Administration is Ownable {
       return 0;
     }
     else return 1;
+  }
+
+    function verifyUserAvailability(string memory _pseudo) public view returns (uint)
+  {
+    uint currentID = returnHash(_pseudo);
+    if (checkNameUnicity[currentID] == address(0))
+    {
+      return 1;
+    }
+    return 0;
   }
 
   function changePassword(string memory NewPassword, string memory oldPassword) public
@@ -159,7 +168,7 @@ contract Administration is Ownable {
 
   function activateFees(uint _fees) public onlyOwner
   {
-    if (_fees < 100)
+    if (_fees > 100)
     {
       fees = 0;
     }

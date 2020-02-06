@@ -2,12 +2,12 @@ import React from 'react';
 import { TouchableOpacity, RefreshControl, FlatList, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions  } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
 import GroupCard from './GroupCard';
 import Header from './Header';
 import { inject, observer } from 'mobx-react';
 
-@inject('wallet')
+@inject('wallet','languages')
 @observer
 export class Groups extends React.Component {
 
@@ -45,6 +45,20 @@ export class Groups extends React.Component {
     render() {
 
       const { togethers, gasParam, wallet  } = this.props;
+
+      if (this.state.loading === 0){
+
+        return(
+
+        <View style={styles.container}>
+          <View style={styles.body}>
+            <ActivityIndicator size="large"/>
+          </View>
+        </View>
+
+      )
+
+      }
 
       if (this.state.loading === 0){
 

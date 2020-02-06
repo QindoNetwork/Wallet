@@ -2,7 +2,11 @@ import React from 'react';
 import { Keyboard, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
+import { inject, observer } from 'mobx-react';
+import { Languages as LanguagesActions } from '@common/actions';
 
+@inject('languages')
+@observer
 export class NewWalletName extends React.Component {
 
     static navigationOptions = { title: 'New Wallet Name' };

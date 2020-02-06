@@ -3,7 +3,11 @@ import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import _ from 'lodash';
 import { TextBullet } from '@components/widgets';
 import { colors } from '@common/styles';
+import { inject, observer } from 'mobx-react';
+import { Languages as LanguagesActions } from '@common/actions';
 
+@inject('languages')
+@observer
 export default class ConfirmBox extends React.Component {
 
     state = { selectable: [], selected: [] };
@@ -31,7 +35,7 @@ export default class ConfirmBox extends React.Component {
             selected: selected.filter(m => m !== mnemonic)
         });
     }
-    
+
     renderMnemonic = (mnemonic, index, selected) => (
         <TouchableOpacity style={styles.mnemonic} key={index} onPress={() => this.onPressMnemonic(mnemonic, selected)}>
             <View>
@@ -39,13 +43,13 @@ export default class ConfirmBox extends React.Component {
             </View>
         </TouchableOpacity>
     );
-    
+
     renderSelected = () => (
         <View style={styles.mnemonics}>
             {this.state.selected.map((mnemonic, index) => this.renderMnemonic(mnemonic, index, false))}
         </View>
     );
-    
+
     renderSelectable = () => (
         <View style={styles.mnemonics}>
             {this.state.selectable.map((mnemonic, index) => this.renderMnemonic(mnemonic, index, true))}

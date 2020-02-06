@@ -4,7 +4,11 @@ import { colors, measures } from '@common/styles';
 import { View, StyleSheet, Text } from 'react-native'
 import { Gas as gas } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
+import { inject, observer } from 'mobx-react';
+import { Languages as LanguagesActions } from '@common/actions';
 
+@inject('languages')
+@observer
 export class AdminProfile extends Component {
 
   static navigationOptions = { title: "AdminProfile" };

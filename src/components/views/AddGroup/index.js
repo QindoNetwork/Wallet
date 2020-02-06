@@ -2,7 +2,11 @@ import { Button } from '@components/widgets';
 import React, { Component } from 'react'
 import { colors, measures } from '@common/styles';
 import { View, StyleSheet } from 'react-native'
+import { inject, observer } from 'mobx-react';
+import { Languages as LanguagesActions } from '@common/actions';
 
+@inject('languages')
+@observer
 export class AddGroup extends Component {
 
   static navigationOptions = { title: "Add group" };

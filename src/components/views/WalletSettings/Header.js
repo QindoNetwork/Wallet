@@ -2,7 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { colors, measures } from '@common/styles';
+import { Languages as LanguagesActions } from '@common/actions';
 
+@inject('wallet','languages')
+@observer
 export default class Header extends React.Component {
 
     render() {

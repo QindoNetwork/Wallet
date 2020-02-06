@@ -3,10 +3,10 @@ import { RefreshControl, TouchableOpacity, ActivityIndicator, FlatList, TextInpu
 import { Button, Camera, InputWithIcon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { inject, observer } from 'mobx-react';
-import { General as GeneralActions  } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
 import ProfileCard from './ProfileCard';
 
-@inject('wallet')
+@inject('wallet','languages')
 @observer
 export class SelectDestination extends React.Component {
 

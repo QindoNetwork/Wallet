@@ -3,7 +3,7 @@ import { ActivityIndicator, Image, StyleSheet, Text, View, TextInput } from 'rea
 import { Button } from '@components/widgets';
 import { measures, colors } from '@common/styles';
 import { Gas as gas, Conversions as conversions } from '@common/constants';
-import { General as GeneralActions, Transactions as TransactionActions } from '@common/actions';
+import { General as GeneralActions, Transactions as TransactionActions, Languages as LanguagesActions } from '@common/actions';
 import { Image as ImageUtils, Transaction as TransactionUtils } from '@common/utils';
 import Modal from 'react-native-modal';
 import { inject, observer } from 'mobx-react';
@@ -11,9 +11,9 @@ import { sha256 } from 'react-native-sha256';
 import { ERC20ABI as erc20ABI } from '@common/ABIs';
 import { Contracts as contractsAddress } from '@common/constants';
 import { ethers } from 'ethers';
-@inject('wallet')
-@observer
 
+@inject('wallet','languages')
+@observer
 export class ConfirmTransaction extends React.Component {
 
     static navigationOptions = { title: 'Confirm transaction' };

@@ -3,8 +3,11 @@ import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View } from 'reac
 import { Button, InputWithIcon, TextBullet } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { Wallet as WalletUtils } from '@common/utils';
-import { General as GeneralActions, Wallets as WalletsActions, Contracts as ContractsActions } from '@common/actions';
+import { General as GeneralActions, Wallets as WalletsActions, Languages as LanguagesActions, Contracts as ContractsActions } from '@common/actions';
+import { inject, observer } from 'mobx-react';
 
+@inject('languages')
+@observer
 export class LoadMnemonics extends React.Component {
 
     static navigationOptions = { title: 'Load Wallet' };

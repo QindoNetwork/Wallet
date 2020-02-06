@@ -3,9 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import { Button } from '@components/widgets';
 import { Wallet as WalletUtils } from '@common/utils';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions, Wallets as WalletsActions } from '@common/actions';
+import { General as GeneralActions, Wallets as WalletsActions, Languages as LanguagesActions } from '@common/actions';
 import ConfirmBox from './ConfirmBox';
+import { inject, observer } from 'mobx-react';
 
+@inject('languages')
+@observer
 export class ConfirmMnemonics extends React.Component {
 
     static navigationOptions = { title: 'Create Wallet' };

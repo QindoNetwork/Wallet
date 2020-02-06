@@ -37,11 +37,6 @@ export default class CryptoCard extends React.Component {
                         <Text style={styles.title}>{this.props.crypto.symbol}</Text>
                         <Text style={styles.description}>{this.props.crypto.name}</Text>
                     </View>
-                    <View style={styles.rightColumn}>
-                        <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{this.balance(this.props.crypto.balance).toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
-                        </View>
-                    </View>
                 </View>
         );
     }

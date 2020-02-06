@@ -3,7 +3,11 @@ import { TabView } from '@components/widgets';
 import { ReceiveCoins, WalletExtract, WalletSettings, Groups, Crypto } from '..';
 import { HeaderIcon } from '@components/widgets';
 import { colors } from '@common/styles';
+import { inject, observer } from 'mobx-react';
+import { Languages as LanguagesActions } from '@common/actions';
 
+@inject('languages')
+@observer
 export class WalletDetails extends React.Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({

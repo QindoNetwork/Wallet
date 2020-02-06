@@ -3,10 +3,10 @@ import { Clipboard, Share, StyleSheet, Text, TouchableWithoutFeedback, View } fr
 import { inject, observer } from 'mobx-react';
 import QRCode from 'react-native-qrcode-svg';
 import { Icon } from '@components/widgets';
-import { General as GeneralActions } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
 import { colors, measures } from '@common/styles';
 
-@inject('wallet')
+@inject('wallet','languages')
 @observer
 export class ReceiveCoins extends React.Component {
 

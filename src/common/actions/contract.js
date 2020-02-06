@@ -42,7 +42,7 @@ export async function createProfile(togethers, args, overrides) {
   const { groupID, value } = args
   let result = "OK"
   try {
-    if(await parseInt ( togethers.verifyGroupAsked(groupID,value),10) === 1)
+    if(await new Boolean(togethers.mappAskForAdd(value,groupID)) == true)
     {
       GeneralActions.notify("You cannot add this profile or he did not ask to apply", 'long');
       return "KO"

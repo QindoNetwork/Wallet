@@ -3,7 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button, TextBullet } from '@components/widgets';
 import { Wallet as WalletUtils } from '@common/utils';
 import { colors, measures } from '@common/styles';
+import { inject, observer } from 'mobx-react';
+import { Languages as LanguagesActions } from '@common/actions';
 
+@inject('languages')
+@observer
 export class CreateMnemonics extends React.Component {
 
     static navigationOptions = { title: 'Create Wallet' };

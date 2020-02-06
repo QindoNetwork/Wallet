@@ -5,7 +5,11 @@ import { colors, measures } from '@common/styles';
 import { View, StyleSheet, Text, ActivityIndicator } from 'react-native'
 import { SecureTransaction } from '@components/widgets';
 import { Button, Camera, InputWithIcon } from '@components/widgets';
+import { inject, observer } from 'mobx-react';
+import { Languages as LanguagesActions } from '@common/actions';
 
+@inject('languages')
+@observer
 export class AddProfile extends Component {
 
   static navigationOptions = { title: "Add a friend" };

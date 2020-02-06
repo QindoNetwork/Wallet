@@ -5,8 +5,9 @@ import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions } from '@common/actions';
 import ListItem from './ListItem';
+import { Languages as LanguagesActions } from '@common/actions';
 
-@inject('wallet')
+@inject('wallet','languages')
 @observer
 export class Settings extends React.Component {
 

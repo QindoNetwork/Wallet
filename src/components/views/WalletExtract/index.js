@@ -2,12 +2,11 @@ import React from 'react';
 import { FlatList, RefreshControl, StyleSheet, View, Text } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { measures, colors } from '@common/styles';
-import { Wallets as WalletActions } from '@common/actions';
+import { Wallets as WalletActions, Languages as LanguagesActions } from '@common/actions';
 import TransactionCard from './TransactionCard';
-import NoTransactions from './NoTransactions';
 import { GeneralActions } from '@common/actions';
 
-@inject('wallet')
+@inject('wallet','languages')
 @observer
 export class WalletExtract extends React.Component {
 
@@ -25,7 +24,11 @@ export class WalletExtract extends React.Component {
 
     renderItem = (address) => ({ item }) => <TransactionCard transaction={item} walletAddress={address} togethers={this.props.togethers} />
 
-    renderBody = ({ item, history, loading, pendingTransactions }) =>  (!history.length && !loading) ? <NoTransactions /> : (
+    renderBody = ({ item, history, loading, pendingTransactions }) =>  (!history.length && !loading) ? (<View style={styles.container}>
+        <Text style={styles.message}>
+            There are still no transactions involving this wallet.
+        </Text>
+    </View>) : (
         <View>
         <FlatList
             style={styles.content}

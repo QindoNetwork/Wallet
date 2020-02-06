@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, TouchableOpacity, RefreshControl, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions  } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
 import { Button } from '@components/widgets';
 import ProfileCard from './ProfileCard';
 import { HeaderIcon } from '@components/widgets';
@@ -10,7 +10,7 @@ import { inject, observer } from 'mobx-react';
 import { SecureTransaction } from '@components/widgets';
 import Header from './Header';
 
-@inject('wallet')
+@inject('wallet','languages')
 @observer
 export class Profiles extends React.Component {
 

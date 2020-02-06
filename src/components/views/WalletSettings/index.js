@@ -3,11 +3,11 @@ import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions, Wallets as WalletsActions } from '@common/actions';
+import { General as GeneralActions, Wallets as WalletsActions, Languages as LanguagesActions } from '@common/actions';
 import ListItem from './ListItem';
 import Header from './Header';
 
-@inject('wallet')
+@inject('wallet','languages')
 @observer
 export class WalletSettings extends React.Component {
 

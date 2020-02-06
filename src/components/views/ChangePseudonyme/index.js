@@ -2,12 +2,15 @@ import React, { Fragment } from 'react'
 import { Keyboard, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions  } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
 import { Gas as gas, Restrictions as restrictions } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
 import * as yup from 'yup'
 import { Formik } from 'formik'
+import { inject, observer } from 'mobx-react';
 
+@inject('languages')
+@observer
 export class ChangePseudonyme extends React.Component {
 
     static navigationOptions = { title: 'Change pseudonyme' };

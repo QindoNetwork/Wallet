@@ -6,7 +6,11 @@ import { colors, measures } from '@common/styles';
 import { Wallet as WalletUtils } from '@common/utils';
 import Modal from 'react-native-modal';
 import { Contracts as contractsAddress } from '@common/constants';
+import { inject, observer } from 'mobx-react';
+import { Languages as LanguagesActions } from '@common/actions';
 
+@inject('languages')
+@observer
 export default class TransactionCard extends React.Component {
 
   state = { pseudoFrom: '', pseudoTo: '', show: false };

@@ -33,7 +33,7 @@ export class CryptoType2 extends React.Component {
                      })
         }
       }
-      this.setState({ erc20s2, loading: 1 })
+      this.setState({ erc20s, loading: 1 })
     } catch (e) {
     GeneralActions.notify(e.message, 'long');
     }

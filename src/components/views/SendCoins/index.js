@@ -2,9 +2,12 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Calculator } from '@components/widgets';
 import { colors } from '@common/styles';
-import { General as GeneralActions  } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
 import { Conversions as conversions } from '@common/constants';
+import { inject, observer } from 'mobx-react';
 
+@inject('wallet','languages')
+@observer
 export class SendCoins extends React.Component {
 
   static navigationOptions = ({ navigation, screenProps }) => ({

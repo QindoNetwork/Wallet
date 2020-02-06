@@ -6,7 +6,11 @@ import { colors, measures } from '@common/styles';
 import { Gas as gas } from '@common/constants';
 import { View, StyleSheet, TextInput, Text } from 'react-native'
 import { SecureTransaction } from '@components/widgets';
+import { inject, observer } from 'mobx-react';
+import { Languages as LanguagesActions } from '@common/actions';
 
+@inject('languages')
+@observer
 export class AskGroup extends Component {
 
   static navigationOptions = { title: "Apply for a group" };

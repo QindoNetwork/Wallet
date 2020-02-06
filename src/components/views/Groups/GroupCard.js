@@ -2,8 +2,11 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';;
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions  } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions  } from '@common/actions';
+import { inject, observer } from 'mobx-react';
 
+@inject('languages')
+@observer
 export default class GroupsCard extends React.Component {
 
     render() {

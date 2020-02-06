@@ -60,7 +60,7 @@ contract Togethers is Administration {
     allowCryptoForUS(ttusd);
     allowCryptoForEU(tteur);
   }
-  
+
   function ask(uint _groupID) public
   {
     require(mappUsersInGroup[_groupID].length > 0);
@@ -284,11 +284,6 @@ contract Togethers is Administration {
     bool statusE = mappAllowCryptoForEU[_crypto];
     bool statusO = mappAllowCryptoForOther[_crypto];
     return erc20(symbol,name,decimals,status,statusU,statusE,statusO);
-  }
-
-  function getStablecoinList() view public returns (address[] memory)
-  {
-    return stablecoinList;
   }
 
   function getCryptoList() view public returns (address[] memory)
