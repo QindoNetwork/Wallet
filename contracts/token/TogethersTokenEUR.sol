@@ -20,10 +20,11 @@ contract TogethersTokenEUR {
      uint256 private _totalSupply;
      address public Escrow;
 
-     function setEscrowContract(address togethers) public
+     function setEscrowContract(address togethers) public returns (bool)
      {
        require(Escrow == address(0));
        Escrow = togethers;
+       return true;
      }
 
      /**

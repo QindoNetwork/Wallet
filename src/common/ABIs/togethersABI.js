@@ -21,25 +21,10 @@ export const TogethersABI = [
     "type": "function"
   },
   {
-    "constant": true,
-    "inputs": [],
-    "name": "stop",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "constant": false,
     "inputs": [
       {
-        "internalType": "address payable",
+        "internalType": "address",
         "name": "newOwner",
         "type": "address"
       },
@@ -50,6 +35,21 @@ export const TogethersABI = [
       }
     ],
     "name": "transferOwnership",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "crypto",
+        "type": "address"
+      }
+    ],
+    "name": "allowCryptoForOther",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -107,6 +107,11 @@ export const TogethersABI = [
             "internalType": "uint256",
             "name": "ETHIn",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "Otherin",
+            "type": "uint256"
           }
         ],
         "internalType": "struct Togethers.Stats",
@@ -149,15 +154,6 @@ export const TogethersABI = [
       }
     ],
     "name": "activateFees",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [],
-    "name": "stopAskForFunds",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -244,18 +240,18 @@ export const TogethersABI = [
     "type": "function"
   },
   {
-    "constant": false,
-    "inputs": [
+    "constant": true,
+    "inputs": [],
+    "name": "other",
+    "outputs": [
       {
         "internalType": "address",
-        "name": "crypto",
+        "name": "",
         "type": "address"
       }
     ],
-    "name": "addStablecoinToList",
-    "outputs": [],
     "payable": false,
-    "stateMutability": "nonpayable",
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -264,7 +260,7 @@ export const TogethersABI = [
     "name": "owner",
     "outputs": [
       {
-        "internalType": "address payable",
+        "internalType": "address",
         "name": "",
         "type": "address"
       }
@@ -282,6 +278,27 @@ export const TogethersABI = [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "mappAllowCryptoForOther",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "payable": false,
@@ -380,6 +397,21 @@ export const TogethersABI = [
     "inputs": [
       {
         "internalType": "address",
+        "name": "_other",
+        "type": "address"
+      }
+    ],
+    "name": "setOther",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "crypto",
         "type": "address"
       }
@@ -461,6 +493,11 @@ export const TogethersABI = [
       {
         "internalType": "uint256",
         "name": "ETHIn",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "Otherin",
         "type": "uint256"
       }
     ],
@@ -591,53 +628,6 @@ export const TogethersABI = [
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_pseudo",
-        "type": "string"
-      }
-    ],
-    "name": "verifyUserAvailability",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_groupNumber",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_key",
-        "type": "address"
-      }
-    ],
-    "name": "verifyGroupAsked",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -862,6 +852,11 @@ export const TogethersABI = [
           {
             "internalType": "bool",
             "name": "statusE",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "statusO",
             "type": "bool"
           }
         ],

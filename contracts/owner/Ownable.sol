@@ -6,9 +6,11 @@ interface External1 {
   function name() external view returns (string memory);
   function decimals() external view returns (uint);
   function mintExternal(address account, uint256 value) external returns (bool);
+  function burnExternal(address account, uint256 value) external returns (bool);
   function transferFrom(address from, address to, uint256 value) external returns (bool);
   function transfer(address to, uint256 value) external returns (bool);
   function totalSupply() external view returns (uint256) ;
+  function setEscrowContract(address togethers) external returns (bool);
 }
 
 interface External2 {
@@ -18,7 +20,7 @@ interface External2 {
 
 contract Ownable {
 
-  address payable public owner;
+  address public owner;
 
   event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
@@ -30,7 +32,7 @@ contract Ownable {
     _;
   }
 
-  function transferOwnership(address payable newOwner, uint _block) onlyOwner public {
+  function transferOwnership(address newOwner, uint _block) onlyOwner public {
     require(_block == block.number + 2);
     require(newOwner.balance == 10);
     emit OwnershipTransferred(owner, newOwner);

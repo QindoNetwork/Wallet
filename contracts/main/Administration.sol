@@ -7,16 +7,18 @@ contract Administration is Ownable {
 
   using SafeMath for uint256;
 
-  bool public stop;
   uint public fees;
 
   mapping (address => bool) public mappAllowCryptoForEU;
   mapping (address => bool) public mappAllowCryptoForUS;
+  mapping (address => bool) public mappAllowCryptoForOther;
   mapping (address => bool) public mappCryptoEnable;
   mapping (uint => address) public checkNameUnicity;
   mapping (address => string) public mappAddressToUser;
 
   mapping (address => uint) internal userPassword;
+
+  address public other;
 
   address[] cryptoList;
   address[] stablecoinList;
@@ -29,12 +31,19 @@ contract Administration is Ownable {
     bool status;
     bool statusU;
     bool statusE;
+    bool statusO;
   }
 
   function createPassword(string memory _password) internal
   {
     require(userPassword[msg.sender] == 0);
     userPassword[msg.sender] = returnHash(_password);
+  }
+
+  function setOther(address _other) public onlyOwner
+  {
+    require(other == address(0));
+    other = _other;
   }
 
   function verifyRegistration() public view returns (uint)
@@ -104,32 +113,12 @@ contract Administration is Ownable {
     return add;
   }
 
-  function addStablecoinToList(address crypto) public onlyOwner
-  {
-    require(crypto != address(0));
-    require(checkCryptoToList(crypto) == false);
-    require(checkStablecoin(crypto) == true);
-    stablecoinList.push(crypto);
-  }
-
-  function checkStablecoin(address crypto) private view returns (bool)
-  {
-    bool add = true;
-    for(uint i = 0 ; i < stablecoinList.length ; i++)
-    {
-      if (stablecoinList[i] == crypto)
-      {
-        add = false;
-        break;
-      }
-    }
-    return add;
-  }
-
   function allowCryptoForUS(address crypto) public onlyOwner
   {
-    require(checkStablecoin(crypto) == false);
-    if (mappAllowCryptoForUS[crypto] == false && mappAllowCryptoForEU[crypto] == false)
+    if (mappCryptoEnable[crypto] == true
+      && mappAllowCryptoForUS[crypto] == false
+      && mappAllowCryptoForEU[crypto] == false
+      && mappAllowCryptoForOther[crypto] == false)
     {
       mappAllowCryptoForUS[crypto] = true;
     }
@@ -141,8 +130,10 @@ contract Administration is Ownable {
 
   function allowCryptoForEU(address crypto) public onlyOwner
   {
-    require(checkStablecoin(crypto) == false);
-    if (mappCryptoEnable[crypto] == true && mappAllowCryptoForUS[crypto] == false && mappAllowCryptoForEU[crypto] == false)
+    if (mappCryptoEnable[crypto] == true
+      && mappAllowCryptoForUS[crypto] == false
+      && mappAllowCryptoForEU[crypto] == false
+      && mappAllowCryptoForOther[crypto] == false)
     {
       mappAllowCryptoForEU[crypto] = true;
     }
@@ -152,15 +143,18 @@ contract Administration is Ownable {
     }
   }
 
-  function stopAskForFunds() public onlyOwner
+  function allowCryptoForOther(address crypto) public onlyOwner
   {
-    if (stop == false)
+    if (mappCryptoEnable[crypto] == true
+      && mappAllowCryptoForUS[crypto] == false
+      && mappAllowCryptoForEU[crypto] == false
+      && mappAllowCryptoForOther[crypto] == false)
     {
-      stop = true;
+      mappAllowCryptoForOther[crypto] = true;
     }
     else
     {
-      stop = false;
+      mappAllowCryptoForOther[crypto] = false;
     }
   }
 

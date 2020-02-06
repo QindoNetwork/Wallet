@@ -26,6 +26,7 @@ contract Togethers is Administration {
     uint USDin;
     uint EURin;
     uint ETHIn;
+    uint Otherin;
   }
 
   address public constant ttusd = 0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292;
@@ -35,35 +36,6 @@ contract Togethers is Administration {
 
   constructor() public {
     owner = msg.sender;
-    checkNameUnicity[returnHash("Togethers")] = address(this);
-    cryptoList.push(ttusd);
-    cryptoList.push(tteur);
-    enableCrypto(ttusd);
-    enableCrypto(tteur);
-    address dai = 0xb3162F1d3E9071001c5286cc0Cd533C3958dc65f;
-    address Gemini = 0x6a36989540818bd8686873A2f36E39Ac9Da2e102;
-    address Tether = 0x92EB10B521fd63D0a2df10B36f284C150b1Ca17F;
-    address Stasis = 0xc3249b1240e44b19c42d8a6d27e15f80376e542d;
-    addCryptoToList(dai);
-    addCryptoToList(Gemini);
-    addCryptoToList(Tether);
-    addCryptoToList(Stasis);
-    addStablecoinToList(dai);
-    addStablecoinToList(Gemini);
-    addStablecoinToList(Tether);
-    addStablecoinToList(Stasis);
-    addStablecoinToList(ttusd);
-    addStablecoinToList(tteur);
-    enableCrypto(dai);
-    enableCrypto(Gemini);
-    enableCrypto(Tether);
-    enableCrypto(Stasis);
-    allowCryptoForUS(dai);
-    allowCryptoForUS(Gemini);
-    allowCryptoForUS(Tether);
-    allowCryptoForEU(Stasis);
-    allowCryptoForUS(ttusd);
-    allowCryptoForEU(tteur);
   }
 
   function ask(uint _groupID) public
@@ -110,25 +82,6 @@ contract Togethers is Administration {
     addMember(groupNumber,msg.sender);
   }
 
-  function verifyUserAvailability(string memory _pseudo) public view returns (uint)
-  {
-    uint currentID = returnHash(_pseudo);
-    if (checkNameUnicity[currentID] == address(0))
-    {
-      return 1;
-    }
-    return 0;
-  }
-
-  function verifyGroupAsked(uint _groupNumber, address _key) public view returns (uint)
-  {
-    if (mappAskForAdd[_key][_groupNumber] == true)
-    {
-      return 1;
-    }
-    return 0;
-  }
-
   function addMember(uint _groupID, address _key) private
   {
     require(mappProfileInGroup[_groupID][msg.sender].owner == true);
@@ -158,7 +111,6 @@ contract Togethers is Administration {
 
   function askForFunds(uint groupID, string memory _description) public
   {
-    require(stop == false);
     require(mappProfileInGroup[groupID][msg.sender].open == false);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     mappProfileInGroup[groupID][msg.sender].open = true;
@@ -167,17 +119,17 @@ contract Togethers is Administration {
 
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, address _crypto) public payable
   {
-    require(stop == false);
     require(_publicKey != msg.sender);
     require(mappProfileInGroup[groupID][_publicKey].open == true);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     uint amount;
-    uint8 family;
     if (_crypto == address(0))
     {
       require(_tokenAmount == 0);
       require(msg.value > 0);
       amount = msg.value;
+      mappProfileInGroup[groupID][_publicKey].stats.ETHIn.add(amount);
+      mappPeerToPeerStats[msg.sender][_publicKey].ETHIn.add(amount);
     }
     else
     {
@@ -185,32 +137,23 @@ contract Togethers is Administration {
       require(_tokenAmount > 0);
       require(mappCryptoEnable[_crypto] == true);
       amount = _tokenAmount;
-      if (mappAllowCryptoForUS[_crypto] == true)
-      {
-        family = 2;
-      }
-      if (mappAllowCryptoForEU[_crypto] == true)
-      {
-        family = 1;
-      }
-      require(family != 0);
       External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
       amount = _tokenAmount.mul(10**(-(18-(External1(_crypto).decimals()))));
-    }
-    if (family == 0)
-    {
-       mappProfileInGroup[groupID][_publicKey].stats.ETHIn.add(amount);
-       mappPeerToPeerStats[msg.sender][_publicKey].ETHIn.add(amount);
-    }
-    if (family == 1)
+    if (mappAllowCryptoForEU[_crypto] == true)
     {
        mappProfileInGroup[groupID][_publicKey].stats.EURin.add(amount);
        mappPeerToPeerStats[msg.sender][_publicKey].EURin.add(amount);
     }
-    if (family == 2)
+    if (mappAllowCryptoForUS[_crypto] == true)
     {
        mappProfileInGroup[groupID][_publicKey].stats.USDin.add(amount);
        mappPeerToPeerStats[msg.sender][_publicKey].USDin.add(amount);
+    }
+    if (mappAllowCryptoForOther[_crypto] == true)
+    {
+       mappProfileInGroup[groupID][_publicKey].stats.Otherin.add(amount);
+       mappPeerToPeerStats[msg.sender][_publicKey].Otherin.add(amount);
+    }
     }
   }
 
@@ -218,7 +161,6 @@ contract Togethers is Administration {
   {
     require(mappProfileInGroup[groupID][msg.sender].open == true);
     mappProfileInGroup[groupID][msg.sender].open = false;
-    uint money;
     if (mappProfileInGroup[groupID][msg.sender].stats.ETHIn > 0)
     {
       msg.sender.transfer(mappProfileInGroup[groupID][msg.sender].stats.ETHIn);
@@ -234,6 +176,11 @@ contract Togethers is Administration {
       External1(ttusd).mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats.USDin);
       mappProfileInGroup[groupID][msg.sender].stats.USDin = 0;
     }
+    if (mappProfileInGroup[groupID][msg.sender].stats.Otherin > 0)
+    {
+      External1(other).mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats.Otherin);
+      mappProfileInGroup[groupID][msg.sender].stats.Otherin = 0;
+    }
   }
 
   function changeToken(uint _tokenAmount, address _crypto1, address _crypto2) public
@@ -241,10 +188,12 @@ contract Togethers is Administration {
     require(mappCryptoEnable[_crypto1] == true && mappCryptoEnable[_crypto2] == true);
     require(_crypto1 != _crypto2);
     require((mappAllowCryptoForUS[_crypto1] == true && mappAllowCryptoForUS[_crypto2] == true) ||
-            (mappAllowCryptoForEU[_crypto1] == true && mappAllowCryptoForEU[_crypto2] == true));
+            (mappAllowCryptoForEU[_crypto1] == true && mappAllowCryptoForEU[_crypto2] == true) ||
+            (mappAllowCryptoForOther[_crypto1] == true && mappAllowCryptoForOther[_crypto2] == true));
     uint cryptoAmount1 = _tokenAmount.mul(10**(-(18-(External1(_crypto1).decimals()))));
     uint cryptoAmount2 = _tokenAmount.mul(10**(-(18-(External1(_crypto2).decimals()))));
     External1(_crypto1).transferFrom(msg.sender,address(this),cryptoAmount1);
+    uint money;
     if (fees > 0)
     {
       money = cryptoAmount2.div(fees);
@@ -310,7 +259,8 @@ contract Togethers is Administration {
     bool status = mappCryptoEnable[_crypto];
     bool statusU = mappAllowCryptoForUS[_crypto];
     bool statusE = mappAllowCryptoForEU[_crypto];
-    return erc20(symbol,name,decimals,status,statusU,statusE);
+    bool statusO = mappAllowCryptoForOther[_crypto];
+    return erc20(symbol,name,decimals,status,statusU,statusE,statusO);
   }
 
   function getStablecoinList() view public returns (address[] memory)
