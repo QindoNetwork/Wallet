@@ -9,18 +9,17 @@ contract Administration is Ownable {
 
   uint public fees;
 
-  mapping (address => bool) public mappAllowCryptoForEU;
-  mapping (address => bool) public mappAllowCryptoForUS;
-  mapping (address => bool) public mappAllowCryptoForOther;
+  event askEvent(uint indexed groupID, address indexed sender);
+  event payEvent(address indexed from, address indexed to, address indexed crypto, uint amount);
+
+  mapping (address => uint) public mappAllowCryptoForCategory;
   mapping (address => bool) public mappCryptoEnable;
   mapping (uint => address) internal checkNameUnicity;
   mapping (address => string) public mappAddressToUser;
-
   mapping (address => uint) internal userPassword;
 
-  address public other;
-
   address[] cryptoList;
+  address[] homeStableList;
 
   struct erc20
   {
@@ -28,21 +27,13 @@ contract Administration is Ownable {
     string name;
     uint decimals;
     bool status;
-    bool statusU;
-    bool statusE;
-    bool statusO;
+    uint category;
   }
 
   function createPassword(string memory _password) internal
   {
     require(userPassword[msg.sender] == 0);
     userPassword[msg.sender] = returnHash(_password);
-  }
-
-  function setOther(address _other) public onlyOwner
-  {
-    require(other == address(0));
-    other = _other;
   }
 
   function verifyRegistration() public view returns (uint)
@@ -103,7 +94,6 @@ contract Administration is Ownable {
   function addCryptoToList(address crypto) public onlyOwner
   {
     require(crypto != address(0));
-    require(crypto != address(0));
     cryptoList.push(crypto);
   }
 
@@ -121,54 +111,21 @@ contract Administration is Ownable {
     return add;
   }
 
-  function allowCryptoForUS(address crypto) public onlyOwner
+  function allowCryptoForCategory(address crypto, uint category) public onlyOwner
   {
-    if (mappCryptoEnable[crypto] == true
-      && mappAllowCryptoForUS[crypto] == false
-      && mappAllowCryptoForEU[crypto] == false
-      && mappAllowCryptoForOther[crypto] == false)
-    {
-      mappAllowCryptoForUS[crypto] = true;
-    }
-    else
-    {
-      mappAllowCryptoForUS[crypto] = false;
-    }
+    require(category != 0);
+    require(mappCryptoEnable[crypto] == true);
+    mappAllowCryptoForCategory[crypto] = category;
   }
 
-  function allowCryptoForEU(address crypto) public onlyOwner
+  function createNewHomeStable(address crypto) public onlyOwner
   {
-    if (mappCryptoEnable[crypto] == true
-      && mappAllowCryptoForUS[crypto] == false
-      && mappAllowCryptoForEU[crypto] == false
-      && mappAllowCryptoForOther[crypto] == false)
-    {
-      mappAllowCryptoForEU[crypto] = true;
-    }
-    else
-    {
-      mappAllowCryptoForEU[crypto] = false;
-    }
-  }
-
-  function allowCryptoForOther(address crypto) public onlyOwner
-  {
-    if (mappCryptoEnable[crypto] == true
-      && mappAllowCryptoForUS[crypto] == false
-      && mappAllowCryptoForEU[crypto] == false
-      && mappAllowCryptoForOther[crypto] == false)
-    {
-      mappAllowCryptoForOther[crypto] = true;
-    }
-    else
-    {
-      mappAllowCryptoForOther[crypto] = false;
-    }
+    homeStableList.push(crypto);
   }
 
   function activateFees(uint _fees) public onlyOwner
   {
-    if (_fees > 100)
+    if (_fees >= 100)
     {
       fees = 0;
     }
@@ -176,6 +133,16 @@ contract Administration is Ownable {
     {
       fees = _fees;
     }
+  }
+
+  function getCryptoList() view public returns (address[] memory)
+  {
+    return cryptoList;
+  }
+
+  function getHomeStableList() view public returns (address[] memory)
+  {
+    return homeStableList;
   }
 
 }

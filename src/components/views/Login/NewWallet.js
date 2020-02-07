@@ -12,69 +12,50 @@ import { Formik } from 'formik'
 import { sha256 } from 'react-native-sha256';
 import { Languages as LanguagesActions } from '@common/actions';
 import { inject, observer } from 'mobx-react';
-import NewWallet from './NewWallet'
-import SignIN from './SignIN'
-import SignUP from './SignUP'
 
 @inject('wallet','languages')
 @observer
-export class Login extends React.Component {
+export default class NewWallet extends React.Component {
 
-    static navigationOptions = { title: 'Login' };
-
-    state = { show: false, loading: 0, registered: 0, password: '', result: 0, pseudo: '' };
-
-    async componentDidMount() {
-
-      const { togethers, address } = this.props.navigation.state.params;
-      const { item } = this.props.wallet;
-
-      try {
-        this.setState({
-                        registered: parseInt (await togethers.verifyRegistration(),10),
-                        loading: 1
-                      })
-      } catch (e) {
-          GeneralActions.notify(e.message, 'long');
-      }
+    copyToClipboard() {
+        const { item } = this.props.wallet;
+        Clipboard.setString(item.address);
+        GeneralActions.notify('Copied to clipboard', 'short');
     }
 
+    share() {
+        const { item } = this.props.wallet;
+        Share.share({
+            title: 'Wallet address:',
+            message: item.address
+        });
+    }
+
+    renderColumn = (icon, label, action) => (
+        <TouchableWithoutFeedback onPress={action}>
+            <View style={styles.actionColumn}>
+                <Icon name={icon} style={styles.actionIcon} />
+                <Text style={styles.actionLabel}>{label}</Text>
+            </View>
+        </TouchableWithoutFeedback>
+    );
+
     render() {
-
-      const { gasParam, togethers } = this.props.navigation.state.params;
-      const { navigation } = this.props;
-      const balance = this.props.wallet.item.balance
-      const gasLimit = gasParam[gas.defaultTransaction].limit
-      const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
-
-      if(this.state.loading === 0)
-      {
-        return (
-        <View style={styles.container}>
-          <View style={styles.body}>
-            <ActivityIndicator size="large"/>
-          </View>
+      const { item } = this.props.wallet;
+      return (
+        <View style={styles.container1}>
+        <Text style={styles.centered}>Low balance, you need ether to register, show the code below to receive ethers and enter to the community!</Text>
+        <View style={styles.centered}>
+            <QRCode size={256} value={item.address} />
         </View>
-        );
-      }
-
-      if(this.state.registered === 1)
-      {
-        return (
-          <SignIN togethers={togethers} navigation={navigation} gasParam={gasParam}/>
-        );
-      }
-
-      if(balance > gasLimit * gasPrice)
-      {
-        return (
-          <SignUP togethers={togethers} navigation={navigation} gasParam={gasParam}/>
-        );
-      }
-
-        return (
-          <NewWallet/>
-        );
+          <View style={styles.actions}>
+              <View style={styles.actionsBar}>
+                  {this.renderColumn('copy', 'Copy', () => this.copyToClipboard())}
+                  {this.renderColumn('share', 'Share', () => this.share())}
+              </View>
+          </View>
+      </View>
+      )
     }
 
 }

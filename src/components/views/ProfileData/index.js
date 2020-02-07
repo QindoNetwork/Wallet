@@ -28,18 +28,39 @@ export class ProfileData extends React.Component {
         )
     })
 
-    state = { loading: 0, statsETH: 0, statsEUR: 0, statsUSD: 0, };
+    state = { loading: 0, stats: [] };
 
     async componentDidMount() {
       const { wallet } = this.props
       const { togethers, item } = this.props.navigation.state.params;
+      let stats = []
+      var info
       try {
-        const statsIn = await togethers.mappPeerToPeerStats(wallet.item.address,item.id)
-        const statsOut = await togethers.mappPeerToPeerStats(item.id,wallet.item.address)
-        const statsETH = statsOut.ETHIn - statsIn.ETHIn
-        const statsEUR = statsOut.EURin - statsIn.EURin
-        const statsUSD = statsOut.USDin - statsIn.USDin
-        this.setState({ statsETH, statsEUR, statsUSD, loading: 1 })
+        const statsIn = await togethers.getStats(wallet.item.address,item.id)
+        const statsOut = await togethers.getStats(item.id,wallet.item.address)
+        const crypto = await togethers.getHomeStableList()
+        for ( var i = 0; i <= statsIn.length; i++ ) {
+          if ( i === 0 ) {
+          stats.push({    statsIn:  statsIn[i],
+                          statsOut: statsOut[i],
+                          balance: item.stats[i],
+                          symbol: "ETH",
+                          name: "Ethers",
+                          decimals: 0,
+                         })
+          }
+          else {
+          info = await togethers.getCryptoInfo(crypto[i])
+          stats.push({    statsIn:  statsIn[i],
+                          statsOut: statsOut[i],
+                          balance: item.stats[i],
+                          symbol: info.symbol,
+                          name: info.name,
+                          decimals: info.decimals,
+                      })
+        }
+        }
+        this.setState({ stats, loading: 1 })
       } catch (e) {
       GeneralActions.notify(e.message, 'long');
       }
@@ -48,46 +69,20 @@ export class ProfileData extends React.Component {
     renderData() {
 
       const profile = this.props.navigation.state.params.item
-
-      var erc20s = []
-      var erc20s2 = []
-      erc20s.push({ name: "Ethers",
-                    symbol: "ETH",
-                    balance: profile.ETHin })
-      erc20s.push({ name: "Togethers-USD",
-                    symbol: "TGTU",
-                    balance: profile.USDin,
-                    decimals: 18})
-      erc20s.push({ name: "Togethers-EUR",
-                    symbol: "TGTE",
-                    balance: profile.EURin,
-                    decimals: 18})
-
-
-      erc20s2.push({ name: "Ethers",
-                     symbol: "ETH",
-                     balance: this.state.statsETH })
-      erc20s2.push({ name: "Togethers-USD",
-                      symbol: "TGTU",
-                      balance: this.state.statsUSD,
-                      decimals: 18})
-      erc20s2.push({ name: "Togethers-EUR",
-                      symbol: "TGTE",
-                      balance: this.state.statsEUR,
-                      decimals: 18})
+      const { stats } = this.state
 
         return(
           <View style={styles.container}>
           <View style={styles.leftColumn}>
               <ProfileCard profile={profile}/>
               <FlatList
-                data={erc20s.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
+                data={stats.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
                 renderItem={({ item }) => (
                 <CryptoCard crypto={item}/>
               )}
           />
           <FlatList
-            data={erc20s2.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
+            data={stats.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
             renderItem={({ item }) => (
             <CryptoCard crypto={item}/>
           )}

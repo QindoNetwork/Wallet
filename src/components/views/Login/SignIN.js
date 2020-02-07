@@ -12,69 +12,49 @@ import { Formik } from 'formik'
 import { sha256 } from 'react-native-sha256';
 import { Languages as LanguagesActions } from '@common/actions';
 import { inject, observer } from 'mobx-react';
-import NewWallet from './NewWallet'
-import SignIN from './SignIN'
-import SignUP from './SignUP'
 
 @inject('wallet','languages')
 @observer
-export class Login extends React.Component {
+export default class SignIN extends React.Component {
 
-    static navigationOptions = { title: 'Login' };
-
-    state = { show: false, loading: 0, registered: 0, password: '', result: 0, pseudo: '' };
-
-    async componentDidMount() {
-
-      const { togethers, address } = this.props.navigation.state.params;
-      const { item } = this.props.wallet;
-
-      try {
-        this.setState({
-                        registered: parseInt (await togethers.verifyRegistration(),10),
-                        loading: 1
-                      })
-      } catch (e) {
-          GeneralActions.notify(e.message, 'long');
-      }
+    async onPressContinueLogin() {
+        Keyboard.dismiss();
+        const { gasParam, togethers } = this.props;
+        const { password } = this.state;
+        const hashPassword = sha256(password)
+        try {
+          this.setState({
+                          result : parseInt (await togethers.connectUser(hashPassword),10)
+                        })
+        } catch (e) {
+            GeneralActions.notify(e.message, 'long');
+        }
+        if (this.state.result === 1) {
+          this.props.navigation.navigate('WalletDetails', { gasParam, togethers, replaceRoute: true });
+        }
+        else {
+          GeneralActions.notify("Password not good", 'long');
+        }
     }
 
     render() {
 
-      const { gasParam, togethers } = this.props.navigation.state.params;
-      const { navigation } = this.props;
-      const balance = this.props.wallet.item.balance
-      const gasLimit = gasParam[gas.defaultTransaction].limit
-      const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
-
-      if(this.state.loading === 0)
-      {
-        return (
-        <View style={styles.container}>
+        return ( <View style={styles.container}>
           <View style={styles.body}>
-            <ActivityIndicator size="large"/>
+              <Text style={styles.message}>{LanguagesActions.choosePseudonyme(this.props.languages.selectedLanguage)}</Text>
+              <TextInput
+                  style={styles.input}
+                  secureTextEntry
+                  underlineColorAndroid="transparent"
+                  placeholder="password"
+                  onChangeText={password => this.setState({ password })} />
           </View>
-        </View>
-        );
-      }
-
-      if(this.state.registered === 1)
-      {
-        return (
-          <SignIN togethers={togethers} navigation={navigation} gasParam={gasParam}/>
-        );
-      }
-
-      if(balance > gasLimit * gasPrice)
-      {
-        return (
-          <SignUP togethers={togethers} navigation={navigation} gasParam={gasParam}/>
-        );
-      }
-
-        return (
-          <NewWallet/>
-        );
+          <View style={styles.buttonsContainer}>
+              <Button
+                  children="Next"
+                  onPress={() => this.onPressContinueLogin()}/>
+          </View>
+      </View>)
     }
 
 }

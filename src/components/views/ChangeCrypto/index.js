@@ -35,14 +35,13 @@ export class ChangeCrypto extends React.Component {
     var info
     var instance
     var balance
+    var category
       const req = await togethers.getCryptoList()
       for ( var i = 0; i < req.length; i++ ) {
         currentAddress = req[i]
         info = await togethers.getCryptoInfo(currentAddress)
-        let e = new Boolean(info.statusE)
-        let u = new Boolean(info.statusU)
-        let o = new Boolean(info.statusO)
-        if(e == true || u == true || o == true){
+        category = parseInt(info.category,10)
+        if(category !== 0 && new Boolean(info.status) == true ){
           instance = new ethers.Contract(currentAddress, erc20ABI, connection)
           balance = parseInt (await instance.balanceOf(wallet.item.address),10)
           if ( balance > 0) {
@@ -52,9 +51,8 @@ export class ChangeCrypto extends React.Component {
                       instance: instance,
                       address: currentAddress,
                       balance: balance,
-                      statusU: u,
-                      statusE: e,
-                      statusO: o,  })
+                      category: category,
+                    })
                     }
         }
       }

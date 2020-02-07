@@ -19,10 +19,7 @@ export class CryptoType2 extends React.Component {
       for ( var i = 0; i < erc20s.length; i++ ) {
         currentAddress = erc20s[i].address
         info = await togethers.getCryptoInfo(currentAddress)
-        if ( ((cryptoOne.statusE == true && new Boolean(info.statusE) == true) ||
-            (cryptoOne.statusU == true && new Boolean(info.statusU) == true) ||
-          (cryptoOne.statusO == true && new Boolean(info.statusO) == true)) &&
-            currentAddress !== cryptoOne.address ) {
+        if ( parseInt(info.category,10) === cryptoOne.category && currentAddress !== cryptoOne.address ) {
               balance = parseInt (await erc20s[i].instance.balanceOf(contractsAddress.togethersAddress),10)
               erc20s2.push({
                       name: info.name,

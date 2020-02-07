@@ -61,19 +61,18 @@ export class Profiles extends React.Component {
         try {
           const req = await togethers.getProfiles(groupID)
           let currentAddress
+          let temp
             for ( var i = 0; i < req.length; i++ ) {
               this.setState({ length: req.length })
               currentAddress = req[i]
-              var temp = await togethers.mappProfileInGroup(groupID,currentAddress)
+              temp = await togethers.mappProfileInGroup(groupID,currentAddress)
               if ( currentAddress !== wallet.item.address && new Boolean(temp.isMember) == true) {
                 profiles.push({ id:  currentAddress,
                                 name: await togethers.mappAddressToUser(currentAddress),
                                 owner: new Boolean(temp.owner),
                                 active: new Boolean(temp.open),
                                 description: temp.description,
-                                USDin: parseInt(temp.stats.USDin,10),
-                                EURin: parseInt(temp.stats.EURin,10),
-                                ETHin: parseInt(temp.stats.ETHIn,10)})
+                                stats: temp.stats[i]})
               }
           }
           this.setState({ profiles, loading: 1 })
