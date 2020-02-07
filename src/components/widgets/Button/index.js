@@ -15,16 +15,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 2,
-        backgroundColor: colors.primary,
-        borderColor: colors.secondary,
+        backgroundColor: 'darkslategray',
+        borderColor: 'darkslategray',
         padding: measures.defaultPadding,
-        borderRadius: 4
+        borderRadius: 6,
     },
     buttonDisabled: {
         opacity: 0.5,
     },
     title: {
-        color: colors.secondary,
+        color: 'white',
         fontSize: 16
     }
 });

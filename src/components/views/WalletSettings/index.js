@@ -5,7 +5,6 @@ import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions, Wallets as WalletsActions, Languages as LanguagesActions } from '@common/actions';
 import ListItem from './ListItem';
-import Header from './Header';
 
 @inject('wallet','languages')
 @observer
@@ -22,11 +21,6 @@ export class WalletSettings extends React.Component {
         }
     }
 
-    showPK() {
-        const { wallet } = this.props;
-        this.props.navigation.push('ShowPrivateKey', { wallet });
-    }
-
     confirmRemoveWallet() {
         Alert.alert(
             'Remove wallet',
@@ -39,22 +33,9 @@ export class WalletSettings extends React.Component {
         );
     }
 
-    confirmExportPK() {
-        Alert.alert(
-            'Export private key',
-            'Make sure you are alone and no one else will see your private key.',
-            [
-                { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                { text: 'Continue', onPress: () => this.showPK() }
-            ],
-            { cancelable: false }
-        );
-    }
-
     render() {
         return (
             <View style={styles.container}>
-            <Header/>
                 <ListItem onPress={() => this.confirmRemoveWallet()}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>

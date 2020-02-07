@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, RefreshControl, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { FlatList, RefreshControl, StyleSheet, View, ActivityIndicator, Image } from 'react-native';
 import { HeaderIcon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions, Wallets as WalletActions, Languages as LanguagesActions } from '@common/actions';
@@ -9,7 +9,7 @@ import { Contracts as contractsAddress, Network as EthereumNetworks } from '@com
 import { ControlABI as controlABI, TogethersABI as togethersABI } from '@common/ABIs';
 import { inject, observer } from 'mobx-react';
 
-@inject('wallets','languages')
+@inject('wallets')
 @observer
 export class WalletsOverview extends React.Component {
 
@@ -64,11 +64,7 @@ export class WalletsOverview extends React.Component {
           var gasParam = []
           const control = new ethers.Contract(contractsAddress.controlAddress, controlABI, connection);
           const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
-            var enable
-            var tokenAddress
-            var instance
-            var type
-            var gas
+          var gas
 
             const listLength = parseInt(await control.listLength(),10)
 
@@ -95,12 +91,17 @@ export class WalletsOverview extends React.Component {
         <Text style={styles.message}>
             There are no wallets configured. Click on the + button to add a new one.
         </Text>
-    </View>) : (
+    </View>) : (<View>
         <FlatList
             style={styles.content}
             data={list.sort((prev, next) => prev.name.localeCompare(next.name))}
             keyExtractor={(item, index) => String(index)}
             renderItem={this.renderItem} />
+            <View style={styles.avatar}>
+            <Image source={require('../../widgets/Logos/2587429327_24309964-ea25-4f7e-94e1-5f65fef6c12d.png')} />
+            </View>
+            </View>
+
     );
 
     render() {
@@ -112,7 +113,7 @@ export class WalletsOverview extends React.Component {
 
             <View style={styles.container}>
               <View style={styles.body}>
-                <ActivityIndicator size="large"/>
+                <ActivityIndicator size="large" color="white"/>
               </View>
             </View>
 
@@ -131,10 +132,10 @@ export class WalletsOverview extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: measures.defaultPadding,
+        padding: 8,
         alignItems: 'stretch',
         justifyContent: 'flex-start',
-        backgroundColor: colors.withe,
+        backgroundColor: 'dodgerblue',
     },
     body: {
         flex: 1,
@@ -142,6 +143,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     content: {
-        marginTop: measures.defaultMargin
+      backgroundColor: 'dodgerblue',
+        marginTop: 8
+    },
+    avatar: {
+      backgroundColor: 'dodgerblue',
+        marginTop: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });

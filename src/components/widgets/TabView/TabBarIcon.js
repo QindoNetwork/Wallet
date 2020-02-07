@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
         flex: 1
     },
     activeLabel: {
-        color: colors.red
+        color: 'white'
     },
     label: {
-        color: colors.white
+        color: 'black'
     }
 });

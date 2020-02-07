@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, Text, View, ActivityIndicator, RefreshControl} from 'react-native';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions, Languages as LanguagesActions  } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
 import CryptoCard from './CryptoCard';
 import Header from './Header';
 import { ERC20ABI as erc20ABI } from '@common/ABIs';

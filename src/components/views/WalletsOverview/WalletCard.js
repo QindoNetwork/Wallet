@@ -38,23 +38,23 @@ export default class WalletCard extends React.Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'stretch',
-        backgroundColor: colors.lightGray,
+        backgroundColor: 'darkslategray',
         borderRadius: 10,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: measures.defaultPadding,
         marginBottom: measures.defaultMargin,
-        height: 150
+        height: 130
     },
     leftColumn: {
         flex: 1,
         justifyContent: 'center',
-        color: colors.lightGray
+        color: 'darkslategray'
     },
     middleColumn: {
-        flex: 3,
+        flex: 4,
         justifyContent: 'center',
-        color: colors.darkGray
+        color: 'white'
     },
     rightColumn: {
         flex: 1,
@@ -63,33 +63,10 @@ const styles = StyleSheet.create({
         color: colors.white
     },
     title: {
-        fontSize: measures.fontSizeLarge,
-        color: colors.darkGray,
+        fontSize: 20,
+        color: 'white',
         fontWeight: 'bold',
-        color: colors.darkGray
-    },
-    description: {
-        fontSize: measures.fontSizeLarge - 2,
-        color: colors.darkGray
-    },
-    balanceContainer: {
-        alignItems: 'flex-end',
-        justifyContent: 'space-between',
-        flexDirection: 'column'
-    },
-    balance: {
-        fontSize: measures.fontSizeLarge - 1,
-        color: colors.darkGray,
-        marginLeft: measures.defaultMargin,
-        fontWeight: 'bold'
-    },
-    fiatbalance: {
-        fontSize: measures.fontSizeLarge - 3,
-        color: colors.grey,
-        marginLeft: measures.defaultMargin
-    },
-    next: {
-        color: colors.lightGray
+        color: 'white'
     },
     avatar: {
         backgroundColor: colors.white,

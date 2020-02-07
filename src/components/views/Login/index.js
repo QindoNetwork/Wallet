@@ -117,6 +117,7 @@ export class Login extends React.Component {
                   style={styles.input}
                   secureTextEntry
                   underlineColorAndroid="transparent"
+                  placeholder="password"
                   onChangeText={password => this.setState({ password })} />
           </View>
           <View style={styles.buttonsContainer}>
@@ -257,14 +258,14 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'stretch',
       justifyContent: 'space-between',
-      backgroundColor: 'white',
+      backgroundColor: 'dodgerblue',
       padding: measures.defaultPadding
   },
     container: {
         flex: 1,
         alignItems: 'stretch',
         justifyContent: 'space-between',
-        backgroundColor: colors.defaultBackground,
+        backgroundColor: 'dodgerblue',
         padding: measures.defaultPadding
     },
     body: {
@@ -273,14 +274,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     message: {
-        color: colors.black,
-        fontSize: 16,
+        color: 'white',
+        fontSize: 20,
+        fontWeight: 'bold',
         textAlign: 'center',
         marginVertical: measures.defaultMargin,
         marginHorizontal: 32
     },
     detail: {
-        color: colors.black,
+        color: 'white',
         fontSize: 10,
         textAlign: 'center',
         marginVertical: measures.defaultMargin/2,
@@ -309,12 +311,10 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '90%',
-        borderBottomWidth: 1,
-        borderBottomColor: colors.black,
         padding: 4,
         paddingLeft: 0,
         marginRight: 2,
         textAlign: 'center',
-        color: colors.black
+        color: 'white',
     }
 });

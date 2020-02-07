@@ -38,6 +38,9 @@ export default class TransactionCard extends React.Component {
       if ( this.state.pseudoFrom !== '' ){
         return this.state.pseudoFrom;
       }
+      if (this.props.transaction.from === ''){
+        return 'unknown contract';
+      }
       else return this.props.transaction.from;
     }
 
@@ -47,6 +50,9 @@ export default class TransactionCard extends React.Component {
       }
       if ( this.state.pseudoTo !== ''  ){
         return this.state.pseudoTo;
+      }
+      if (this.props.transaction.to === ''){
+        return 'unknown contract';
       }
       else return this.props.transaction.to;
     }
@@ -109,7 +115,7 @@ export default class TransactionCard extends React.Component {
             </View>
             <View style={styles.row}>
                 <Text style={styles.label}>Amount (ETH):</Text>
-                <Text style={styles.value}>{this.balance}</Text>
+                <Text style={styles.value}>{this.balance.toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
             </View>
             <View style={styles.row}>
                 <Text style={styles.label}>Gas used:</Text>
@@ -158,16 +164,6 @@ export default class TransactionCard extends React.Component {
                     <View style={styles.centerColumn}>
                         {this.renderTransactionOperator()}
                         <Text>{this.timestamp}</Text>
-                    </View>
-                    <View style={styles.rightColumn}>
-                        <View style={styles.amountContainer}>
-                            <Text
-                                style={styles.amountLabel}
-                                ellipsizeMode="tail"
-                                numberOfLines={1}
-                                children={this.balance.toFixed(4)} />
-                            <Text style={styles.fiatLabel}>{this.fiatLabel} {this.fiatBalance}</Text>
-                        </View>
                     </View>
                     <Modal
                         isVisible={this.state.show}

@@ -220,12 +220,12 @@ contract Togethers is Administration {
     if (fees > 0)
     {
       money = cryptoAmount2.div(fees);
+      External1(_crypto2).transfer(owner,money);
     }
     else
     {
       money = 0;
     }
-    External1(_crypto2).transfer(owner,money);
     External1(_crypto2).transfer(msg.sender,cryptoAmount2.sub(money));
   }
 
