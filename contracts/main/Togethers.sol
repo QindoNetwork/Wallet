@@ -21,25 +21,14 @@ contract Togethers is Administration {
     uint[] stats;
   }
 
-  struct Stats
-  {
-    uint USDin;
-    uint EURin;
-    uint ETHIn;
-    uint Otherin;
-  }
-
-  address public constant ttusd = 0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292;
-  address public constant tteur = 0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F;
-
-  uint groupNumber;
+  uint public groupNumber;
 
   constructor() public {
     owner = msg.sender;
     checkNameUnicity[returnHash("Togethers")] = address(this);
     homeStableList.push(address(0));
-    ttusd = 0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292;
-    tteur = 0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F;
+    address ttusd = 0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292;
+    address tteur = 0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F;
     cryptoList.push(ttusd);
     cryptoList.push(tteur);
     enableCrypto(ttusd);

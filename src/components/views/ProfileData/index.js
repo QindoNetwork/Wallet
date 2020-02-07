@@ -4,7 +4,7 @@ import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { HeaderIcon } from '@components/widgets';
 import { General as GeneralActions  } from '@common/actions';
-import CryptoCard from '../Crypto/CryptoCard';
+import { CryptoCard } from '@components/widgets';
 import ProfileCard from './ProfileCard';
 import { inject, observer } from 'mobx-react';
 

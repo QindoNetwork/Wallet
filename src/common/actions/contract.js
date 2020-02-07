@@ -1,6 +1,7 @@
 import { sha256 } from 'react-native-sha256';
 import { General as GeneralActions  } from '@common/actions';
 import { Contracts as contractsAddress } from '@common/constants';
+import { Languages as LanguagesActions } from '@common/actions';
 
 export async function createGroup(togethers, args, overrides) {
   const { groupName } = args
@@ -23,7 +24,7 @@ export async function ask(togethers, args, address, overrides) {
     result = "KO"
     GeneralActions.notify('this group does not exists', 'long');
   }
-  if (new Boolean (await togethers.mappAskForAdd(groupID,address)) == true)
+  if (new Boolean (await togethers.mappAskForAdd(address,groupID)) == true)
   {
     result = "KO"
     GeneralActions.notify('you already asked', 'long');
@@ -42,9 +43,9 @@ export async function createProfile(togethers, args, overrides) {
   const { groupID, value } = args
   let result = "OK"
   try {
-    if(await new Boolean(togethers.mappAskForAdd(value,groupID)) == true)
+    if(await new Boolean(togethers.mappAskForAdd(value,groupID)) == false)
     {
-      GeneralActions.notify("You cannot add this profile or he did not ask to apply", 'long');
+      GeneralActions.notify("this user did not ask to apply", 'long');
       return "KO"
     }
     const profile = await togethers.mappProfileInGroup(groupID,value)

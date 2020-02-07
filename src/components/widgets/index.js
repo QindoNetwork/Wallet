@@ -8,3 +8,5 @@ export * from './NumberGrid';
 export * from './TabView';
 export * from './TextBullet';
 export * from './SecureTransaction';
+export * from './QRCodeCard';
+export * from './CryptoCard';

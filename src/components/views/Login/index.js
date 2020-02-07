@@ -52,7 +52,7 @@ export class Login extends React.Component {
         return (
         <View style={styles.container}>
           <View style={styles.body}>
-            <ActivityIndicator size="large"/>
+            <ActivityIndicator size="large" color="darkslategray"/>
           </View>
         </View>
         );
@@ -84,14 +84,14 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'stretch',
       justifyContent: 'space-between',
-      backgroundColor: 'dodgerblue',
+      backgroundColor: colors.defaultBackground,
       padding: measures.defaultPadding
   },
     container: {
         flex: 1,
         alignItems: 'stretch',
         justifyContent: 'space-between',
-        backgroundColor: 'dodgerblue',
+        backgroundColor: colors.defaultBackground,
         padding: measures.defaultPadding
     },
     body: {
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     message: {
-        color: 'white',
+        color: 'black',
         fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 32
     },
     detail: {
-        color: 'white',
+        color: 'black',
         fontSize: 10,
         textAlign: 'center',
         marginVertical: measures.defaultMargin/2,
@@ -141,6 +141,6 @@ const styles = StyleSheet.create({
         paddingLeft: 0,
         marginRight: 2,
         textAlign: 'center',
-        color: 'white',
+        color: 'black',
     }
 });

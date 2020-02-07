@@ -4,14 +4,14 @@ import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Contracts as contractsAddress } from '@common/constants';
-import CryptoCard from './CryptoCard';
+import { CryptoCard } from '@components/widgets';
 
 export class CryptoType2 extends React.Component {
 
   state = { loading: 0, erc20s2: [] };
 
   async componentDidMount() {
-    const { togethers, cryptoOne, erc20s} = this.props.navigation.state.params
+    const { togethers, cryptoOne, erc20s } = this.props.navigation.state.params
     try {
     var currentAddress
     var info
@@ -21,6 +21,7 @@ export class CryptoType2 extends React.Component {
         info = await togethers.getCryptoInfo(currentAddress)
         if ( parseInt(info.category,10) === cryptoOne.category && currentAddress !== cryptoOne.address ) {
               balance = parseInt (await erc20s[i].instance.balanceOf(contractsAddress.togethersAddress),10)
+              if ( balance > 0 ) {
               erc20s2.push({
                       name: info.name,
                       symbol: info.symbol,
@@ -28,6 +29,7 @@ export class CryptoType2 extends React.Component {
                       address: currentAddress,
                       balance
                      })
+              }
         }
       }
       this.setState({ erc20s2, loading: 1 })

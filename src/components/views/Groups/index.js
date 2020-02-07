@@ -31,9 +31,7 @@ export class Groups extends React.Component {
                             owner:   new Boolean(profile.owner),
                             active:  new Boolean(profile.open),
                             description: profile.description,
-                            USDin: parseInt(profile.stats.USDin,10),
-                            EURin: parseInt(profile.stats.EURin,10),
-                            ETHin: parseInt(profile.stats.ETHIn,10) })
+                            stats: profile.stats})
           }
         }
         this.setState({ groups, loading: 1 })

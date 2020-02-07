@@ -72,7 +72,7 @@ export class Profiles extends React.Component {
                                 owner: new Boolean(temp.owner),
                                 active: new Boolean(temp.open),
                                 description: temp.description,
-                                stats: temp.stats[i]})
+                                stats: temp.stats})
               }
           }
           this.setState({ profiles, loading: 1 })

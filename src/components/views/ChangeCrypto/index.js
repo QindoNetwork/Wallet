@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, Text, View, ActivityIndicator, RefreshControl} from 'react-native';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions } from '@common/actions';
-import CryptoCard from '../Crypto/CryptoCard';
+import { CryptoCard } from '@components/widgets';
 import Header from './Header';
 import { ERC20ABI as erc20ABI } from '@common/ABIs';
 import { inject, observer } from 'mobx-react';
@@ -14,23 +14,19 @@ import { Gas as gas, Conversions as conversions } from '@common/constants';
 @observer
 export class ChangeCrypto extends React.Component {
 
-  static navigationOptions = ({ navigation, screenProps }) => ({
-      title: 'Change token'
-  });
-
-  state = { loading: 0, erc20s: [] };
+  state = { loading: 0, erc20s1: [], erc20s2: [] };
 
   componentDidMount() {
     this.updateData()
   }
 
   async updateData() {
-    const { wallet } = this.props
-    const { togethers, groupID, gasParam } = this.props.navigation.state.params
+    const { togethers, groupID, gasParam, wallet } = this.props
     try {
     const mnemonics = wallet.item.mnemonics.toString()
     const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
-    var erc20s = []
+    var erc20s1 = []
+    var erc20s2 = []
     var currentAddress
     var info
     var instance
@@ -45,7 +41,7 @@ export class ChangeCrypto extends React.Component {
           instance = new ethers.Contract(currentAddress, erc20ABI, connection)
           balance = parseInt (await instance.balanceOf(wallet.item.address),10)
           if ( balance > 0) {
-            erc20s.push({ name: info.name,
+            erc20s1.push({ name: info.name,
                       symbol: info.symbol,
                       decimals: parseInt (info.decimals,10),
                       instance: instance,
@@ -54,9 +50,17 @@ export class ChangeCrypto extends React.Component {
                       category: category,
                     })
                     }
+                    erc20s2.push({ name: info.name,
+                              symbol: info.symbol,
+                              decimals: parseInt (info.decimals,10),
+                              instance: instance,
+                              address: currentAddress,
+                              balance: balance,
+                              category: category,
+                            })
         }
       }
-      this.setState({ erc20s, loading: 1 })
+      this.setState({ erc20s1, erc20s2, loading: 1 })
     } catch (e) {
     GeneralActions.notify(e.message, 'long');
     }
@@ -64,9 +68,8 @@ export class ChangeCrypto extends React.Component {
 
     render() {
 
-      const { navigation, wallet } = this.props
-      const { togethers, gasParam } = this.props.navigation.state.params
-      const { erc20s, loading } = this.state
+      const { togethers, groupID, gasParam, wallet } = this.props
+      const { erc20s1, erc20s2, loading } = this.state
 
       if (loading === 0){
 
@@ -87,13 +90,13 @@ export class ChangeCrypto extends React.Component {
         <View style={styles.container}>
           <Header/>
             <FlatList
-              data={erc20s.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
+              data={erc20s1.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
               refreshControl={<RefreshControl refreshing={wallet.item.loading} onRefresh={() => this.updateData()} />}
               renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('CryptoType2', { erc20s, cryptoOne: item, togethers, gasParam })}>
+                onPress={() => navigation.navigate('CryptoType2', { erc20: erc20s2, cryptoOne: item, togethers, gasParam })}>
                   <CryptoCard crypto={item}/>
               </TouchableOpacity>
             )}

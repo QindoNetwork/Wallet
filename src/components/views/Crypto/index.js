@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, Text, View, ActivityIndicator, RefreshControl} from 'react-native';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
-import CryptoCard from './CryptoCard';
+import { CryptoCard } from '@components/widgets';
 import Header from './Header';
 import { ERC20ABI as erc20ABI } from '@common/ABIs';
 import { inject, observer } from 'mobx-react';
@@ -25,9 +25,8 @@ export class Crypto extends React.Component {
 
     const gasLimit = gasParam[gas.defaultTransaction].limit
     const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
-
-    if ( gasLimit * gasPrice < wallet.item.balance ) {
     try {
+    if ( gasLimit * gasPrice < wallet.item.balance ) {
     const mnemonics = wallet.item.mnemonics.toString()
     const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
     var erc20s = []
@@ -58,11 +57,13 @@ export class Crypto extends React.Component {
         }
       }
       this.setState({ erc20s, loading: 1 })
+      }
+      else{
+           this.setState({ lowBalance: 1, loading: 1 })
+      }
     } catch (e) {
     GeneralActions.notify(e.message, 'long');
     }
-    }
-    else this.setState({ lowBalance: 1, loading: 1 })
   }
 
     render() {

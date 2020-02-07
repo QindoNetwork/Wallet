@@ -12,48 +12,17 @@ import { Formik } from 'formik'
 import { sha256 } from 'react-native-sha256';
 import { Languages as LanguagesActions } from '@common/actions';
 import { inject, observer } from 'mobx-react';
+import { QRCodeCard } from '@components/widgets';
 
-@inject('wallet','languages')
+@inject('languages')
 @observer
 export default class NewWallet extends React.Component {
 
-    copyToClipboard() {
-        const { item } = this.props.wallet;
-        Clipboard.setString(item.address);
-        GeneralActions.notify('Copied to clipboard', 'short');
-    }
-
-    share() {
-        const { item } = this.props.wallet;
-        Share.share({
-            title: 'Wallet address:',
-            message: item.address
-        });
-    }
-
-    renderColumn = (icon, label, action) => (
-        <TouchableWithoutFeedback onPress={action}>
-            <View style={styles.actionColumn}>
-                <Icon name={icon} style={styles.actionIcon} />
-                <Text style={styles.actionLabel}>{label}</Text>
-            </View>
-        </TouchableWithoutFeedback>
-    );
-
     render() {
-      const { item } = this.props.wallet;
       return (
         <View style={styles.container1}>
         <Text style={styles.centered}>Low balance, you need ether to register, show the code below to receive ethers and enter to the community!</Text>
-        <View style={styles.centered}>
-            <QRCode size={256} value={item.address} />
-        </View>
-          <View style={styles.actions}>
-              <View style={styles.actionsBar}>
-                  {this.renderColumn('copy', 'Copy', () => this.copyToClipboard())}
-                  {this.renderColumn('share', 'Share', () => this.share())}
-              </View>
-          </View>
+        <QRCodeCard/>
       </View>
       )
     }
@@ -65,14 +34,14 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'stretch',
       justifyContent: 'space-between',
-      backgroundColor: 'dodgerblue',
+      backgroundColor: colors.defaultBackground,
       padding: measures.defaultPadding
   },
     container: {
         flex: 1,
         alignItems: 'stretch',
         justifyContent: 'space-between',
-        backgroundColor: 'dodgerblue',
+        backgroundColor: colors.defaultBackground,
         padding: measures.defaultPadding
     },
     body: {
@@ -81,7 +50,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     message: {
-        color: 'white',
+        color: 'black',
         fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
@@ -89,7 +58,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 32
     },
     detail: {
-        color: 'white',
+        color: 'black',
         fontSize: 10,
         textAlign: 'center',
         marginVertical: measures.defaultMargin/2,
@@ -122,6 +91,6 @@ const styles = StyleSheet.create({
         paddingLeft: 0,
         marginRight: 2,
         textAlign: 'center',
-        color: 'white',
+        color: 'black',
     }
 });

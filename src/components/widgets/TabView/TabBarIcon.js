@@ -8,7 +8,7 @@ const getLabelColor = (active) => active ? styles.activeLabel : styles.label;
 export default ({ active, icon, label, onPress, ...props }) => (
     <TouchableWithoutFeedback onPress={onPress}>
         <View style={styles.container}>
-            <Icon color={active ? 'white' : 'black'} {...props} name={icon} />
+            <Icon color={active ? 'dodgerblue' : 'black'} {...props} name={icon} />
             <Text style={getLabelColor(active)}>{label}</Text>
         </View>
     </TouchableWithoutFeedback>
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     activeLabel: {
-        color: 'white'
+        color: 'dodgerblue'
     },
     label: {
         color: 'black'

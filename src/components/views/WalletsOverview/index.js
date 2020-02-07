@@ -113,7 +113,7 @@ export class WalletsOverview extends React.Component {
 
             <View style={styles.container}>
               <View style={styles.body}>
-                <ActivityIndicator size="large" color="white"/>
+                <ActivityIndicator size="large" color="darkslategray"/>
               </View>
             </View>
 
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
         padding: 8,
         alignItems: 'stretch',
         justifyContent: 'flex-start',
-        backgroundColor: 'dodgerblue',
+        backgroundColor: colors.defaultBackground,
     },
     body: {
         flex: 1,
@@ -143,11 +143,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     content: {
-      backgroundColor: 'dodgerblue',
+      backgroundColor: colors.defaultBackground,
         marginTop: 8
     },
     avatar: {
-      backgroundColor: 'dodgerblue',
+      backgroundColor: colors.defaultBackground,
         marginTop: 10,
         alignItems: 'center',
         justifyContent: 'center'

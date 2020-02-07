@@ -27,7 +27,6 @@ export * from './CloseDemand';
 export * from './CryptoType1';
 export * from './CryptoType2';
 export * from './SendCoinsType1';
-export * from './ChangeCrypto';
 export * from './ChangePseudonyme';
 export * from './ChangePassword';
 export * from './AdminProfile';

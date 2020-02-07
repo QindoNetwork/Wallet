@@ -5,7 +5,7 @@ import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Gas as gas } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
-import CryptoCard from '../Crypto/CryptoCard';
+import { CryptoCard } from '@components/widgets';
 
 export class CloseDemand extends React.Component {
 

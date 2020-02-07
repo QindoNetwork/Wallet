@@ -4,7 +4,7 @@ import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { Wallet as WalletUtils } from '@common/utils';
 
-export default class CryptoCard extends React.Component {
+export class CryptoCard extends React.Component {
 
   balance(value) {
       const { crypto } = this.props
@@ -36,6 +36,11 @@ export default class CryptoCard extends React.Component {
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{this.props.crypto.symbol}</Text>
                         <Text style={styles.description}>{this.props.crypto.name}</Text>
+                    </View>
+                    <View style={styles.rightColumn}>
+                        <View style={styles.balanceContainer}>
+                            <Text style={styles.balance}>{this.balance(this.props.crypto.balance).toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+                        </View>
                     </View>
                 </View>
         );

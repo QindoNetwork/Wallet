@@ -44,14 +44,6 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>Remove wallet</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.props.navigation.navigate('WalletsOverview', { replaceRoute: true })}>
-                    <View style={styles.itemContainer}>
-                        <View style={styles.icon}>
-                            <Icon name='wallet' type='ent' />
-                        </View>
-                        <Text style={styles.itemTitle}>Wallets</Text>
-                    </View>
-                </ListItem>
                 <ListItem onPress={() => this.props.navigation.navigate('ChangePassword', { ...this.props })}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
@@ -66,6 +58,14 @@ export class WalletSettings extends React.Component {
                             <Icon name='shirt' />
                         </View>
                         <Text style={styles.itemTitle}>User name</Text>
+                    </View>
+                </ListItem>
+                <ListItem onPress={() => this.props.navigation.navigate('WalletsOverview', { replaceRoute: true })}>
+                    <View style={styles.itemContainer}>
+                        <View style={styles.icon}>
+                            <Icon name='log-out' type='ent' />
+                        </View>
+                        <Text style={styles.itemTitle}>Wallets</Text>
                     </View>
                 </ListItem>
             </View>
