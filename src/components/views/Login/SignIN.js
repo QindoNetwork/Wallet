@@ -35,13 +35,14 @@ export default class SignIN extends React.Component {
         else {
           GeneralActions.notify("Password not good", 'long');
         }
+      //  {LanguagesActions.choosePseudonyme(this.props.languages.selectedLanguage)}
     }
 
     render() {
 
         return ( <View style={styles.container}>
           <View style={styles.body}>
-              <Text style={styles.message}>{LanguagesActions.choosePseudonyme(this.props.languages.selectedLanguage)}</Text>
+              <Text style={styles.message}>Password</Text>
               <TextInput
                   style={styles.input}
                   secureTextEntry

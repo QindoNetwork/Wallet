@@ -1,7 +1,7 @@
 import { sha256 } from 'react-native-sha256';
 import { General as GeneralActions  } from '@common/actions';
 import { Contracts as contractsAddress } from '@common/constants';
-import { Languages as LanguagesActions } from '@common/actions';
+import { Languages as LanguagesActions, Wallets as WalletsActions } from '@common/actions';
 
 export async function createGroup(togethers, args, overrides) {
   const { groupName } = args
@@ -70,7 +70,7 @@ export async function changePassword(togethers, args, overrides) {
   const { value, oldPassword } = args
   let result = "OK"
   try {
-    if (parseInt (await this.props.navigation.getParam('togethers').connectUser(hashPassword),10) === 1)
+    if (parseInt (await togethers.connectUser(hashPassword),10) === 1)
     {
       result = "KO"
       GeneralActions.notify('password not good', 'long');
@@ -83,18 +83,18 @@ export async function changePassword(togethers, args, overrides) {
     return result
   }
 
-export async function changeUserName(togethers, args, overrides) {
+export async function changeUserName(togethers, args, address, overrides) {
   const { value } = args
   let result = "OK"
   try {
-    checkNameUnicity[currentID] == address(0)
-    if (await togethers.checkNameUnicity(value) !== contractsAddress.nullAddress )
+    if (parseInt(await togethers.verifyUserAvailability(value),10) === 0 )
     {
       result = "KO"
       GeneralActions.notify('Username unavailable', 'long');
     }
     else {
       await togethers.changeUserName(value,overrides)
+      await WalletsActions.changeWalletName(address, value);
     }
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
@@ -127,16 +127,15 @@ export async function askForFunds(togethers, args, overrides) {
   return result
 }
 
-export async function quitGroup(togethers, args, overrides) {
+export async function quitGroup(togethers, args, address, overrides) {
   const { groupID } = args
   let result = "OK"
   let notlastOne = 0
   try {
-    const active = new Boolean (await togethers.mappUsersInGroup(groupID).active)
-    const owner = new Boolean (await togethers.mappUsersInGroup(groupID).owner)
-    for (let i = 0; i < await togethers.mappUsersInGroup(groupID).length; i++)
+    const users = await togethers.getProfiles(groupID)
+    for (let i = 0; i < users.length; i++)
     {
-      if (mappProfileInGroup[_groupID][mappUsersInGroup[_groupID][i]].isMember == true && mappUsersInGroup[_groupID][i] != msg.sender)
+      if (new Boolean(mappProfileInGroup[groupID][users[i]].isMember) == true && users[i] != address)
       {
         notlastOne = 1;
         break;

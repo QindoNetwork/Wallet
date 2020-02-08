@@ -147,9 +147,13 @@ const styles = StyleSheet.create({
         marginTop: 8
     },
     avatar: {
-      backgroundColor: colors.defaultBackground,
-        marginTop: 10,
-        alignItems: 'center',
-        justifyContent: 'center'
+      alignItems: 'stretch',
+      justifyContent: 'space-around',
+      flexDirection: 'row',
+      height: 75,
+      borderTopWidth: 15,
+      borderBottomWidth: 20,
+      borderColor: 'transparent',
+      backgroundColor: 'transparent'
     }
 });

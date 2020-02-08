@@ -22,11 +22,11 @@ export class Login extends React.Component {
 
     static navigationOptions = { title: 'Login' };
 
-    state = { show: false, loading: 0, registered: 0, password: '', result: 0, pseudo: '' };
+    state = { loading: 0, registered: 0 };
 
     async componentDidMount() {
 
-      const { togethers, address } = this.props.navigation.state.params;
+      const { togethers } = this.props.navigation.state.params;
       const { item } = this.props.wallet;
 
       try {

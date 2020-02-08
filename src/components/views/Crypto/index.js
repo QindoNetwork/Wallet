@@ -9,6 +9,7 @@ import { inject, observer } from 'mobx-react';
 import { Network as EthereumNetworks } from '@common/constants';
 import { ethers } from 'ethers';
 import { Gas as gas, Conversions as conversions } from '@common/constants';
+import { Wallets as WalletActions } from '@common/actions';
 
 @inject('wallet','languages')
 @observer
@@ -18,6 +19,7 @@ export class Crypto extends React.Component {
 
   componentDidMount() {
     this.updateData()
+    WalletActions.updateBalance(this.props.wallet.item);
   }
 
   async updateData() {

@@ -34,6 +34,14 @@ export class WalletsStore {
         this.list = [...otherWallets, wallet];
     }
 
+    @action setWalletName(address, name) {
+        const wallet = this.list.find(wallet => wallet.address === address);
+        if (!wallet) throw new Error('Wallet not found');
+        wallet.name = name;
+        const otherWallets = this.list.filter(wallet => wallet.address !== address);
+        this.list = [...otherWallets, wallet];
+    }
+
     @action reset() {
         this.list = INITIAL.list;
         this.loading = INITIAL.loading;

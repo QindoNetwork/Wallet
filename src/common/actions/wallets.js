@@ -23,6 +23,10 @@ export async function updateBalance(wallet) {
     WalletsStore.setBalance(wallet.address, balance);
 }
 
+export async function changeWalletName(address,name) {
+    WalletsStore.setWalletName(address,name);
+}
+
 export async function removeWallet(wallet) {
     WalletsStore.removeWallet(wallet);
 }

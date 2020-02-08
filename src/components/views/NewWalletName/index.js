@@ -3,7 +3,9 @@ import { Keyboard, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { inject, observer } from 'mobx-react';
-import { Languages as LanguagesActions } from '@common/actions';
+import { Languages as LanguagesActions, General as GeneralActions } from '@common/actions';
+import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
+import { TogethersABI as togethersABI } from '@common/ABIs';
 
 @inject('languages')
 @observer
@@ -13,18 +15,27 @@ export class NewWalletName extends React.Component {
 
     state = { walletName: '' };
 
-    onPressContinue() {
+    async onPressContinue() {
         Keyboard.dismiss();
         const { walletName } = this.state;
         if (!walletName) return;
-        this.props.navigation.navigate('NewWallet', { walletName });
+        const contract = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, EthereumNetworks.fallbackProvider);
+        if (parseInt(await contract.verifyUserAvailability(value),10) === 0 )
+        {
+          result = "KO"
+          GeneralActions.notify('Username unavailable', 'long');
+        }
+        else
+        {
+          this.props.navigation.navigate('NewWallet', { walletName });
+        }
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.body}>
-                    <Text style={styles.message}>Give a name to the new wallet</Text>
+                    <Text style={styles.message}>Choose your pseudonyme</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="Wallet name"

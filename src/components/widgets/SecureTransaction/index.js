@@ -76,7 +76,7 @@ export class SecureTransaction extends React.Component {
                     tx = await ContractActions.changePassword(togethers,values,overrides)
                     break;
                 case gas.changeUserName:
-                    tx = await ContractActions.changeUserName(togethers,values,overrides)
+                    tx = await ContractActions.changeUserName(togethers,values,address,overrides)
                     break;
                 case gas.withdrawFunds:
                     tx = await ContractActions.withdrawFunds(togethers,values,overrides)
@@ -85,7 +85,7 @@ export class SecureTransaction extends React.Component {
                     tx = await ContractActions.askForFunds(togethers,values,overrides)
                     break;
                 case gas.quitGroup:
-                    tx = await ContractActions.quitGroup(togethers,values,overrides)
+                    tx = await ContractActions.quitGroup(togethers,values,address,overrides)
                     break;
                 case gas.transferGroupOwnership:
                     tx = await ContractActions.transferGroupOwnership(togethers,values,overrides)

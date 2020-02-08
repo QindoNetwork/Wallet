@@ -14,7 +14,7 @@ contract Administration is Ownable {
 
   mapping (address => uint) public mappAllowCryptoForCategory;
   mapping (address => bool) public mappCryptoEnable;
-  mapping (uint => address) internal checkNameUnicity;
+  mapping (uint => address) public checkNameUnicity;
   mapping (address => string) public mappAddressToUser;
   mapping (address => uint) internal userPassword;
 

@@ -6,7 +6,7 @@ import { Icon } from '@components/widgets';
 import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
 import { colors, measures } from '@common/styles';
 
-@inject('wallet','language')
+@inject('wallet','languages')
 @observer
 export class QRCodeCard extends React.Component {
 
@@ -54,7 +54,7 @@ export class QRCodeCard extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: colors.defaultBackground,
+        backgroundColor: 'white',
         flex: 1,
         alignItems: 'stretch',
         justifyContent: 'space-around',

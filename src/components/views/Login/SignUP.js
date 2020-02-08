@@ -12,31 +12,42 @@ import { Formik } from 'formik'
 import { sha256 } from 'react-native-sha256';
 import { Languages as LanguagesActions } from '@common/actions';
 import { inject, observer } from 'mobx-react';
+import { wallets as WalletsStore } from '@common/stores';
 
 @inject('wallet','languages')
 @observer
 export default class SignUP extends React.Component {
 
-    async onPressSignUp(pseudo,password1,password2) {
+  state = { loading: 0, registered: 0 };
+
+  async componentDidMount() {
+
+    const { togethers, wallet } = this.props;
+
+    try {
+      this.setState({
+                      registered: parseInt(await togethers.verifyUserAvailability(wallet.item.name),10),
+                      loading: 1
+                    })
+    } catch (e) {
+        GeneralActions.notify(e.message, 'long');
+    }
+  }
+
+    async onPressSignUp1(password1,password2) {
         Keyboard.dismiss();
-        const { gasParam, togethers } = this.props;
+        const { gasParam, togethers, wallet } = this.props;
         const overrides = {
             gasLimit: gasParam[gas.setUser].limit,
             gasPrice: gasParam[gas.setUser].price * conversions.gigaWeiToWei,
             };
         try {
-            let result = "OK"
             if (password1 !== password2) {
-              result = "KO"
               GeneralActions.notify("Passwords not equals", 'long');
             }
-            if ( parseInt(await togethers.verifyUserAvailability(pseudo)) !== 1 ) {
-              result = "KO"
-              GeneralActions.notify("pseudonyme already exists", 'long');
-            }
-            if (result === "OK") {
+            else {
               const hashPassword = sha256(password1)
-              await togethers.setUser(pseudo,hashPassword,overrides)
+              await togethers.setUser(wallet.item.name,hashPassword,overrides)
               this.props.navigation.navigate('WalletDetails', { gasParam, togethers, replaceRoute: true });
             }
           }catch (e) {
@@ -44,7 +55,119 @@ export default class SignUP extends React.Component {
           }
         }
 
-    render() {
+        async onPressSignUp2(pseudo,password1,password2) {
+            Keyboard.dismiss();
+            const { gasParam, togethers, wallet } = this.props;
+            const overrides = {
+                gasLimit: gasParam[gas.setUser].limit,
+                gasPrice: gasParam[gas.setUser].price * conversions.gigaWeiToWei,
+                };
+            try {
+                let result = "OK"
+                if (password1 !== password2) {
+                  result = "KO"
+                  GeneralActions.notify("Passwords not equals", 'long');
+                }
+                if ( parseInt(await togethers.verifyUserAvailability(pseudo),10) !== 1 ) {
+                  result = "KO"
+                  GeneralActions.notify("pseudonyme already exists", 'long');
+                }
+                if (result === "OK") {
+                  const hashPassword = sha256(password1)
+                  await togethers.setUser(pseudo,hashPassword,overrides)
+                  WalletsStore.setWalletName(wallet.item.address, name);
+                  this.props.navigation.navigate('WalletDetails', { gasParam, togethers, replaceRoute: true });
+                }
+              }catch (e) {
+                GeneralActions.notify(e.message, 'long');
+              }
+            }
+
+            render() {
+
+              if(this.state.loading === 0)
+              {
+                return (
+                <View style={styles.container}>
+                  <View style={styles.body}>
+                    <ActivityIndicator size="large" color="darkslategray"/>
+                  </View>
+                </View>
+                );
+              }
+
+              if(this.state.registered === 1)
+              {
+                return (
+                  <View style={styles.container}>
+                  { this.renderCase1() }
+                  </View>
+                );
+              }
+
+              return (
+                <View style={styles.container}>
+                  { this.renderCase2() }
+                  </View>
+                );
+            }
+
+        renderCase1() {
+          const { gasParam } = this.props;
+          const maxPrice =  gasParam[gas.setUser].limit * gasParam[gas.setUser].price * conversions.gigaWeiToWei
+          const ethPrice = (maxPrice / conversions.weiToEthereum) / 2
+
+          return (
+            <Formik
+              initialValues={{ password1: '', password2: ''}}
+              onSubmit={(values) => this.onPressSignUp1(values.password1,values.password2)}
+              validationSchema={yup.object().shape({
+                password1: yup
+                  .string()
+                  .min(restrictions.minPassword)
+                  .max(restrictions.maxPassword)
+                  .required('Required'),
+                password2: yup
+                  .string()
+                  .required('Required')
+              })}
+            >
+              {({handleChange, values, errors, isValid, handleSubmit}) => (
+                <Fragment>
+            <View style={styles.container}>
+              <View style={styles.body}>
+                <Text style={styles.message}>Password</Text>
+                <TextInput
+                  style={styles.input}
+                  value={values.password1}
+                  secureTextEntry
+                  onChangeText={handleChange('password1')}
+                  placeholder="password"
+                  />
+                <Text style={styles.message}>Confirm Password</Text>
+                <TextInput
+                  style={styles.input}
+                  value={values.password2}
+                  secureTextEntry
+                  onChangeText={handleChange('password2')}
+                  placeholder="password"
+                  />
+              </View>
+          <View style={styles.buttonsContainer}>
+              <Button
+                  children="Next"
+                  disabled={!isValid}
+                  onPress={handleSubmit}/>
+          </View>
+          <Text style={styles.detail}>Approximatly {ethPrice} ETH</Text>
+      </View>
+      </Fragment>
+    )}
+    </Formik>
+      )
+    }
+
+    renderCase2() {
       const { gasParam } = this.props;
       const maxPrice =  gasParam[gas.setUser].limit * gasParam[gas.setUser].price * conversions.gigaWeiToWei
       const ethPrice = (maxPrice / conversions.weiToEthereum) / 2
@@ -52,7 +175,7 @@ export default class SignUP extends React.Component {
       return (
         <Formik
           initialValues={{ password1: '', password2: '', pseudo: '' }}
-          onSubmit={(values) => this.onPressSignUp(values.pseudo,values.password1,values.password2)}
+          onSubmit={(values) => this.onPressSignUp2(values.pseudo,values.password1,values.password2)}
           validationSchema={yup.object().shape({
             password1: yup
               .string()
@@ -73,7 +196,7 @@ export default class SignUP extends React.Component {
             <Fragment>
         <View style={styles.container}>
           <View style={styles.body}>
-            <Text style={styles.message}>{LanguagesActions.choosePseudonyme(this.props.languages.selectedLanguage)}</Text>
+            <Text style={styles.message}>Username</Text>
             <TextInput
               style={styles.input}
               value={values.pseudo}
