@@ -12,7 +12,7 @@ export class SelectDestination extends React.Component {
 
     static navigationOptions = { title: 'Select destination' };
 
-    state = { loading: 0, profiles: [] };
+    state = { loading: 0, profiles: [], address: '' };
 
     async componentDidMount() {
       const { address, togethers, groupID } = this.props.navigation.state.params
@@ -59,7 +59,7 @@ export class SelectDestination extends React.Component {
 
         return(
 
-          <View>
+          <View style={styles.container}>
               <InputWithIcon
                   ref="input"
                   autoFocus
@@ -67,7 +67,6 @@ export class SelectDestination extends React.Component {
                   placeholder="Destination address"
                   onChangeText={(address) => this.setState({ address })}
                   onPressIcon={() => this.refs.camera.show()} />
-              <Button children="Continue" onPress={() => this.onPressContinue(this.state.address)} />
               <Camera
                   ref="camera"
                   modal
@@ -92,6 +91,9 @@ export class SelectDestination extends React.Component {
                   <View style={styles.body}>
                     <ActivityIndicator size="large"/>
                   </View>
+                  <View style={styles.buttonsContainer}>
+                          <Button children="Continue" onPress={() => this.onPressContinue(this.state.address)} />
+                        </View>
           </View>
 
 
@@ -114,6 +116,9 @@ export class SelectDestination extends React.Component {
                         </TouchableOpacity>
                       )}
                   />
+                  <View style={styles.buttonsContainer}>
+                          <Button children="Continue" onPress={() => this.onPressContinue(this.state.address)} />
+                        </View>
             </View>
         );
     }
@@ -139,6 +144,11 @@ const styles = StyleSheet.create({
         marginRight: 2,
         textAlign: 'center',
         color: colors.black
+    },
+    buttonsContainer: {
+        width: '100%',
+        justifyContent: 'space-between',
+        height: 52
     },
     body: {
         flex: 1,

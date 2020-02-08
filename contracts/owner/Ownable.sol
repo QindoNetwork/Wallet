@@ -1,7 +1,6 @@
 pragma solidity ^0.5.0;
 
 interface External1 {
-  function balanceOf(address who) external view returns (uint256);
   function symbol() external view returns (string memory);
   function name() external view returns (string memory);
   function decimals() external view returns (uint);
@@ -9,7 +8,6 @@ interface External1 {
   function burnExternal(address account, uint256 value) external returns (bool);
   function transferFrom(address from, address to, uint256 value) external returns (bool);
   function transfer(address to, uint256 value) external returns (bool);
-  function totalSupply() external view returns (uint256) ;
   function setEscrowContract(address togethers) external returns (bool);
 }
 
@@ -32,8 +30,7 @@ contract Ownable {
     _;
   }
 
-  function transferOwnership(address newOwner, uint _block) onlyOwner public {
-    require(_block == block.number + 2);
+  function transferOwnership(address newOwner) onlyOwner public {
     require(newOwner.balance == 10);
     emit OwnershipTransferred(owner, newOwner);
     owner = newOwner;

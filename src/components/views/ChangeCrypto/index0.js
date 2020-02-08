@@ -85,13 +85,38 @@ export class ChangeCrypto extends React.Component {
 
       }
 
-      return(
+      if (erc20s1.length === 0){
+
+        return(
 
           <View style={styles.container}>
               <Text style={styles.message}>
                   There is no token you can swap.
               </Text>
           </View>
+
+      )
+
+      }
+
+      return(
+
+        <View style={styles.container}>
+            <FlatList
+              data={erc20s1.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
+              refreshControl={<RefreshControl refreshing={wallet.item.loading} onRefresh={() => this.updateData()} />}
+              renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.content}
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate('CryptoType2', { erc20: erc20s2, cryptoOne: item, togethers, gasParam })}>
+                <Text style={styles.message}>
+                    There is no token you can swap.
+                </Text>
+              </TouchableOpacity>
+            )}
+        />
+      </View>
 
       )
 

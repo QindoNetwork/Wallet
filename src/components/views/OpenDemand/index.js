@@ -55,13 +55,14 @@ export class OpenDemand extends Component {
                   onChangeText={handleChange('description')}
                   onBlur={() => setFieldTouched('description')}
                   placeholder="description"
+                  multiline="true"
                   />
+                  </View>
                   <View style={styles.buttonsContainer}>
                       <Button
                           children="DEMAND"
                           disabled={!isValid}
                           onPress={handleSubmit}/>
-                  </View>
                   </View>
                   {this.renderModal(values.description)}
                   </View>
@@ -104,8 +105,6 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '90%',
-        borderBottomWidth: 1,
-        borderBottomColor: colors.black,
         padding: 4,
         paddingLeft: 0,
         marginRight: 2,

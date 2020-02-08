@@ -117,9 +117,8 @@ export class SecureTransaction extends React.Component {
 
     renderDescription(ethPrice) {
       return(
-        <View>
-          <Text style={styles.message}>This action will cost approximatly :</Text>
-          <Text style={styles.message}>{ethPrice} ETH</Text>
+        <View style={styles.detail}>
+          <Text style={styles.message}>Approximatly {ethPrice} ETH</Text>
         </View>)
     }
 
@@ -157,21 +156,21 @@ export class SecureTransaction extends React.Component {
     {
       return(
         <View>
-        {this.renderDescription(ethPrice)}
         {this.renderButtons()}
+        {this.renderDescription(ethPrice)}
         </View>
     )
     }
     return(
       <View style={styles.container}>
-        {this.renderDescription(ethPrice)}
-        <Text style={styles.message}>Password</Text>
         <TextInput
             style={styles.input}
             secureTextEntry
+            placeholder="password"
             underlineColorAndroid="transparent"
             onChangeText={password => this.setState({ password })} />
         {this.renderButtons()}
+        {this.renderDescription(ethPrice)}
         </View>
   )
 }
@@ -198,6 +197,13 @@ buttonsContainer: {
     justifyContent: 'space-between',
     height: 52
 },
+detail: {
+    color: 'black',
+    fontSize: 10,
+    textAlign: 'center',
+    marginVertical: measures.defaultMargin/2,
+    marginHorizontal: 32
+},
 message: {
     color: colors.black,
     fontSize: 16,
@@ -207,8 +213,6 @@ message: {
 },
 input: {
     width: '100%',
-    borderBottomWidth: 1,
-    borderBottomColor: colors.black,
     padding: 4,
     paddingLeft: 0,
     marginRight: 0,

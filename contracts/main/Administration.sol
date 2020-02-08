@@ -9,8 +9,8 @@ contract Administration is Ownable {
 
   uint public fees;
 
-  event askEvent(uint indexed groupID, address indexed sender);
-  event payEvent(address indexed from, address indexed to, address indexed crypto, uint amount);
+  event askEvent(uint indexed groupID, address sender);
+  event payEvent(address from, address indexed to, address crypto, uint amount);
 
   mapping (address => uint) public mappAllowCryptoForCategory;
   mapping (address => bool) public mappCryptoEnable;
@@ -19,7 +19,7 @@ contract Administration is Ownable {
   mapping (address => uint) internal userPassword;
 
   address[] cryptoList;
-  address[] homeStableList;
+  address[] public homeStableList;
 
   struct erc20
   {
@@ -139,11 +139,6 @@ contract Administration is Ownable {
   function getCryptoList() view public returns (address[] memory)
   {
     return cryptoList;
-  }
-
-  function getHomeStableList() view public returns (address[] memory)
-  {
-    return homeStableList;
   }
 
 }

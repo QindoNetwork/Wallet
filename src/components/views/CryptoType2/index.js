@@ -58,6 +58,20 @@ export class CryptoType2 extends React.Component {
 
       }
 
+      if (erc20s2.length === 0){
+
+        return(
+
+          <View style={styles.container}>
+              <Text style={styles.message}>
+                  There is no token available in the contract.
+              </Text>
+          </View>
+
+      )
+
+      }
+
       return(
 
         <View style={styles.container}>

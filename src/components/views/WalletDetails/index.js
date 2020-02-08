@@ -12,6 +12,15 @@ export class WalletDetails extends React.Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
           title: "Togethers",
+          headerLeft: (
+              <HeaderIcon
+                  name='person-add'
+                  size='medium'
+                  color={colors.white}
+                  onPress={() => navigation.navigate('Notifications',
+                  { ...navigation.state.params })
+                } />
+          )
       })
 
     tabs = [
@@ -24,7 +33,7 @@ export class WalletDetails extends React.Component {
         { id: 'network', label: 'Network', icon: 'contacts',            content: <Groups navigation = {this.props.navigation}
                                                                                          gasParam = {this.props.navigation.getParam('gasParam')}
                                                                                          togethers = {this.props.navigation.getParam('togethers')} /> },
-        { id: 'swap', label: 'Swap', icon: 'flask',                  content: <ChangeCrypto navigation = {this.props.navigation}
+        { id: 'swap', label: 'Swap', icon: 'flask',                     content: <ChangeCrypto navigation = {this.props.navigation}
                                                                                          gasParam = {this.props.navigation.getParam('gasParam')}
                                                                                          togethers = {this.props.navigation.getParam('togethers')} /> },
         { id: 'settings', label: 'Settings', icon: 'settings',          content: <WalletSettings navigation = {this.props.navigation}

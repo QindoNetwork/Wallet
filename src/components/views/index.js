@@ -32,3 +32,4 @@ export * from './ChangePassword';
 export * from './AdminProfile';
 export * from './ChangeLanguage';
 export * from './ConfirmSwap';
+export * from './Notifications';

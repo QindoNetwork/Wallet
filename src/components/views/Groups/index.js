@@ -20,11 +20,12 @@ export class Groups extends React.Component {
     async updateData() {
       const { togethers, wallet } = this.props
       let groups = []
+      let profile
       try {
         const req = await togethers.getGroups()
         for ( var i = 0; i < req.length; i++ ) {
           groupID = parseInt (req[i],10)
-          const profile = await togethers.mappProfileInGroup(groupID,wallet.item.address)
+          profile = await togethers.mappProfileInGroup(groupID,wallet.item.address)
          if (new Boolean(profile.isMember) == true){
             groups.push({   id:  groupID,
                             name: await togethers.mappGroupIDToGroupName(groupID),

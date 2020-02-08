@@ -3,28 +3,48 @@ import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, View, Text } f
 import { inject, observer } from 'mobx-react';
 import { measures, colors } from '@common/styles';
 import { Wallets as WalletActions } from '@common/actions';
-import TransactionCard from './TransactionCard';
+import NotificationCard from './NotificationCard';
 import { GeneralActions } from '@common/actions';
 
 @inject('wallet')
 @observer
-export class WalletExtract extends React.Component {
+export class Notifications extends React.Component {
 
-    state = { loading: 0 };
+    state = { loading: 0, filters: [] };
 
     componentDidMount() {
       this.updateHistory()
-      this.setState({ loading: 1 })
     }
+
     async updateHistory() {
+      const { wallet } = this.props;
+      const { togethers } = this.props.navigation.state.params;
+      let filters = []
+      let filter
+      let profile
       try {
-          await WalletActions.updateHistory(this.props.wallet.item);
+          const req = await togethers.getGroups()
+          for ( var i = 0; i < req.length; i++ ) {
+            groupID = parseInt (req[i],10)
+            profile = await togethers.mappProfileInGroup(groupID,wallet.item.address)
+            if (new Boolean(profile.isMember) == true){
+               filter = await togethers.filters.askEvent(groupID)
+               filters.push( filter )
+
+               togethers.on(filter, (groupID, sender) => {
+        GeneralActions.notify('I received ' + groupID.toString() + ' tokens from ' + sender, 'long')
+    });
+
+
+             }
+           }
+           this.setState({ filters, loading: 1 })
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
       }
     }
 
-    renderItem = (address) => ({ item }) => <TransactionCard transaction={item} walletAddress={address} togethers={this.props.togethers} />
+    renderItem = (item) => <NotificationCard notification={item} />
 
     renderBody = ({ item, history, loading, pendingTransactions }) =>  (!history.length && !loading) ? (<View style={styles.container}>
         <Text style={styles.message}>
@@ -34,10 +54,10 @@ export class WalletExtract extends React.Component {
         <View>
         <FlatList
             style={styles.content}
-            data={pendingTransactions.concat(history.slice().reverse())}
+            data={this.state.filters}
             refreshControl={<RefreshControl refreshing={loading} onRefresh={() => this.updateHistory()} />}
             keyExtractor={(element) => element.hash}
-            renderItem={this.renderItem(item.address)} />
+            renderItem={this.renderItem(item)} />
 </View>
     );
 
@@ -49,7 +69,7 @@ export class WalletExtract extends React.Component {
 
         <View style={styles.container}>
           <View style={styles.body}>
-            <ActivityIndicator size="large" color="darkslategray"/>
+            <ActivityIndicator size="large"/>
           </View>
         </View>
 

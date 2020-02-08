@@ -42,7 +42,7 @@ const navigator = createStackNavigator(
     ChangeLanguage: { screen: Views.ChangeLanguage },
     AdminProfile: { screen: Views.AdminProfile },
     ConfirmSwap: { screen: Views.ConfirmSwap },
-
+    Notifications: { screen: Views.Notifications }
   },
   {
     initialRouteName: INITIAL_ROUTE,

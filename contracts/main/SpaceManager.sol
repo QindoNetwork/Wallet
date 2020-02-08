@@ -119,7 +119,6 @@ contract SpaceManager is TogethersSpace {
   function buySpaces(uint[] memory space) public
   {
     require(isApproved[mappSociety[msg.sender].ID] == true);
-    require(TGTCToken.balanceOf(msg.sender) >=  space.length * spacePrice);
     uint k;
     for (uint i = 0; i < space.length; i++)
     {

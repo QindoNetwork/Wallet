@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 32
     },
     detail: {
-        color: 'whiblackte',
+        color: 'black',
         fontSize: 10,
         textAlign: 'center',
         marginVertical: measures.defaultMargin/2,
