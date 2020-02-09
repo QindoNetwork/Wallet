@@ -10,7 +10,7 @@ import { Network as EthereumNetworks } from '@common/constants';
 import { ethers } from 'ethers';
 import { Gas as gas, Conversions as conversions } from '@common/constants';
 
-@inject('wallet')
+@inject('wallet','languages')
 @observer
 export class ChangeCrypto extends React.Component {
 
@@ -85,13 +85,38 @@ export class ChangeCrypto extends React.Component {
 
       }
 
-      return(
+      if (erc20s1.length === 0){
+
+        return(
 
           <View style={styles.container}>
               <Text style={styles.message}>
                   There is no token you can swap.
               </Text>
           </View>
+
+      )
+
+      }
+
+      return(
+
+        <View style={styles.container}>
+          <Header/>
+
+            <FlatList
+              data={erc20s1.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
+              refreshControl={<RefreshControl refreshing={wallet.item.loading} onRefresh={() => this.updateData()} />}
+              renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.content}
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate('CryptoType2', { erc20: erc20s2, cryptoOne: item, togethers, gasParam })}>
+                <CryptoCard crypto={item}/>
+              </TouchableOpacity>
+            )}
+        />
+      </View>
 
       )
 

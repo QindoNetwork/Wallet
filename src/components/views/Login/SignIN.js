@@ -35,7 +35,7 @@ export default class SignIN extends React.Component {
         else {
           GeneralActions.notify("Password not good", 'long');
         }
-      //  {LanguagesActions.choosePseudonyme(this.props.languages.selectedLanguage)}
+        //{LanguagesActions.choosePseudonyme(this.props.languages.selectedLanguage)}
     }
 
     render() {

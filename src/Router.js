@@ -26,7 +26,6 @@ const navigator = createStackNavigator(
     AddProfile: { screen: Views.AddProfile },
     AskGroup: { screen: Views.AskGroup },
     CreateGroup: { screen: Views.CreateGroup },
-    Crypto: { screen: Views.Crypto },
     ProfileData: { screen: Views.ProfileData },
     Profiles: { screen: Views.Profiles },
     Groups: { screen: Views.Groups },

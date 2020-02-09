@@ -21,6 +21,7 @@ export class Notifications extends React.Component {
       const { togethers } = this.props.navigation.state.params;
       let filters = []
       let filter
+      let temp
       let profile
       try {
           const req = await togethers.getGroups()
@@ -28,16 +29,10 @@ export class Notifications extends React.Component {
             groupID = parseInt (req[i],10)
             profile = await togethers.mappProfileInGroup(groupID,wallet.item.address)
             if (new Boolean(profile.isMember) == true){
-               filter = await togethers.filters.askEvent(groupID)
-               filters.push( filter )
-
-               togethers.on(filter, (groupID, sender) => {
-        GeneralActions.notify('I received ' + groupID.toString() + ' tokens from ' + sender, 'long')
-    });
-
 
              }
            }
+
            this.setState({ filters, loading: 1 })
       } catch (e) {
           GeneralActions.notify(e.message, 'long');

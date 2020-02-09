@@ -19,7 +19,6 @@ export class Crypto extends React.Component {
 
   componentDidMount() {
     this.updateData()
-    WalletActions.updateBalance(this.props.wallet.item);
   }
 
   async updateData() {

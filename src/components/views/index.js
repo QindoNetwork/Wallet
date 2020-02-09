@@ -17,6 +17,7 @@ export * from './AddProfile';
 export * from './AskGroup';
 export * from './CreateGroup';
 export * from './Crypto';
+export * from './ChangeCrypto';
 export * from './ProfileData';
 export * from './Profiles';
 export * from './Groups';

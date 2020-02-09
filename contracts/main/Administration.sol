@@ -11,8 +11,9 @@ contract Administration is Ownable {
 
   event askEvent(uint indexed groupID, address sender);
   event payEvent(address from, address indexed to, address crypto, uint amount);
+  event withdraw(address indexed to, address crypto, uint amount);
 
-  mapping (address => uint) public mappAllowCryptoForCategory;
+  mapping (address => uint8) public mappAllowCryptoForCategory;
   mapping (address => bool) public mappCryptoEnable;
   mapping (uint => address) public checkNameUnicity;
   mapping (address => string) public mappAddressToUser;
@@ -27,7 +28,7 @@ contract Administration is Ownable {
     string name;
     uint decimals;
     bool status;
-    uint category;
+    uint8 category;
   }
 
   function createPassword(string memory _password) internal
@@ -112,7 +113,7 @@ contract Administration is Ownable {
     return add;
   }
 
-  function allowCryptoForCategory(address crypto, uint category) public onlyOwner
+  function allowCryptoForCategory(address crypto, uint8 category) public onlyOwner
   {
     require(category != 0);
     require(mappCryptoEnable[crypto] == true);

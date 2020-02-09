@@ -144,7 +144,6 @@ contract TogethersTokenUSD {
 
           _totalSupply = _totalSupply.add(amount);
           _balances[account] = _balances[account].add(amount);
-          emit Transfer(address(0), account, amount);
       }
 
      /**

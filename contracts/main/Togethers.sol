@@ -178,6 +178,7 @@ contract Togethers is Administration {
       else
       {
         External1(homeStableList[i]).mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats[i]);
+        emit withdraw(msg.sender,homeStableList[i],mappProfileInGroup[groupID][msg.sender].stats[i]);
       }
       mappProfileInGroup[groupID][msg.sender].stats[i] = 0;
     }
@@ -256,7 +257,7 @@ contract Togethers is Administration {
     string memory symbol = External1(_crypto).symbol();
     string memory name = External1(_crypto).name();
     bool status = mappCryptoEnable[_crypto];
-    uint category = mappAllowCryptoForCategory[_crypto];
+    uint8 category = mappAllowCryptoForCategory[_crypto];
     return erc20(symbol,name,decimals,status,category);
   }
 
