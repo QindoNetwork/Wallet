@@ -12,7 +12,7 @@ export class WalletDetails extends React.Component {
           title: "Togethers",
           headerLeft: (
               <HeaderIcon
-                  name='person-add'
+                  name='ellipsis-vertical-circle'
                   size='medium'
                   color={colors.white}
                   onPress={() => navigation.navigate('Notifications',

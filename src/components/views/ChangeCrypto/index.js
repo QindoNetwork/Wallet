@@ -68,7 +68,7 @@ export class ChangeCrypto extends React.Component {
 
     render() {
 
-      const { togethers, groupID, gasParam, wallet } = this.props
+      const { togethers, groupID, gasParam, wallet, navigation } = this.props
       const { erc20s1, erc20s2, loading } = this.state
 
       if (loading === 0){

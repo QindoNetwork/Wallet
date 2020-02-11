@@ -266,4 +266,9 @@ contract Togethers is Administration {
     return mappPeerToPeerStats[from][to];
   }
 
+  function getProfileStats(uint groupID, address _user) view public returns (uint[] memory)
+  {
+    return mappProfileInGroup[groupID][_user].stats;
+  }
+
 }

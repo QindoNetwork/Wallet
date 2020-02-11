@@ -3,11 +3,12 @@ import { Keyboard, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { inject, observer } from 'mobx-react';
+import { ethers } from 'ethers';
 import { Languages as LanguagesActions, General as GeneralActions } from '@common/actions';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 import { TogethersABI as togethersABI } from '@common/ABIs';
 
-@inject('languages')
+@inject('languages','wallet')
 @observer
 export class NewWalletName extends React.Component {
 
@@ -19,15 +20,21 @@ export class NewWalletName extends React.Component {
         Keyboard.dismiss();
         const { walletName } = this.state;
         if (!walletName) return;
-        const contract = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, EthereumNetworks.fallbackProvider);
-        if (parseInt(await contract.verifyUserAvailability(value),10) === 0 )
-        {
-          result = "KO"
-          GeneralActions.notify('Username unavailable', 'long');
-        }
-        else
-        {
-          this.props.navigation.navigate('NewWallet', { walletName });
+        try {
+          const mnemonics = this.props.wallet.item.mnemonics.toString()
+          const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
+          const contract = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
+          if (parseInt(await contract.verifyUserAvailability(walletName),10) === 0 )
+          {
+            result = "KO"
+            GeneralActions.notify('Username unavailable', 'long');
+          }
+          else
+          {
+            this.props.navigation.navigate('NewWallet', { walletName });
+          }
+        } catch (e) {
+            GeneralActions.notify(e.message, 'long');
         }
     }
 

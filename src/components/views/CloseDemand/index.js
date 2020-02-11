@@ -29,24 +29,43 @@ export class CloseDemand extends React.Component {
 
   render() {
 
-    const { item } = this.props.navigation.state.params;
-    const USDin = item.USDin
-    const EURin = item.EURin
-    const ETHin = item.ETHin
-    const description = item.description
+    const { profile } = this.props.navigation.state.params;
+    var stat
+    var stats
+    var ok = 0
+      for ( var i = 0; i < profile.stats.length; i++ ) {
+        stat = parseInt (profile.stats[i],10)
+       if (stat !== 0){
+         ok = 1
+          if (i === 0){
+          stats.push({  balance:  stat,
+                        name: 'Ethers',
+                        symbol: 'ETH',
+                        decimals: 18 })
+          }
+          if (i === 1){
+          stats.push({  balance:  stat,
+                        name: 'Togethers-EUR',
+                        symbol: 'TGTE',
+                        decimals: 18 })
+          }
+          if (i === 2){
+          stats.push({  balance:  stat,
+                        name: 'Togethers-USD',
+                        symbol: 'TGTU',
+                        decimals: 18 })
+          }
+        }
+      }
 
-    var erc20s = []
-    erc20s.push({ name: "Ethers",
-                    symbol: "ETH",
-                    balance: ETHin ,})
-    erc20s.push({ name: "Togethers-USD",
-                    symbol: "TGTU",
-                    balance: USDin,
-                   decimals: 18})
-    erc20s.push({ name: "Togethers-EUR",
-                    symbol: "TGTE",
-                    balance: EURin,
-                    decimals: 18})
+      if (ok === 0){
+        return(
+
+          <View style={styles.container}>
+          <Text style={styles.message}>there is nothing to withdraw</Text>
+          </View>
+        )
+      }
 
     return(
 
@@ -54,7 +73,7 @@ export class CloseDemand extends React.Component {
       <Text style={styles.message}>{description}</Text>
       <FlatList
               style={styles.content}
-              data={erc20s.sort((prev, next) => prev.name.localeCompare(next.name))}
+              data={stats.sort((prev, next) => prev.name.localeCompare(next.name))}
               renderItem={({ item }) => (<CryptoCard crypto={item} />)} />
             <View style={styles.buttonsContainer}>
                 <Button

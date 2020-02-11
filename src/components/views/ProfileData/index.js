@@ -28,39 +28,70 @@ export class ProfileData extends React.Component {
         )
     })
 
-    state = { loading: 0, stats: [] };
+    state = { loading: 0, stats: [], stats2: [], stats3: [] };
 
     async componentDidMount() {
       const { wallet } = this.props
-      const { togethers, item } = this.props.navigation.state.params;
+      const { togethers, user } = this.props.navigation.state.params;
       let stats = []
+      let stats2 = []
+      let stats3 = []
+      let one
+      let two
+      let three
       var info
       try {
-        const statsIn = await togethers.getStats(wallet.item.address,item.id)
-        const statsOut = await togethers.getStats(item.id,wallet.item.address)
+        const statsIn = await togethers.getStats(wallet.item.address,user.id)
+        const statsOut = await togethers.getStats(user.id,wallet.item.address)
         const crypto = await togethers.getHomeStableList()
-        for ( var i = 0; i <= statsIn.length; i++ ) {
+        for ( var i = 0; i <= getHomeStableList().length; i++ ) {
+          one = !user.stats[i] ? 0 : user.stats[i]
+          two = !statsIn[i] ? 0 : statsIn[i]
+          three = !statsOut[i] ? 0 : statsOut[i]
           if ( i === 0 ) {
-          stats.push({    statsIn:  statsIn[i],
-                          statsOut: statsOut[i],
-                          balance: item.stats[i],
+          stats.push({
+                          balance: one,
                           symbol: "ETH",
                           name: "Ethers",
                           decimals: 0,
                          })
+                         stats2.push({
+                                         balance: two,
+                                         symbol: "ETH",
+                                         name: "Ethers",
+                                         decimals: 0,
+                                        })
+                                        stats3.push({
+                                                        balance: three,
+                                                        symbol: "ETH",
+                                                        name: "Ethers",
+                                                        decimals: 0,
+                                                       })
           }
           else {
           info = await togethers.getCryptoInfo(crypto[i])
-          stats.push({    statsIn:  statsIn[i],
-                          statsOut: statsOut[i],
-                          balance: item.stats[i],
+          stats.push({
+                          balance: one,
                           symbol: info.symbol,
                           name: info.name,
                           decimals: info.decimals,
-                      })
+                         })
+                         stats2.push({
+                                         balance: two,
+                                         symbol: info.symbol,
+                                         name: info.name,
+                                         decimals: info.decimals,
+                                        })
+                                        stats3.push({
+                                                        balance: three,
+                                                        symbol: info.symbol,
+                                                        name: info.name,
+                                                        decimals: info.decimals,
+                                                       })
+
         }
         }
-        this.setState({ stats, loading: 1 })
+        this.setState({ stats, stats2, stats3, loading: 1 })
       } catch (e) {
       GeneralActions.notify(e.message, 'long');
       }
@@ -68,32 +99,35 @@ export class ProfileData extends React.Component {
 
     renderData() {
 
-      const profile = this.props.navigation.state.params.item
-      const { stats } = this.state
+      const { stats, stats2, stats3 } = this.state
 
         return(
           <View style={styles.container}>
-          <View style={styles.leftColumn}>
-              <ProfileCard profile={profile}/>
-              <FlatList
+          <ProfileCard profile={profile}/>
+          <FlatList
                 data={stats.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
                 renderItem={({ item }) => (
                 <CryptoCard crypto={item}/>
               )}
           />
           <FlatList
-            data={stats.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
-            renderItem={({ item }) => (
-            <CryptoCard crypto={item}/>
-          )}
-      />
-          </View>
+                data={stats2.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
+                renderItem={({ item }) => (
+                <CryptoCard crypto={item}/>
+              )}
+          />
+          <FlatList
+                data={stats3.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
+                renderItem={({ item }) => (
+                <CryptoCard crypto={item}/>
+              )}
+          />
           </View>)
       }
 
   render() {
 
-    const { item, togethers, user, gasParam } = this.props.navigation.state.params;
+    const { togethers, user, gasParam } = this.props.navigation.state.params;
 
     if (this.state.loading === 0){
 
@@ -109,7 +143,7 @@ export class ProfileData extends React.Component {
 
     }
 
-    if (item.active == true){
+    if (user.active == true){
       return(
         <View style={styles.container}>
         {this.renderData()}
@@ -117,7 +151,7 @@ export class ProfileData extends React.Component {
             <Button
               children="Send"
               onPress={() => this.props.navigation.navigate('CryptoType1',
-              { togethers, groupID: user.id, profile: item, gasParam })}/>
+              { togethers, groupID: user.id, profile: user, gasParam })}/>
         </View>
       </View>)
     }
