@@ -10,6 +10,10 @@ import { GeneralActions } from '@common/actions';
 @observer
 export class Notifications extends React.Component {
 
+  static navigationOptions = ({ navigation }) => ({
+        title: 'Notifications',
+    })
+
     state = { loading: 0, filters: [] };
 
     componentDidMount() {

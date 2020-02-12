@@ -72,7 +72,7 @@ export class Profiles extends React.Component {
                                 owner: new Boolean(temp.owner),
                                 active: new Boolean(temp.open),
                                 description: temp.description,
-                                stats: temp.stats})
+                                stats: await togethers.getProfileStats(groupID,currentAddress)})
               }
           }
           this.setState({ profiles, loading: 1 })
@@ -129,7 +129,7 @@ export class Profiles extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('ProfileData',{ user: profile, item, togethers, gasParam })
+              onPress={() => this.props.navigation.navigate('ProfileData',{ item, togethers, gasParam })
               }>
                 <ProfileCard profile={item} togethers={togethers}/>
               </TouchableOpacity>

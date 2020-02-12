@@ -5,7 +5,6 @@ import { colors, measures } from '@common/styles';
 import { HeaderIcon } from '@components/widgets';
 import { General as GeneralActions  } from '@common/actions';
 import { CryptoCard } from '@components/widgets';
-import ProfileCard from './ProfileCard';
 import { inject, observer } from 'mobx-react';
 
 @inject('wallet')
@@ -16,7 +15,7 @@ export class ProfileData extends React.Component {
         title: "profile",
         headerRight: (
             <HeaderIcon
-                name='cash'
+                name='key'
                 size='medium'
                 color={colors.white}
                 onPress={() => navigation.navigate('AdminProfile',
@@ -32,90 +31,117 @@ export class ProfileData extends React.Component {
 
     async componentDidMount() {
       const { wallet } = this.props
-      const { togethers, user } = this.props.navigation.state.params;
+      const { togethers, item } = this.props.navigation.state.params;
       let stats = []
       let stats2 = []
       let stats3 = []
-      let one
-      let two
-      let three
-      var info
       try {
-        const statsIn = await togethers.getStats(wallet.item.address,user.id)
-        const statsOut = await togethers.getStats(user.id,wallet.item.address)
-        const crypto = await togethers.getHomeStableList()
-        for ( var i = 0; i <= getHomeStableList().length; i++ ) {
-          one = !user.stats[i] ? 0 : user.stats[i]
-          two = !statsIn[i] ? 0 : statsIn[i]
-          three = !statsOut[i] ? 0 : statsOut[i]
-          if ( i === 0 ) {
+        const statsIn = await togethers.getStats(wallet.item.address,item.id)
+        const statsOut = await togethers.getStats(item.id,wallet.item.address)
+        const one1 = !item.stats[0] ? 0 : parseInt (item.stats[0],10)
+        const two1 = !statsIn[0] ? 0 : parseInt (statsIn[0],10)
+        const three1 = !statsOut[0] ? 0 : parseInt (statsOut[0],10)
+        const one2 = !item.stats[1] ? 0 : parseInt (item.stats[1],10)
+        const two2 = !statsIn[1] ? 0 : parseInt (statsIn[1],10)
+        const three2 = !statsOut[1] ? 0 : parseInt (statsOut[1],10)
+        const one3 = !item.stats[2] ? 0 : parseInt (item.stats[2],10)
+        const two3 = !statsIn[2] ? 0 : parseInt (statsIn[2],10)
+        const three3 = !statsOut[2] ? 0 : parseInt (statsOut[2],10)
+
           stats.push({
-                          balance: one,
+                          balance: one1,
                           symbol: "ETH",
                           name: "Ethers",
-                          decimals: 0,
+                          decimals: 18,
                          })
                          stats2.push({
-                                         balance: two,
+                                         balance: two1,
                                          symbol: "ETH",
                                          name: "Ethers",
-                                         decimals: 0,
+                                         decimals: 18,
                                         })
                                         stats3.push({
-                                                        balance: three,
+                                                        balance: three1,
                                                         symbol: "ETH",
                                                         name: "Ethers",
-                                                        decimals: 0,
-                                                       })
-          }
-          else {
-          info = await togethers.getCryptoInfo(crypto[i])
-          stats.push({
-                          balance: one,
-                          symbol: info.symbol,
-                          name: info.name,
-                          decimals: info.decimals,
-                         })
-                         stats2.push({
-                                         balance: two,
-                                         symbol: info.symbol,
-                                         name: info.name,
-                                         decimals: info.decimals,
-                                        })
-                                        stats3.push({
-                                                        balance: three,
-                                                        symbol: info.symbol,
-                                                        name: info.name,
-                                                        decimals: info.decimals,
+                                                        decimals: 18,
                                                        })
 
-        }
-        }
+          stats.push({
+                          balance: one2,
+                          symbol: "TGTE",
+                          name: "Togethers-EUR",
+                          decimals: 18,
+                         })
+                         stats2.push({
+                                         balance: two2,
+                                         symbol: "TGTE",
+                                         name: "Togethers-EUR",
+                                         decimals: 18,
+                                        })
+                                        stats3.push({
+                                                        balance: three2,
+                                                        symbol: "TGTE",
+                                                        name: "Togethers-EUR",
+                                                        decimals: 18,
+                                                       })
+
+                                                       stats.push({
+                                                                       balance: one3,
+                                                                       symbol: "TGTU",
+                                                                       name: "Togethers-USD",
+                                                                       decimals: 18,
+                                                                      })
+                                                                      stats2.push({
+                                                                                      balance: two3,
+                                                                                      symbol: "TGTU",
+                                                                                      name: "Togethers-USD",
+                                                                                      decimals: 18,
+                                                                                     })
+                                                                                     stats3.push({
+                                                                                                     balance: three3,
+                                                                                                     symbol: "TGTU",
+                                                                                                     name: "Togethers-USD",
+                                                                                                     decimals: 18,
+                                                                                                    })
+
         this.setState({ stats, stats2, stats3, loading: 1 })
       } catch (e) {
       GeneralActions.notify(e.message, 'long');
       }
     }
 
-    renderData() {
+    renderProfile() {
 
-      const { stats, stats2, stats3 } = this.state
+      const { stats } = this.state
+      const { item } = this.props.navigation.state.params;
 
         return(
           <View style={styles.container}>
-          <ProfileCard profile={profile}/>
+          <Text style={styles.message}>{item.description}</Text>
           <FlatList
                 data={stats.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
                 renderItem={({ item }) => (
                 <CryptoCard crypto={item}/>
               )}
           />
+          </View>)
+      }
+
+    renderData() {
+
+      const { stats2, stats3 } = this.state
+
+        return(
+          <View style={styles.container}>
+          <Text style={styles.message}>From him</Text>
           <FlatList
                 data={stats2.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
                 renderItem={({ item }) => (
                 <CryptoCard crypto={item}/>
               )}
           />
+          <Text style={styles.message}>From you</Text>
           <FlatList
                 data={stats3.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
                 renderItem={({ item }) => (
@@ -127,7 +153,7 @@ export class ProfileData extends React.Component {
 
   render() {
 
-    const { togethers, user, gasParam } = this.props.navigation.state.params;
+    const { togethers, item, gasParam } = this.props.navigation.state.params;
 
     if (this.state.loading === 0){
 
@@ -143,15 +169,16 @@ export class ProfileData extends React.Component {
 
     }
 
-    if (user.active == true){
+    if (item.active == true){
       return(
         <View style={styles.container}>
+        {this.renderProfile()}
         {this.renderData()}
         <View style={styles.buttonsContainer}>
             <Button
               children="Send"
               onPress={() => this.props.navigation.navigate('CryptoType1',
-              { togethers, groupID: user.id, profile: user, gasParam })}/>
+              { togethers, groupID: item.id, profile: item, gasParam })}/>
         </View>
       </View>)
     }

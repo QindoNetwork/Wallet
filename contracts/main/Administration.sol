@@ -10,8 +10,8 @@ contract Administration is Ownable {
   uint public fees;
 
   event askEvent(uint indexed groupID, address sender);
-  event payEvent(address from, address indexed to, address crypto, uint amount);
-  event withdraw(address indexed to, address crypto, uint amount);
+  event payEvent(address from, address indexed to, address crypto);
+  event withdraw(address from, uint indexed groupID);
 
   mapping (address => uint8) public mappAllowCryptoForCategory;
   mapping (address => bool) public mappCryptoEnable;
@@ -127,7 +127,7 @@ contract Administration is Ownable {
 
   function activateFees(uint _fees) public onlyOwner
   {
-    if (_fees >= 100)
+    if (_fees < 100)
     {
       fees = 0;
     }

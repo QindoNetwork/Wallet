@@ -32,7 +32,7 @@ export class Groups extends React.Component {
                             owner:   new Boolean(profile.owner),
                             active:  new Boolean(profile.open),
                             description: profile.description,
-                            stats: profile.stats})
+                            stats: await togethers.getProfileStats(groupID,wallet.item.address)})
           }
         }
         this.setState({ groups, loading: 1 })

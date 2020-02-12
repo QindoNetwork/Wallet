@@ -36,10 +36,13 @@ export class ConfirmSwap extends React.Component {
 
     renderButtons() {
 
+      const { amount, cryptoOne, loading, item, gasParam } = this.props.navigation.state.params;
+      const maxPrice =  gasParam[gas.changeToken].limit * gasParam[gas.changeToken].price * conversions.gigaWeiToWei
+      const ethPrice = (maxPrice / conversions.weiToEthereum) / 2
+
         return(
             <View>
               <View style={styles.buttonsContainer}>
-              <Text style={styles.message}>{ this.state.price }</Text>
                 <Button
                   children="Continue"
                   onPress={() => this.onPressContinue()}
@@ -51,6 +54,7 @@ export class ConfirmSwap extends React.Component {
                   onPress={() => this.hide()}
                   />
               </View>
+              <Text style={styles.detail}>Approximatly {ethPrice} ETH</Text>
             </View>)
       }
 
@@ -81,8 +85,7 @@ export class ConfirmSwap extends React.Component {
       return(
           <View style={styles.containerModal}>
           <View style={styles.body}>
-          <Text style={styles.message}>Confirm</Text>
-          <Text style={styles.message}>Password</Text>
+          <Text style={styles.message}>Enter Password</Text>
           <TextInput
               style={styles.input}
               secureTextEntry
@@ -118,7 +121,6 @@ export class ConfirmSwap extends React.Component {
                   gasPrice: gasParam[eRC20allowance].price * conversions.gigaWeiToWei,
                   nonce: nonce,
                   };
-        const price1 = overrides.gasLimit * overrides.gasPrice
         TransactionActions.erc20approve(amount,cryptoOne.instance,overrides)
         nonce = nonce + 1
         overrides = {
@@ -126,9 +128,7 @@ export class ConfirmSwap extends React.Component {
                   gasPrice: gasParam[changeToken].price * conversions.gigaWeiToWei,
                   nonce: nonce,
                   };
-        const price2 = overrides.gasLimit * overrides.gasPrice
         await togethers.changeToken(amount,cryptoOne.address,item.address)
-        this.setState({ price: (price1 + price2)/2 })
             this.props.navigation.navigate('WalletDetails', { togethers, gasParam, replaceRoute: true, leave: 0 });
             GeneralActions.notify('Success, wait for confirmation in historic', 'short');
           }catch (e) {
@@ -168,7 +168,7 @@ export class ConfirmSwap extends React.Component {
                             source={{ uri: ImageUtils.generateAvatar(target,500) }} />
                     </View>
                     <View style={styles.textColumn}>
-                        <Text style={styles.title}>Amount ({item.symbol}) </Text>
+                        <Text style={styles.title}>Amount ({cryptoOne.symbol} to {item.symbol}) </Text>
                         <Text style={styles.value}>{amount}</Text>
                     </View>
                 </View>
@@ -219,6 +219,33 @@ const styles = StyleSheet.create({
     value: {
         fontSize: measures.fontSizeMedium,
         width: 200
+    },
+    buttonsContainer: {
+        width: '100%',
+        justifyContent: 'space-between',
+        height: 52
+    },
+    detail: {
+        color: 'black',
+        fontSize: 10,
+        textAlign: 'center',
+        marginVertical: measures.defaultMargin/2,
+        marginHorizontal: 32
+    },
+    message: {
+        color: colors.black,
+        fontSize: 16,
+        textAlign: 'center',
+        marginVertical: measures.defaultMargin,
+        marginHorizontal: 32
+    },
+    input: {
+        width: '100%',
+        padding: 10,
+        paddingLeft: 0,
+        marginRight: 0,
+        textAlign: 'center',
+        color: colors.black
     },
     avatar: {
         width: 100,

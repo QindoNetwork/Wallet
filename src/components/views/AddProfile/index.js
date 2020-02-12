@@ -39,8 +39,8 @@ export class AddProfile extends Component {
                         ok = 0
                         break
                       }
-                      for ( var k = 0; k < no.length; k++ ) {
-                           if ( no[k].id === profiles[k].id) {
+                      for ( var i = 0; i < no.length; i++ ) {
+                           if ( no[i].id === profiles[k].id) {
                              ok2 = 0
                              break
                            }
@@ -60,13 +60,16 @@ export class AddProfile extends Component {
      }
    }
 
-  onPressContinue(target) {
 
-      const { item, togethers, gasParam, amount, groupID } = this.props.navigation.state.params
 
-      this.props.navigation.navigate('ConfirmTransaction', { groupID, item, togethers, gasParam, amount, target });
+   onPressContinue(target) {
 
-  }
+       this.setState({ address: target })
+       this.setState({ show: true })
+
+   }
+
+
 
   renderModal(value) {
 
@@ -88,29 +91,28 @@ export class AddProfile extends Component {
     if (this.state.loading === 0){
 
       return(
-
-        <View style={styles.container}>
-        <InputWithIcon
-            ref="input"
-            autoFocus
-            icon="qr-scanner"
-            placeholder="Destination address"
-            onChangeText={(address) => this.setState({ address })}
-            onPressIcon={() => this.refs.camera.show()} />
-        <Camera
-            ref="camera"
-            modal
-            onClose={() => this.refs.camera.hide()}
-            onBarCodeRead={address => this.refs.input.onChangeText(address)} />
-                <View style={styles.body}>
-                  <ActivityIndicator size="large"/>
-                </View>
-                {this.renderModal(this.state.address)}
-                <View style={styles.buttonsContainer}>
-                        <Button children="Continue" onPress={() => this.onPressContinue(this.state.address)} />
-                      </View>
-        </View>
-
+          <View style={styles.container}>
+          <InputWithIcon
+              ref="input"
+              autoFocus
+              icon="qr-scanner"
+              placeholder="Destination address"
+              onChangeText={(address) => this.setState({ address })}
+              onPressIcon={() => this.refs.camera.show()} />
+          <Camera
+              ref="camera"
+              modal
+              onClose={() => this.refs.camera.hide()}
+              onBarCodeRead={address => this.refs.input.onChangeText(address)} />
+              <Text style={styles.message}>___________________________</Text>
+              <View style={styles.body}>
+                <ActivityIndicator size="large" color="darkslategray"/>
+              </View>
+            <View style={styles.buttonsContainer}>
+                    <Button children="Continue" onPress={() => this.setState({ show: true })} />
+                  </View>
+          {this.renderModal(this.state.address)}
+          </View>
 
     )
 

@@ -12,10 +12,10 @@ export default class Header extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.leftColumn}>
-                    <Text style={styles.title}>Send Cryptos</Text>
+                    <Text style={styles.title}>Swap Cryptos from</Text>
                 </View>
                 <View style={styles.rightColumn}>
-                    <Text style={styles.balance}>Balances</Text>
+                    <Text style={styles.balance}>your balances</Text>
                 </View>
             </View>
         );

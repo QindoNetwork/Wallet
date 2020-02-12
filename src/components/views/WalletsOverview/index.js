@@ -16,23 +16,24 @@ export class WalletsOverview extends React.Component {
     state = { loading: 0 };
 
     static navigationOptions = ({ navigation, screenProps }) => ({
-        title: 'Welcome',
-        headerLeft: (
-            <HeaderIcon
-                name='add'
-                size='large'
-                color={colors.white}
-                onPress={() => navigation.navigate('NewWalletName')} />
-        ),
-        headerRight: (
-            <HeaderIcon
-                name='settings'
-                size='medium'
-                type='md'
-                color={colors.white}
-                onPress={() => navigation.navigate('Settings')} />
-        )
-    });
+            title: 'Welcome',
+            headerLeft: (
+                <HeaderIcon
+                    name='add'
+                    size='large'
+                    color={colors.white}
+                    onPress={() => navigation.navigate('NewWalletName')} />
+            ),
+            headerRight: (
+                <HeaderIcon
+                    name='settings'
+                    size='medium'
+                    type='md'
+                    color={colors.white}
+                    onPress={() => navigation.navigate('Settings')} />
+            )
+        });
+
 
     get loading() {
         return this.props.wallets.loading;
@@ -76,9 +77,8 @@ export class WalletsOverview extends React.Component {
                           })
           }
           WalletActions.selectWallet(wallet)
-          this.setState({ loading: 1 })
           this.props.navigation.navigate('Login', { gasParam, togethers });
-
+          this.setState({ loading: 1 })
         } catch (e) {
           GeneralActions.notify(e.message, 'long');
         }

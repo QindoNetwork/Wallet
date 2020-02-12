@@ -56,7 +56,7 @@ export class AskGroup extends Component {
                   />
             <View style={styles.buttonsContainer}>
                 <Button
-                    children="APPLY"
+                    children="Apply"
                     disabled={!isValid}
                     onPress={handleSubmit}/>
             </View>

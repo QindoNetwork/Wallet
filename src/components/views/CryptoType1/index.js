@@ -5,7 +5,8 @@ export class CryptoType1 extends React.Component {
 
     render() {
 
-      const { navigation, togethers, groupID, profile } = this.props
+      const { navigation } = this.props
+      const { ogethers, groupID, profile, gasParam } = this.props.navigation.state.params;
 
       return(
 

@@ -12,13 +12,24 @@ export class WalletDetails extends React.Component {
           title: "Togethers",
           headerLeft: (
               <HeaderIcon
-                  name='ellipsis-vertical-circle'
+                  name='information-circle'
                   size='medium'
                   color={colors.white}
                   onPress={() => navigation.navigate('Notifications',
                   { ...navigation.state.params })
+
                 } />
-          )
+          ),
+          headerRight: (
+              <HeaderIcon
+                  name='log-out'
+                  size='medium'
+                  color={colors.white}
+                  onPress={() => navigation.navigate('WalletsOverview',
+                  {
+                    ...navigation.state.params
+                  })
+                  }/>),
       })
 
     tabs = [

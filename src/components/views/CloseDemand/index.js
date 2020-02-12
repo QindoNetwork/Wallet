@@ -6,6 +6,7 @@ import { General as GeneralActions  } from '@common/actions';
 import { Gas as gas } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
 import { CryptoCard } from '@components/widgets';
+import Header from './Header';
 
 export class CloseDemand extends React.Component {
 
@@ -34,7 +35,7 @@ export class CloseDemand extends React.Component {
     var stats
     var ok = 0
       for ( var i = 0; i < profile.stats.length; i++ ) {
-        stat = parseInt (profile.stats[i],10)
+        stat = !profile.stats[i] ? 0 : parseInt (profile.stats[i],10)
        if (stat !== 0){
          ok = 1
           if (i === 0){
@@ -71,6 +72,7 @@ export class CloseDemand extends React.Component {
 
       <View style={styles.container}>
       <Text style={styles.message}>{description}</Text>
+      <Header/>
       <FlatList
               style={styles.content}
               data={stats.sort((prev, next) => prev.name.localeCompare(next.name))}

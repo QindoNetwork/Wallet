@@ -18,15 +18,16 @@ export class ConfirmTransaction extends React.Component {
 
     static navigationOptions = { title: 'Confirm transaction' };
 
-    state = { show: false, password: '', registered: 0, loading: 0, loading2: 1, price: 0 };
+    state = { show: false, user: '', password: '', registered: 0, loading: 0, loading2: 1 };
 
     async componentDidMount() {
 
-              const { togethers } = this.props.navigation.state.params;
+              const { togethers, target } = this.props.navigation.state.params;
 
       try {
         this.setState({
                         registered: parseInt (await togethers.verifyRegistration(),10),
+                        user: await togethers.mappAddressToUser(target),
                         loading: 1
                       })
       } catch (e) {
@@ -36,10 +37,13 @@ export class ConfirmTransaction extends React.Component {
 
     renderButtons() {
 
+      const { gasParam } = this.props.navigation.state.params;
+      const maxPrice =  gasParam[gas.eRC20transfer].limit * gasParam[gas.eRC20transfer].price * conversions.gigaWeiToWei
+      const ethPrice = ((maxPrice / conversions.weiToEthereum) / 2) * 3
+
         return(
             <View>
               <View style={styles.buttonsContainer}>
-              <Text style={styles.message}>{ this.state.price }</Text>
                 <Button
                   children="Continue"
                   onPress={() => this.onPressContinue()}
@@ -51,6 +55,7 @@ export class ConfirmTransaction extends React.Component {
                   onPress={() => this.hide()}
                   />
               </View>
+              <Text style={styles.detail}>Approximatly {ethPrice} ETH</Text>
             </View>)
       }
 
@@ -81,8 +86,7 @@ export class ConfirmTransaction extends React.Component {
       return(
           <View style={styles.containerModal}>
           <View style={styles.body}>
-          <Text style={styles.message}>Confirm</Text>
-          <Text style={styles.message}>Password</Text>
+          <Text style={styles.message}>Enter Password</Text>
           <TextInput
               style={styles.input}
               secureTextEntry
@@ -121,8 +125,6 @@ export class ConfirmTransaction extends React.Component {
         }
         if(groupID !== '0') {
           nonce = await TransactionActions.nextNonce(address)
-          let price1
-          let price2
               if(item.name !== 'Ethers') {
                 overrides = {
                     gasLimit: gasParam[eRC20allowance].limit,
@@ -131,18 +133,13 @@ export class ConfirmTransaction extends React.Component {
                     };
                 TransactionActions.erc20approve(value,item.instance,overrides)
                 nonce = nonce + 1
-                price1 = overrides.gasLimit * overrides.gasPrice
               }
               overrides = {
                   gasLimit: gasParam[payForFunds].limit,
                   gasPrice: gasParam[payForFunds].price * conversions.gigaWeiToWei,
                   nonce: nonce,
                   };
-                  price2 = overrides.gasLimit * overrides.gasPrice
                   await togethers.payForFunds(target,groupID,value,item.address,overrides);
-                  if(item.name !== 'Ethers') {
-                    this.setState({ price: (price1 + price2)/2 })
-                  }
             }
             else {
             if(item.name !== 'Ethers') {
@@ -151,14 +148,12 @@ export class ConfirmTransaction extends React.Component {
                   gasPrice: gasParam[gas.eRC20transfer].price * conversions.gigaWeiToWei,
                   };
                   await item.instance.transfer(target,value,overrides)
-                  this.setState({ price: (overrides.gasLimit * overrides.gasPrice)/2 })
             }
             else {
                   const gasLimit = gasParam[gas.defaultTransaction].limit
                   const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
                   const txn = TransactionUtils.createTransaction(target, value, gasLimit, gasPrice);
                   await TransactionActions.sendTransaction(wallet.item, txn);
-                  this.setState({ price: (overrides.gasLimit * overrides.gasPrice)/2 })
             }
             }
             this.props.navigation.navigate('WalletDetails', { togethers, gasParam, replaceRoute: true, leave: 0 });
@@ -174,7 +169,7 @@ export class ConfirmTransaction extends React.Component {
     }
 
     render() {
-        const { amount, target, loading, item } = this.props.navigation.state.params;
+        const { amount, target, loading, item, groupID } = this.props.navigation.state.params;
         if(this.state.loading === 0)
         {
           return(
@@ -185,6 +180,8 @@ export class ConfirmTransaction extends React.Component {
               </View>
         )
         }
+
+        if(groupID === '0') {
         return (
             <View style={styles.container}>
                 <View style={styles.content}>
@@ -200,6 +197,10 @@ export class ConfirmTransaction extends React.Component {
                             source={{ uri: ImageUtils.generateAvatar(target,500) }} />
                     </View>
                     <View style={styles.textColumn}>
+                        <Text style={styles.title}>Name</Text>
+                        <Text style={styles.value}>{this.state.user}</Text>
+                    </View>
+                    <View style={styles.textColumn}>
                         <Text style={styles.title}>Amount ({item.symbol}) </Text>
                         <Text style={styles.value}>{amount}</Text>
                     </View>
@@ -213,7 +214,44 @@ export class ConfirmTransaction extends React.Component {
                       isVisible={this.state.show}
                       children={this.renderModal()} />
             </View>
-        );
+        )
+      }
+      return (
+          <View style={styles.container}>
+              <View style={styles.content}>
+                  <View style={styles.row}>
+                      <View style={styles.textColumn}>
+                          <Text style={styles.title}>Wallet address</Text>
+                          <Text style={styles.value}
+                              numberOfLines={1}
+                              ellipsizeMode="middle"
+                              children={target} />
+                      </View>
+                      <Image style={styles.avatar}
+                          source={{ uri: ImageUtils.generateAvatar(target,500) }} />
+                  </View>
+                  <View style={styles.textColumn}>
+                      <Text style={styles.title}>Name</Text>
+                      <Text style={styles.value}>{this.state.user}</Text>
+                  </View>
+                  <View style={styles.textColumn}>
+                      <Text style={styles.title}>Amount ({item.symbol}) </Text>
+                      <Text style={styles.value}>{amount}</Text>
+                  </View>
+                  <View style={styles.textColumn}>
+                      <Text style={styles.title}>Group ID</Text>
+                      <Text style={styles.value}>{groupID}</Text>
+                  </View>
+              </View>
+              <View style={styles.buttonsContainer}>
+                  <Button
+                    children="Confirm payment"
+                    onPress={() =>   this.setState({ show: true })}/>
+                </View>
+                <Modal
+                    isVisible={this.state.show}
+                    children={this.renderModal()} />
+          </View>)
     }
 }
 
@@ -224,12 +262,39 @@ const styles = StyleSheet.create({
       maxHeight: 700,
       borderRadius: 4
   },
-    container: {
-        flex: 1,
-        padding: measures.defaultPadding,
-        alignItems: 'stretch',
-        justifyContent: 'space-between',
-        backgroundColor: colors.defaultBackground,
+  buttonsContainer: {
+      width: '100%',
+      justifyContent: 'space-between',
+      height: 52
+  },
+  detail: {
+      color: 'black',
+      fontSize: 10,
+      textAlign: 'center',
+      marginVertical: measures.defaultMargin/2,
+      marginHorizontal: 32
+  },
+  message: {
+      color: colors.black,
+      fontSize: 16,
+      textAlign: 'center',
+      marginVertical: measures.defaultMargin,
+      marginHorizontal: 32
+  },
+  container: {
+      flex: 1,
+      padding: measures.defaultPadding,
+      alignItems: 'stretch',
+      justifyContent: 'space-between',
+      backgroundColor: colors.defaultBackground,
+    },
+    input: {
+        width: '100%',
+        padding: 10,
+        paddingLeft: 0,
+        marginRight: 0,
+        textAlign: 'center',
+        color: colors.black
     },
     content: {
         flex: 1,

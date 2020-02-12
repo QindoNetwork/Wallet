@@ -59,7 +59,7 @@ export class SelectDestination extends React.Component {
 
         return(
 
-          <View style={styles.container}>
+          <View>
               <InputWithIcon
                   ref="input"
                   autoFocus

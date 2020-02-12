@@ -143,7 +143,6 @@ contract Togethers is Administration {
     uint amount;
     if (_crypto == address(0))
     {
-      require(_tokenAmount == 0);
       require(msg.value > 0);
       amount = msg.value;
       mappProfileInGroup[groupID][_publicKey].stats[0].add(amount);
@@ -151,7 +150,6 @@ contract Togethers is Administration {
     }
     else
     {
-      require(msg.value == 0);
       require(_tokenAmount > 0);
       require(mappCryptoEnable[_crypto] == true);
       amount = _tokenAmount;
@@ -160,7 +158,7 @@ contract Togethers is Administration {
       mappProfileInGroup[groupID][_publicKey].stats[mappAllowCryptoForCategory[_crypto]].add(amount);
       mappPeerToPeerStats[msg.sender][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
     }
-    emit payEvent(msg.sender,_publicKey,_crypto,amount);
+    emit payEvent(msg.sender,_publicKey,_crypto);
   }
 
   function withdrawFunds(uint groupID) public
@@ -178,11 +176,11 @@ contract Togethers is Administration {
       else
       {
         External1(homeStableList[i]).mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats[i]);
-        emit withdraw(msg.sender,homeStableList[i],mappProfileInGroup[groupID][msg.sender].stats[i]);
       }
       mappProfileInGroup[groupID][msg.sender].stats[i] = 0;
     }
     }
+    emit withdraw(msg.sender,groupID);
   }
 
   function changeToken(uint _tokenAmount, address _crypto1, address _crypto2) public

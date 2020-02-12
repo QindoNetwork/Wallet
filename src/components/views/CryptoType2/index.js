@@ -5,18 +5,23 @@ import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
 import { Contracts as contractsAddress } from '@common/constants';
 import { CryptoCard } from '@components/widgets';
+import Header from './Header';
 
 export class CryptoType2 extends React.Component {
+
+  static navigationOptions = ({ navigation, screenProps }) => ({
+      title: 'Swap'
+  })
 
   state = { loading: 0, erc20s2: [] };
 
   async componentDidMount() {
-    const { togethers, cryptoOne, erc20s } = this.props.navigation.state.params
+    const { togethers, cryptoOne, erc20 } = this.props.navigation.state.params
     try {
     var currentAddress
     var info
     var erc20s2 = []
-      for ( var i = 0; i < erc20s.length; i++ ) {
+      for ( var i = 0; i < erc20.length; i++ ) {
         currentAddress = erc20s[i].address
         info = await togethers.getCryptoInfo(currentAddress)
         if ( parseInt(info.category,10) === cryptoOne.category && currentAddress !== cryptoOne.address ) {
@@ -75,6 +80,7 @@ export class CryptoType2 extends React.Component {
       return(
 
         <View style={styles.container}>
+        <Header/>
             <FlatList
               data={erc20s2.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
               renderItem={({ item }) => (

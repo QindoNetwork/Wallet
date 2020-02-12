@@ -117,9 +117,7 @@ export class SecureTransaction extends React.Component {
 
     renderDescription(ethPrice) {
       return(
-        <View style={styles.detail}>
-          <Text style={styles.message}>Approximatly {ethPrice} ETH</Text>
-        </View>)
+          <Text style={styles.detail}>Approximatly {ethPrice} ETH</Text>)
     }
 
     renderButtons() {
@@ -163,6 +161,7 @@ export class SecureTransaction extends React.Component {
     }
     return(
       <View style={styles.container}>
+      <Text style={styles.message}>Enter password</Text>
         <TextInput
             style={styles.input}
             secureTextEntry
@@ -213,7 +212,7 @@ message: {
 },
 input: {
     width: '100%',
-    padding: 4,
+    padding: 10,
     paddingLeft: 0,
     marginRight: 0,
     textAlign: 'center',
