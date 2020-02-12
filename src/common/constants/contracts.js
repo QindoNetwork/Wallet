@@ -1,7 +1,3 @@
 export const togethersAddress = "0x135d8E82238b033C1352f8dc6A18859ff025199B";
 
 export const controlAddress = "0xeC213C3E884a4f699DBC82587243944C2470274e";
-
-export const TTUSDAddress = "0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292";
-
-export const TTEURAddress = "0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F";

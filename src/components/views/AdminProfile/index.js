@@ -50,7 +50,7 @@ this.setState({ show: true,
 
   render() {
 
-    if (this.props.user.owner == false){
+    if (this.props.navigation.state.params.user.owner == false){
       return(
         <Text>
 You must be owner of the group

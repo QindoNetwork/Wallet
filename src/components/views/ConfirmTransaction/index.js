@@ -18,16 +18,21 @@ export class ConfirmTransaction extends React.Component {
 
     static navigationOptions = { title: 'Confirm transaction' };
 
-    state = { show: false, user: '', password: '', registered: 0, loading: 0, loading2: 1 };
+    state = { show: false, user: '', groupID: '', password: '', registered: 0, loading: 0, loading2: 1 };
 
     async componentDidMount() {
 
-              const { togethers, target } = this.props.navigation.state.params;
+              const { togethers, target, groupID } = this.props.navigation.state.params;
 
       try {
+        let name = await togethers.mappAddressToUser(target)
+        if(name ==='') {
+          name = 'unknown'
+        }
         this.setState({
                         registered: parseInt (await togethers.verifyRegistration(),10),
-                        user: await togethers.mappAddressToUser(target),
+                        user: name,
+                        groupID: await togethers.mappGroupIDToGroupName(groupID),
                         loading: 1
                       })
       } catch (e) {
@@ -124,7 +129,7 @@ export class ConfirmTransaction extends React.Component {
         value = (amount * (Math.pow(10,item.decimals))).toString()
         }
         if(groupID !== '0') {
-          nonce = await TransactionActions.nextNonce(address)
+          nonce = await TransactionActions.nextNonce(wallet.item.address)
               if(item.name !== 'Ethers') {
                 overrides = {
                     gasLimit: gasParam[eRC20allowance].limit,
@@ -240,7 +245,7 @@ export class ConfirmTransaction extends React.Component {
                   </View>
                   <View style={styles.textColumn}>
                       <Text style={styles.title}>Group ID</Text>
-                      <Text style={styles.value}>{groupID}</Text>
+                      <Text style={styles.value}>{this.state.groupID}</Text>
                   </View>
               </View>
               <View style={styles.buttonsContainer}>

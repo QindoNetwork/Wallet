@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { HeaderIcon } from '@components/widgets';
@@ -7,7 +7,7 @@ import { General as GeneralActions  } from '@common/actions';
 import { CryptoCard } from '@components/widgets';
 import { inject, observer } from 'mobx-react';
 
-@inject('wallet')
+@inject('wallet','languages')
 @observer
 export class ProfileData extends React.Component {
 
@@ -117,7 +117,7 @@ export class ProfileData extends React.Component {
       const { item } = this.props.navigation.state.params;
 
         return(
-          <View style={styles.container}>
+          <View>
           <Text style={styles.message}>{item.description}</Text>
           <FlatList
                 data={stats.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
@@ -133,7 +133,7 @@ export class ProfileData extends React.Component {
       const { stats2, stats3 } = this.state
 
         return(
-          <View style={styles.container}>
+          <View>
           <Text style={styles.message}>From him</Text>
           <FlatList
                 data={stats2.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
@@ -153,7 +153,7 @@ export class ProfileData extends React.Component {
 
   render() {
 
-    const { togethers, item, gasParam } = this.props.navigation.state.params;
+    const { togethers, item, gasParam, groupID } = this.props.navigation.state.params;
 
     if (this.state.loading === 0){
 
@@ -171,16 +171,16 @@ export class ProfileData extends React.Component {
 
     if (item.active == true){
       return(
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
         {this.renderProfile()}
-        {this.renderData()}
         <View style={styles.buttonsContainer}>
             <Button
               children="Send"
               onPress={() => this.props.navigation.navigate('CryptoType1',
-              { togethers, groupID: item.id, profile: item, gasParam })}/>
+              { togethers, groupID, profile: item, gasParam })}/>
         </View>
-      </View>)
+        {this.renderData()}
+      </ScrollView>)
     }
 
     return(

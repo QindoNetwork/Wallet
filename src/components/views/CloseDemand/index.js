@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
+import { ScrollView, FlatList, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
@@ -7,7 +7,10 @@ import { Gas as gas } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
 import { CryptoCard } from '@components/widgets';
 import Header from './Header';
+import { inject, observer } from 'mobx-react';
 
+@inject('languages')
+@observer
 export class CloseDemand extends React.Component {
 
   static navigationOptions = { title: "My demand" };
@@ -70,7 +73,7 @@ export class CloseDemand extends React.Component {
 
     return(
 
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
       <Text style={styles.message}>{description}</Text>
       <Header/>
       <FlatList
@@ -83,7 +86,7 @@ export class CloseDemand extends React.Component {
                   onPress={() => this.setState({ show: true })}/>
             </View>
       {this.renderModal()}
-    </View>
+    </ScrollView>
   )
 
 }

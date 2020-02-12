@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, RefreshControl, FlatList, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { ScrollView, TouchableOpacity, RefreshControl, FlatList, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
@@ -75,7 +75,7 @@ export class Groups extends React.Component {
 
       return(
 
-          <View style={styles.container}>
+          <ScrollView style={styles.container}>
           <Header length={this.state.groups.length}/>
           <FlatList
             data={this.state.groups.sort((prev, next) => prev.name.localeCompare(next.name))}
@@ -94,7 +94,7 @@ export class Groups extends React.Component {
                   children="Add group"
                   onPress={() => this.props.navigation.navigate('AddGroup', { gasParam, togethers })}/>
               </View>
-        </View>)
+        </ScrollView>)
 
       }
 

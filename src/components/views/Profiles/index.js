@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, TouchableOpacity, RefreshControl, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { TouchableOpacity, RefreshControl, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
 import { Button } from '@components/widgets';
@@ -99,6 +99,7 @@ export class Profiles extends React.Component {
         const { profiles } = this.state
         const { wallet } = this.props
         const { gasParam, togethers, profile } = this.props.navigation.state.params
+        const groupID = profile.id
 
         if (this.state.loading === 0){
 
@@ -115,7 +116,7 @@ export class Profiles extends React.Component {
         }
 
       return(
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
         <Header length={this.state.profiles.length}/>
         <View style={styles.buttonsContainer}>
             <Button
@@ -129,7 +130,7 @@ export class Profiles extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('ProfileData',{ item, togethers, gasParam })
+              onPress={() => this.props.navigation.navigate('ProfileData',{ item, togethers, gasParam, groupID })
               }>
                 <ProfileCard profile={item} togethers={togethers}/>
               </TouchableOpacity>
@@ -141,7 +142,7 @@ export class Profiles extends React.Component {
               onSubmit={() => onPressQuit()}/>
         </View>
         {this.renderModal()}
-        </View>
+        </ScrollView>
         )
 
 }
