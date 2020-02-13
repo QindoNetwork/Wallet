@@ -71,7 +71,7 @@ export class ConfirmTransaction extends React.Component {
         return(
           <View style={styles.containerModal}>
               <View style={styles.body}>
-                <ActivityIndicator size="large"/>
+                <ActivityIndicator size="large" color="darkslategray"/>
               </View>
             </View>
       )
@@ -138,13 +138,21 @@ export class ConfirmTransaction extends React.Component {
                     };
                 await TransactionActions.erc20approve(value,item.instance,overrides)
                 nonce = nonce + 1
+                overrides = {
+                    gasLimit: gasParam[gas.payForFunds].limit,
+                    gasPrice: gasParam[gas.payForFunds].price * conversions.gigaWeiToWei,
+                    nonce: nonce,
+                    };
+                    await togethers.payForFunds(target,groupID,value,item.address,overrides);
               }
-              overrides = {
-                  gasLimit: gasParam[gas.payForFunds].limit,
-                  gasPrice: gasParam[gas.payForFunds].price * conversions.gigaWeiToWei,
-                  nonce: nonce,
-                  };
-                  await togethers.payForFunds(target,groupID,value,item.address,overrides);
+              else {
+                overrides = {
+                    gasLimit: gasParam[gas.payForFunds].limit,
+                    gasPrice: gasParam[gas.payForFunds].price * conversions.gigaWeiToWei,
+                    value: value,
+                    };
+                    await togethers.payForFunds(target,groupID,0,item.address,overrides);
+              }
             }
             else {
             if(item.name !== 'Ethers') {

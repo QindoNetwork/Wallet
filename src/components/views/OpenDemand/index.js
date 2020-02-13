@@ -19,7 +19,7 @@ export class OpenDemand extends Component {
 
   renderModal(description) {
 
-    const { gasParam, togethers, groupID  } = this.props.navigation.state.params;
+    const { gasParam, togethers, groupID } = this.props.navigation.state.params;
 
     if (this.state.show === true) {
     return (  <SecureTransaction

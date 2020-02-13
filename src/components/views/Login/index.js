@@ -41,7 +41,7 @@ export class Login extends React.Component {
 
     render() {
 
-      const { gasParam, togethers } = this.props.navigation.state.params;
+      const { gasParam, togethers, blockStartNotifications } = this.props.navigation.state.params;
       const { navigation } = this.props;
       const balance = this.props.wallet.item.balance
       const gasLimit = gasParam[gas.defaultTransaction].limit
@@ -61,14 +61,14 @@ export class Login extends React.Component {
       if(this.state.registered === 1)
       {
         return (
-          <SignIN togethers={togethers} navigation={navigation} gasParam={gasParam}/>
+          <SignIN togethers={togethers} navigation={navigation} gasParam={gasParam} blockStartNotifications={blockStartNotifications}/>
         );
       }
 
       if(balance > gasLimit * gasPrice)
       {
         return (
-          <SignUP togethers={togethers} navigation={navigation} gasParam={gasParam}/>
+          <SignUP togethers={togethers} navigation={navigation} gasParam={gasParam} blockStartNotifications={blockStartNotifications}/>
         );
       }
 

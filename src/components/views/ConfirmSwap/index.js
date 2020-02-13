@@ -18,7 +18,7 @@ export class ConfirmSwap extends React.Component {
 
     static navigationOptions = { title: 'Confirm transaction' };
 
-    state = { show: false, password: '', registered: 0, loading: 0, loading2: 1, price: 0 };
+    state = { show: false, password: '', fees: 0, registered: 0, loading: 0, loading2: 1, price: 0 };
 
     async componentDidMount() {
 
@@ -26,6 +26,7 @@ export class ConfirmSwap extends React.Component {
 
       try {
         this.setState({
+                        fees:  parseInt (await togethers.fees(),10),
                         registered: parseInt (await togethers.verifyRegistration(),10),
                         loading: 1
                       })
@@ -65,7 +66,7 @@ export class ConfirmSwap extends React.Component {
         return(
           <View style={styles.containerModal}>
               <View style={styles.body}>
-                <ActivityIndicator size="large"/>
+                <ActivityIndicator size="large" color="darkslategray"/>
               </View>
             </View>
       )
@@ -143,6 +144,15 @@ export class ConfirmSwap extends React.Component {
 
     render() {
         const { amount, cryptoOne, loading, item } = this.props.navigation.state.params;
+        let fees
+        if(this.state.fees === 0)
+        {
+        fees = '0'
+        }
+        else
+        {
+        fees = '1 / ' + this.state.fees
+        }
         if(this.state.loading === 0)
         {
           return(
@@ -166,15 +176,19 @@ export class ConfirmSwap extends React.Component {
                         </View>
                         <Image style={styles.avatar}
                             source={{ uri: ImageUtils.generateAvatar(target,500) }} />
-                    </View>
+                    </View>fees
                     <View style={styles.textColumn}>
                         <Text style={styles.title}>Amount ({cryptoOne.symbol} to {item.symbol}) </Text>
                         <Text style={styles.value}>{amount}</Text>
                     </View>
+                    <View style={styles.textColumn}>
+                        <Text style={styles.title}>Fees</Text>
+                        <Text style={styles.value}>{fees}</Text>
+                    </View>
                 </View>
                 <View style={styles.buttonsContainer}>
                     <Button
-                      children="Confirm payment"
+                      children="Confirm swap"
                       onPress={() =>   this.setState({ show: true })}/>
                   </View>
                   <Modal

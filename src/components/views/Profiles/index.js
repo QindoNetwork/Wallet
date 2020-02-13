@@ -100,7 +100,7 @@ export class Profiles extends React.Component {
 
           <View style={styles.container}>
             <View style={styles.body}>
-              <ActivityIndicator size="large"/>
+              <ActivityIndicator size="large" color="darkslategray"/>
             </View>
           </View>
 

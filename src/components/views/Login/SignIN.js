@@ -19,7 +19,7 @@ export default class SignIN extends React.Component {
 
     async onPressContinueLogin() {
         Keyboard.dismiss();
-        const { gasParam, togethers } = this.props;
+        const { gasParam, togethers, blockStartNotifications } = this.props;
         const { password } = this.state;
         const hashPassword = sha256(password)
         try {
@@ -30,7 +30,7 @@ export default class SignIN extends React.Component {
             GeneralActions.notify(e.message, 'long');
         }
         if (this.state.result === 1) {
-          this.props.navigation.navigate('WalletDetails', { gasParam, togethers, replaceRoute: true });
+          this.props.navigation.navigate('WalletDetails', { blockStartNotifications, gasParam, togethers, replaceRoute: true });
         }
         else {
           GeneralActions.notify("Password not good", 'long');

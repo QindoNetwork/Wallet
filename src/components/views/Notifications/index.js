@@ -10,9 +10,7 @@ import { GeneralActions } from '@common/actions';
 @observer
 export class Notifications extends React.Component {
 
-  static navigationOptions = ({ navigation }) => ({
-        title: 'Notifications',
-    })
+  static navigationOptions = { title: "Notifications" };
 
     state = { loading: 0, filters: [] };
 
@@ -68,7 +66,7 @@ export class Notifications extends React.Component {
 
         <View style={styles.container}>
           <View style={styles.body}>
-            <ActivityIndicator size="large"/>
+            <ActivityIndicator size="large" color="darkslategray"/>
           </View>
         </View>
 
@@ -78,7 +76,9 @@ export class Notifications extends React.Component {
 
         return (
             <View style={styles.container}>
-                {this.renderBody(this.props.wallet)}
+            <Text>
+              Soon
+            </Text>
             </View>
         );
     }

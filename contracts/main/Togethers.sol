@@ -11,6 +11,7 @@ contract Togethers is Administration {
   mapping (uint => address[]) private mappUsersInGroup;
   mapping (address => mapping (uint => bool)) public mappAskForAdd;
   mapping (address => mapping (address => uint[])) private mappPeerToPeerStats;
+  mapping (uint => mapping (address => uint[])) private mappProfileStats;
 
   struct profile
   {
@@ -18,7 +19,6 @@ contract Togethers is Administration {
     bool open;
     bool owner;
     string description;
-    uint[] stats;
   }
 
   uint public groupNumber;
@@ -145,7 +145,7 @@ contract Togethers is Administration {
     {
       require(msg.value > 0);
       amount = msg.value;
-      mappProfileInGroup[groupID][_publicKey].stats[0].add(amount);
+      mappProfileStats[groupID][_publicKey][0].add(amount);
       mappPeerToPeerStats[msg.sender][_publicKey][0].add(amount);
     }
     else
@@ -155,7 +155,7 @@ contract Togethers is Administration {
       amount = _tokenAmount;
       External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
       amount = _tokenAmount.mul(10**(-(18-(External1(_crypto).decimals()))));
-      mappProfileInGroup[groupID][_publicKey].stats[mappAllowCryptoForCategory[_crypto]].add(amount);
+      mappProfileStats[groupID][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
       mappPeerToPeerStats[msg.sender][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
     }
     emit payEvent(msg.sender,_publicKey,_crypto);
@@ -167,17 +167,17 @@ contract Togethers is Administration {
     mappProfileInGroup[groupID][msg.sender].open = false;
     for(uint i = 0 ; i < homeStableList.length ; i++)
     {
-    if (mappProfileInGroup[groupID][msg.sender].stats[i] > 0)
+    if (mappProfileStats[groupID][msg.sender][i] > 0)
     {
       if ( i == 0 )
       {
-        msg.sender.transfer(mappProfileInGroup[groupID][msg.sender].stats[i]);
+        msg.sender.transfer(mappProfileStats[groupID][msg.sender][i]);
       }
       else
       {
-        External1(homeStableList[i]).mintExternal(msg.sender,mappProfileInGroup[groupID][msg.sender].stats[i]);
+        External1(homeStableList[i]).mintExternal(msg.sender,mappProfileStats[groupID][msg.sender][i]);
       }
-      mappProfileInGroup[groupID][msg.sender].stats[i] = 0;
+      mappProfileStats[groupID][msg.sender][i] = 0;
     }
     }
     emit withdraw(msg.sender,groupID);
@@ -266,7 +266,7 @@ contract Togethers is Administration {
 
   function getProfileStats(uint groupID, address _user) view public returns (uint[] memory)
   {
-    return mappProfileInGroup[groupID][_user].stats;
+    return mappProfileStats[groupID][_user];
   }
 
 }

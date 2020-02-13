@@ -51,21 +51,7 @@ export class Groups extends React.Component {
 
         <View style={styles.container}>
           <View style={styles.body}>
-            <ActivityIndicator size="large"/>
-          </View>
-        </View>
-
-      )
-
-      }
-
-      if (this.state.loading === 0){
-
-        return(
-
-        <View style={styles.container}>
-          <View style={styles.body}>
-            <ActivityIndicator size="large"/>
+            <ActivityIndicator size="large" color="darkslategray"/>
           </View>
         </View>
 

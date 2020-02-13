@@ -35,6 +35,24 @@ export default class TransactionCard extends React.Component {
       if (this.props.transaction.from.toLowerCase() === contractsAddress.togethersAddress.toLowerCase()){
         return 'Togethers';
       }
+      if (this.props.transaction.from.toLowerCase() === contractsAddress.ttusd.toLowerCase()){
+        return 'TGTU stablecoin';
+      }
+      if (this.props.transaction.from.toLowerCase() === contractsAddress.tteur.toLowerCase()){
+        return 'TGTE stablecoin';
+      }
+      if (this.props.transaction.from.toLowerCase() === contractsAddress.dai.toLowerCase()){
+        return 'DAI Stablecoin';
+      }
+      if (this.props.transaction.from.toLowerCase() === contractsAddress.Gemini.toLowerCase()){
+        return 'Gemini stablecoin';
+      }
+      if (this.props.transaction.from.toLowerCase() === contractsAddress.Tether.toLowerCase()){
+        return 'Tether stablecoin';
+      }
+      if (this.props.transaction.from.toLowerCase() === contractsAddress.Stasis.toLowerCase()){
+        return 'Stasis stablecoin';
+      }
       if ( this.state.pseudoFrom !== '' ){
         return this.state.pseudoFrom;
       }
@@ -47,6 +65,24 @@ export default class TransactionCard extends React.Component {
     get to() {
       if (this.props.transaction.to.toLowerCase() === contractsAddress.togethersAddress.toLowerCase()){
         return 'Togethers';
+      }
+      if (this.props.transaction.to.toLowerCase() === contractsAddress.ttusd.toLowerCase()){
+        return 'TGTU stablecoin';
+      }
+      if (this.props.transaction.to.toLowerCase() === contractsAddress.tteur.toLowerCase()){
+        return 'TGTE stablecoin';
+      }
+      if (this.props.transaction.to.toLowerCase() === contractsAddress.dai.toLowerCase()){
+        return 'DAI Stablecoin';
+      }
+      if (this.props.transaction.to.toLowerCase() === contractsAddress.Gemini.toLowerCase()){
+        return 'Gemini stablecoin';
+      }
+      if (this.props.transaction.to.toLowerCase() === contractsAddress.Tether.toLowerCase()){
+        return 'Tether stablecoin';
+      }
+      if (this.props.transaction.to.toLowerCase() === contractsAddress.Stasis.toLowerCase()){
+        return 'Stasis stablecoin';
       }
       if ( this.state.pseudoTo !== ''  ){
         return this.state.pseudoTo;

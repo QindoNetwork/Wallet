@@ -89,7 +89,7 @@ export class SelectDestination extends React.Component {
           <View style={styles.container}>
           {this.renderInput()}
                   <View style={styles.body}>
-                    <ActivityIndicator size="large"/>
+                    <ActivityIndicator size="large" color="darkslategray"/>
                   </View>
                   <View style={styles.buttonsContainer}>
                           <Button children="Continue" onPress={() => this.onPressContinue(this.state.address)} />

@@ -10,6 +10,7 @@ import { Network as EthereumNetworks } from '@common/constants';
 import { ethers } from 'ethers';
 import { Gas as gas, Conversions as conversions } from '@common/constants';
 import { Wallets as WalletActions } from '@common/actions';
+import { Contracts as contractsAddress } from '@common/constants';
 
 @inject('wallet','languages')
 @observer
@@ -39,7 +40,8 @@ export class Crypto extends React.Component {
                   symbol: "ETH",
                   decimals: 0,
                   instance: null,
-                  balance: wallet.item.balance })
+                  balance: wallet.item.balance,
+                  address: contractsAddress.nullAddress})
     const req = await togethers.getCryptoList()
       for ( var i = 0; i < req.length; i++ ) {
         currentAddress = req[i]
@@ -79,7 +81,7 @@ export class Crypto extends React.Component {
 
         <View style={styles.container}>
           <View style={styles.body}>
-            <ActivityIndicator size="large"/>
+            <ActivityIndicator size="large" color="darkslategray"/>
           </View>
         </View>
 

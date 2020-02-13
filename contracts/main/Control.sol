@@ -7,6 +7,7 @@ contract Control is Ownable {
   mapping (uint => gasParameters) public mappFunctionToGasParameters;
 
 uint public listLength;
+uint public blockStartNotifications;
 
 struct gasParameters
 {
@@ -30,7 +31,7 @@ constructor() public {
     mappFunctionToGasParameters[3].gasLimit = 200000;
     mappFunctionToGasParameters[4].functionName = "createProfile";
     mappFunctionToGasParameters[4].gasPrice = 5;
-    mappFunctionToGasParameters[4].gasLimit = 110000;
+    mappFunctionToGasParameters[4].gasLimit = 550000;
     mappFunctionToGasParameters[5].functionName = "askForFunds";
     mappFunctionToGasParameters[5].gasPrice = 5;
     mappFunctionToGasParameters[5].gasLimit = 5000000;
@@ -66,6 +67,7 @@ constructor() public {
     mappFunctionToGasParameters[15].gasLimit = 5000000;
     listLength = 16;
     owner = msg.sender;
+    blockStartNotifications = block.number;
   }
 
   function setGasLimit(uint limit, uint _function)  public onlyOwner
@@ -86,6 +88,11 @@ constructor() public {
       listLength += 1;
     }
     mappFunctionToGasParameters[_function].gasPrice = price;
+  }
+
+  function setBlockStartNotifications(uint _block)  public onlyOwner
+  {
+    blockStartNotifications = _block;
   }
 
   function setGasFunctionName(string memory name, uint _function)  public onlyOwner

@@ -68,6 +68,7 @@ export class WalletsOverview extends React.Component {
           var gas
 
             const listLength = parseInt(await control.listLength(),10)
+            const blockStartNotifications = parseInt(await control.blockStartNotifications(),10)
 
             for(var j = 0 ; j < listLength ; j++)
             {
@@ -77,7 +78,7 @@ export class WalletsOverview extends React.Component {
                           })
           }
           WalletActions.selectWallet(wallet)
-          this.props.navigation.navigate('Login', { gasParam, togethers });
+          this.props.navigation.navigate('Login', { gasParam, togethers, blockStartNotifications });
           this.setState({ loading: 1 })
         } catch (e) {
           GeneralActions.notify(e.message, 'long');
