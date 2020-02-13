@@ -22,10 +22,10 @@ export class CryptoType2 extends React.Component {
     var info
     var erc20s2 = []
       for ( var i = 0; i < erc20.length; i++ ) {
-        currentAddress = erc20s[i].address
+        currentAddress = erc20[i].address
         info = await togethers.getCryptoInfo(currentAddress)
         if ( parseInt(info.category,10) === cryptoOne.category && currentAddress !== cryptoOne.address ) {
-              balance = parseInt (await erc20s[i].instance.balanceOf(contractsAddress.togethersAddress),10)
+              balance = parseInt (await erc20[i].instance.balanceOf(contractsAddress.togethersAddress),10)
               if ( balance > 0 ) {
               erc20s2.push({
                       name: info.name,

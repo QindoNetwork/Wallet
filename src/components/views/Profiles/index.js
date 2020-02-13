@@ -88,13 +88,6 @@ export class Profiles extends React.Component {
         else this.props.navigation.navigate('OpenDemand',{ groupID, togethers, gasParam })
       }
 
-      onPressQuit() {
-        if (this.state.owner === 1){
-          GeneralActions.notify("The owner have to be the last of the group to quit", 'long');
-        }
-        else this.setState({ show: true })
-  }
-
       render() {
         const { profiles } = this.state
         const { wallet } = this.props
@@ -115,6 +108,33 @@ export class Profiles extends React.Component {
 
         }
 
+        if (this.state.owner == true && this.state.profiles.length > 0){
+          return(
+            <ScrollView style={styles.container}>
+            <Header length={this.state.profiles.length}/>
+            <View style={styles.buttonsContainer}>
+                <Button
+                  children="My demand"
+                  onPress={() => this.demand(groupID, togethers, gasParam, profile )}/>
+            </View>
+            <FlatList
+                data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
+                refreshControl={<RefreshControl refreshing={wallet.item.loading} onRefresh={() => this.updateData()} />}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                  style={styles.content}
+                  activeOpacity={0.8}
+                  onPress={() => this.props.navigation.navigate('ProfileData',{ item, user: profile, togethers, gasParam, groupID })
+                  }>
+                    <ProfileCard profile={item} togethers={togethers}/>
+                  </TouchableOpacity>
+                )}
+            />
+            {this.renderModal()}
+            </ScrollView>
+            )
+        }
+
       return(
         <ScrollView style={styles.container}>
         <Header length={this.state.profiles.length}/>
@@ -130,7 +150,7 @@ export class Profiles extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('ProfileData',{ item, togethers, gasParam, groupID })
+              onPress={() => this.props.navigation.navigate('ProfileData',{ item, user: profile, togethers, gasParam, groupID })
               }>
                 <ProfileCard profile={item} togethers={togethers}/>
               </TouchableOpacity>
@@ -139,7 +159,7 @@ export class Profiles extends React.Component {
         <View style={styles.buttonsContainer}>
             <Button
               children="Quit"
-              onSubmit={() => onPressQuit()}/>
+              onSubmit={() => this.setState({ show: true })}/>
         </View>
         {this.renderModal()}
         </ScrollView>

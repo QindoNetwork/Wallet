@@ -53,6 +53,7 @@ export class Crypto extends React.Component {
                       symbol: info.symbol,
                       decimals: parseInt (info.decimals,10),
                       instance: instance,
+                      address: currentAddress,
                       balance: balance })
                     }
         }

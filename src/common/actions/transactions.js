@@ -1,8 +1,7 @@
 import { ethers } from 'ethers';
 import { notify } from './general';
-import { wallet as WalletStore } from '@common/stores';
 import { Transactions as TransactionsService } from '@common/services';
-import { Contracts as contractsAddress } from '@common/constants';
+import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 import { General as GeneralActions } from '@common/actions';
 
 
@@ -12,9 +11,10 @@ export async function sendTransaction(wallet, txn) {
   return txn;
 }
 
-export async function nextNonce(address) {
-  const count = await wallet.provider.getTransactionCount(address);
-  return number(count + 1);
+export async function nextNonce(wallet) {
+  let count = parseInt(await EthereumNetworks.fallbackProvider.getTransactionCount(wallet.item.address),10);
+  count = count + 1
+  return count;
 }
 
 export async function erc20approve(amount,instance,overrides) {

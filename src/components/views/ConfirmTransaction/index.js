@@ -129,19 +129,19 @@ export class ConfirmTransaction extends React.Component {
         value = (amount * (Math.pow(10,item.decimals))).toString()
         }
         if(groupID !== '0') {
-          nonce = await TransactionActions.nextNonce(wallet.item.address)
+          nonce = await TransactionActions.nextNonce(wallet)
               if(item.name !== 'Ethers') {
                 overrides = {
-                    gasLimit: gasParam[eRC20allowance].limit,
-                    gasPrice: gasParam[eRC20allowance].price * conversions.gigaWeiToWei,
+                    gasLimit: gasParam[gas.eRC20allowance].limit,
+                    gasPrice: gasParam[gas.eRC20allowance].price * conversions.gigaWeiToWei,
                     nonce: nonce,
                     };
-                TransactionActions.erc20approve(value,item.instance,overrides)
+                await TransactionActions.erc20approve(value,item.instance,overrides)
                 nonce = nonce + 1
               }
               overrides = {
-                  gasLimit: gasParam[payForFunds].limit,
-                  gasPrice: gasParam[payForFunds].price * conversions.gigaWeiToWei,
+                  gasLimit: gasParam[gas.payForFunds].limit,
+                  gasPrice: gasParam[gas.payForFunds].price * conversions.gigaWeiToWei,
                   nonce: nonce,
                   };
                   await togethers.payForFunds(target,groupID,value,item.address,overrides);
@@ -244,7 +244,7 @@ export class ConfirmTransaction extends React.Component {
                       <Text style={styles.value}>{amount}</Text>
                   </View>
                   <View style={styles.textColumn}>
-                      <Text style={styles.title}>Group ID</Text>
+                      <Text style={styles.title}>Group</Text>
                       <Text style={styles.value}>{this.state.groupID}</Text>
                   </View>
               </View>
