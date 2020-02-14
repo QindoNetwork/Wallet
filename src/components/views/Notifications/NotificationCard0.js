@@ -7,21 +7,11 @@ import { Wallet as WalletUtils } from '@common/utils';
 import Modal from 'react-native-modal';
 import { Contracts as contractsAddress } from '@common/constants';
 import { inject, observer } from 'mobx-react';
-import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
+import { Languages as LanguagesActions } from '@common/actions';
 
 @inject('languages')
 @observer
 export default class TransactionCard extends React.Component {
-
-  state = { pseudoFrom: '', pseudoTo: '', show: false };
-
-  async componentDidMount() {
-
-    this.setState({
-                      pseudoFrom : await this.props.togethers.mappAddressToUser(this.props.transaction.from),
-                      pseudoTo : await this.props.togethers.mappAddressToUser(this.props.transaction.to),
-                    })
-  }
 
     get isReceiving() {
         return this.to.toLowerCase() === this.props.walletAddress.toLowerCase();
@@ -35,24 +25,6 @@ export default class TransactionCard extends React.Component {
       if (this.props.transaction.from.toLowerCase() === contractsAddress.togethersAddress.toLowerCase()){
         return 'Togethers';
       }
-      if (this.props.transaction.from.toLowerCase() === contractsAddress.ttusd.toLowerCase()){
-        return 'TGTU stablecoin';
-      }
-      if (this.props.transaction.from.toLowerCase() === contractsAddress.tteur.toLowerCase()){
-        return 'TGTE stablecoin';
-      }
-      if (this.props.transaction.from.toLowerCase() === contractsAddress.dai.toLowerCase()){
-        return 'DAI Stablecoin';
-      }
-      if (this.props.transaction.from.toLowerCase() === contractsAddress.Gemini.toLowerCase()){
-        return 'Gemini stablecoin';
-      }
-      if (this.props.transaction.from.toLowerCase() === contractsAddress.Tether.toLowerCase()){
-        return 'Tether stablecoin';
-      }
-      if (this.props.transaction.from.toLowerCase() === contractsAddress.Stasis.toLowerCase()){
-        return 'Stasis stablecoin';
-      }
       if ( this.state.pseudoFrom !== '' ){
         return this.state.pseudoFrom;
       }
@@ -65,24 +37,6 @@ export default class TransactionCard extends React.Component {
     get to() {
       if (this.props.transaction.to.toLowerCase() === contractsAddress.togethersAddress.toLowerCase()){
         return 'Togethers';
-      }
-      if (this.props.transaction.to.toLowerCase() === contractsAddress.ttusd.toLowerCase()){
-        return 'TGTU stablecoin';
-      }
-      if (this.props.transaction.to.toLowerCase() === contractsAddress.tteur.toLowerCase()){
-        return 'TGTE stablecoin';
-      }
-      if (this.props.transaction.to.toLowerCase() === contractsAddress.dai.toLowerCase()){
-        return 'DAI Stablecoin';
-      }
-      if (this.props.transaction.to.toLowerCase() === contractsAddress.Gemini.toLowerCase()){
-        return 'Gemini stablecoin';
-      }
-      if (this.props.transaction.to.toLowerCase() === contractsAddress.Tether.toLowerCase()){
-        return 'Tether stablecoin';
-      }
-      if (this.props.transaction.to.toLowerCase() === contractsAddress.Stasis.toLowerCase()){
-        return 'Stasis stablecoin';
       }
       if ( this.state.pseudoTo !== ''  ){
         return this.state.pseudoTo;
@@ -151,27 +105,28 @@ export default class TransactionCard extends React.Component {
             </View>
             <View style={styles.row}>
                 <Text style={styles.label}>Amount (ETH):</Text>
-                <Text style={styles.value}>{this.balance.toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
-            </View>
-            <View style={styles.row}>
-                <Text style={styles.label}>Gas used:</Text>
-                <Text style={styles.value}>{transaction.gasUsed}</Text>
-            </View>
-            <View style={styles.row}>
-                <Text style={styles.label}>Error:</Text>
-                <Text style={styles.value}>{this.transactionError}</Text>
-            </View>
-            <View style={styles.row}>
-                <Text style={styles.label}>Transaction hash:</Text>
-                <Text style={styles.value}>{transaction.hash}</Text>
             </View>
             <View style={styles.actions}>
                     <View style={styles.actionsBar}>
-                        {this.renderColumn('copy', '', () => this.copyToClipboard(transaction.hash))}
+                        {this.renderColumn('copy', '', () => this.copyToClipboard('tatatat'))}
                     </View>
             </View>
         </View>
     );
+
+    renderTransactionOperator = () => (
+        <Text
+            style={styles.operatorLabel}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            children={this.isReceiving ? `From ${this.from}` : `To ${this.to}`} />
+    );
+
+    renderConfirmationStatus() {
+        return this.isConfirmed ?
+            <Icon name="checkmark" color={colors.success} /> :
+            <Icon name="clock" type="ei" color={colors.pending} />
+    }
 
     render() {
         const { transaction, walletAddress } = this.props;

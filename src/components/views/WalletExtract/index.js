@@ -4,7 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { measures, colors } from '@common/styles';
 import { Wallets as WalletActions } from '@common/actions';
 import TransactionCard from './TransactionCard';
-import { GeneralActions } from '@common/actions';
+import { General as GeneralActions } from '@common/actions';
 
 @inject('wallet')
 @observer

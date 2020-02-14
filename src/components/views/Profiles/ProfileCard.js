@@ -10,16 +10,15 @@ import { inject, observer } from 'mobx-react';
 @observer
 export default class ProfilesCard extends React.Component {
 
+  get label2() {
+      return (this.props.profile.active) ? 'Active' : 'Inactive';
+  }
+
+  get label1() {
+      return (this.props.profile.owner) ? 'Owner' : 'Member';
+  }
+
     render() {
-        const { profile } = this.props;
-        var label1 = 'Member'
-        var label2 = 'Inactive'
-        if ( profile.active == true ) {
-          label2 = "Active"
-        }
-        if ( profile.owner == true ) {
-          label1 = "Owner"
-        }
 
         return (
             <View style={styles.container}>
@@ -32,8 +31,8 @@ export default class ProfilesCard extends React.Component {
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{label2}</Text>
-                            <Text style={styles.fiatbalance}>{label1}</Text>
+                            <Text style={styles.balance}>{this.label2}</Text>
+                            <Text style={styles.fiatbalance}>{this.label1}</Text>
                         </View>
                     </View>
                 </View>

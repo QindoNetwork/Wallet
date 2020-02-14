@@ -2,9 +2,10 @@ import React from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, View, Text } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { measures, colors } from '@common/styles';
-import { Wallets as WalletActions } from '@common/actions';
+import { Wallets as WalletActions, General as GeneralActions } from '@common/actions';
 import NotificationCard from './NotificationCard';
-import { GeneralActions } from '@common/actions';
+import { ethers } from 'ethers';
+import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
 
 @inject('wallet')
 @observer
@@ -23,15 +24,22 @@ export class Notifications extends React.Component {
       const { togethers } = this.props.navigation.state.params;
       let filters = []
       let filter
+      const topic = ethers.utils.id("askEvent(uint256,address)");
       let temp
       let profile
       try {
           const req = await togethers.getGroups()
           for ( var i = 0; i < req.length; i++ ) {
             groupID = parseInt (req[i],10)
-            profile = await togethers.mappProfileInGroup(groupID,wallet.item.address)
+            profile = await togethers.getProfileInGroup(groupID,wallet.item.address)
             if (new Boolean(profile.isMember) == true){
-
+              filter = {
+                  address: contractsAddress,
+                  topics: [ topic ]
+                }
+                EthereumNetworks.fallbackProvider.on(filter, (result) => {
+                  filters.push(result)
+                  });
              }
            }
 
@@ -42,21 +50,6 @@ export class Notifications extends React.Component {
     }
 
     renderItem = (item) => <NotificationCard notification={item} />
-
-    renderBody = ({ item, history, loading, pendingTransactions }) =>  (!history.length && !loading) ? (<View style={styles.container}>
-        <Text style={styles.message}>
-            There are still no transactions involving this wallet.
-        </Text>
-    </View>) : (
-        <View>
-        <FlatList
-            style={styles.content}
-            data={this.state.filters}
-            refreshControl={<RefreshControl refreshing={loading} onRefresh={() => this.updateHistory()} />}
-            keyExtractor={(element) => element.hash}
-            renderItem={this.renderItem(item)} />
-</View>
-    );
 
     render() {
 
@@ -76,10 +69,13 @@ export class Notifications extends React.Component {
 
         return (
             <View style={styles.container}>
-            <Text>
-              Soon
-            </Text>
-            </View>
+            <FlatList
+                style={styles.content}
+                data={this.state.filters}
+                refreshControl={<RefreshControl refreshing={loading} onRefresh={() => this.updateHistory()} />}
+                keyExtractor={(element) => element.hash}
+                renderItem={this.renderItem(item)} />
+    </View>
         );
     }
 }

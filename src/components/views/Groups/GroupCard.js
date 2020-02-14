@@ -9,18 +9,17 @@ import { inject, observer } from 'mobx-react';
 @observer
 export default class GroupsCard extends React.Component {
 
+  get label2() {
+      return (this.props.profile.active) ? 'Active' : 'Inactive';
+  }
+
+  get label3() {
+      return (this.props.profile.owner) ? 'Owner' : 'Member';
+  }
+
     render() {
 
-      const { group } = this.props;
-      var label1 = '# ' + group.id
-      var label2 = 'Inactive'
-      var label3 = 'Member'
-      if ( group.active == true) {
-        label2 = "Active"
-      }
-      if ( group.owner == true) {
-        label3 = "Owner"
-      }
+      const label1 = '# ' + group.id
 
         return (
                 <View style={styles.container}>
@@ -33,8 +32,8 @@ export default class GroupsCard extends React.Component {
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{label2}</Text>
-                            <Text style={styles.fiatbalance}>{label3}</Text>
+                            <Text style={styles.balance}>{this.label2}</Text>
+                            <Text style={styles.fiatbalance}>{this.label3}</Text>
                         </View>
                     </View>
                 </View>
