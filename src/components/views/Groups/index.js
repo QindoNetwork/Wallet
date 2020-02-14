@@ -21,6 +21,7 @@ export class Groups extends React.Component {
       const { togethers, wallet } = this.props
       let groups = []
       let profile
+      let groupID
       try {
         const req = await togethers.getGroups()
         for ( var i = 0; i < req.length; i++ ) {

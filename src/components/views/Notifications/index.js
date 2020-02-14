@@ -27,6 +27,7 @@ export class Notifications extends React.Component {
       const topic = ethers.utils.id("askEvent(uint256,address)");
       let temp
       let profile
+      let groupID
       try {
           const req = await togethers.getGroups()
           for ( var i = 0; i < req.length; i++ ) {
@@ -34,7 +35,7 @@ export class Notifications extends React.Component {
             profile = await togethers.getProfileInGroup(groupID,wallet.item.address)
             if (new Boolean(profile.isMember) == true){
               filter = {
-                  address: contractsAddress,
+                  address: contractsAddress.togethersAddress,
                   topics: [ topic ]
                 }
                 EthereumNetworks.fallbackProvider.on(filter, (result) => {
@@ -48,8 +49,6 @@ export class Notifications extends React.Component {
           GeneralActions.notify(e.message, 'long');
       }
     }
-
-    renderItem = (item) => <NotificationCard notification={item} />
 
     render() {
 
@@ -72,9 +71,11 @@ export class Notifications extends React.Component {
             <FlatList
                 style={styles.content}
                 data={this.state.filters}
-                refreshControl={<RefreshControl refreshing={loading} onRefresh={() => this.updateHistory()} />}
+                refreshControl={<RefreshControl refreshing={this.props.wallet.loading} onRefresh={() => this.updateHistory()} />}
                 keyExtractor={(element) => element.hash}
-                renderItem={this.renderItem(item)} />
+                renderItem={({ item }) => (
+                  <NotificationCard notification={item} />
+                )} />
     </View>
         );
     }

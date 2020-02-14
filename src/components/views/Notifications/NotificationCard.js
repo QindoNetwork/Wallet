@@ -19,10 +19,10 @@ export default class TransactionCard extends React.Component {
 
         <View style={styles.container}>
             <View style={styles.leftColumn}>
-                <Text style={styles.title}>{this.props.blockNumber}</Text>
+                <Text style={styles.title}>{this.props.notification.blockNumber}</Text>
             </View>
             <View style={styles.rightColumn}>
-                <Text style={styles.balance}>{this.props.address}</Text>
+                <Text style={styles.balance}>{this.props.notification.address}</Text>
             </View>
         </View>
 

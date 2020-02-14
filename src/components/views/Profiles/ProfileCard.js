@@ -27,7 +27,7 @@ export default class ProfilesCard extends React.Component {
                         source={{ uri: ImageUtils.generateAvatar(profile.id,100) }} />
                     </View>
                     <View style={styles.middleColumn}>
-                        <Text style={styles.title}>{profile.name}</Text>
+                        <Text style={styles.title}>{this.props.profile.name}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>

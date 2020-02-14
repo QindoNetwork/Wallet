@@ -10,16 +10,16 @@ import { inject, observer } from 'mobx-react';
 export default class GroupsCard extends React.Component {
 
   get label2() {
-      return (this.props.profile.active) ? 'Active' : 'Inactive';
+      return (this.props.group.active) ? 'Active' : 'Inactive';
   }
 
   get label3() {
-      return (this.props.profile.owner) ? 'Owner' : 'Member';
+      return (this.props.group.owner) ? 'Owner' : 'Member';
   }
 
     render() {
 
-      const label1 = '# ' + group.id
+      const label1 = '# ' + this.props.group.id
 
         return (
                 <View style={styles.container}>
@@ -27,7 +27,7 @@ export default class GroupsCard extends React.Component {
                         <Icon name='cube' size='large' color={colors.lightRed}/>
                     </View>
                     <View style={styles.middleColumn}>
-                        <Text style={styles.title}>{group.name}</Text>
+                        <Text style={styles.title}>{this.props.group.name}</Text>
                         <Text style={styles.description}>{label1}</Text>
                     </View>
                     <View style={styles.rightColumn}>
