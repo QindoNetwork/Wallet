@@ -65,7 +65,7 @@ export class Profiles extends React.Component {
             for ( var i = 0; i < req.length; i++ ) {
               this.setState({ length: req.length })
               currentAddress = req[i]
-              temp = await togethers.mappProfileInGroup(groupID,currentAddress)
+              temp = await togethers.getProfileInGroup(groupID,currentAddress)
               if ( currentAddress !== wallet.item.address && new Boolean(temp.isMember) == true) {
                 profiles.push({ id:  currentAddress,
                                 name: await togethers.mappAddressToUser(currentAddress),

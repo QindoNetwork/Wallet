@@ -24,18 +24,24 @@ export class AdminProfile extends Component {
 
   if (this.state.show === true) {
     type = gas.removeMember
+    return (  <SecureTransaction
+                      togethers={togethers}
+                      values={{groupID,target}}
+                      gasParam={gasParam}
+                      navigation={this.props.navigation}
+                      type={type}/> )
   }
 
   if (this.state.show2 === true) {
     type = gas.transferGroupOwnership
+    return (  <SecureTransaction
+                      togethers={togethers}
+                      values={{groupID,target}}
+                      gasParam={gasParam}
+                      navigation={this.props.navigation}
+                      type={type}/> )
   }
-
-  return (  <SecureTransaction
-                    togethers={togethers}
-                    values={{groupID,target}}
-                    gasParam={gasParam}
-                    navigation={this.props.navigation}
-                    type={type}/> )
+  
   }
 
   onPressTransferGroupOwnership() {

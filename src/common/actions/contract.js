@@ -48,7 +48,7 @@ export async function createProfile(togethers, args, overrides) {
       GeneralActions.notify("this user did not ask to apply", 'long');
       return "KO"
     }
-    const profile = await togethers.mappProfileInGroup(groupID,value)
+    const profile = await togethers.getProfileInGroup(groupID,value)
     const isMember = new Boolean(profile.isMember)
     if(isMember == true)
     {

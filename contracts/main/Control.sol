@@ -5,6 +5,9 @@ import "../owner/Ownable.sol";
 contract Control is Ownable {
 
   mapping (uint => gasParameters) public mappFunctionToGasParameters;
+  mapping (uint => string) public mappUserToIPFSImage;
+  mapping (address => string) public mappCryptoToIPFSImage;
+  mapping (uint => string) public mappGroupToIPFSImage;
 
 uint public listLength;
 uint public blockStartNotifications;
@@ -103,6 +106,21 @@ constructor() public {
       listLength += 1;
     }
     mappFunctionToGasParameters[_function].functionName = name;
+  }
+
+  function setCryptoToIPFSImage(string memory ipfs, address crypto)  public onlyOwner
+  {
+      mappCryptoToIPFSImage[crypto] = ipfs;
+  }
+
+  function setUserToIPFSImage(string memory ipfs, uint userID)  public
+  {
+      mappUserToIPFSImage[userID] = ipfs;
+  }
+
+  function setGroupToIPFSImage(string memory ipfs, uint groupID)  public
+  {
+      mappGroupToIPFSImage[groupID] = ipfs;
   }
 
   function getGasPrice(uint _function) view public returns (uint)

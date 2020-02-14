@@ -18,9 +18,10 @@ contract Administration is Ownable {
   mapping (uint => address) public checkNameUnicity;
   mapping (address => string) public mappAddressToUser;
   mapping (address => uint) internal userPassword;
+  mapping (uint => string) public stablecoinType;
 
   address[] cryptoList;
-  address[] public homeStableList;
+  address[] homeStableList;
 
   struct erc20
   {
@@ -120,14 +121,17 @@ contract Administration is Ownable {
     mappAllowCryptoForCategory[crypto] = category;
   }
 
-  function createNewHomeStable(address crypto) public onlyOwner
+  function createNewHomeStable(address crypto, string memory currency) public onlyOwner
   {
+    require(External1(crypto).decimals() == 18);
+    require(External1(crypto).totalSupplly() == 0);
+    stablecoinType[homeStableList.length] = currency;
     homeStableList.push(crypto);
   }
 
   function activateFees(uint _fees) public onlyOwner
   {
-    if (_fees < 100)
+    if (_fees < 1000)
     {
       fees = 0;
     }
@@ -140,6 +144,11 @@ contract Administration is Ownable {
   function getCryptoList() view public returns (address[] memory)
   {
     return cryptoList;
+  }
+
+  function getStableCoinList() view public returns (address[] memory)
+  {
+    return homeStableList;
   }
 
 }

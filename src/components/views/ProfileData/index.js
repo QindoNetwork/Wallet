@@ -6,6 +6,7 @@ import { HeaderIcon } from '@components/widgets';
 import { General as GeneralActions  } from '@common/actions';
 import { CryptoCard } from '@components/widgets';
 import { inject, observer } from 'mobx-react';
+import Header from './Header';
 
 @inject('wallet','languages')
 @observer
@@ -118,6 +119,7 @@ export class ProfileData extends React.Component {
 
         return(
           <View>
+          <Header type = '0'/>
           <Text style={styles.message}>{item.description}</Text>
           <FlatList
                 data={stats.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
@@ -134,14 +136,14 @@ export class ProfileData extends React.Component {
 
         return(
           <View>
-          <Text style={styles.message}>From him</Text>
+          <Header type = '1'/>
           <FlatList
                 data={stats2.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
                 renderItem={({ item }) => (
                 <CryptoCard crypto={item}/>
               )}
           />
-          <Text style={styles.message}>From you</Text>
+          <Header type = '2'/>
           <FlatList
                 data={stats3.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
                 renderItem={({ item }) => (

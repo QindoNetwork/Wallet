@@ -9,13 +9,48 @@ import { Languages as LanguagesActions } from '@common/actions';
 export default class Header extends React.Component {
 
     render() {
+
+      if (this.props.type === '1'){
+
+        return(
+
+          <View style={styles.container}>
+              <View style={styles.leftColumn}>
+                  <Text style={styles.title}>Global stats</Text>
+              </View>
+              <View style={styles.rightColumn}>
+                  <Text style={styles.balance}>Input</Text>
+              </View>
+          </View>
+
+      )
+
+      }
+
+      if (this.props.type === '2'){
+
+        return(
+
+          <View style={styles.container}>
+              <View style={styles.leftColumn}>
+                  <Text style={styles.title}>Global stats</Text>
+              </View>
+              <View style={styles.rightColumn}>
+                  <Text style={styles.balance}>Output</Text>
+              </View>
+          </View>
+
+      )
+
+      }
+
         return (
             <View style={styles.container}>
                 <View style={styles.leftColumn}>
-                    <Text style={styles.title}>Swap</Text>
+                    <Text style={styles.title}>Current</Text>
                 </View>
                 <View style={styles.rightColumn}>
-                    <Text style={styles.balance}>your balances</Text>
+                    <Text style={styles.balance}>Balances</Text>
                 </View>
             </View>
         );

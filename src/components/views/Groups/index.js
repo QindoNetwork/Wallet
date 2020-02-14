@@ -25,7 +25,7 @@ export class Groups extends React.Component {
         const req = await togethers.getGroups()
         for ( var i = 0; i < req.length; i++ ) {
           groupID = parseInt (req[i],10)
-          profile = await togethers.mappProfileInGroup(groupID,wallet.item.address)
+          profile = await togethers.getProfileInGroup(groupID,wallet.item.address)
          if (new Boolean(profile.isMember) == true){
             groups.push({   id:  groupID,
                             name: await togethers.mappGroupIDToGroupName(groupID),

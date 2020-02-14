@@ -6,7 +6,7 @@ import "./Administration.sol";
 contract Togethers is Administration {
 
   mapping (uint => string) public mappGroupIDToGroupName;
-  mapping (uint => mapping (address => profile)) public mappProfileInGroup;
+  mapping (uint => mapping (address => profile)) private mappProfileInGroup;
   mapping (address => uint[]) private mappGroupsForAddress;
   mapping (uint => address[]) private mappUsersInGroup;
   mapping (address => mapping (uint => bool)) public mappAskForAdd;
@@ -27,12 +27,15 @@ contract Togethers is Administration {
     owner = msg.sender;
     checkNameUnicity[returnHash("Togethers")] = address(this);
     homeStableList.push(address(0));
+    stablecoinType[0] = 'NaN';
     address ttusd = 0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292;
     address tteur = 0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F;
     cryptoList.push(ttusd);
     cryptoList.push(tteur);
     enableCrypto(ttusd);
     enableCrypto(tteur);
+    stablecoinType[1] = 'USD';
+    stablecoinType[2] = 'EUR';
     address dai = 0xb3162F1d3E9071001c5286cc0Cd533C3958dc65f;
     address Gemini = 0x6a36989540818bd8686873A2f36E39Ac9Da2e102;
     address Tether = 0x92EB10B521fd63D0a2df10B36f284C150b1Ca17F;
@@ -267,6 +270,12 @@ contract Togethers is Administration {
   function getProfileStats(uint groupID, address _user) view public returns (uint[] memory)
   {
     return mappProfileStats[groupID][_user];
+  }
+
+  function getProfileInGroup(uint groupID, address _user) view public returns (profile memory)
+  {
+    require(mappProfileInGroup[groupID][msg.sender].isMember == true);
+    return mappProfileInGroup[groupID][_user];
   }
 
 }

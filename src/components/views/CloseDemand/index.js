@@ -66,8 +66,10 @@ export class CloseDemand extends React.Component {
         return(
 
           <View style={styles.container}>
+          <Text style={styles.message}>{description}</Text>
           <Text style={styles.message}>there is nothing to withdraw</Text>
-          </View>
+          {this.renderModal()}
+        </View>
         )
       }
 
