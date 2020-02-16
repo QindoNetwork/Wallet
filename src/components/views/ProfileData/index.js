@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Text, View, ActivityIndicator, FlatList } from 
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { HeaderIcon } from '@components/widgets';
-import { General as GeneralActions  } from '@common/actions';
+import { General as GeneralActions, Identity as IdentityAction } from '@common/actions';
 import { CryptoCard } from '@components/widgets';
 import { inject, observer } from 'mobx-react';
 import Header from './Header';
@@ -39,73 +39,30 @@ export class ProfileData extends React.Component {
       try {
         const statsIn = await togethers.getStats(wallet.item.address,item.id)
         const statsOut = await togethers.getStats(item.id,wallet.item.address)
-        const one1 = !item.stats[0] ? 0 : parseInt (item.stats[0],10)
-        const two1 = !statsIn[0] ? 0 : parseInt (statsIn[0],10)
-        const three1 = !statsOut[0] ? 0 : parseInt (statsOut[0],10)
-        const one2 = !item.stats[1] ? 0 : parseInt (item.stats[1],10)
-        const two2 = !statsIn[1] ? 0 : parseInt (statsIn[1],10)
-        const three2 = !statsOut[1] ? 0 : parseInt (statsOut[1],10)
-        const one3 = !item.stats[2] ? 0 : parseInt (item.stats[2],10)
-        const two3 = !statsIn[2] ? 0 : parseInt (statsIn[2],10)
-        const three3 = !statsOut[2] ? 0 : parseInt (statsOut[2],10)
+        for ( var i = 0; i < item.stats.length; i++ ) {
+        const balance1 = !item.stats[i] ? 0 : parseInt (item.stats[i],10)
+        const balance2 = !statsIn[i] ? 0 : parseInt (statsIn[i],10)
+        const balance3 = !statsOut[i] ? 0 : parseInt (statsOut[i],10)
 
           stats.push({
-                          balance: one1,
-                          symbol: "ETH",
-                          name: "Ethers",
+                          balance: balance1,
+                          name: IdentityAction.getHomeStableName(i),
+                          symbol: IdentityAction.getHomeStableSymbol(i),
                           decimals: 18,
                          })
                          stats2.push({
-                                         balance: two1,
-                                         symbol: "ETH",
-                                         name: "Ethers",
+                                         balance: balance2,
+                                         name: IdentityAction.getHomeStableName(i),
+                                         symbol: IdentityAction.getHomeStableSymbol(i),
                                          decimals: 18,
                                         })
                                         stats3.push({
-                                                        balance: three1,
-                                                        symbol: "ETH",
-                                                        name: "Ethers",
+                                                        balance: balance3,
+                                                        name: IdentityAction.getHomeStableName(i),
+                                                        symbol: IdentityAction.getHomeStableSymbol(i),
                                                         decimals: 18,
                                                        })
-
-          stats.push({
-                          balance: one2,
-                          symbol: "TGTE",
-                          name: "Togethers-EUR",
-                          decimals: 18,
-                         })
-                         stats2.push({
-                                         balance: two2,
-                                         symbol: "TGTE",
-                                         name: "Togethers-EUR",
-                                         decimals: 18,
-                                        })
-                                        stats3.push({
-                                                        balance: three2,
-                                                        symbol: "TGTE",
-                                                        name: "Togethers-EUR",
-                                                        decimals: 18,
-                                                       })
-
-                                                       stats.push({
-                                                                       balance: one3,
-                                                                       symbol: "TGTU",
-                                                                       name: "Togethers-USD",
-                                                                       decimals: 18,
-                                                                      })
-                                                                      stats2.push({
-                                                                                      balance: two3,
-                                                                                      symbol: "TGTU",
-                                                                                      name: "Togethers-USD",
-                                                                                      decimals: 18,
-                                                                                     })
-                                                                                     stats3.push({
-                                                                                                     balance: three3,
-                                                                                                     symbol: "TGTU",
-                                                                                                     name: "Togethers-USD",
-                                                                                                     decimals: 18,
-                                                                                                    })
-
+        }
         this.setState({ stats, stats2, stats3, loading: 1 })
       } catch (e) {
       GeneralActions.notify(e.message, 'long');

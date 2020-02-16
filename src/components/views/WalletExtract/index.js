@@ -75,5 +75,10 @@ const styles = StyleSheet.create({
     },
     content: {
         marginTop: measures.defaultMargin
-    }
+    },
+    body: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, FlatList, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions  } from '@common/actions';
+import { General as GeneralActions, Identity as IdentityAction } from '@common/actions';
 import { Gas as gas } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
 import { CryptoCard } from '@components/widgets';
@@ -15,11 +15,29 @@ export class CloseDemand extends React.Component {
 
   static navigationOptions = { title: "My demand" };
 
-  state = { show: false };
+  state = { stats: [], show: false, loading: 0, stats2: [] };
+
+  componentDidMount() {
+    const { profile } = this.props.navigation.state.params;
+    var stat
+    var stats
+    var stats2
+      for ( var i = 0; i < profile.stats.length; i++ ) {
+        stat = (!profile.stats[i]) ? 0 : parseInt (profile.stats[i],10)
+       if (stat !== 0){
+          stats.push({  balance:  stat,
+                        name: IdentityAction.getHomeStableName(i),
+                        symbol: IdentityAction.getHomeStableSymbol(i),
+                        decimals: 18 })
+        }
+      }
+      this.setState({ stats: true, loading: 0 })
+  }
 
   renderModal() {
 
-    const { gasParam, togethers, groupID } = this.props.navigation.state.params;
+    const { gasParam, togethers, groupID, quit } = this.props.navigation.state.params;
+    const gasType = (quit) ? gas.quitGroup : gas.withdrawFunds;
 
     if (this.state.show === true) {
     return (  <SecureTransaction
@@ -27,66 +45,42 @@ export class CloseDemand extends React.Component {
           values={{groupID}}
           gasParam={gasParam}
           navigation={this.props.navigation}
-          type={gas.withdrawFunds}/> )
+          type={gasType}/> )
     }
   }
 
   render() {
 
-    const { profile } = this.props.navigation.state.params;
-    var stat
-    var stats
-    var ok = 0
-      for ( var i = 0; i < profile.stats.length; i++ ) {
-        stat = !profile.stats[i] ? 0 : parseInt (profile.stats[i],10)
-       if (stat !== 0){
-         ok = 1
-          if (i === 0){
-          stats.push({  balance:  stat,
-                        name: 'Ethers',
-                        symbol: 'ETH',
-                        decimals: 18 })
-          }
-          if (i === 1){
-          stats.push({  balance:  stat,
-                        name: 'Togethers-EUR',
-                        symbol: 'TGTE',
-                        decimals: 18 })
-          }
-          if (i === 2){
-          stats.push({  balance:  stat,
-                        name: 'Togethers-USD',
-                        symbol: 'TGTU',
-                        decimals: 18 })
-          }
-        }
-      }
-
-      if (ok === 0){
-        return(
-
-          <View style={styles.container}>
-          <Text style={styles.message}>{description}</Text>
-          <Text style={styles.message}>there is nothing to withdraw</Text>
-          {this.renderModal()}
-        </View>
-        )
-      }
+    if(this.state.loading === 0)
+    {
+      return(
+        <View style={styles.container}>
+            <View style={styles.body}>
+              <ActivityIndicator size="large"/>
+            </View>
+          </View>
+    )
+    }
 
     return(
 
       <ScrollView style={styles.container}>
-      <Text style={styles.message}>{description}</Text>
+      <Text style={styles.message}>{this.props.profile.description}</Text>
       <Header/>
       <FlatList
               style={styles.content}
-              data={stats.sort((prev, next) => prev.name.localeCompare(next.name))}
+              data={this.state.stats.sort((prev, next) => prev.name.localeCompare(next.name))}
               renderItem={({ item }) => (<CryptoCard crypto={item} />)} />
             <View style={styles.buttonsContainer}>
                 <Button
                   children="Close"
                   onPress={() => this.setState({ show: true })}/>
             </View>
+            <Header/>
+            <FlatList
+                    style={styles.content}
+                    data={this.state.stats.sort((prev, next) => prev.name.localeCompare(next.name))}
+                    renderItem={({ item }) => (<View><Header/><CryptoCard crypto={item} /></View>)} />
       {this.renderModal()}
     </ScrollView>
   )

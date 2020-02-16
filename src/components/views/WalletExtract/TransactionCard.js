@@ -7,7 +7,7 @@ import { Wallet as WalletUtils } from '@common/utils';
 import Modal from 'react-native-modal';
 import { Contracts as contractsAddress } from '@common/constants';
 import { inject, observer } from 'mobx-react';
-import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions, Identity as IdentityAction } from '@common/actions';
 
 @inject('languages')
 @observer
@@ -24,7 +24,7 @@ export default class TransactionCard extends React.Component {
   }
 
     get isReceiving() {
-        return this.to.toLowerCase() === this.props.walletAddress.toLowerCase();
+        return this.props.transaction.to === this.props.walletAddress.toLowerCase();
     }
 
     get isConfirmed() {
@@ -32,65 +32,17 @@ export default class TransactionCard extends React.Component {
     }
 
     get from() {
-      if (this.props.transaction.from.toLowerCase() === contractsAddress.togethersAddress.toLowerCase()){
-        return 'Togethers';
-      }
-      if (this.props.transaction.from.toLowerCase() === contractsAddress.ttusd.toLowerCase()){
-        return 'TGTU stablecoin';
-      }
-      if (this.props.transaction.from.toLowerCase() === contractsAddress.tteur.toLowerCase()){
-        return 'TGTE stablecoin';
-      }
-      if (this.props.transaction.from.toLowerCase() === contractsAddress.dai.toLowerCase()){
-        return 'DAI Stablecoin';
-      }
-      if (this.props.transaction.from.toLowerCase() === contractsAddress.Gemini.toLowerCase()){
-        return 'Gemini stablecoin';
-      }
-      if (this.props.transaction.from.toLowerCase() === contractsAddress.Tether.toLowerCase()){
-        return 'Tether stablecoin';
-      }
-      if (this.props.transaction.from.toLowerCase() === contractsAddress.Stasis.toLowerCase()){
-        return 'Stasis stablecoin';
-      }
       if ( this.state.pseudoFrom !== '' ){
         return this.state.pseudoFrom;
       }
-      if (this.props.transaction.from === ''){
-        return 'unknown contract';
-      }
-      else return this.props.transaction.from;
+      else return IdentityAction.getIdentity(this.props.transaction.from);
     }
 
     get to() {
-      if (this.props.transaction.to.toLowerCase() === contractsAddress.togethersAddress.toLowerCase()){
-        return 'Togethers';
-      }
-      if (this.props.transaction.to.toLowerCase() === contractsAddress.ttusd.toLowerCase()){
-        return 'TGTU stablecoin';
-      }
-      if (this.props.transaction.to.toLowerCase() === contractsAddress.tteur.toLowerCase()){
-        return 'TGTE stablecoin';
-      }
-      if (this.props.transaction.to.toLowerCase() === contractsAddress.dai.toLowerCase()){
-        return 'DAI Stablecoin';
-      }
-      if (this.props.transaction.to.toLowerCase() === contractsAddress.Gemini.toLowerCase()){
-        return 'Gemini stablecoin';
-      }
-      if (this.props.transaction.to.toLowerCase() === contractsAddress.Tether.toLowerCase()){
-        return 'Tether stablecoin';
-      }
-      if (this.props.transaction.to.toLowerCase() === contractsAddress.Stasis.toLowerCase()){
-        return 'Stasis stablecoin';
-      }
       if ( this.state.pseudoTo !== ''  ){
         return this.state.pseudoTo;
       }
-      if (this.props.transaction.to === ''){
-        return 'unknown contract';
-      }
-      else return this.props.transaction.to;
+      else return IdentityAction.getIdentity(this.props.transaction.to)
     }
 
     get iconName() {

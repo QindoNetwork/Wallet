@@ -32,7 +32,7 @@ export class Profiles extends React.Component {
         )
     })
 
-      state = { show: false, loading: 0, profiles: [] };
+      state = { show: false, loading: 0, profiles: [], profilesName: [] };
 
       renderModal() {
 
@@ -40,13 +40,13 @@ export class Profiles extends React.Component {
         const groupID = profile.id
 
         if (this.state.show === true) {
-        return (  <SecureTransaction
+            return (  <SecureTransaction
               togethers={togethers}
               values={{groupID}}
               gasParam={gasParam}
               navigation={this.props.navigation}
               type={gas.quitGroup}/> )
-        }
+            }
       }
 
       componentDidMount() {
@@ -58,6 +58,7 @@ export class Profiles extends React.Component {
         const { wallet } = this.props;
         const groupID = profile.id
         let profiles = []
+        let profilesName = []
         try {
           const req = await togethers.getProfiles(groupID)
           let currentAddress
@@ -65,32 +66,34 @@ export class Profiles extends React.Component {
             for ( var i = 0; i < req.length; i++ ) {
               this.setState({ length: req.length })
               currentAddress = req[i]
+              profilesName[currentAddress] = await togethers.mappAddressToUser(currentAddress)
               temp = await togethers.getProfileInGroup(groupID,currentAddress)
               if ( currentAddress !== wallet.item.address && new Boolean(temp.isMember) == true) {
                 profiles.push({ id:  currentAddress,
-                                name: await togethers.mappAddressToUser(currentAddress),
+                                name: profilesName[currentAddress],
                                 owner: new Boolean(temp.owner),
                                 active: new Boolean(temp.open),
                                 description: temp.description,
                                 stats: await togethers.getProfileStats(groupID,currentAddress)})
               }
           }
-          this.setState({ profiles, loading: 1 })
+          this.setState({ profiles, loading: 1, profilesName })
         } catch (e) {
         GeneralActions.notify(e.message, 'long');
         }
       }
 
       demand(groupID, togethers, gasParam, profile) {
+        const { profilesName } = this.state
         if (this.props.navigation.state.params.profile.active == true){
-          this.props.navigation.navigate('CloseDemand',{ groupID, togethers, gasParam, profile })
+          this.props.navigation.navigate('CloseDemand',{ groupID, togethers, gasParam, profile, profilesName })
         }
         else this.props.navigation.navigate('OpenDemand',{ groupID, togethers, gasParam })
       }
 
       render() {
         const { profiles } = this.state
-        const { wallet } = this.props
+        const { wallet, navigation } = this.props
         const { gasParam, togethers, profile } = this.props.navigation.state.params
         const groupID = profile.id
 
@@ -108,33 +111,6 @@ export class Profiles extends React.Component {
 
         }
 
-        if (this.state.owner == true && this.state.profiles.length > 0){
-          return(
-            <ScrollView style={styles.container}>
-            <Header length={this.state.profiles.length}/>
-            <View style={styles.buttonsContainer}>
-                <Button
-                  children="My demand"
-                  onPress={() => this.demand(groupID, togethers, gasParam, profile )}/>
-            </View>
-            <FlatList
-                data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
-                refreshControl={<RefreshControl refreshing={wallet.item.loading} onRefresh={() => this.updateData()} />}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                  style={styles.content}
-                  activeOpacity={0.8}
-                  onPress={() => this.props.navigation.navigate('ProfileData',{ item, user: profile, togethers, gasParam, groupID })
-                  }>
-                    <ProfileCard profile={item} togethers={togethers}/>
-                  </TouchableOpacity>
-                )}
-            />
-            {this.renderModal()}
-            </ScrollView>
-            )
-        }
-
       return(
         <ScrollView style={styles.container}>
         <Header length={this.state.profiles.length}/>
@@ -150,7 +126,7 @@ export class Profiles extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('ProfileData',{ item, user: profile, togethers, gasParam, groupID })
+              onPress={() => navigation.navigate('ProfileData',{ item, user: profile, togethers, gasParam, groupID })
               }>
                 <ProfileCard profile={item} togethers={togethers}/>
               </TouchableOpacity>
@@ -159,7 +135,7 @@ export class Profiles extends React.Component {
         <View style={styles.buttonsContainer}>
             <Button
               children="Quit"
-              onSubmit={() => this.setState({ show: true })}/>
+              onSubmit={() => (profile.active) ? this.props.navigation.navigate('CloseDemand',{ profiles, groupID, togethers, gasParam, profile, quit: true }) : this.setState({ show: true })}/>
         </View>
         {this.renderModal()}
         </ScrollView>

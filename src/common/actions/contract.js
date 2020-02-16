@@ -130,31 +130,8 @@ export async function askForFunds(togethers, args, overrides) {
 export async function quitGroup(togethers, args, address, overrides) {
   const { groupID } = args
   let result = "OK"
-  let notlastOne = 0
   try {
-    const users = await togethers.getProfiles(groupID)
-    for (let i = 0; i < users.length; i++)
-    {
-      if (new Boolean(mappProfileInGroup[groupID][users[i]].isMember) == true && users[i] != address)
-      {
-        notlastOne = 1;
-        break;
-      }
-    }
-    if (owner == true && notlastOne === 0)
-    {
-      GeneralActions.notify("admin cannot quit if is not last", 'long');
-      result = "KO"
-    }
-    if (active == true)
-    {
-      GeneralActions.notify("close your demand before", 'long');
-      result = "KO"
-    }
-    if (result === "OK")
-    {
-      await togethers.quitGroup(groupID,overrides)
-    }
+    await togethers.quitGroup(groupID,overrides)
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
     result = "KO"

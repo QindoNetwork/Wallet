@@ -12,6 +12,9 @@ contract Togethers is Administration {
   mapping (address => mapping (uint => bool)) public mappAskForAdd;
   mapping (address => mapping (address => uint[])) private mappPeerToPeerStats;
   mapping (uint => mapping (address => uint[])) private mappProfileStats;
+  mapping (uint => mapping (address => uint[])) private mappIdStats;
+
+  uint id;
 
   struct profile
   {
@@ -19,6 +22,7 @@ contract Togethers is Administration {
     bool open;
     bool owner;
     string description;
+    uint id;
   }
 
   uint public groupNumber;
@@ -27,6 +31,7 @@ contract Togethers is Administration {
     owner = msg.sender;
     checkNameUnicity[returnHash("Togethers")] = address(this);
     homeStableList.push(address(0));
+    mappAllowCryptoForCategory[address(0)] = 0;
     stablecoinType[0] = 'NaN';
     address ttusd = 0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292;
     address tteur = 0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F;
@@ -135,7 +140,8 @@ contract Togethers is Administration {
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     mappProfileInGroup[groupID][msg.sender].open = true;
     mappProfileInGroup[groupID][msg.sender].description = _description;
-    emit askEvent(groupID,msg.sender);
+    mappProfileInGroup[groupID][msg.sender].id = id;
+    id += 1;
   }
 
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, address _crypto) public payable
@@ -148,8 +154,6 @@ contract Togethers is Administration {
     {
       require(msg.value > 0);
       amount = msg.value;
-      mappProfileStats[groupID][_publicKey][0].add(amount);
-      mappPeerToPeerStats[msg.sender][_publicKey][0].add(amount);
     }
     else
     {
@@ -158,10 +162,10 @@ contract Togethers is Administration {
       amount = _tokenAmount;
       External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
       amount = _tokenAmount.mul(10**(-(18-(External1(_crypto).decimals()))));
-      mappProfileStats[groupID][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
-      mappPeerToPeerStats[msg.sender][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
     }
-    emit payEvent(msg.sender,_publicKey,_crypto);
+    mappProfileStats[groupID][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
+    mappPeerToPeerStats[msg.sender][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
+    mappIdStats[mappProfileInGroup[groupID][_publicKey].id][msg.sender][mappAllowCryptoForCategory[_crypto]].add(amount);
   }
 
   function withdrawFunds(uint groupID) public
@@ -183,7 +187,6 @@ contract Togethers is Administration {
       mappProfileStats[groupID][msg.sender][i] = 0;
     }
     }
-    emit withdraw(msg.sender,groupID);
   }
 
   function changeToken(uint _tokenAmount, address _crypto1, address _crypto2) public
@@ -217,18 +220,20 @@ contract Togethers is Administration {
 
   function quitGroup(uint _groupID) public
   {
-    bool notlastOne;
-    for (uint i = 0; i < mappUsersInGroup[_groupID].length; i++)
+    if ( mappProfileInGroup[_groupID][msg.sender].open == true )
     {
-      if (mappProfileInGroup[_groupID][mappUsersInGroup[_groupID][i]].isMember == true && mappUsersInGroup[_groupID][i] != msg.sender)
-      {
-        notlastOne = true;
-        break;
-      }
+      withdrawFunds(_groupID);
     }
-    require(mappProfileInGroup[_groupID][msg.sender].owner == false || notlastOne == false);
     if (mappProfileInGroup[_groupID][msg.sender].owner == true)
     {
+      for (uint i = 0; i < mappUsersInGroup[_groupID].length; i++)
+      {
+        if (mappProfileInGroup[_groupID][mappUsersInGroup[_groupID][i]].isMember == true && mappUsersInGroup[_groupID][i] != msg.sender)
+        {
+          mappProfileInGroup[_groupID][mappUsersInGroup[_groupID][i]].owner = true;
+          break;
+        }
+      }
       mappProfileInGroup[_groupID][msg.sender].owner = false;
     }
     deleteProfile(_groupID,msg.sender);
@@ -276,6 +281,12 @@ contract Togethers is Administration {
   {
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     return mappProfileInGroup[groupID][_user];
+  }
+
+  function getIdStats(uint groupID, uint _id, address user) view public returns (uint[] memory)
+  {
+    require(mappProfileInGroup[groupID][msg.sender].id == _id);
+    return mappIdStats[_id][user];
   }
 
 }

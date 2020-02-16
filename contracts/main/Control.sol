@@ -10,7 +10,6 @@ contract Control is Ownable {
   mapping (uint => string) public mappGroupToIPFSImage;
 
 uint public listLength;
-uint public blockStartNotifications;
 
 struct gasParameters
 {
@@ -91,11 +90,6 @@ constructor() public {
       listLength += 1;
     }
     mappFunctionToGasParameters[_function].gasPrice = price;
-  }
-
-  function setBlockStartNotifications(uint _block)  public onlyOwner
-  {
-    blockStartNotifications = _block;
   }
 
   function setGasFunctionName(string memory name, uint _function)  public onlyOwner

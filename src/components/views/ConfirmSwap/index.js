@@ -144,15 +144,8 @@ export class ConfirmSwap extends React.Component {
 
     render() {
         const { amount, cryptoOne, loading, item } = this.props.navigation.state.params;
-        let fees
-        if(this.state.fees === 0)
-        {
-        fees = '0'
-        }
-        else
-        {
-        fees = '1 / ' + this.state.fees
-        }
+        const fees = (this.state.fees === 0) ? '0' : '1 / ' + this.state.fees
+        
         if(this.state.loading === 0)
         {
           return(
@@ -178,7 +171,7 @@ export class ConfirmSwap extends React.Component {
                             source={{ uri: ImageUtils.generateAvatar(target,500) }} />
                     </View>fees
                     <View style={styles.textColumn}>
-                        <Text style={styles.title}>Amount ({cryptoOne.symbol} to {item.symbol}) </Text>
+                        <Text style={styles.title}>Amount ({cryptoOne.symbol} -> {item.symbol}) </Text>
                         <Text style={styles.value}>{amount}</Text>
                     </View>
                     <View style={styles.textColumn}>

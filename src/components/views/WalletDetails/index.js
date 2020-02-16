@@ -10,16 +10,6 @@ export class WalletDetails extends React.Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
           title: "Togethers",
-          headerLeft: (
-              <HeaderIcon
-                  name='information-circle'
-                  size='medium'
-                  color={colors.white}
-                  onPress={() => navigation.navigate('Notifications',
-                  { ...navigation.state.params })
-
-                } />
-          ),
           headerRight: (
               <HeaderIcon
                   name='log-out'

@@ -33,6 +33,7 @@ export class Groups extends React.Component {
                             owner:   new Boolean(profile.owner),
                             active:  new Boolean(profile.open),
                             description: profile.description,
+                            demandID: profile.id,
                             stats: await togethers.getProfileStats(groupID,wallet.item.address)})
           }
         }
