@@ -16,9 +16,8 @@ export class WalletDetails extends React.Component {
                   size='medium'
                   color={colors.white}
                   onPress={() => navigation.navigate('WalletsOverview',
-                  {
-                    ...navigation.state.params
-                  })
+                    { replaceRoute: true }
+                  )
                   }/>),
       })
 

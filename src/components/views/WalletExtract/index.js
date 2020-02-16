@@ -14,11 +14,11 @@ export class WalletExtract extends React.Component {
 
     componentDidMount() {
       this.updateHistory()
-      this.setState({ loading: 1 })
     }
     async updateHistory() {
       try {
           await WalletActions.updateHistory(this.props.wallet.item);
+          this.setState({ loading: 1 })
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
       }

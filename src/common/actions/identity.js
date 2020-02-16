@@ -17,7 +17,7 @@ export function getIdentity(transaction) {
       case contractsAddress.Stasis.toLowerCase():
       return 'Stasis stablecoin'
       case '':
-      return 'unknown contract'
+      return 'Other contract'
       default:
       return transaction
   }

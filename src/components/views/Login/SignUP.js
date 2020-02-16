@@ -36,7 +36,7 @@ export default class SignUP extends React.Component {
 
     async onPressSignUp1(password1,password2) {
         Keyboard.dismiss();
-        const { gasParam, togethers, wallet, blockStartNotifications } = this.props;
+        const { gasParam, togethers, wallet } = this.props;
         const overrides = {
             gasLimit: gasParam[gas.setUser].limit,
             gasPrice: gasParam[gas.setUser].price * conversions.gigaWeiToWei,
@@ -48,7 +48,7 @@ export default class SignUP extends React.Component {
             else {
               const hashPassword = sha256(password1)
               await togethers.setUser(wallet.item.name,hashPassword,overrides)
-              this.props.navigation.navigate('WalletDetails', { blockStartNotifications, gasParam, togethers, replaceRoute: true });
+              this.props.navigation.navigate('WalletDetails', { gasParam, togethers, replaceRoute: true });
             }
           }catch (e) {
             GeneralActions.notify(e.message, 'long');

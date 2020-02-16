@@ -1,15 +1,12 @@
 import React from 'react';
-import { FlatList, RefreshControl, StyleSheet, View, ActivityIndicator, Image } from 'react-native';
+import { Text, FlatList, RefreshControl, StyleSheet, View, ActivityIndicator, Image } from 'react-native';
 import { HeaderIcon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions, Wallets as WalletActions, Languages as LanguagesActions } from '@common/actions';
 import WalletCard from './WalletCard';
-import { ethers } from 'ethers';
-import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
-import { ControlABI as controlABI, TogethersABI as togethersABI } from '@common/ABIs';
 import { inject, observer } from 'mobx-react';
 
-@inject('wallets')
+@inject('wallets','languages')
 @observer
 export class WalletsOverview extends React.Component {
 
@@ -34,61 +31,26 @@ export class WalletsOverview extends React.Component {
             )
         });
 
-
-    get loading() {
-        return this.props.wallets.loading;
-    }
-
     async componentDidMount() {
-        try {
-            await Promise.all([
-                WalletActions.loadWallets(),
-                LanguagesActions.loadLanguage()
-            ]);
-        } catch (e) {
-            GeneralActions.notify(e.message, 'long');
-        }
-        this.setState({ loading: 1 })
+      try {
+          await Promise.all([
+              WalletActions.loadWallets(),
+              LanguagesActions.loadLanguage()
+          ]);
+          this.setState({ loading: 1 })
+      } catch (e) {
+          GeneralActions.notify(e.message, 'long');
+      }
     }
 
-    async onPressWallet(wallet) {
-
-        if (this.loading) return;
-
-        this.setState({ loading: 0 })
-
-        try {
-
-        const mnemonics = wallet.mnemonics.toString()
-        const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
-
-          var gasParam = []
-          const control = new ethers.Contract(contractsAddress.controlAddress, controlABI, connection);
-          const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
-          var gas
-
-            const listLength = parseInt(await control.listLength(),10)
-            const blockStartNotifications = parseInt(await control.blockStartNotifications(),10)
-
-            for(var j = 0 ; j < listLength ; j++)
-            {
-            gas = await control.mappFunctionToGasParameters(j)
-            gasParam.push({ limit: parseInt(gas.gasLimit,10),
-                            price: parseInt(gas.gasPrice,10)
-                          })
-          }
-          WalletActions.selectWallet(wallet)
-          this.props.navigation.navigate('Login', { gasParam, togethers, blockStartNotifications });
-          this.setState({ loading: 1 })
-        } catch (e) {
-          GeneralActions.notify(e.message, 'long');
-        }
-
+    onPressWallet(wallet) {
+        WalletActions.selectWallet(wallet)
+        this.props.navigation.navigate('Login', { wallet });
     }
 
     renderItem = ({ item }) => <WalletCard wallet={item} onPress={() => this.onPressWallet(item)} />
 
-    renderBody = (list) => (!list.length && !this.loading) ? (<View style={styles.container}>
+    renderBody = (list) => (!list.length) ? (<View style={styles.container}>
         <Text style={styles.message}>
             There are no wallets configured. Click on the + button to add a new one.
         </Text>
@@ -96,7 +58,6 @@ export class WalletsOverview extends React.Component {
         <FlatList
             style={styles.content}
             data={list.sort((prev, next) => prev.name.localeCompare(next.name))}
-            keyExtractor={(item, index) => String(index)}
             renderItem={this.renderItem} />
             <View style={styles.avatar}>
             <Image source={require('../../widgets/Logos/2587429327_24309964-ea25-4f7e-94e1-5f65fef6c12d.png')} />

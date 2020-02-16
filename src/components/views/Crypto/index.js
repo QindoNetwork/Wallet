@@ -12,7 +12,7 @@ import { Gas as gas, Conversions as conversions } from '@common/constants';
 import { Wallets as WalletActions } from '@common/actions';
 import { Contracts as contractsAddress } from '@common/constants';
 
-@inject('wallet','languages')
+@inject('wallet')
 @observer
 export class Crypto extends React.Component {
 
@@ -60,10 +60,10 @@ export class Crypto extends React.Component {
                     }
         }
       }
-      this.setState({ erc20s, loading: 1 })
+      this.setState({ erc20s, loading: 1, loading: 1 })
       }
       else{
-           this.setState({ lowBalance: 1, loading: 1 })
+           this.setState({ lowBalance: 1 })
       }
     } catch (e) {
     GeneralActions.notify(e.message, 'long');

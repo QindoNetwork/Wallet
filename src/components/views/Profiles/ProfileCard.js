@@ -11,11 +11,11 @@ import { inject, observer } from 'mobx-react';
 export default class ProfilesCard extends React.Component {
 
   get label2() {
-      return (this.props.profile.active) ? 'Active' : 'Inactive';
+      return (this.props.profile.active == true) ? 'Active' : 'Inactive';
   }
 
   get label1() {
-      return (this.props.profile.owner) ? 'Owner' : 'Member';
+      return (this.props.profile.owner == true) ? 'Owner' : 'Member';
   }
 
     render() {

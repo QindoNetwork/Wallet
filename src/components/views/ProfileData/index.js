@@ -36,13 +36,16 @@ export class ProfileData extends React.Component {
       let stats = []
       let stats2 = []
       let stats3 = []
+      let balance1 = 0
+      let balance2 = 0
+      let balance3 = 0
       try {
         const statsIn = await togethers.getStats(wallet.item.address,item.id)
         const statsOut = await togethers.getStats(item.id,wallet.item.address)
         for ( var i = 0; i < item.stats.length; i++ ) {
-        const balance1 = !item.stats[i] ? 0 : parseInt (item.stats[i],10)
-        const balance2 = !statsIn[i] ? 0 : parseInt (statsIn[i],10)
-        const balance3 = !statsOut[i] ? 0 : parseInt (statsOut[i],10)
+        balance1 = !item.stats[i] ? 0 : parseInt (item.stats[i],10)
+        balance2 = !statsIn[i] ? 0 : parseInt (statsIn[i],10)
+        balance3 = !statsOut[i] ? 0 : parseInt (statsOut[i],10)
 
           stats.push({
                           balance: balance1,

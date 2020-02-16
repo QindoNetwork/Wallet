@@ -15,7 +15,7 @@ export default class Header extends React.Component {
                     <Text style={styles.title}>Swap</Text>
                 </View>
                 <View style={styles.rightColumn}>
-                    <Text style={styles.balance}>your balances</Text>
+                    <Text style={styles.balance}>Your balances</Text>
                 </View>
             </View>
         );

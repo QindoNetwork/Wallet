@@ -77,7 +77,7 @@ export class Profiles extends React.Component {
                                 stats: await togethers.getProfileStats(groupID,currentAddress)})
               }
           }
-          this.setState({ profiles, loading: 1, profilesName })
+          this.setState({ profiles, profilesName, loading: 1 })
         } catch (e) {
         GeneralActions.notify(e.message, 'long');
         }

@@ -6,7 +6,10 @@ import { General as GeneralActions  } from '@common/actions';
 import { Contracts as contractsAddress } from '@common/constants';
 import { CryptoCard } from '@components/widgets';
 import Header from './Header';
+import { inject, observer } from 'mobx-react';
 
+@inject('wallet')
+@observer
 export class CryptoType2 extends React.Component {
 
   static navigationOptions = ({ navigation, screenProps }) => ({
@@ -15,7 +18,11 @@ export class CryptoType2 extends React.Component {
 
   state = { loading: 0, erc20s2: [] };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.updateData()
+  }
+
+  async updateData() {
     const { togethers, cryptoOne, erc20 } = this.props.navigation.state.params
     try {
     var currentAddress
@@ -83,6 +90,7 @@ export class CryptoType2 extends React.Component {
         <Header/>
             <FlatList
               data={erc20s2.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
+                            refreshControl={<RefreshControl refreshing={wallet.item.loading} onRefresh={() => this.updateData()} />}
               renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.content}
