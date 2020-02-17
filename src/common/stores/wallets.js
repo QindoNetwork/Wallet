@@ -19,7 +19,15 @@ export class WalletsStore {
         if (!(wallet instanceof ethers.Wallet)) throw new Error('Invalid Wallet');
         wallet.name = walletName;
         wallet.mnemonics = mnemonics;
-        this.list.push(wallet);
+        let doublon = 0
+        for ( var i = 0; i < this.list.length; i++ ) {
+         if (this.list[i].mnemonics === mnemonics){
+           doublon = 1
+        }
+        }
+        if (doublon === 0){
+          this.list.push(wallet);
+       }
     }
 
     @action removeWallet(wallet) {

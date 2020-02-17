@@ -33,8 +33,8 @@ export class Groups extends React.Component {
                             owner:   new Boolean(profile.owner),
                             active:  new Boolean(profile.open),
                             description: profile.description,
-                            demandID: profile.id,
-                            stats: await togethers.getProfileStats(groupID,wallet.item.address)})
+                            demandID: profile.id
+                            })
           }
         }
         this.setState({ groups, loading: 1 })
@@ -72,7 +72,7 @@ export class Groups extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('Profiles',{ profile:item, gasParam, togethers })}>
+              onPress={() => this.props.navigation.navigate('Profiles',{ profile: item, gasParam, togethers })}>
                 <GroupCard  group={item} togethers={togethers} />
               </TouchableOpacity>
             )}

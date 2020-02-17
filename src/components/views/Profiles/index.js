@@ -86,7 +86,7 @@ export class Profiles extends React.Component {
       demand(groupID, togethers, gasParam, profile) {
         const { profilesName } = this.state
         if (this.props.navigation.state.params.profile.active == true){
-          this.props.navigation.navigate('CloseDemand',{ groupID, togethers, gasParam, profile, profilesName })
+          this.props.navigation.navigate('CloseDemand',{ groupID, togethers, gasParam, profiles, profile, profilesName })
         }
         else this.props.navigation.navigate('OpenDemand',{ groupID, togethers, gasParam })
       }

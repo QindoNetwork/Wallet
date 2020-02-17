@@ -9,21 +9,25 @@ import { CryptoCard } from '@components/widgets';
 import Header from './Header';
 import { inject, observer } from 'mobx-react';
 
-@inject('languages')
+@inject('languages','wallet')
 @observer
 export class CloseDemand extends React.Component {
 
   static navigationOptions = { title: "My demand" };
 
-  state = { stats: [], show: false, loading: 0, stats2: [] };
+  state = { stats: [], show: false, loading: 0, profileStats: [] };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { profile } = this.props.navigation.state.params;
+    const { wallet } = this.props
     var stat
     var stats
     var stats2
-      for ( var i = 0; i < profile.stats.length; i++ ) {
-        stat = (!profile.stats[i]) ? 0 : parseInt (profile.stats[i],10)
+    var profileStats
+    var idStats
+    const myStats =  await togethers.getProfileStats(profile.id,wallet.item.address)
+      for ( var i = 0; i < myStats.length; i++ ) {
+        stat = (!myStats[i]) ? 0 : parseInt (myStats[i],10)
        if (stat !== 0){
           stats.push({  balance:  stat,
                         name: IdentityAction.getHomeStableName(i),
@@ -31,7 +35,24 @@ export class CloseDemand extends React.Component {
                         decimals: 18 })
         }
       }
-      this.setState({ stats: true, loading: 0 })
+      for ( var k = 0; k < profiles.length; k++ ) {
+      idStats =  await togethers.getIdStats(profile.id,profile.demandID,profiles[k].id)
+      if ( profiles[k].id !== wallet.item.address && new Boolean(profiles[k].isMember) == true) {
+      for ( var j = 0; j < idStats.length; j++ ) {
+        stat = (!idStats[j]) ? 0 : parseInt (idStats[j],10)
+       if (stat !== 0){
+          stats2.push({  balance:  stat,
+                        name: IdentityAction.getHomeStableName(i),
+                        symbol: IdentityAction.getHomeStableSymbol(i),
+                        decimals: 18 })
+        }
+      }
+      profileStats.push({ id:  profiles[k].id,
+                      name: profiles[k].name,
+                      stats: stats2 })
+      }
+      }
+      this.setState({ stats, profileStats, loading: 0 })
   }
 
   renderModal() {
@@ -79,8 +100,11 @@ export class CloseDemand extends React.Component {
             <Header/>
             <FlatList
                     style={styles.content}
-                    data={this.state.stats.sort((prev, next) => prev.name.localeCompare(next.name))}
-                    renderItem={({ item }) => (<View><Header/><CryptoCard crypto={item} /></View>)} />
+                    data={this.state.profileStats.sort((prev, next) => prev.name.localeCompare(next.name))}
+                    renderItem={({ item }) => (<FlatList
+                    style={styles.content}
+                    data={item.stats.sort((prev, next) => prev.name.localeCompare(next.name))}
+                    renderItem={({ item }) => (<View><Header/><CryptoCard crypto={item} /></View>)} />)} />
       {this.renderModal()}
     </ScrollView>
   )

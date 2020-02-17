@@ -5,12 +5,15 @@ import { colors, measures } from '@common/styles';
 import { General as GeneralActions, Wallets as WalletActions, Languages as LanguagesActions } from '@common/actions';
 import WalletCard from './WalletCard';
 import { inject, observer } from 'mobx-react';
+import { ethers } from 'ethers';
+import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
+import { ControlABI as controlABI } from '@common/ABIs';
 
 @inject('wallets','languages')
 @observer
 export class WalletsOverview extends React.Component {
 
-    state = { loading: 0 };
+    state = { loading: 0, gasParam: [] };
 
     static navigationOptions = ({ navigation, screenProps }) => ({
             title: 'Welcome',
@@ -33,11 +36,24 @@ export class WalletsOverview extends React.Component {
 
     async componentDidMount() {
       try {
-          await Promise.all([
+        await Promise.all([
               WalletActions.loadWallets(),
               LanguagesActions.loadLanguage()
           ]);
-          this.setState({ loading: 1 })
+          var gasParam = []
+          const control = new ethers.Contract(contractsAddress.controlAddress, controlABI, EthereumNetworks.fallbackProvider);
+          var gasTemp
+
+          const listLength = parseInt(await control.listLength(),10)
+
+          for(var j = 0 ; j < listLength ; j++)
+          {
+            gasTemp = await control.mappFunctionToGasParameters(j)
+            gasParam.push({ limit: parseInt(gasTemp.gasLimit,10),
+                    price: parseInt(gasTemp.gasPrice,10)
+                  })
+  }
+          this.setState({ loading: 1, gasParam })
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
       }
@@ -45,7 +61,7 @@ export class WalletsOverview extends React.Component {
 
     onPressWallet(wallet) {
         WalletActions.selectWallet(wallet)
-        this.props.navigation.navigate('Login', { wallet });
+        this.props.navigation.navigate('Login', { wallet, gasParam: this.state.gasParam });
     }
 
     renderItem = ({ item }) => <WalletCard wallet={item} onPress={() => this.onPressWallet(item)} />
@@ -67,7 +83,8 @@ export class WalletsOverview extends React.Component {
     );
 
     render() {
-        const { list } = this.props.wallets;
+
+      const { list } = this.props.wallets;
 
         if (this.state.loading === 0){
 
@@ -75,6 +92,9 @@ export class WalletsOverview extends React.Component {
 
             <View style={styles.container}>
               <View style={styles.body}>
+              <Text style={styles.message}>
+                  HELLO!
+              </Text>
                 <ActivityIndicator size="large" color="darkslategray"/>
               </View>
             </View>

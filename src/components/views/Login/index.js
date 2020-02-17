@@ -10,7 +10,7 @@ import SignIN from './SignIN'
 import SignUP from './SignUP'
 import { ethers } from 'ethers';
 import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
-import { ControlABI as controlABI, TogethersABI as togethersABI } from '@common/ABIs';
+import { TogethersABI as togethersABI } from '@common/ABIs';
 
 @inject('languages','wallet')
 @observer
@@ -18,7 +18,7 @@ export class Login extends React.Component {
 
     static navigationOptions = { title: 'Login' };
 
-    state = { loading: 0, registered: 0, gasParam: [], togethers: null };
+    state = { loading: 0, registered: 0, togethers: null };
 
     async componentDidMount() {
 
@@ -26,23 +26,10 @@ export class Login extends React.Component {
         const mnemonics = this.props.navigation.state.params.wallet.mnemonics.toString()
         const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
 
-          var gasParam = []
-          const control = new ethers.Contract(contractsAddress.controlAddress, controlABI, connection);
           const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
-          var gasTemp
 
-            const listLength = parseInt(await control.listLength(),10)
-
-            for(var j = 0 ; j < listLength ; j++)
-            {
-            gasTemp = await control.mappFunctionToGasParameters(j)
-            gasParam.push({ limit: parseInt(gasTemp.gasLimit,10),
-                            price: parseInt(gasTemp.gasPrice,10)
-                          })
-          }
           this.setState({
                         registered: parseInt (await togethers.verifyRegistration(),10),
-                        gasParam,
                         togethers,
                         loading: 1
                       })
@@ -65,11 +52,12 @@ export class Login extends React.Component {
       }
 
       const { navigation, wallet } = this.props;
+      const { gasParam } = this.props.navigation.state.params;
 
       if(this.state.registered === 1)
       {
         return (
-          <SignIN togethers={this.state.togethers} navigation={navigation} gasParam={this.state.gasParam}/>
+          <SignIN togethers={this.state.togethers} navigation={navigation} gasParam={gasParam}/>
         );
       }
 
@@ -80,7 +68,7 @@ export class Login extends React.Component {
       if(balance > gasLimit * gasPrice)
       {
         return (
-          <SignUP togethers={this.state.togethers} navigation={navigation} gasParam={this.state.gasParam}/>
+          <SignUP togethers={this.state.togethers} navigation={navigation} gasParam={gasParam}/>
         );
       }
 
