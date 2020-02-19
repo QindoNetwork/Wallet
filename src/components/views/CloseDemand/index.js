@@ -29,7 +29,7 @@ export class CloseDemand extends React.Component {
     try {
       for ( var i = 0; i < contractsAddress.homeStablecoinsNumber; i++ ) {
         myStats =  await togethers.mappProfileStats(profile.id,wallet.item.address,i)
-          stats.push({  balance:  myStats / (Math.pow(10,contractsAddress.homeStablecoinDecimals)).toString(),
+          stats.push({  balance:  myStats / (Math.pow(10,contractsAddress.homeStablecoinDecimals)),
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
                          })
@@ -38,7 +38,7 @@ export class CloseDemand extends React.Component {
       if ( profiles[k].id !== wallet.item.address && new Boolean(profiles[k].isMember) == true) {
       for ( var j = 0; j < contractsAddress.homeStablecoinsNumber; j++ ) {
         idStats =  await togethers.mappIdStats(profile.id,profile.demandID,profiles[k].id,j)
-          stats2.push({  balance:  idStats / (Math.pow(10,contractsAddress.homeStablecoinDecimals)).toString(),
+          stats2.push({  balance:  idStats / (Math.pow(10,contractsAddress.homeStablecoinDecimals)),
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
                          })
@@ -48,7 +48,7 @@ export class CloseDemand extends React.Component {
                       stats: stats2 })
       }
       }
-      this.setState({ stats, profileStats, loading: 0 })
+      this.setState({ stats, profileStats, loading: 1 })
     }catch (e) {
       GeneralActions.notify(e.message, 'long');
   }
@@ -76,7 +76,7 @@ export class CloseDemand extends React.Component {
       return(
         <View style={styles.container}>
             <View style={styles.body}>
-              <ActivityIndicator size="large"/>
+              <ActivityIndicator size="large" color="darkslategray"/>
             </View>
           </View>
     )
@@ -85,17 +85,17 @@ export class CloseDemand extends React.Component {
     return(
 
       <ScrollView style={styles.container}>
-      <Text style={styles.message}>{this.props.profile.description}</Text>
+      <View style={styles.buttonsContainer}>
+          <Button
+            children="Close"
+            onPress={() => this.setState({ show: true })}/>
+      </View>
+      <Text style={styles.message}>{this.props.navigation.state.params.profile.description}</Text>    
       <Header/>
       <FlatList
               style={styles.content}
               data={this.state.stats.sort((prev, next) => prev.name.localeCompare(next.name))}
               renderItem={({ item }) => (<CryptoCard crypto={item} />)} />
-            <View style={styles.buttonsContainer}>
-                <Button
-                  children="Close"
-                  onPress={() => this.setState({ show: true })}/>
-            </View>
             <Header/>
             <FlatList
                     style={styles.content}

@@ -29,7 +29,7 @@ export class ProfileData extends React.Component {
         )
     })
 
-    state = { loading: 0, stats: [], stats2: [], stats3: [] };
+    state = { loading: 0, stats: [], stats2: [], stats3: [], stats4: [] };
 
     async componentDidMount() {
       const { wallet } = this.props
@@ -38,19 +38,18 @@ export class ProfileData extends React.Component {
       let stats2 = []
       let stats3 = []
       let stats4 = []
-      let balance
       let peerToPeerStats
       let profileStats
       try {
         for ( var i = 0; i < contractsAddress.homeStablecoinsNumber; i++ ) {
         peerToPeerStats = await togethers.getStats(item.id,i)
         stats2.push({
-                        balance: parseInt(peerToPeerStats.In,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)).toString() ,
+                        balance: parseInt(peerToPeerStats.In,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)) ,
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
                        })
                        stats3.push({
-                                       balance: parseInt(peerToPeerStats.Out,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)).toString(),
+                                       balance: parseInt(peerToPeerStats.Out,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)),
                                        name: IdentityAction.getHomeStableName(i),
                                        symbol: IdentityAction.getHomeStableSymbol(i),
                                       })
@@ -58,18 +57,18 @@ export class ProfileData extends React.Component {
         if ( item.active == true ) {
         profileStats = await togethers.getProfileStats(groupID,wallet.item.address,i)
         stats4.push({
-                        balance: parseInt(profileStats.In,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)).toString(),
+                        balance: parseInt(profileStats.In,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)),
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
                        })
           stats.push({
-                          balance: parseInt(profileStats.Out,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)).toString(),
+                          balance: parseInt(profileStats.Out,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)),
                           name: IdentityAction.getHomeStableName(i),
                           symbol: IdentityAction.getHomeStableSymbol(i),
                          })
                        }
         }
-        this.setState({ stats, stats2, stats3, loading: 1 })
+        this.setState({ stats, stats2, stats3, stats4, loading: 1 })
       } catch (e) {
       GeneralActions.notify(e.message, 'long');
       }
@@ -77,7 +76,7 @@ export class ProfileData extends React.Component {
 
     renderProfile() {
 
-      const { stats } = this.state
+      const { stats, stats4 } = this.state
       const { item } = this.props.navigation.state.params;
 
       return(
@@ -90,12 +89,19 @@ export class ProfileData extends React.Component {
               <CryptoCard crypto={item}/>
             )}
         />
+        <Header type = '3'/>
+        <FlatList
+              data={stats4.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
+              renderItem={({ item }) => (
+              <CryptoCard crypto={item}/>
+            )}
+        />
         </View>)
   }
 
     renderData() {
 
-      const { stats2, stats3 } = this.state
+      const { stats2, stats3, stats4 } = this.state
 
         return(
           <View>

@@ -27,6 +27,21 @@ export default class Header extends React.Component {
 
       }
 
+      if (this.props.type === '3'){
+
+        return(
+
+          <View style={styles.container}>
+              <View style={styles.leftColumn}>
+                  <Text style={styles.title}>Your donnations</Text>
+              </View>
+              <View style={styles.rightColumn}>
+                  <Text style={styles.balance}>Amount</Text>
+              </View>
+          </View>
+
+      )
+
       if (this.props.type === '2'){
 
         return(

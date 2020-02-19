@@ -74,12 +74,12 @@ You must be owner of the group
               <View style={styles.buttonsContainer}>
                   <Button
                     children="Transfer ownership"
-                    onPress={() => onPressTransferGroupOwnership()}/>
+                    onPress={() => this.onPressTransferGroupOwnership()}/>
               </View>
               <View style={styles.buttonsContainer}>
                   <Button
                     children="Remove user"
-                    onPress={() => onPressRemove()}/>
+                    onPress={() => this.onPressRemove()}/>
               </View>
               {this.renderModal()}
               </View>
