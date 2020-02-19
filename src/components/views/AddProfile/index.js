@@ -88,6 +88,18 @@ export class AddProfile extends Component {
   render() {
     const { profiles } = this.state
 
+    if (this.props.navigation.state.params.owner == false) {
+      return(
+
+      <View style={styles.container}>
+        <View style={styles.body}>
+          <Text style={styles.message}>You have to be administrator to add a member to the group</Text>
+        </View>
+      </View>
+
+    )
+      }
+
     if (this.state.loading === 0){
 
       return(
@@ -117,8 +129,6 @@ export class AddProfile extends Component {
     )
 
     }
-
-    if (this.props.navigation.state.params.owner == true) {
 
     return (
       <View style={styles.container}>
@@ -152,17 +162,6 @@ export class AddProfile extends Component {
       {this.renderModal(this.state.address)}
       </View>
       );
-}
-
-      return(
-
-      <View style={styles.container}>
-        <View style={styles.body}>
-          <Text style={styles.message}>You have to be administrator to add a member to the group</Text>
-        </View>
-      </View>
-
-    )
 
 
   }

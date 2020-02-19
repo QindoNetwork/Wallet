@@ -21,11 +21,11 @@ export class SendCoins extends React.Component {
         if (!amount || amount === 0) return;
         if (item.name === 'Ethers') {
           if (amount * conversions.weiToEthereum > item.balance) {
-          isOK === false
+          isOK = false
           }
         }else {
           if (amount * (Math.pow(10,18)) > item.balance) {
-          isOK === false
+          isOK = false
           }
         }
         if (isOK === false) {

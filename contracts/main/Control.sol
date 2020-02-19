@@ -69,7 +69,6 @@ constructor() public {
     mappFunctionToGasParameters[15].gasLimit = 5000000;
     listLength = 16;
     owner = msg.sender;
-    blockStartNotifications = block.number;
   }
 
   function setGasLimit(uint limit, uint _function)  public onlyOwner

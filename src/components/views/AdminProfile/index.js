@@ -41,7 +41,7 @@ export class AdminProfile extends Component {
                       navigation={this.props.navigation}
                       type={type}/> )
   }
-  
+
   }
 
   onPressTransferGroupOwnership() {
@@ -58,9 +58,13 @@ this.setState({ show: true,
 
     if (this.props.navigation.state.params.user.owner == false){
       return(
+        <View style={styles.container}>
+            <View style={styles.body}>
         <Text>
 You must be owner of the group
         </Text>
+        </View>
+    </View>
 )
     }
 

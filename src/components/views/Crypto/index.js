@@ -38,7 +38,7 @@ export class Crypto extends React.Component {
     var balance
     erc20s.push({ name: "Ethers",
                   symbol: "ETH",
-                  decimals: 0,
+                  decimals: 18,
                   instance: null,
                   balance: wallet.item.balance,
                   address: contractsAddress.nullAddress})

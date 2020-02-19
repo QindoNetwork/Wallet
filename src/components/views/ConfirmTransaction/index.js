@@ -2,14 +2,13 @@ import React from 'react';
 import { ActivityIndicator, Image, StyleSheet, Text, View, TextInput } from 'react-native';
 import { Button } from '@components/widgets';
 import { measures, colors } from '@common/styles';
-import { Gas as gas, Conversions as conversions } from '@common/constants';
+import { Gas as gas, Conversions as conversions, Contracts as contractsAddress } from '@common/constants';
 import { General as GeneralActions, Transactions as TransactionActions, Languages as LanguagesActions } from '@common/actions';
 import { Image as ImageUtils, Transaction as TransactionUtils } from '@common/utils';
 import Modal from 'react-native-modal';
 import { inject, observer } from 'mobx-react';
 import { sha256 } from 'react-native-sha256';
 import { ERC20ABI as erc20ABI } from '@common/ABIs';
-import { Contracts as contractsAddress } from '@common/constants';
 import { ethers } from 'ethers';
 
 @inject('wallet','languages')
@@ -107,6 +106,7 @@ export class ConfirmTransaction extends React.Component {
         this.setState({ loading2: 0 })
         const { wallet } = this.props
         const { item, togethers, gasParam, amount, target, groupID } = this.props.navigation.state.params;
+        const { utils } = ethers;
         let overrides
         let result = 0
         let value
@@ -123,7 +123,7 @@ export class ConfirmTransaction extends React.Component {
           }
         }
         if(item.name === 'Ethers') {
-          value = amount
+          value = utils.parseEther(amount)
         }
         else {
         value = (amount * (Math.pow(10,item.decimals))).toString()
@@ -149,7 +149,7 @@ export class ConfirmTransaction extends React.Component {
                 overrides = {
                     gasLimit: gasParam[gas.payForFunds].limit,
                     gasPrice: gasParam[gas.payForFunds].price * conversions.gigaWeiToWei,
-                    value: value,
+                    value,
                     };
                     await togethers.payForFunds(target,groupID,0,item.address,overrides);
               }

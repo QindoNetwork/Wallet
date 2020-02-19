@@ -62,8 +62,8 @@ export class Login extends React.Component {
       }
 
       const balance = wallet.item.balance
-      const gasLimit = this.state.gasParam[gas.defaultTransaction].limit
-      const gasPrice = this.state.gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
+      const gasLimit = gasParam[gas.defaultTransaction].limit
+      const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
 
       if(balance > gasLimit * gasPrice)
       {

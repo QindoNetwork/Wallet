@@ -50,8 +50,8 @@ export class WalletsOverview extends React.Component {
           {
             gasTemp = await control.mappFunctionToGasParameters(j)
             gasParam.push({ limit: parseInt(gasTemp.gasLimit,10),
-                    price: parseInt(gasTemp.gasPrice,10)
-                  })
+                            price: parseInt(gasTemp.gasPrice,10)
+                          })
   }
           this.setState({ loading: 1, gasParam })
       } catch (e) {

@@ -150,14 +150,12 @@ contract Togethers is Administration {
     require(mappProfileInGroup[groupID][_publicKey].open == true);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     uint amount;
-    if (_crypto == address(0))
+    if (msg.value > 0)
     {
-      require(msg.value > 0);
       amount = msg.value;
     }
     else
     {
-      require(_tokenAmount > 0);
       require(mappCryptoEnable[_crypto] == true);
       amount = _tokenAmount;
       External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
