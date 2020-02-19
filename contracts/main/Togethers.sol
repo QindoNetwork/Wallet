@@ -14,7 +14,7 @@ contract Togethers is Administration {
   mapping (uint => mapping (address => mapping (uint8 => uint))) public mappProfileStats;
   mapping (uint => mapping (address => mapping (uint8 => uint))) public mappIdStats;
 
-  uint id;
+  uint public id;
 
   struct profile
   {
@@ -144,10 +144,10 @@ contract Togethers is Administration {
   {
     require(mappProfileInGroup[groupID][msg.sender].open == false);
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
+    id += 1;
     mappProfileInGroup[groupID][msg.sender].open = true;
     mappProfileInGroup[groupID][msg.sender].description = _description;
     mappProfileInGroup[groupID][msg.sender].id = id;
-    id += 1;
   }
 
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, address _crypto) public payable

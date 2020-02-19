@@ -40,7 +40,7 @@ export default class Header extends React.Component {
               </View>
           </View>
 
-      )
+      )}
 
       if (this.props.type === '2'){
 

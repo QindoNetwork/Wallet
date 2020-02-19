@@ -26,7 +26,6 @@ export class NewWalletName extends React.Component {
           const contract = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
           if (parseInt(await contract.verifyUserAvailability(walletName),10) === 0 )
           {
-            result = "KO"
             GeneralActions.notify('Username unavailable', 'long');
           }
           else
@@ -86,8 +85,6 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '90%',
-        borderBottomWidth: 1,
-        borderBottomColor: colors.black,
         padding: 4,
         paddingLeft: 0,
         marginRight: 2,
