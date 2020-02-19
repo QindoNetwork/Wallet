@@ -2,16 +2,13 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View, Image } from 'react-native';
 import { Icon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { Wallet as WalletUtils } from '@common/utils';
+import { Identity as IdentityAction } from '@common/actions';
 
 export class CryptoCard extends React.Component {
 
   balance(value) {
       const { crypto } = this.props
-      if(crypto.name !== 'Ethers') {
-        return Number(value*(Math.pow(10, ((-1)*crypto.decimals))))
-      }
-      else return Number(WalletUtils.formatBalance(value))
+      return Number(value/(Math.pow(10,crypto.decimals))).toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
   }
 
   renderIcon(symbol) {
@@ -39,7 +36,7 @@ export class CryptoCard extends React.Component {
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>
-                            <Text style={styles.balance}>{this.balance(this.props.crypto.balance).toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+                            <Text style={styles.balance}>{this.balance(this.props.crypto.balance)}</Text>
                         </View>
                     </View>
                 </View>

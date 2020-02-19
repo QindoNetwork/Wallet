@@ -31,6 +31,16 @@ contract Togethers is Administration {
     uint Out;
   }
 
+    struct test
+  {
+    uint groupID;
+    address _publicKey;
+    uint mappAllowCryptoForCategory;
+    uint amount;
+    uint result;
+  }
+
+
   uint public groupNumber;
 
   constructor() public {
@@ -167,9 +177,9 @@ contract Togethers is Administration {
         amount = amount.mul(10**(max - (External1(_crypto).decimals())));
       }
     }
-    mappProfileStats[groupID][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
-    mappPeerToPeerStats[msg.sender][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
-    mappIdStats[mappProfileInGroup[groupID][_publicKey].id][msg.sender][mappAllowCryptoForCategory[_crypto]].add(amount);
+    mappProfileStats[groupID][_publicKey][mappAllowCryptoForCategory[_crypto]] = mappProfileStats[groupID][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
+    mappPeerToPeerStats[msg.sender][_publicKey][mappAllowCryptoForCategory[_crypto]] = mappPeerToPeerStats[msg.sender][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
+    mappIdStats[mappProfileInGroup[groupID][_publicKey].id][msg.sender][mappAllowCryptoForCategory[_crypto]] = mappIdStats[mappProfileInGroup[groupID][_publicKey].id][msg.sender][mappAllowCryptoForCategory[_crypto]].add(amount);
   }
 
   function withdrawFunds(uint groupID) public
@@ -201,7 +211,7 @@ contract Togethers is Administration {
     {
       _tokenAmount = _tokenAmount.mul(10**(External1(_crypto2).decimals() - (External1(_crypto1).decimals())));
     }
-    if (External1(_crypto2).decimals() > External1(_crypto1).decimals())
+    if (External1(_crypto2).decimals() < External1(_crypto1).decimals())
     {
       _tokenAmount = _tokenAmount.div(10**(External1(_crypto1).decimals() - (External1(_crypto2).decimals())));
     }

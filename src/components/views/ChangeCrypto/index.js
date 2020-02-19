@@ -106,7 +106,7 @@ export class ChangeCrypto extends React.Component {
 
             <FlatList
               data={erc20s1.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
-              refreshControl={<RefreshControl refreshing={wallet.item.loading} onRefresh={() => this.updateData()} />}
+              refreshControl={<RefreshControl refreshing={wallet.loading} onRefresh={() => this.updateData()} />}
               renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.content}

@@ -44,27 +44,31 @@ export class ProfileData extends React.Component {
         for ( var i = 0; i < contractsAddress.homeStablecoinsNumber; i++ ) {
         peerToPeerStats = await togethers.getStats(item.id,i)
         stats2.push({
-                        balance: parseInt(peerToPeerStats.In,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)) ,
+                        balance: parseInt(peerToPeerStats.In,10),
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
+                        decimals: contractsAddress.homeStablecoinDecimals,
                        })
                        stats3.push({
-                                       balance: parseInt(peerToPeerStats.Out,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)),
+                                       balance: parseInt(peerToPeerStats.Out,10),
                                        name: IdentityAction.getHomeStableName(i),
                                        symbol: IdentityAction.getHomeStableSymbol(i),
+                                       decimals: contractsAddress.homeStablecoinDecimals,
                                       })
 
         if ( item.active == true ) {
         profileStats = await togethers.getProfileStats(groupID,wallet.item.address,i)
         stats4.push({
-                        balance: parseInt(profileStats.In,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)),
+                        balance: parseInt(profileStats.In,10),
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
+                        decimals: contractsAddress.homeStablecoinDecimals,
                        })
           stats.push({
-                          balance: parseInt(profileStats.Out,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)),
+                          balance: parseInt(profileStats.Out,10),
                           name: IdentityAction.getHomeStableName(i),
                           symbol: IdentityAction.getHomeStableSymbol(i),
+                          decimals: contractsAddress.homeStablecoinDecimals,
                          })
                        }
         }
@@ -143,21 +147,21 @@ export class ProfileData extends React.Component {
     if (item.active == true){
       return(
         <ScrollView style={styles.container}>
-        {this.renderProfile()}
         <View style={styles.buttonsContainer}>
             <Button
               children="Send"
               onPress={() => this.props.navigation.navigate('CryptoType1',
               { togethers, groupID, profile: item, gasParam })}/>
         </View>
+        {this.renderProfile()}
         {this.renderData()}
       </ScrollView>)
     }
 
     return(
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
       {this.renderData()}
-      </View>)
+      </ScrollView>)
 
   }
 

@@ -121,7 +121,7 @@ export class Profiles extends React.Component {
         </View>
         <FlatList
             data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
-            refreshControl={<RefreshControl refreshing={wallet.item.loading} onRefresh={() => this.updateData()} />}
+            refreshControl={<RefreshControl refreshing={wallet.loading} onRefresh={() => this.updateData()} />}
             renderItem={({ item }) => (
               <TouchableOpacity
               style={styles.content}

@@ -67,7 +67,7 @@ export class Groups extends React.Component {
           <Header length={this.state.groups.length}/>
           <FlatList
             data={this.state.groups.sort((prev, next) => prev.name.localeCompare(next.name))}
-            refreshControl={<RefreshControl refreshing={wallet.item.loading} onRefresh={() => this.updateData()} />}
+            refreshControl={<RefreshControl refreshing={wallet.loading} onRefresh={() => this.updateData()} />}
             renderItem={({ item }) => (
               <TouchableOpacity
               style={styles.content}

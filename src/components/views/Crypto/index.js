@@ -38,7 +38,7 @@ export class Crypto extends React.Component {
     var balance
     erc20s.push({ name: IdentityAction.getHomeStableName(0),
                   symbol: IdentityAction.getHomeStableSymbol(0),
-                  decimals: 18,
+                  decimals: contractsAddress.homeStablecoinDecimals,
                   instance: null,
                   balance: wallet.item.balance,
                   address: contractsAddress.nullAddress})
@@ -109,7 +109,7 @@ export class Crypto extends React.Component {
           <Header/>
             <FlatList
               data={erc20s.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
-              refreshControl={<RefreshControl refreshing={wallet.item.loading} onRefresh={() => this.updateData()} />}
+              refreshControl={<RefreshControl refreshing={wallet.loading} onRefresh={() => this.updateData()} />}
               renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.content}

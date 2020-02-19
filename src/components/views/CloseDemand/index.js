@@ -29,18 +29,20 @@ export class CloseDemand extends React.Component {
     try {
       for ( var i = 0; i < contractsAddress.homeStablecoinsNumber; i++ ) {
         myStats =  await togethers.mappProfileStats(profile.id,wallet.item.address,i)
-          stats.push({  balance:  myStats / (Math.pow(10,contractsAddress.homeStablecoinDecimals)),
+          stats.push({  balance:  myStats,
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
+                        decimals: contractsAddress.homeStablecoinDecimals,
                          })
       }
       for ( var k = 0; k < profiles.length; k++ ) {
       if ( profiles[k].id !== wallet.item.address && new Boolean(profiles[k].isMember) == true) {
       for ( var j = 0; j < contractsAddress.homeStablecoinsNumber; j++ ) {
         idStats =  await togethers.mappIdStats(profile.id,profile.demandID,profiles[k].id,j)
-          stats2.push({  balance:  idStats / (Math.pow(10,contractsAddress.homeStablecoinDecimals)),
+          stats2.push({  balance:  idStats,
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
+                        decimals: contractsAddress.homeStablecoinDecimals,
                          })
       }
       profileStats.push({ id:  profiles[k].id,
@@ -90,7 +92,7 @@ export class CloseDemand extends React.Component {
             children="Close"
             onPress={() => this.setState({ show: true })}/>
       </View>
-      <Text style={styles.message}>{this.props.navigation.state.params.profile.description}</Text>    
+      <Text style={styles.message}>{this.props.navigation.state.params.profile.description}</Text>
       <Header/>
       <FlatList
               style={styles.content}
