@@ -60,6 +60,37 @@ export const TogethersABI = [
     "constant": true,
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "name": "mappIdStats",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
         "internalType": "address",
         "name": "",
         "type": "address"
@@ -314,6 +345,37 @@ export const TogethersABI = [
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "name": "mappProfileStats",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "payable": false,
@@ -756,21 +818,33 @@ export const TogethersABI = [
     "inputs": [
       {
         "internalType": "address",
-        "name": "from",
+        "name": "to",
         "type": "address"
       },
       {
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
+        "internalType": "uint8",
+        "name": "crypto",
+        "type": "uint8"
       }
     ],
     "name": "getStats",
     "outputs": [
       {
-        "internalType": "uint256[]",
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "In",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "Out",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Togethers.stats",
         "name": "",
-        "type": "uint256[]"
+        "type": "tuple"
       }
     ],
     "payable": false,
@@ -789,14 +863,31 @@ export const TogethersABI = [
         "internalType": "address",
         "name": "_user",
         "type": "address"
+      },
+      {
+        "internalType": "uint8",
+        "name": "crypto",
+        "type": "uint8"
       }
     ],
     "name": "getProfileStats",
     "outputs": [
       {
-        "internalType": "uint256[]",
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "In",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "Out",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Togethers.stats",
         "name": "",
-        "type": "uint256[]"
+        "type": "tuple"
       }
     ],
     "payable": false,
@@ -850,37 +941,6 @@ export const TogethersABI = [
         "internalType": "struct Togethers.profile",
         "name": "",
         "type": "tuple"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "groupID",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_id",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "getIdStats",
-    "outputs": [
-      {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
       }
     ],
     "payable": false,

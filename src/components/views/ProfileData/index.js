@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
+import { Contracts as contractsAddress } from '@common/constants';
 import { HeaderIcon } from '@components/widgets';
 import { General as GeneralActions, Identity as IdentityAction } from '@common/actions';
 import { CryptoCard } from '@components/widgets';
@@ -32,39 +33,41 @@ export class ProfileData extends React.Component {
 
     async componentDidMount() {
       const { wallet } = this.props
-      const { togethers, item } = this.props.navigation.state.params;
+      const { togethers, item, groupID } = this.props.navigation.state.params;
       let stats = []
       let stats2 = []
       let stats3 = []
-      let balance1 = 0
-      let balance2 = 0
-      let balance3 = 0
+      let stats4 = []
+      let balance
+      let peerToPeerStats
+      let profileStats
       try {
-        const statsIn = await togethers.getStats(wallet.item.address,item.id)
-        const statsOut = await togethers.getStats(item.id,wallet.item.address)
-        for ( var i = 0; i < item.stats.length; i++ ) {
-        balance1 = !item.stats[i] ? 0 : parseInt (item.stats[i],10)
-        balance2 = !statsIn[i] ? 0 : parseInt (statsIn[i],10)
-        balance3 = !statsOut[i] ? 0 : parseInt (statsOut[i],10)
+        for ( var i = 0; i < contractsAddress.homeStablecoinsNumber; i++ ) {
+        peerToPeerStats = await togethers.getStats(item.id,i)
+        stats2.push({
+                        balance: parseInt(peerToPeerStats.In,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)).toString() ,
+                        name: IdentityAction.getHomeStableName(i),
+                        symbol: IdentityAction.getHomeStableSymbol(i),
+                       })
+                       stats3.push({
+                                       balance: parseInt(peerToPeerStats.Out,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)).toString(),
+                                       name: IdentityAction.getHomeStableName(i),
+                                       symbol: IdentityAction.getHomeStableSymbol(i),
+                                      })
 
+        if ( item.active == true ) {
+        profileStats = await togethers.getProfileStats(groupID,wallet.item.address,i)
+        stats4.push({
+                        balance: parseInt(profileStats.In,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)).toString(),
+                        name: IdentityAction.getHomeStableName(i),
+                        symbol: IdentityAction.getHomeStableSymbol(i),
+                       })
           stats.push({
-                          balance: balance1,
+                          balance: parseInt(profileStats.Out,10) / (Math.pow(10,contractsAddress.homeStablecoinDecimals)).toString(),
                           name: IdentityAction.getHomeStableName(i),
                           symbol: IdentityAction.getHomeStableSymbol(i),
-                          decimals: 18,
                          })
-                         stats2.push({
-                                         balance: balance2,
-                                         name: IdentityAction.getHomeStableName(i),
-                                         symbol: IdentityAction.getHomeStableSymbol(i),
-                                         decimals: 18,
-                                        })
-                                        stats3.push({
-                                                        balance: balance3,
-                                                        name: IdentityAction.getHomeStableName(i),
-                                                        symbol: IdentityAction.getHomeStableSymbol(i),
-                                                        decimals: 18,
-                                                       })
+                       }
         }
         this.setState({ stats, stats2, stats3, loading: 1 })
       } catch (e) {
@@ -77,18 +80,18 @@ export class ProfileData extends React.Component {
       const { stats } = this.state
       const { item } = this.props.navigation.state.params;
 
-        return(
-          <View>
-          <Header type = '0'/>
-          <Text style={styles.message}>{item.description}</Text>
-          <FlatList
-                data={stats.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
-                renderItem={({ item }) => (
-                <CryptoCard crypto={item}/>
-              )}
-          />
-          </View>)
-      }
+      return(
+        <View>
+        <Text style={styles.message}>{item.description}</Text>
+        <Header type = '0'/>
+        <FlatList
+              data={stats.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
+              renderItem={({ item }) => (
+              <CryptoCard crypto={item}/>
+            )}
+        />
+        </View>)
+  }
 
     renderData() {
 

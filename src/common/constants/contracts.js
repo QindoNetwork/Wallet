@@ -1,4 +1,4 @@
-export const togethersAddress = "0xc02Da277fd3FDEc90B144d19f129889cE2Bd485B";
+export const togethersAddress = "0xB160D5eCc2E034304E0da85286f9bd73bDd7cF90";
 
 export const controlAddress = "0x3Ab88cBC354308cCaA85003e67512D876015eB2A";
 
@@ -15,3 +15,7 @@ export const  Tether = "0x92EB10B521fd63D0a2df10B36f284C150b1Ca17F";
 export const  Stasis = "0xc3249b1240e44b19c42d8a6d27e15f80376e542d";
 
 export const nullAddress = "0x0000000000000000000000000000000000000000";
+
+export const homeStablecoinsNumber = 3
+
+export const homeStablecoinDecimals = 18

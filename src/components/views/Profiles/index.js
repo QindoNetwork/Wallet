@@ -73,8 +73,8 @@ export class Profiles extends React.Component {
                                 name: profilesName[currentAddress],
                                 owner: new Boolean(temp.owner),
                                 active: new Boolean(temp.open),
-                                description: temp.description,
-                                stats: await togethers.getProfileStats(groupID,currentAddress)})
+                                description: temp.description
+                                })
               }
           }
           this.setState({ profiles, profilesName, loading: 1 })
@@ -83,7 +83,7 @@ export class Profiles extends React.Component {
         }
       }
 
-      demand(groupID, togethers, gasParam, profile) {
+      demand(groupID, togethers, gasParam, profile, profiles) {
         const { profilesName } = this.state
         if (this.props.navigation.state.params.profile.active == true){
           this.props.navigation.navigate('CloseDemand',{ groupID, togethers, gasParam, profiles, profile, profilesName })
@@ -117,7 +117,7 @@ export class Profiles extends React.Component {
         <View style={styles.buttonsContainer}>
             <Button
               children="My demand"
-              onPress={() => this.demand(groupID, togethers, gasParam, profile )}/>
+              onPress={() => this.demand(groupID, togethers, gasParam, profile, profiles )}/>
         </View>
         <FlatList
             data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}

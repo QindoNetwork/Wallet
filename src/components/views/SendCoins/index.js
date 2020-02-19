@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Calculator } from '@components/widgets';
 import { colors } from '@common/styles';
-import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
-import { Conversions as conversions } from '@common/constants';
+import { General as GeneralActions, Languages as LanguagesActions, Identity as IdentityAction } from '@common/actions';
+import { Conversions as conversions, Contracts as contractsAddress } from '@common/constants';
 import { inject, observer } from 'mobx-react';
 
 @inject('wallet','languages')
@@ -19,12 +19,12 @@ export class SendCoins extends React.Component {
       var { amount } = this.refs.calc;
       let isOK = true
         if (!amount || amount === 0) return;
-        if (item.name === 'Ethers') {
+        if (item.name === IdentityAction.getHomeStableName(0)) {
           if (amount * conversions.weiToEthereum > item.balance) {
           isOK = false
           }
         }else {
-          if (amount * (Math.pow(10,18)) > item.balance) {
+          if (amount * (Math.pow(10,contractsAddress.homeStablecoinDecimals)) > item.balance) {
           isOK = false
           }
         }

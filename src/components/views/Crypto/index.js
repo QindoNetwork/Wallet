@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, Text, View, ActivityIndicator, RefreshControl} from 'react-native';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions, Identity as IdentityAction } from '@common/actions';
 import { CryptoCard } from '@components/widgets';
 import Header from './Header';
 import { ERC20ABI as erc20ABI } from '@common/ABIs';
@@ -36,8 +36,8 @@ export class Crypto extends React.Component {
     var info
     var instance
     var balance
-    erc20s.push({ name: "Ethers",
-                  symbol: "ETH",
+    erc20s.push({ name: IdentityAction.getHomeStableName(0),
+                  symbol: IdentityAction.getHomeStableSymbol(0),
                   decimals: 18,
                   instance: null,
                   balance: wallet.item.balance,

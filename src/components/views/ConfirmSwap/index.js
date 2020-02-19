@@ -104,8 +104,8 @@ export class ConfirmSwap extends React.Component {
         const { instance, togethers, gasParam, amount, cryptoOne } = this.props.navigation.state.params;
         let overrides
         let result = 0
-        let value
         let nonce
+        amount = (amount * (Math.pow(10,cryptoOne.decimals))).toString()
         try {
         if (this.state.registered === 1) {
           const hashPassword = sha256(this.state.password)
@@ -145,13 +145,13 @@ export class ConfirmSwap extends React.Component {
     render() {
         const { amount, cryptoOne, loading, item } = this.props.navigation.state.params;
         const fees = (this.state.fees === 0) ? '0' : '1 / ' + this.state.fees
-        
+
         if(this.state.loading === 0)
         {
           return(
             <View style={styles.container}>
                 <View style={styles.body}>
-                  <ActivityIndicator size="large"/>
+                  <ActivityIndicator size="large" color="darkslategray"/>
                 </View>
               </View>
         )
@@ -205,6 +205,11 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         justifyContent: 'space-between',
         backgroundColor: colors.defaultBackground,
+    },
+    body: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     content: {
         flex: 1,

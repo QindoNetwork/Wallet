@@ -8,6 +8,7 @@ import { SecureTransaction } from '@components/widgets';
 import { CryptoCard } from '@components/widgets';
 import Header from './Header';
 import { inject, observer } from 'mobx-react';
+import { Contracts as contractsAddress } from '@common/constants';
 
 @inject('languages','wallet')
 @observer
@@ -18,34 +19,29 @@ export class CloseDemand extends React.Component {
   state = { stats: [], show: false, loading: 0, profileStats: [] };
 
   async componentDidMount() {
-    const { profile } = this.props.navigation.state.params;
+    const { profile, profiles, togethers } = this.props.navigation.state.params;
     const { wallet } = this.props
-    var stat
-    var stats
-    var stats2
-    var profileStats
+    var stats = []
+    var stats2 = []
+    var profileStats = []
     var idStats
-    const myStats =  await togethers.getProfileStats(profile.id,wallet.item.address)
-      for ( var i = 0; i < myStats.length; i++ ) {
-        stat = (!myStats[i]) ? 0 : parseInt (myStats[i],10)
-       if (stat !== 0){
-          stats.push({  balance:  stat,
+    var myStats
+    try {
+      for ( var i = 0; i < contractsAddress.homeStablecoinsNumber; i++ ) {
+        myStats =  await togethers.mappProfileStats(profile.id,wallet.item.address,i)
+          stats.push({  balance:  myStats / (Math.pow(10,contractsAddress.homeStablecoinDecimals)).toString(),
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
-                        decimals: 18 })
-        }
+                         })
       }
       for ( var k = 0; k < profiles.length; k++ ) {
-      idStats =  await togethers.getIdStats(profile.id,profile.demandID,profiles[k].id)
       if ( profiles[k].id !== wallet.item.address && new Boolean(profiles[k].isMember) == true) {
-      for ( var j = 0; j < idStats.length; j++ ) {
-        stat = (!idStats[j]) ? 0 : parseInt (idStats[j],10)
-       if (stat !== 0){
-          stats2.push({  balance:  stat,
+      for ( var j = 0; j < contractsAddress.homeStablecoinsNumber; j++ ) {
+        idStats =  await togethers.mappIdStats(profile.id,profile.demandID,profiles[k].id,j)
+          stats2.push({  balance:  idStats / (Math.pow(10,contractsAddress.homeStablecoinDecimals)).toString(),
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
-                        decimals: 18 })
-        }
+                         })
       }
       profileStats.push({ id:  profiles[k].id,
                       name: profiles[k].name,
@@ -53,6 +49,9 @@ export class CloseDemand extends React.Component {
       }
       }
       this.setState({ stats, profileStats, loading: 0 })
+    }catch (e) {
+      GeneralActions.notify(e.message, 'long');
+  }
   }
 
   renderModal() {

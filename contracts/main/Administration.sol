@@ -19,6 +19,8 @@ contract Administration is Ownable {
   address[] cryptoList;
   address[] homeStableList;
 
+  uint32 constant max = 18;
+
   struct erc20
   {
     string symbol;
@@ -119,7 +121,7 @@ contract Administration is Ownable {
 
   function createNewHomeStable(address crypto, string memory currency) public onlyOwner
   {
-    require(External1(crypto).decimals() == 18);
+    require(External1(crypto).decimals() == max);
     require(External1(crypto).totalSupplly() == 0);
     stablecoinType[homeStableList.length] = currency;
     homeStableList.push(crypto);

@@ -10,9 +10,9 @@ contract Togethers is Administration {
   mapping (address => uint[]) private mappGroupsForAddress;
   mapping (uint => address[]) private mappUsersInGroup;
   mapping (address => mapping (uint => bool)) public mappAskForAdd;
-  mapping (address => mapping (address => uint[])) private mappPeerToPeerStats;
-  mapping (uint => mapping (address => uint[])) private mappProfileStats;
-  mapping (uint => mapping (address => uint[])) private mappIdStats;
+  mapping (address => mapping (address => mapping (uint8 => uint))) private mappPeerToPeerStats;
+  mapping (uint => mapping (address => mapping (uint8 => uint))) public mappProfileStats;
+  mapping (uint => mapping (address => mapping (uint8 => uint))) public mappIdStats;
 
   uint id;
 
@@ -23,6 +23,12 @@ contract Togethers is Administration {
     bool owner;
     string description;
     uint id;
+  }
+
+    struct stats
+  {
+    uint In;
+    uint Out;
   }
 
   uint public groupNumber;
@@ -146,9 +152,6 @@ contract Togethers is Administration {
 
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, address _crypto) public payable
   {
-    require(_publicKey != msg.sender);
-    require(mappProfileInGroup[groupID][_publicKey].open == true);
-    require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     uint amount;
     if (msg.value > 0)
     {
@@ -159,7 +162,10 @@ contract Togethers is Administration {
       require(mappCryptoEnable[_crypto] == true);
       amount = _tokenAmount;
       External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
-      amount = _tokenAmount.mul(10**(-(18-(External1(_crypto).decimals()))));
+      if (External1(_crypto).decimals() < max)
+      {
+        amount = amount.mul(10**(max - (External1(_crypto).decimals())));
+      }
     }
     mappProfileStats[groupID][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
     mappPeerToPeerStats[msg.sender][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
@@ -168,9 +174,8 @@ contract Togethers is Administration {
 
   function withdrawFunds(uint groupID) public
   {
-    require(mappProfileInGroup[groupID][msg.sender].open == true);
     mappProfileInGroup[groupID][msg.sender].open = false;
-    for(uint i = 0 ; i < homeStableList.length ; i++)
+    for(uint8 i = 0 ; i < homeStableList.length ; i++)
     {
     if (mappProfileStats[groupID][msg.sender][i] > 0)
     {
@@ -190,22 +195,27 @@ contract Togethers is Administration {
   function changeToken(uint _tokenAmount, address _crypto1, address _crypto2) public
   {
     require(mappCryptoEnable[_crypto1] == true && mappCryptoEnable[_crypto2] == true);
-    require(_crypto1 != _crypto2);
     require(mappAllowCryptoForCategory[_crypto1] == mappAllowCryptoForCategory[_crypto2]);
-    uint cryptoAmount1 = _tokenAmount.mul(10**(-(18-(External1(_crypto1).decimals()))));
-    uint cryptoAmount2 = _tokenAmount.mul(10**(-(18-(External1(_crypto2).decimals()))));
-    External1(_crypto1).transferFrom(msg.sender,address(this),cryptoAmount1);
+    External1(_crypto1).transferFrom(msg.sender,address(this),_tokenAmount);
+    if (External1(_crypto2).decimals() > External1(_crypto1).decimals())
+    {
+      _tokenAmount = _tokenAmount.mul(10**(External1(_crypto2).decimals() - (External1(_crypto1).decimals())));
+    }
+    if (External1(_crypto2).decimals() > External1(_crypto1).decimals())
+    {
+      _tokenAmount = _tokenAmount.div(10**(External1(_crypto1).decimals() - (External1(_crypto2).decimals())));
+    }
     uint money;
     if (fees > 0)
     {
-      money = cryptoAmount2.div(fees);
+      money = _tokenAmount.div(fees);
       External1(_crypto2).transfer(owner,money);
     }
     else
     {
       money = 0;
     }
-    External1(_crypto2).transfer(msg.sender,cryptoAmount2.sub(money));
+    External1(_crypto2).transfer(msg.sender,_tokenAmount.sub(money));
   }
 
   function removeMember(address _publicKey, uint groupID) public
@@ -265,26 +275,25 @@ contract Togethers is Administration {
     return erc20(symbol,name,decimals,status,category);
   }
 
-  function getStats(address from, address to) view public returns (uint[] memory)
+  function getStats(address to, uint8 crypto) view public returns (stats memory)
   {
-    return mappPeerToPeerStats[from][to];
+    uint Out = mappPeerToPeerStats[msg.sender][to][crypto];
+    uint In = mappPeerToPeerStats[to][msg.sender][crypto];
+    return stats(In,Out);
   }
 
-  function getProfileStats(uint groupID, address _user) view public returns (uint[] memory)
+  function getProfileStats(uint groupID, address _user, uint8 crypto) view public returns (stats memory)
   {
-    return mappProfileStats[groupID][_user];
+    require(mappProfileInGroup[groupID][msg.sender].isMember == true);
+    uint In = mappProfileStats[groupID][_user][crypto];
+    uint Out = mappIdStats[mappProfileInGroup[groupID][_user].id][msg.sender][crypto];
+    return stats(In,Out);
   }
 
   function getProfileInGroup(uint groupID, address _user) view public returns (profile memory)
   {
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     return mappProfileInGroup[groupID][_user];
-  }
-
-  function getIdStats(uint groupID, uint _id, address user) view public returns (uint[] memory)
-  {
-    require(mappProfileInGroup[groupID][msg.sender].id == _id);
-    return mappIdStats[_id][user];
   }
 
 }
