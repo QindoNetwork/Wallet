@@ -162,6 +162,8 @@ contract Togethers is Administration {
 
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, address _crypto) public payable
   {
+    require(mappProfileInGroup[groupID][_publicKey].open == true);
+    require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     uint amount;
     if (msg.value > 0)
     {
@@ -184,6 +186,7 @@ contract Togethers is Administration {
 
   function withdrawFunds(uint groupID) public
   {
+    require(mappProfileInGroup[groupID][msg.sende].open == true);
     mappProfileInGroup[groupID][msg.sender].open = false;
     for(uint8 i = 0 ; i < homeStableList.length ; i++)
     {

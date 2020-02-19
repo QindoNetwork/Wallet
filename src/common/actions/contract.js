@@ -3,7 +3,7 @@ import { General as GeneralActions  } from '@common/actions';
 import { Contracts as contractsAddress } from '@common/constants';
 import { Languages as LanguagesActions, Wallets as WalletsActions } from '@common/actions';
 
-export async function createGroup(togethers, args, overrides) {
+export async function createGroup(togethers, args, overrides,languages) {
   const { groupName } = args
   let result = "OK"
   try {
@@ -15,7 +15,7 @@ export async function createGroup(togethers, args, overrides) {
   return result
 }
 
-export async function ask(togethers, args, address, overrides) {
+export async function ask(togethers, args, address, overrides,languages) {
   const { groupID } = args
   let result = "OK"
   try {
@@ -39,7 +39,7 @@ export async function ask(togethers, args, address, overrides) {
   return result
 }
 
-export async function createProfile(togethers, args, overrides) {
+export async function createProfile(togethers, args, overrides,languages) {
   const { groupID, value } = args
   let result = "OK"
   try {
@@ -66,7 +66,7 @@ export async function createProfile(togethers, args, overrides) {
   return result
 }
 
-export async function changePassword(togethers, args, overrides) {
+export async function changePassword(togethers, args, overrides,languages) {
   const { value, oldPassword } = args
   let result = "OK"
   try {
@@ -83,7 +83,7 @@ export async function changePassword(togethers, args, overrides) {
     return result
   }
 
-export async function changeUserName(togethers, args, address, overrides) {
+export async function changeUserName(togethers, args, address, overrides,languages) {
   const { value } = args
   let result = "OK"
   try {
@@ -103,7 +103,7 @@ export async function changeUserName(togethers, args, address, overrides) {
   return result
 }
 
-export async function withdrawFunds(togethers, args, overrides) {
+export async function withdrawFunds(togethers, args, overrides,languages) {
   const { groupID } = args
   let result = "OK"
   try {
@@ -115,7 +115,7 @@ export async function withdrawFunds(togethers, args, overrides) {
   return result
 }
 
-export async function askForFunds(togethers, args, overrides) {
+export async function askForFunds(togethers, args, overrides,languages) {
   const { groupID, description } = args
   let result = "OK"
   try {
@@ -127,7 +127,7 @@ export async function askForFunds(togethers, args, overrides) {
   return result
 }
 
-export async function quitGroup(togethers, args, address, overrides) {
+export async function quitGroup(togethers, args, address, overrides,languages) {
   const { groupID } = args
   let result = "OK"
   try {
@@ -139,7 +139,7 @@ export async function quitGroup(togethers, args, address, overrides) {
   return result
 }
 
-export async function transferGroupOwnership(togethers, args, overrides) {
+export async function transferGroupOwnership(togethers, args, overrides,languages) {
   const { target, groupID } = args
   let result = "OK"
   try {
@@ -151,7 +151,7 @@ export async function transferGroupOwnership(togethers, args, overrides) {
   return result
 }
 
-export async function removeMember(togethers, args, overrides) {
+export async function removeMember(togethers, args, overrides,languages) {
   const { target, groupID } = args
   let result = "OK"
   try {

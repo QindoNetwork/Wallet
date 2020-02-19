@@ -14,10 +14,11 @@ export class SendCoinsType1 extends React.Component {
       title: 'Amount'
   });
 
-    onPressContinue() {
+    onPressContinue(max) {
+      const { togethers, gasParam, item, cryptoOne } = this.props.navigation.state.params;
       var { amount } = this.refs.calc;
         if (!amount || amount === 0 ) return;
-        if (amount > this.state.max) {
+        if (amount > max) {
         GeneralActions.notify("You or contract don t have enough balance", 'long');
         }
         else {
@@ -28,8 +29,8 @@ export class SendCoinsType1 extends React.Component {
     render() {
 
       const { item, cryptoOne } = this.props.navigation.state.params;
-        var balance1 = cryptoOne.balance * (Math.pow(10,-(cryptoOne.decimals)))
-        var balance2 = item.balance * (Math.pow(10,-(item.decimals)))
+        var balance1 = cryptoOne.balance / (Math.pow(10,cryptoOne.decimals))
+        var balance2 = item.balance / (Math.pow(10,item.decimals))
         var max
         if (balance1 > balance2) {
           max = balance2
@@ -41,8 +42,8 @@ export class SendCoinsType1 extends React.Component {
         return (
             <View style={styles.container}>
             <Text style={styles.title}>Transform {cryptoOne.symbol} into {item.symbol} ( maximum : {max} ) </Text>
-                <Calculator ref="calc" symbol={item.symbol}/>
-                <Button children="Continue" onPress={() => this.onPressContinue()} />
+                <Calculator ref="calc" symbol="<-->"/>
+                <Button children="Continue" onPress={() => this.onPressContinue(max)} />
             </View>
         );
     }

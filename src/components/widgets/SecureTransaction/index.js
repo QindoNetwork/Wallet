@@ -8,7 +8,7 @@ import { Gas as gas, Conversions as conversions } from '@common/constants';
 import { sha256 } from 'react-native-sha256';
 import { inject, observer } from 'mobx-react';
 
-@inject('wallet')
+@inject('wallet','languages')
 @observer
 export class SecureTransaction extends React.Component {
 
@@ -28,6 +28,7 @@ export class SecureTransaction extends React.Component {
 
     async onPressContinue() {
         Keyboard.dismiss();
+        const { languages } = this.props
         this.setState({ loading: 0 });
         try {
           let result
@@ -52,7 +53,7 @@ export class SecureTransaction extends React.Component {
 
     async exit() {
 
-      const { togethers, type, navigation, values, gasParam, wallet } = this.props
+      const { togethers, type, navigation, values, gasParam, wallet, languages } = this.props
       const address = wallet.item.address
       const gasLimit = gasParam[type].limit
       const gasPrice = gasParam[type].price * conversions.gigaWeiToWei
@@ -64,34 +65,34 @@ export class SecureTransaction extends React.Component {
       if (gasLimit * gasPrice < wallet.item.balance) {
         switch (type) {
                 case gas.createGroup:
-                    tx = await ContractActions.createGroup(togethers,values,overrides)
+                    tx = await ContractActions.createGroup(togethers,values,overrides,languages)
                     break;
                 case gas.ask:
-                    tx = await ContractActions.ask(togethers,values,address,overrides)
+                    tx = await ContractActions.ask(togethers,values,address,overrides,languages)
                     break;
                 case gas.createProfile:
-                    tx = await ContractActions.createProfile(togethers,values,overrides)
+                    tx = await ContractActions.createProfile(togethers,values,overrides,languages)
                     break;
                 case gas.changePassword:
-                    tx = await ContractActions.changePassword(togethers,values,overrides)
+                    tx = await ContractActions.changePassword(togethers,values,overrides,languages)
                     break;
                 case gas.changeUserName:
-                    tx = await ContractActions.changeUserName(togethers,values,address,overrides)
+                    tx = await ContractActions.changeUserName(togethers,values,address,overrides,languages)
                     break;
                 case gas.withdrawFunds:
-                    tx = await ContractActions.withdrawFunds(togethers,values,overrides)
+                    tx = await ContractActions.withdrawFunds(togethers,values,overrides,languages)
                     break;
                 case gas.askForFunds:
-                    tx = await ContractActions.askForFunds(togethers,values,overrides)
+                    tx = await ContractActions.askForFunds(togethers,values,overrides,languages)
                     break;
                 case gas.quitGroup:
-                    tx = await ContractActions.quitGroup(togethers,values,address,overrides)
+                    tx = await ContractActions.quitGroup(togethers,values,address,overrides,languages)
                     break;
                 case gas.transferGroupOwnership:
-                    tx = await ContractActions.transferGroupOwnership(togethers,values,overrides)
+                    tx = await ContractActions.transferGroupOwnership(togethers,values,overrides,languages)
                     break;
                 case gas.removeMember:
-                    tx = await ContractActions.removeMember(togethers,values,overrides)
+                    tx = await ContractActions.removeMember(togethers,values,overrides,languages)
                     break;
             default:
                 GeneralActions.notify('unknown function', 'long');
@@ -116,11 +117,13 @@ export class SecureTransaction extends React.Component {
     }
 
     renderDescription(ethPrice) {
+      const { languages } = this.props
       return(
           <Text style={styles.detail}>Approximatly {ethPrice} ETH</Text>)
     }
 
     renderButtons() {
+      const { languages } = this.props
       return(
         <View style={styles.body}>
           <View style={styles.buttonsContainer}>

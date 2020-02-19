@@ -37,7 +37,7 @@ export class ConfirmSwap extends React.Component {
 
     renderButtons() {
 
-      const { amount, cryptoOne, loading, item, gasParam } = this.props.navigation.state.params;
+      const { amount, cryptoOne, item, gasParam } = this.props.navigation.state.params;
       const maxPrice =  gasParam[gas.changeToken].limit * gasParam[gas.changeToken].price * conversions.gigaWeiToWei
       const ethPrice = (maxPrice / conversions.weiToEthereum) / 2
 
@@ -72,7 +72,7 @@ export class ConfirmSwap extends React.Component {
       )
       }
 
-      if(this.state.registerd === 0)
+      if(this.state.registered === 0)
       {
         return(
             <View style={styles.containerModal}>
@@ -143,7 +143,7 @@ export class ConfirmSwap extends React.Component {
     }
 
     render() {
-        const { amount, cryptoOne, loading, item } = this.props.navigation.state.params;
+        const { amount, cryptoOne, item } = this.props.navigation.state.params;
         const fees = (this.state.fees === 0) ? '0' : '1 / ' + this.state.fees
 
         if(this.state.loading === 0)
@@ -165,11 +165,11 @@ export class ConfirmSwap extends React.Component {
                             <Text style={styles.value}
                                 numberOfLines={1}
                                 ellipsizeMode="middle"
-                                children={cryptoOne} />
+                                children={this.props.wallet.item.address} />
                         </View>
                         <Image style={styles.avatar}
-                            source={{ uri: ImageUtils.generateAvatar(target,500) }} />
-                    </View>fees
+                            source={{ uri: ImageUtils.generateAvatar(this.props.wallet.item.address,500) }} />
+                    </View>
                     <View style={styles.textColumn}>
                         <Text style={styles.title}>Amount ({cryptoOne.symbol} -> {item.symbol}) </Text>
                         <Text style={styles.value}>{amount}</Text>

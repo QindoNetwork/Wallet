@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator, RefreshControl } from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions  } from '@common/actions';
