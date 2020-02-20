@@ -49,8 +49,8 @@ contract Togethers is Administration {
     homeStableList.push(address(0));
     mappAllowCryptoForCategory[address(0)] = 0;
     stablecoinType[0] = 'NaN';
-    address ttusd = 0x9e838F34E40C4680B71Da2fDc9A1Db05F0169292;
-    address tteur = 0x8461a630013Bf5ACB33698c6f43Bd09FF3e66c6F;
+    address ttusd = 0x6b96E3515D0D9b40ee51255D1560F7485BABD160;
+    address tteur = 0xdB65dcf5bd454226e80D246207d7c004C0297157;
     cryptoList.push(ttusd);
     cryptoList.push(tteur);
     enableCrypto(ttusd);
@@ -162,8 +162,6 @@ contract Togethers is Administration {
 
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, address _crypto) public payable
   {
-    require(mappProfileInGroup[groupID][_publicKey].open == true);
-    require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     uint amount;
     if (msg.value > 0)
     {
@@ -179,14 +177,13 @@ contract Togethers is Administration {
         amount = amount.mul(10**(max - (External1(_crypto).decimals())));
       }
     }
-    mappProfileStats[groupID][_publicKey][mappAllowCryptoForCategory[_crypto]] = mappProfileStats[groupID][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
-    mappPeerToPeerStats[msg.sender][_publicKey][mappAllowCryptoForCategory[_crypto]] = mappPeerToPeerStats[msg.sender][_publicKey][mappAllowCryptoForCategory[_crypto]].add(amount);
-    mappIdStats[mappProfileInGroup[groupID][_publicKey].id][msg.sender][mappAllowCryptoForCategory[_crypto]] = mappIdStats[mappProfileInGroup[groupID][_publicKey].id][msg.sender][mappAllowCryptoForCategory[_crypto]].add(amount);
+    mappProfileStats[groupID][_publicKey][mappAllowCryptoForCategory[_crypto]] += amount;
+    mappPeerToPeerStats[msg.sender][_publicKey][mappAllowCryptoForCategory[_crypto]] += amount;
+    mappIdStats[mappProfileInGroup[groupID][_publicKey].id][msg.sender][mappAllowCryptoForCategory[_crypto]] += amount;
   }
 
   function withdrawFunds(uint groupID) public
   {
-    require(mappProfileInGroup[groupID][msg.sende].open == true);
     mappProfileInGroup[groupID][msg.sender].open = false;
     for(uint8 i = 0 ; i < homeStableList.length ; i++)
     {
