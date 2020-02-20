@@ -13,7 +13,9 @@ import { Languages as LanguagesActions } from '@common/actions';
 @observer
 export class AskGroup extends Component {
 
-  static navigationOptions = { title: "Apply for a group" };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
   state = { show: false };
 

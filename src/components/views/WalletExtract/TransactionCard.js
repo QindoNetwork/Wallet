@@ -64,6 +64,7 @@ export default class TransactionCard extends React.Component {
     }
 
     copyToClipboard(transaction) {
+        const { languages } = this.props
         Clipboard.setString(transaction);
         GeneralActions.notify(LanguagesActions.label94(languages.selectedLanguage), 'short');
     }
@@ -98,7 +99,7 @@ export default class TransactionCard extends React.Component {
             <View style={styles.header}>
                 <TouchableWithoutFeedback onPress={() => this.hide()}>
                     <View>
-                        <Icon name={LanguagesActions.label97(this.props.languages.selectedLanguage)} size="large" />
+                        <Icon name="close" size="large" />
                     </View>
                 </TouchableWithoutFeedback>
             </View>
@@ -120,7 +121,7 @@ export default class TransactionCard extends React.Component {
             </View>
             <View style={styles.actions}>
                     <View style={styles.actionsBar}>
-                        {this.renderColumn(LanguagesActions.label102(this.props.languages.selectedLanguage), '', () => this.copyToClipboard(transaction.hash))}
+                        {this.renderColumn('copy', '', () => this.copyToClipboard(transaction.hash))}
                     </View>
             </View>
         </View>

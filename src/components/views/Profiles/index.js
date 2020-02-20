@@ -26,6 +26,7 @@ export class Profiles extends React.Component {
                   groupID : navigation.getParam('profile').id,
                   togethers : navigation.getParam('togethers'),
                   gasParam : navigation.getParam('gasParam'),
+                  title : navigation.getParam('title'),
                   owner : navigation.getParam('profile').owner,
                 })
               } />
@@ -85,15 +86,16 @@ export class Profiles extends React.Component {
 
       demand(groupID, togethers, gasParam, profile, profiles) {
         const { profilesName } = this.state
+        const { languages } = this.props
         if (this.props.navigation.state.params.profile.active == true){
-          this.props.navigation.navigate('CloseDemand',{ groupID, togethers, gasParam, profiles, profile, profilesName })
+          this.props.navigation.navigate('CloseDemand',{ groupID, togethers, gasParam, profiles, profile, profilesName, title: LanguagesActions.title12(languages.selectedLanguage)  })
         }
-        else this.props.navigation.navigate('OpenDemand',{ groupID, togethers, gasParam })
+        else this.props.navigation.navigate('OpenDemand',{ groupID, togethers, gasParam, title: LanguagesActions.title13(languages.selectedLanguage)  })
       }
 
       render() {
         const { profiles } = this.state
-        const { wallet, navigation } = this.props
+        const { wallet, navigation, languages } = this.props
         const { gasParam, togethers, profile } = this.props.navigation.state.params
         const groupID = profile.id
 
@@ -116,7 +118,7 @@ export class Profiles extends React.Component {
         <Header length={this.state.profiles.length}/>
         <View style={styles.buttonsContainer}>
             <Button
-              children="My demand"
+              children={LanguagesActions.label120(languages.selectedLanguage)}
               onPress={() => this.demand(groupID, togethers, gasParam, profile, profiles )}/>
         </View>
         <FlatList
@@ -126,7 +128,7 @@ export class Profiles extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => navigation.navigate('ProfileData',{ item, user: profile, togethers, gasParam, groupID })
+              onPress={() => navigation.navigate('ProfileData',{ item, user: profile, togethers, gasParam, groupID, title: item.name })
               }>
                 <ProfileCard profile={item} togethers={togethers}/>
               </TouchableOpacity>
@@ -134,8 +136,8 @@ export class Profiles extends React.Component {
         />
         <View style={styles.buttonsContainer}>
             <Button
-              children="Quit"
-              onSubmit={() => (profile.active) ? this.props.navigation.navigate('CloseDemand',{ profiles, groupID, togethers, gasParam, profile, quit: true }) : this.setState({ show: true })}/>
+              children={LanguagesActions.label121(languages.selectedLanguage)}
+              onSubmit={() => (profile.active) ? this.props.navigation.navigate('CloseDemand',{ profiles, groupID, togethers, gasParam, profile, quit: true, title: LanguagesActions.title12(languages.selectedLanguage) }) : this.setState({ show: true })}/>
         </View>
         {this.renderModal()}
         </ScrollView>

@@ -16,7 +16,9 @@ import { ethers } from 'ethers';
 @observer
 export class ConfirmSwap extends React.Component {
 
-    static navigationOptions = { title: 'Confirm transaction' };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
     state = { show: false, password: '', fees: 0, registered: 0, loading: 0, loading2: 1, price: 0 };
 
@@ -61,6 +63,7 @@ export class ConfirmSwap extends React.Component {
       }
 
     renderModal() {
+      const { languages } = this.props
 
       if(this.state.loading2 === 0)
       {
@@ -78,7 +81,7 @@ export class ConfirmSwap extends React.Component {
         return(
             <View style={styles.containerModal}>
             <View style={styles.body}>
-            <Text style={styles.message}>Confirm</Text>
+            <Text style={styles.message}>{LanguagesActions.label138(languages.selectedLanguage)}</Text>
             </View>
               {this.renderButtons()}
             </View>)
@@ -87,7 +90,7 @@ export class ConfirmSwap extends React.Component {
       return(
           <View style={styles.containerModal}>
           <View style={styles.body}>
-          <Text style={styles.message}>Enter Password</Text>
+          <Text style={styles.message}>{LanguagesActions.label139(languages.selectedLanguage)}</Text>
           <TextInput
               style={styles.input}
               secureTextEntry
@@ -113,7 +116,7 @@ export class ConfirmSwap extends React.Component {
           result = parseInt (await togethers.connectUser(hashPassword),10)
           if (result === 0) {
             this.hide()
-            GeneralActions.notify("Password not good", 'long');
+            GeneralActions.notify(LanguagesActions.label140(languages.selectedLanguage), 'long');
             return
           }
         }
@@ -132,7 +135,7 @@ export class ConfirmSwap extends React.Component {
                   };
         await togethers.changeToken(amount,cryptoOne.address,item.address)
             this.props.navigation.navigate('WalletDetails', { togethers, gasParam, replaceRoute: true, leave: 0 });
-            GeneralActions.notify('Success, wait for confirmation in historic', 'short');
+            GeneralActions.notify(LanguagesActions.label141(languages.selectedLanguage), 'short');
           }catch (e) {
             this.hide()
             GeneralActions.notify(e.message, 'long');
@@ -162,7 +165,7 @@ export class ConfirmSwap extends React.Component {
                 <View style={styles.content}>
                     <View style={styles.row}>
                         <View style={styles.textColumn}>
-                            <Text style={styles.title}>Wallet address</Text>
+                            <Text style={styles.title}>{LanguagesActions.label142(languages.selectedLanguage)}</Text>
                             <Text style={styles.value}
                                 numberOfLines={1}
                                 ellipsizeMode="middle"
@@ -172,17 +175,17 @@ export class ConfirmSwap extends React.Component {
                             source={{ uri: ImageUtils.generateAvatar(this.props.wallet.item.address,500) }} />
                     </View>
                     <View style={styles.textColumn}>
-                        <Text style={styles.title}>Amount ({cryptoOne.symbol} -> {item.symbol}) </Text>
+                        <Text style={styles.title}>{LanguagesActions.label143(languages.selectedLanguage)} ({cryptoOne.symbol} -> {item.symbol}) </Text>
                         <Text style={styles.value}>{amount}</Text>
                     </View>
                     <View style={styles.textColumn}>
-                        <Text style={styles.title}>Fees</Text>
+                        <Text style={styles.title}>{LanguagesActions.label144(languages.selectedLanguage)}</Text>
                         <Text style={styles.value}>{fees}</Text>
                     </View>
                 </View>
                 <View style={styles.buttonsContainer}>
                     <Button
-                      children="Confirm swap"
+                      children={LanguagesActions.label145(languages.selectedLanguage)}
                       onPress={() =>   this.setState({ show: true })}/>
                   </View>
                   <Modal

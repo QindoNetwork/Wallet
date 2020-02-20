@@ -12,9 +12,9 @@ import { inject, observer } from 'mobx-react';
 @observer
 export class CryptoType2 extends React.Component {
 
-  static navigationOptions = ({ navigation, screenProps }) => ({
-      title: 'Swap'
-  })
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
   state = { loading: 0, erc20s2: [] };
 
@@ -53,7 +53,7 @@ export class CryptoType2 extends React.Component {
     render() {
 
       const { togethers, gasParam, cryptoOne } = this.props.navigation.state.params
-      const { wallet } = this.props
+      const { wallet, languages } = this.props
       const { erc20s2 } = this.state
 
       if (this.state.loading === 0){
@@ -95,7 +95,7 @@ export class CryptoType2 extends React.Component {
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => this.props.navigation.navigate('SendCoinsType1', { cryptoOne, item, togethers, gasParam })}>
+                onPress={() => this.props.navigation.navigate('SendCoinsType1', { cryptoOne, item, togethers, gasParam, title: LanguagesActions.title16(languages.selectedLanguage) })}>
                   <CryptoCard crypto={item}/>
               </TouchableOpacity>
             )}

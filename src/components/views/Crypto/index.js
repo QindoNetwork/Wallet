@@ -9,10 +9,9 @@ import { inject, observer } from 'mobx-react';
 import { Network as EthereumNetworks } from '@common/constants';
 import { ethers } from 'ethers';
 import { Gas as gas, Conversions as conversions } from '@common/constants';
-import { Wallets as WalletActions } from '@common/actions';
 import { Contracts as contractsAddress } from '@common/constants';
 
-@inject('wallet')
+@inject('wallet','languages')
 @observer
 export class Crypto extends React.Component {
 
@@ -72,7 +71,7 @@ export class Crypto extends React.Component {
 
     render() {
 
-      const { togethers, gasParam, navigation, groupID, wallet, item, profile } = this.props
+      const { togethers, languages, gasParam, navigation, groupID, wallet, item, profile } = this.props
       const { erc20s, loading, lowBalance } = this.state
 
       if (loading === 0){
@@ -114,7 +113,7 @@ export class Crypto extends React.Component {
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('SendCoins', { profile, groupID, item, togethers, gasParam })}>
+                onPress={() => navigation.navigate('SendCoins', { profile, groupID, item, togethers, gasParam, title: LanguagesActions.title2(languages.selectedLanguage) })}>
                   <CryptoCard crypto={item}/>
               </TouchableOpacity>
             )}

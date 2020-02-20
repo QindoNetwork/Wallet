@@ -10,9 +10,9 @@ import { inject, observer } from 'mobx-react';
 @observer
 export class SendCoinsType1 extends React.Component {
 
-  static navigationOptions = ({ navigation, screenProps }) => ({
-      title: 'Amount'
-  });
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
     onPressContinue(max) {
       const { languages } = this.props
@@ -23,7 +23,7 @@ export class SendCoinsType1 extends React.Component {
         GeneralActions.notify(LanguagesActions.label78(languages.selectedLanguage), 'long');
         }
         else {
-          this.props.navigation.navigate('ConfirmSwap', { togethers, gasParam, amount, item, cryptoOne });
+          this.props.navigation.navigate('ConfirmSwap', { togethers, gasParam, amount, item, cryptoOne, title: LanguagesActions.title22(languages.selectedLanguage) });
           }
   }
 

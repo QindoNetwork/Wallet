@@ -13,8 +13,10 @@ import Header from './Header';
 @observer
 export class ProfileData extends React.Component {
 
+  item
+
   static navigationOptions = ({ navigation }) => ({
-        title: "profile",
+        title: navigation.getParam('item').name,
         headerRight: (
             <HeaderIcon
                 name='key'
@@ -129,6 +131,7 @@ export class ProfileData extends React.Component {
   render() {
 
     const { togethers, item, gasParam, groupID } = this.props.navigation.state.params;
+    const { languages } = this.props
 
     if (this.state.loading === 0){
 
@@ -151,7 +154,7 @@ export class ProfileData extends React.Component {
             <Button
               children="Send"
               onPress={() => this.props.navigation.navigate('CryptoType1',
-              { togethers, groupID, profile: item, gasParam })}/>
+              { togethers, groupID, profile: item, gasParam, title: LanguagesActions.title20(languages.selectedLanguage) })}/>
         </View>
         {this.renderProfile()}
         {this.renderData()}

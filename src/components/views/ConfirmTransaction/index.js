@@ -15,18 +15,20 @@ import { ethers } from 'ethers';
 @observer
 export class ConfirmTransaction extends React.Component {
 
-    static navigationOptions = { title: 'Confirm transaction' };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
     state = { show: false, user: '', groupID: '', password: '', registered: 0, loading: 0, loading2: 1 };
 
     async componentDidMount() {
 
               const { togethers, target, groupID } = this.props.navigation.state.params;
-
+              const { languages } = this.props
       try {
         let name = await togethers.mappAddressToUser(target)
         if(name ==='') {
-          name = 'unknown'
+          name = LanguagesActions.label124(languages.selectedLanguage)
         }
         this.setState({
                         registered: parseInt (await togethers.verifyRegistration(),10),
@@ -65,7 +67,7 @@ export class ConfirmTransaction extends React.Component {
       }
 
     renderModal() {
-
+const { languages } = this.props
       if(this.state.loading2 === 0)
       {
         return(
@@ -82,7 +84,7 @@ export class ConfirmTransaction extends React.Component {
         return(
             <View style={styles.containerModal}>
             <View style={styles.body}>
-            <Text style={styles.message}>Confirm</Text>
+            <Text style={styles.message}>{LanguagesActions.label125(languages.selectedLanguage)}</Text>
             </View>
               {this.renderButtons()}
             </View>)
@@ -91,7 +93,7 @@ export class ConfirmTransaction extends React.Component {
       return(
           <View style={styles.containerModal}>
           <View style={styles.body}>
-          <Text style={styles.message}>Enter Password</Text>
+          <Text style={styles.message}>{LanguagesActions.label126(languages.selectedLanguage)}</Text>
           <TextInput
               style={styles.input}
               secureTextEntry
@@ -105,7 +107,7 @@ export class ConfirmTransaction extends React.Component {
 
     async onPressContinue() {
         this.setState({ loading2: 0 })
-        const { wallet } = this.props
+        const { wallet, languages } = this.props
         const { item, togethers, gasParam, amount, target, groupID } = this.props.navigation.state.params;
         const { utils } = ethers;
         let overrides
@@ -119,7 +121,7 @@ export class ConfirmTransaction extends React.Component {
           result = parseInt (await togethers.connectUser(hashPassword),10)
           if (result === 0) {
             this.hide()
-            GeneralActions.notify("Password not good", 'long');
+            GeneralActions.notify(LanguagesActions.label127(languages.selectedLanguage), 'long');
             return
           }
         }
@@ -171,7 +173,7 @@ export class ConfirmTransaction extends React.Component {
             }
             }
             this.props.navigation.navigate('WalletDetails', { togethers, gasParam, replaceRoute: true, leave: 0 });
-            GeneralActions.notify('Success, wait for confirmation in historic', 'short');
+            GeneralActions.notify(LanguagesActions.label128(languages.selectedLanguage), 'short');
           }catch (e) {
             this.hide()
             GeneralActions.notify(e.message, 'long');
@@ -201,7 +203,7 @@ export class ConfirmTransaction extends React.Component {
                 <View style={styles.content}>
                     <View style={styles.row}>
                         <View style={styles.textColumn}>
-                            <Text style={styles.title}>Wallet address</Text>
+                            <Text style={styles.title}>{LanguagesActions.label129(languages.selectedLanguage)}</Text>
                             <Text style={styles.value}
                                 numberOfLines={1}
                                 ellipsizeMode="middle"
@@ -211,17 +213,17 @@ export class ConfirmTransaction extends React.Component {
                             source={{ uri: ImageUtils.generateAvatar(target,500) }} />
                     </View>
                     <View style={styles.textColumn}>
-                        <Text style={styles.title}>Name</Text>
+                        <Text style={styles.title}>{LanguagesActions.label130(languages.selectedLanguage)}</Text>
                         <Text style={styles.value}>{this.state.user}</Text>
                     </View>
                     <View style={styles.textColumn}>
-                        <Text style={styles.title}>Amount ({item.symbol}) </Text>
+                        <Text style={styles.title}>{LanguagesActions.label131(languages.selectedLanguage)} ({item.symbol}) </Text>
                         <Text style={styles.value}>{amount}</Text>
                     </View>
                 </View>
                 <View style={styles.buttonsContainer}>
                     <Button
-                      children="Confirm payment"
+                      children={LanguagesActions.label137(languages.selectedLanguage)}
                       onPress={() =>   this.setState({ show: true })}/>
                   </View>
                   <Modal
@@ -235,7 +237,7 @@ export class ConfirmTransaction extends React.Component {
               <View style={styles.content}>
                   <View style={styles.row}>
                       <View style={styles.textColumn}>
-                          <Text style={styles.title}>Wallet address</Text>
+                          <Text style={styles.title}>{LanguagesActions.label132(languages.selectedLanguage)}</Text>
                           <Text style={styles.value}
                               numberOfLines={1}
                               ellipsizeMode="middle"
@@ -245,21 +247,21 @@ export class ConfirmTransaction extends React.Component {
                           source={{ uri: ImageUtils.generateAvatar(target,500) }} />
                   </View>
                   <View style={styles.textColumn}>
-                      <Text style={styles.title}>Name</Text>
+                      <Text style={styles.title}>{LanguagesActions.label133(languages.selectedLanguage)}</Text>
                       <Text style={styles.value}>{this.state.user}</Text>
                   </View>
                   <View style={styles.textColumn}>
-                      <Text style={styles.title}>Amount ({item.symbol}) </Text>
+                      <Text style={styles.title}>{LanguagesActions.label134(languages.selectedLanguage)} ({item.symbol}) </Text>
                       <Text style={styles.value}>{amount}</Text>
                   </View>
                   <View style={styles.textColumn}>
-                      <Text style={styles.title}>Group</Text>
+                      <Text style={styles.title}>{LanguagesActions.label135(languages.selectedLanguage)}</Text>
                       <Text style={styles.value}>{this.state.groupID}</Text>
                   </View>
               </View>
               <View style={styles.buttonsContainer}>
                   <Button
-                    children="Confirm payment"
+                    children={LanguagesActions.label136(languages.selectedLanguage)}
                     onPress={() =>   this.setState({ show: true })}/>
                 </View>
                 <Modal

@@ -13,7 +13,9 @@ import { Languages as LanguagesActions } from '@common/actions';
 @observer
 export class CreateGroup extends Component {
 
-  static navigationOptions = { title: 'Create a group' };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
   state = { show: false };
 

@@ -12,7 +12,9 @@ import { TogethersABI as togethersABI } from '@common/ABIs';
 @observer
 export class NewWalletName extends React.Component {
 
-    static navigationOptions = { title: 'New Wallet Name' };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
     state = { walletName: '' };
 
@@ -31,7 +33,7 @@ export class NewWalletName extends React.Component {
           }
           else
           {
-            this.props.navigation.navigate('NewWallet', { walletName });
+            this.props.navigation.navigate('NewWallet', { walletName, title: LanguagesActions.title19(languages.selectedLanguage) });
           }
         } catch (e) {
             GeneralActions.notify(e.message, 'long');

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { Keyboard, StyleSheet, Text, TextInput, View, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions, Contract as ContractActions, Transaction as TransactionActions  } from '@common/actions';
+import { General as GeneralActions, Contract as ContractActions, Languages as LanguagesActions, Transaction as TransactionActions  } from '@common/actions';
 import Modal from 'react-native-modal';
 import { Gas as gas, Conversions as conversions } from '@common/constants';
 import { sha256 } from 'react-native-sha256';
@@ -143,6 +143,7 @@ export class SecureTransaction extends React.Component {
 
 
   renderBody(ethPrice) {
+    const { languages } = this.props
     if(this.state.loading === 0)
     {
       return(

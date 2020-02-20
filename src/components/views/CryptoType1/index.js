@@ -3,9 +3,9 @@ import { Crypto } from '..';
 
 export class CryptoType1 extends React.Component {
 
-  static navigationOptions = ({ navigation, screenProps }) => ({
-      title: 'Send'
-  })
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
     render() {
 

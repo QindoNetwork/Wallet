@@ -9,11 +9,14 @@ import { Languages as LanguagesActions } from '@common/actions';
 @observer
 export class CreateWallet extends React.Component {
 
-    static navigationOptions = { title: 'Create Wallet' };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
     onPressProceed() {
+      const { languages } = this.props
         const { walletName } = this.props.navigation.state.params;
-        this.props.navigation.navigate('CreateMnemonics', { walletName });
+        this.props.navigation.navigate('CreateMnemonics', { walletName, title: LanguagesActions.title15(languages.selectedLanguage) });
     }
 
     render() {

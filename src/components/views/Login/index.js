@@ -16,7 +16,9 @@ import { TogethersABI as togethersABI } from '@common/ABIs';
 @observer
 export class Login extends React.Component {
 
-    static navigationOptions = { title: 'Login' };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
     state = { loading: 0, registered: 0, togethers: null };
 

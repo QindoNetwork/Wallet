@@ -35,6 +35,7 @@ export class WalletSettings extends React.Component {
     }
 
     render() {
+      const { languages } = this.props
         return (
             <View style={styles.container}>
                 <ListItem onPress={() => this.confirmRemoveWallet()}>
@@ -45,7 +46,7 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>{LanguagesActions.label107(languages.selectedLanguage)}</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.props.navigation.navigate('ChangePassword', { ...this.props })}>
+                <ListItem onPress={() => this.props.navigation.navigate('ChangePassword', { ...this.props }, { title: LanguagesActions.title10(languages.selectedLanguage) })}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
                             <Icon name='finger-print' />
@@ -53,7 +54,7 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>{LanguagesActions.label108(languages.selectedLanguage)}</Text>
                     </View>
                 </ListItem>
-                <ListItem onPress={() => this.props.navigation.navigate('ChangePseudonyme', { ...this.props })}>
+                <ListItem onPress={() => this.props.navigation.navigate('ChangePseudonyme', { ...this.props }, { title: LanguagesActions.title11(languages.selectedLanguage) })}>
                     <View style={styles.itemContainer}>
                         <View style={styles.icon}>
                             <Icon name='shirt' />

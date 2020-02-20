@@ -16,7 +16,8 @@ export class Settings extends React.Component {
     });
 
     chooseLanguage() {
-        this.props.navigation.navigate('ChangeLanguage');
+        const { languages } = this.props
+        this.props.navigation.navigate('ChangeLanguage', { title: LanguagesActions.title9(languages.selectedLanguage) });
     }
 
     eraseAllData() {

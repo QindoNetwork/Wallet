@@ -14,7 +14,9 @@ import { Contracts as contractsAddress } from '@common/constants';
 @observer
 export class CloseDemand extends React.Component {
 
-  static navigationOptions = { title: "My demand" };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
   state = { stats: [], show: false, loading: 0, profileStats: [] };
 

@@ -12,9 +12,9 @@ import ListItem from './ListItem';
 @observer
 export class ChangeLanguage extends React.Component {
 
-    static navigationOptions = ({ navigation, screenProps }) => ({
-        title: 'Select language'
-    });
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
     get selectedLanguage() {
         return this.props.languages.selectedLanguage;

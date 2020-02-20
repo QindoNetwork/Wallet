@@ -13,7 +13,9 @@ import { inject, observer } from 'mobx-react';
 @observer
 export class ChangePseudonyme extends React.Component {
 
-    static navigationOptions = { title: 'Change pseudonyme' };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
     state = { show: false };
 

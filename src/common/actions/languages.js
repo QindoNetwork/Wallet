@@ -1064,7 +1064,7 @@ export function label116(language) {
 export function label117(language) {
   switch (language) {
       case 'en':
-      return 'password'
+      return 'Password'
       case 'fr':
       return "Mot de passe"
   }
@@ -1085,5 +1085,448 @@ export function label119(language) {
       return 'You have to be administrator to add a member to the group'
       case 'fr':
       return "Vous devez ètre administrateur pour ajouter un membre a ce groupe"
+  }
+}
+
+export function label120(language) {
+  switch (language) {
+      case 'en':
+      return 'My demand'
+      case 'fr':
+      return "Ma cagnotte"
+  }
+}
+
+export function label121(language) {
+  switch (language) {
+      case 'en':
+      return 'Quit'
+      case 'fr':
+      return "Quitter"
+  }
+}
+
+export function label122(language) {
+  switch (language) {
+      case 'en':
+      return 'group'
+      case 'fr':
+      return "groupe"
+  }
+}
+
+export function label123(language) {
+  switch (language) {
+      case 'en':
+      return 'friend'
+      case 'fr':
+      return "ami"
+  }
+}
+
+export function label124(language) {
+  switch (language) {
+      case 'en':
+      return 'Unknown'
+      case 'fr':
+      return "Inconnu"
+  }
+}
+
+export function label125(language) {
+  switch (language) {
+      case 'en':
+      return 'Confirm'
+      case 'fr':
+      return "Confirmer"
+  }
+}
+
+export function label126(language) {
+  switch (language) {
+      case 'en':
+      return 'Enter Password'
+      case 'fr':
+      return "Entrer mot de passe"
+  }
+}
+
+export function label127(language) {
+  switch (language) {
+      case 'en':
+      return 'Password not good'
+      case 'fr':
+      return "Mauvais mot de passe"
+  }
+}
+
+export function label128(language) {
+  switch (language) {
+      case 'en':
+      return 'Success, wait for confirmation in historic'
+      case 'fr':
+      return "OK, attendre la confirmation dans l'historique"
+  }
+}
+
+export function label129(language) {
+  switch (language) {
+      case 'en':
+      return 'Wallet address'
+      case 'fr':
+      return "Addresse"
+  }
+}
+
+export function label130(language) {
+  switch (language) {
+      case 'en':
+      return 'Name'
+      case 'fr':
+      return "Nom"
+  }
+}
+
+export function label131(language) {
+  switch (language) {
+      case 'en':
+      return 'Amount'
+      case 'fr':
+      return "Montant"
+  }
+}
+
+export function label132(language) {
+  switch (language) {
+      case 'en':
+      return 'Wallet address'
+      case 'fr':
+      return "Addresse"
+  }
+}
+
+export function label133(language) {
+  switch (language) {
+      case 'en':
+      return 'Name'
+      case 'fr':
+      return "Nom"
+  }
+}
+
+export function label134(language) {
+  switch (language) {
+      case 'en':
+      return 'Amount'
+      case 'fr':
+      return "Montant"
+  }
+}
+
+export function label135(language) {
+  switch (language) {
+      case 'en':
+      return 'Group'
+      case 'fr':
+      return "Groupe"
+  }
+}
+
+export function label136(language) {
+  switch (language) {
+      case 'en':
+      return 'Confirm payment'
+      case 'fr':
+      return "Confirmer"
+  }
+}
+
+export function label137(language) {
+  switch (language) {
+      case 'en':
+      return "Confirm payment"
+      case 'fr':
+      return "Confirmer"
+  }
+}
+
+export function label138(language) {
+  switch (language) {
+      case 'en':
+      return "Confirm"
+      case 'fr':
+      return "Confirmer"
+  }
+}
+
+export function label139(language) {
+  switch (language) {
+      case 'en':
+      return "Enter Password"
+      case 'fr':
+      return "Entrer mot de passe"
+  }
+}
+
+export function label140(language) {
+  switch (language) {
+      case 'en':
+      return "Password not good"
+      case 'fr':
+      return "Mauvais mot de passe"
+  }
+}
+
+export function label141(language) {
+  switch (language) {
+      case 'en':
+      return "Success, wait for confirmation in historic"
+      case 'fr':
+      return "OK, attendre confirmation"
+  }
+}
+
+export function label142(language) {
+  switch (language) {
+      case 'en':
+      return "Wallet address"
+      case 'fr':
+      return "Addresse"
+  }
+}
+
+export function label143(language) {
+  switch (language) {
+      case 'en':
+      return "Amount"
+      case 'fr':
+      return "Montant"
+  }
+}
+
+export function label144(language) {
+  switch (language) {
+      case 'en':
+      return "Fees"
+      case 'fr':
+      return "Frais"
+  }
+}
+
+export function label145(language) {
+  switch (language) {
+      case 'en':
+      return "Confirm swap"
+      case 'fr':
+      return "Confirmer"
+  }
+}
+
+export function label146(language) {
+  switch (language) {
+      case 'en':
+      return "Confirm & open wallet"
+      case 'fr':
+      return "Confirmer"
+  }
+}
+
+//
+
+export function title1(language) {
+  switch (language) {
+      case 'en':
+      return 'Login'
+      case 'fr':
+      return "Authentification"
+  }
+}
+
+export function title2(language) {
+  switch (language) {
+      case 'en':
+      return 'Amount'
+      case 'fr':
+      return "Montant"
+  }
+}
+
+export function title3(language) {
+  switch (language) {
+      case 'en':
+      return 'Confirm'
+      case 'fr':
+      return "Confirmation"
+  }
+}
+
+export function title4(language) {
+  switch (language) {
+      case 'en':
+      return 'Destination'
+      case 'fr':
+      return "Destinataire"
+  }
+}
+
+export function title5(language) {
+  switch (language) {
+      case 'en':
+      return 'Add a friend'
+      case 'fr':
+      return "Ajouter un membre"
+  }
+}
+
+export function title6(language) {
+  switch (language) {
+      case 'en':
+      return 'Add a group'
+      case 'fr':
+      return "Ajout d'un groupe"
+  }
+}
+
+export function title7(language) {
+  switch (language) {
+      case 'en':
+      return 'New Group'
+      case 'fr':
+      return "Nouveau groupe"
+  }
+}
+
+export function title8(language) {
+  switch (language) {
+      case 'en':
+      return 'Apply'
+      case 'fr':
+      return "Souscrire"
+  }
+}
+
+export function title9(language) {
+  switch (language) {
+      case 'en':
+      return 'Choose language'
+      case 'fr':
+      return "Choisir langue"
+  }
+}
+
+export function title10(language) {
+  switch (language) {
+      case 'en':
+      return 'Change password'
+      case 'fr':
+      return "Changer mot de passe"
+  }
+}
+
+export function title11(language) {
+  switch (language) {
+      case 'en':
+      return 'Change username'
+      case 'fr':
+      return "Changer pseudonyme"
+  }
+}
+
+export function title12(language) {
+  switch (language) {
+      case 'en':
+      return 'Close demand'
+      case 'fr':
+      return "Fermer cagnotte"
+  }
+}
+
+export function title13(language) {
+  switch (language) {
+      case 'en':
+      return 'Open demand'
+      case 'fr':
+      return "Ouvrir cagnotte"
+  }
+}
+
+export function title14(language) {
+  switch (language) {
+      case 'en':
+      return 'Confirm mnemonics'
+      case 'fr':
+      return "Confirmer"
+  }
+}
+
+export function title15(language) {
+  switch (language) {
+      case 'en':
+      return 'Create mnemonics'
+      case 'fr':
+      return "Créer mnemonics"
+  }
+}
+
+export function title16(language) {
+  switch (language) {
+      case 'en':
+      return 'Amount'
+      case 'fr':
+      return "Montant"
+  }
+}
+
+export function title17(language) {
+  switch (language) {
+      case 'en':
+      return 'Load mnemonics'
+      case 'fr':
+      return "Importer mnemonics"
+  }
+}
+
+export function title18(language) {
+  switch (language) {
+      case 'en':
+      return 'Create wallet'
+      case 'fr':
+      return "creer porte feuille"
+  }
+}
+
+export function title19(language) {
+  switch (language) {
+      case 'en':
+      return 'New wallet'
+      case 'fr':
+      return "Nouveau porte feuille"
+  }
+}
+
+export function title20(language) {
+  switch (language) {
+      case 'en':
+      return 'Amount'
+      case 'fr':
+      return "Montant"
+  }
+}
+
+export function title21(language) {
+  switch (language) {
+      case 'en':
+      return 'Confirm transaction'
+      case 'fr':
+      return "Confirmer"
+  }
+}
+
+export function title22(language) {
+  switch (language) {
+      case 'en':
+      return 'Confirm swap'
+      case 'fr':
+      return "Confirmer échange"
   }
 }

@@ -10,7 +10,9 @@ import ProfileCard from './ProfileCard';
 @observer
 export class SelectDestination extends React.Component {
 
-    static navigationOptions = { title: 'Select destination' };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
     state = { loading: 0, profiles: [], address: '' };
 
@@ -51,8 +53,8 @@ export class SelectDestination extends React.Component {
     onPressContinue(target) {
 
         const { item, togethers, gasParam, amount, groupID } = this.props.navigation.state.params
-
-        this.props.navigation.navigate('ConfirmTransaction', { groupID, item, togethers, gasParam, amount, target });
+        const { languages } = this.props
+        this.props.navigation.navigate('ConfirmTransaction', { groupID, item, togethers, gasParam, amount, target, title: LanguagesActions.title21(languages.selectedLanguage) });
 
     }
 

@@ -10,9 +10,9 @@ import { inject, observer } from 'mobx-react';
 @observer
 export class SendCoins extends React.Component {
 
-  static navigationOptions = ({ navigation, screenProps }) => ({
-      title: 'Amount'
-  });
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
     onPressContinue() {
       const { item, gasParam, togethers, groupID, profile } = this.props.navigation.state.params
@@ -33,9 +33,9 @@ export class SendCoins extends React.Component {
         GeneralActions.notify(LanguagesActions.label76(languages.selectedLanguage), 'long');
         }else {
           if (groupID !== '0') {
-              this.props.navigation.navigate('ConfirmTransaction', { item, groupID, amount, togethers, gasParam, target: profile.id });
+              this.props.navigation.navigate('ConfirmTransaction', { item, groupID, amount, togethers, gasParam, target: profile.id, title: LanguagesActions.title3(languages.selectedLanguage) });
           }
-          else this.props.navigation.navigate('SelectDestination', { item, groupID, amount, togethers, gasParam });
+          else this.props.navigation.navigate('SelectDestination', { item, groupID, amount, togethers, gasParam, title: LanguagesActions.title4(languages.selectedLanguage) });
         }
   }
 

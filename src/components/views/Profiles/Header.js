@@ -10,13 +10,22 @@ export default class Header extends React.Component {
 
     render() {
       const { languages } = this.props
+      if(this.props.length > 1){
         return (
             <View style={styles.container}>
                 <View style={styles.leftColumn}>
                     <Text style={styles.title}>{this.props.length} {LanguagesActions.label73(languages.selectedLanguage)}</Text>
                 </View>
             </View>
-        );
+        )}
+        return (
+            <View style={styles.container}>
+                <View style={styles.leftColumn}>
+                    <Text style={styles.title}>{this.props.length} {LanguagesActions.label123(languages.selectedLanguage)}</Text>
+                </View>
+            </View>
+        )
+
     }
 }
 

@@ -11,7 +11,7 @@ import { Languages as LanguagesActions } from '@common/actions';
 @observer
 export class AdminProfile extends Component {
 
-  static navigationOptions = { title: "AdminProfile" };
+  static navigationOptions = { title: "Administration" };
 
   state = { show: false, show2: false };
 

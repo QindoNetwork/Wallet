@@ -73,7 +73,8 @@ export class Groups extends React.Component {
               <TouchableOpacity
               style={styles.content}
               activeOpacity={0.8}
-              onPress={() => this.props.navigation.navigate('Profiles',{ profile: item, gasParam, togethers })}>
+              onPress={() => this.props.navigation.navigate('Profiles',{ profile: item, gasParam, togethers, title: LanguagesActions.title5(languages.selectedLanguage)
+             })}>
                 <GroupCard  group={item} togethers={togethers} />
               </TouchableOpacity>
             )}
@@ -81,7 +82,7 @@ export class Groups extends React.Component {
         <View style={styles.buttonsContainer}>
                 <Button
                   children={LanguagesActions.label39(languages.selectedLanguage)}
-                  onPress={() => this.props.navigation.navigate('AddGroup', { gasParam, togethers })}/>
+                  onPress={() => this.props.navigation.navigate('AddGroup', { gasParam, togethers, title: LanguagesActions.title6(languages.selectedLanguage) })}/>
               </View>
         </ScrollView>)
 

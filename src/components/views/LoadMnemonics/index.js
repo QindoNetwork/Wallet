@@ -10,7 +10,9 @@ import { inject, observer } from 'mobx-react';
 @observer
 export class LoadMnemonics extends React.Component {
 
-    static navigationOptions = { title: 'Load Wallet' };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
     state = { mnemonics: [] };
 

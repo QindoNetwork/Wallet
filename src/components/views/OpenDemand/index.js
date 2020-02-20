@@ -13,7 +13,9 @@ import { SecureTransaction } from '@components/widgets';
 @observer
 export class OpenDemand extends Component {
 
-  static navigationOptions = { title: "Open demand" };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
   state = { show: false };
 

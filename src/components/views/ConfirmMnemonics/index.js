@@ -11,7 +11,9 @@ import { inject, observer } from 'mobx-react';
 @observer
 export class ConfirmMnemonics extends React.Component {
 
-    static navigationOptions = { title: 'Create Wallet' };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
     state = { mnemonics: [] };
 
@@ -42,7 +44,7 @@ export class ConfirmMnemonics extends React.Component {
                 <View />
                 <ConfirmBox ref='confirm' mnemonics={this.state.mnemonics} />
                 <View style={styles.buttonsContainer}>
-                    <Button onPress={() =>this.onPressConfirm()}>Confirm & open wallet</Button>
+                    <Button onPress={() =>this.onPressConfirm()}>{LanguagesActions.label146(languages.selectedLanguage)}</Button>
                 </View>
             </View>
         );

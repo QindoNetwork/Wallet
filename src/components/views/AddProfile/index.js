@@ -13,7 +13,9 @@ import ProfileCard from '../SelectDestination/ProfileCard';
 @observer
 export class AddProfile extends Component {
 
-  static navigationOptions = { title: "Add a friend" };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
   state = { show: false, address: '', loading: 0, profiles: [] };
 

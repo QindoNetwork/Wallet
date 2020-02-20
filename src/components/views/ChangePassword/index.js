@@ -14,7 +14,9 @@ import { inject, observer } from 'mobx-react';
 @observer
 export class ChangePassword extends React.Component {
 
-    static navigationOptions = { title: 'Change password' };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
     state = { show: false };
 

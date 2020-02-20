@@ -9,7 +9,9 @@ import { Languages as LanguagesActions } from '@common/actions';
 @observer
 export class AddGroup extends Component {
 
-  static navigationOptions = { title: "Add group" };
+  static navigationOptions = ({ navigation }) => ({
+        title: navigation.getParam('title')
+    })
 
   render() {
 
@@ -21,13 +23,13 @@ export class AddGroup extends Component {
                 <View style={styles.buttonsContainer}>
                   <Button
                     children={ LanguagesActions.label8(languages.selectedLanguage) }
-                    onPress={() => this.props.navigation.navigate('CreateGroup',{ ...this.props.navigation.state.params })}
+                    onPress={() => this.props.navigation.navigate('CreateGroup',{ ...this.props.navigation.state.params }, { title: LanguagesActions.title7(languages.selectedLanguage) })}
                     />
                 </View>
                 <View style={styles.buttonsContainer}>
                   <Button
                     children={ LanguagesActions.label9(languages.selectedLanguage) }
-                    onPress={() => this.props.navigation.navigate('AskGroup',{ ...this.props.navigation.state.params })}
+                    onPress={() => this.props.navigation.navigate('AskGroup',{ ...this.props.navigation.state.params }, { title: LanguagesActions.title8(languages.selectedLanguage) })}
                     />
                 </View>
               </View>
