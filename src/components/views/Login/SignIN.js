@@ -19,7 +19,7 @@ export default class SignIN extends React.Component {
 
     async onPressContinueLogin() {
         Keyboard.dismiss();
-        const { gasParam, togethers } = this.props;
+        const { gasParam, togethers, languages } = this.props;
         const { password } = this.state;
         const hashPassword = sha256(password)
         try {
@@ -33,26 +33,25 @@ export default class SignIN extends React.Component {
           this.props.navigation.navigate('WalletDetails', { gasParam, togethers, replaceRoute: true });
         }
         else {
-          GeneralActions.notify("Password not good", 'long');
+          GeneralActions.notify(LanguagesActions.label46(languages.selectedLanguage), 'long');
         }
-        //{LanguagesActions.choosePseudonyme(this.props.languages.selectedLanguage)}
     }
 
     render() {
-
+      const { languages } = this.props
         return ( <View style={styles.container}>
           <View style={styles.body}>
-              <Text style={styles.message}>Password</Text>
+              <Text style={styles.message}>{LanguagesActions.label44(languages.selectedLanguage)}</Text>
               <TextInput
                   style={styles.input}
                   secureTextEntry
                   underlineColorAndroid="transparent"
-                  placeholder="password"
+                  placeholder={LanguagesActions.label44(languages.selectedLanguage)}
                   onChangeText={password => this.setState({ password })} />
           </View>
           <View style={styles.buttonsContainer}>
               <Button
-                  children="Next"
+                  children={LanguagesActions.label45(languages.selectedLanguage)}
                   onPress={() => this.onPressContinueLogin()}/>
           </View>
       </View>)

@@ -17,6 +17,7 @@ export class NewWalletName extends React.Component {
     state = { walletName: '' };
 
     async onPressContinue() {
+      const { languages } = this.props;
         Keyboard.dismiss();
         const { walletName } = this.state;
         if (!walletName) return;
@@ -26,7 +27,7 @@ export class NewWalletName extends React.Component {
           const contract = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
           if (parseInt(await contract.verifyUserAvailability(walletName),10) === 0 )
           {
-            GeneralActions.notify('Username unavailable', 'long');
+            GeneralActions.notify(LanguagesActions.label57(languages.selectedLanguage), 'long');
           }
           else
           {
@@ -38,19 +39,20 @@ export class NewWalletName extends React.Component {
     }
 
     render() {
+      const { languages } = this.props;
         return (
             <View style={styles.container}>
                 <View style={styles.body}>
-                    <Text style={styles.message}>Choose your pseudonyme</Text>
+                    <Text style={styles.message}>{LanguagesActions.label58(languages.selectedLanguage)}</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Wallet name"
+                        placeholder={LanguagesActions.label59(languages.selectedLanguage)}
                         underlineColorAndroid="transparent"
                         onChangeText={walletName => this.setState({ walletName })} />
                 </View>
                 <View style={styles.buttonsContainer}>
                     <Button
-                        children="Next"
+                        children={LanguagesActions.label60(languages.selectedLanguage)}
                         onPress={() => this.onPressContinue()} />
                 </View>
             </View>

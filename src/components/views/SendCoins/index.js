@@ -17,6 +17,7 @@ export class SendCoins extends React.Component {
     onPressContinue() {
       const { item, gasParam, togethers, groupID, profile } = this.props.navigation.state.params
       var { amount } = this.refs.calc;
+      const { languages } = this.props
       let isOK = true
         if (!amount || amount === 0) return;
         if (item.name === IdentityAction.getHomeStableName(0)) {
@@ -29,7 +30,7 @@ export class SendCoins extends React.Component {
           }
         }
         if (isOK === false) {
-        GeneralActions.notify("You don t have enough balance", 'long');
+        GeneralActions.notify(LanguagesActions.label76(languages.selectedLanguage), 'long');
         }else {
           if (groupID !== '0') {
               this.props.navigation.navigate('ConfirmTransaction', { item, groupID, amount, togethers, gasParam, target: profile.id });
@@ -40,11 +41,12 @@ export class SendCoins extends React.Component {
 
     render() {
       const { item } = this.props.navigation.state.params
+      const { languages } = this.props
 
         return (
             <View style={styles.container}>
                 <Calculator ref="calc" symbol={item.symbol} />
-                <Button children="Continue" onPress={() => this.onPressContinue()} />
+                <Button children={LanguagesActions.label77(languages.selectedLanguage)} onPress={() => this.onPressContinue()} />
             </View>
         );
     }

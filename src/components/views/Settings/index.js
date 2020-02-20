@@ -25,12 +25,13 @@ export class Settings extends React.Component {
     }
 
     confirmErase() {
+      const { languages } = this.props
         Alert.alert(
-            'Erase wallets',
-            'This action cannot be undone. Are you sure?',
+            LanguagesActions.label79(languages.selectedLanguage),
+            LanguagesActions.label80(languages.selectedLanguage),
             [
-                { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                { text: 'Erase', onPress: () => this.eraseAllData() }
+                { text: LanguagesActions.label81(languages.selectedLanguage), onPress: () => {}, style: 'cancel' },
+                { text: LanguagesActions.label82(languages.selectedLanguage), onPress: () => this.eraseAllData() }
             ],
             { cancelable: false }
         );
@@ -48,11 +49,12 @@ export class Settings extends React.Component {
     ));
 
     render() {
+      const { languages } = this.props
         return (
             <ScrollView style={styles.container}>
                 {this.renderItems([
-                    { title: 'Erase wallets', iconName: 'trash', iconType: '', action: () => this.confirmErase() },
-                    { title: 'Change language', iconName: 'shirt', iconType: '', action: () => this.chooseLanguage() },
+                    { title: LanguagesActions.label83(languages.selectedLanguage), iconName: 'trash', iconType: '', action: () => this.confirmErase() },
+                    { title: LanguagesActions.label84(languages.selectedLanguage), iconName: 'shirt', iconType: '', action: () => this.chooseLanguage() },
                 ])}
             </ScrollView>
         );

@@ -9,10 +9,11 @@ import { inject, observer } from 'mobx-react';
 export default class Header extends React.Component {
 
     render() {
+      const { languages } = this.props
         return (
             <View style={styles.container}>
                 <View style={styles.leftColumn}>
-                    <Text style={styles.title}>{this.props.length} friends</Text>
+                    <Text style={styles.title}>{this.props.length} {LanguagesActions.label73(languages.selectedLanguage)}</Text>
                 </View>
             </View>
         );

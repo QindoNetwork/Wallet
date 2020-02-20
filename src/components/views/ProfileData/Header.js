@@ -10,16 +10,18 @@ export default class Header extends React.Component {
 
     render() {
 
+      const { languages } = this.props;
+
       if (this.props.type === '1'){
 
         return(
 
           <View style={styles.container}>
               <View style={styles.leftColumn}>
-                  <Text style={styles.title}>Global stats</Text>
+                  <Text style={styles.title}>{LanguagesActions.label63(languages.selectedLanguage)}</Text>
               </View>
               <View style={styles.rightColumn}>
-                  <Text style={styles.balance}>Input</Text>
+                  <Text style={styles.balance}>{LanguagesActions.label64(languages.selectedLanguage)}</Text>
               </View>
           </View>
 

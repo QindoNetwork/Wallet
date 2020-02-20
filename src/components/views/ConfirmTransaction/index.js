@@ -44,22 +44,23 @@ export class ConfirmTransaction extends React.Component {
       const { gasParam } = this.props.navigation.state.params;
       const maxPrice =  gasParam[gas.eRC20transfer].limit * gasParam[gas.eRC20transfer].price * conversions.gigaWeiToWei
       const ethPrice = ((maxPrice / conversions.weiToEthereum) / 2) * 3
+      const { languages } = this.props
 
         return(
             <View>
               <View style={styles.buttonsContainer}>
                 <Button
-                  children="Continue"
+                  children={LanguagesActions.label28(languages.selectedLanguage)}
                   onPress={() => this.onPressContinue()}
                   />
               </View>
               <View style={styles.buttonsContainer}>
                 <Button
-                  children="Cancel"
+                  children={LanguagesActions.label29(languages.selectedLanguage)}
                   onPress={() => this.hide()}
                   />
               </View>
-              <Text style={styles.detail}>Approximatly {ethPrice} ETH</Text>
+              <Text style={styles.detail}>{LanguagesActions.label30(languages.selectedLanguage)} {ethPrice} ETH</Text>
             </View>)
       }
 

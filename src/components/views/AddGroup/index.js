@@ -13,18 +13,20 @@ export class AddGroup extends Component {
 
   render() {
 
+    const { languages } = this.props
+
     return (
           <View style={styles.container}>
               <View style={styles.body}>
                 <View style={styles.buttonsContainer}>
                   <Button
-                    children="Create a new group"
+                    children={ LanguagesActions.label8(languages.selectedLanguage) }
                     onPress={() => this.props.navigation.navigate('CreateGroup',{ ...this.props.navigation.state.params })}
                     />
                 </View>
                 <View style={styles.buttonsContainer}>
                   <Button
-                    children="Apply for an existing one"
+                    children={ LanguagesActions.label9(languages.selectedLanguage) }
                     onPress={() => this.props.navigation.navigate('AskGroup',{ ...this.props.navigation.state.params })}
                     />
                 </View>

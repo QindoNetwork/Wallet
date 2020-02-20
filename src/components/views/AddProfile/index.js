@@ -87,13 +87,14 @@ export class AddProfile extends Component {
 
   render() {
     const { profiles } = this.state
+    const { languages } = this.props
 
     if (this.props.navigation.state.params.owner == false) {
       return(
 
       <View style={styles.container}>
         <View style={styles.body}>
-          <Text style={styles.message}>You have to be administrator to add a member to the group</Text>
+          <Text style={styles.message}>{ LanguagesActions.label119(languages.selectedLanguage) }</Text>
         </View>
       </View>
 
@@ -101,14 +102,13 @@ export class AddProfile extends Component {
       }
 
     if (this.state.loading === 0){
-
       return(
           <View style={styles.container}>
           <InputWithIcon
               ref="input"
               autoFocus
               icon="qr-scanner"
-              placeholder="Destination address"
+              placeholder={ LanguagesActions.label10(languages.selectedLanguage) }
               onChangeText={(address) => this.setState({ address })}
               onPressIcon={() => this.refs.camera.show()} />
           <Camera
@@ -121,7 +121,7 @@ export class AddProfile extends Component {
                 <ActivityIndicator size="large" color="darkslategray"/>
               </View>
             <View style={styles.buttonsContainer}>
-                    <Button children="Continue" onPress={() => this.setState({ show: true })} />
+                    <Button children={ LanguagesActions.label11(languages.selectedLanguage) } onPress={() => this.setState({ show: true })} />
                   </View>
           {this.renderModal(this.state.address)}
           </View>

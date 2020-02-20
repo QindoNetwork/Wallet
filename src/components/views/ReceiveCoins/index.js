@@ -12,9 +12,10 @@ import { QRCodeCard } from '@components/widgets';
 export class ReceiveCoins extends React.Component {
 
     render() {
+      const { languages } = this.props
         return (
             <View style={styles.container}>
-                <Text style={styles.centered}>Show the code below to receive coins</Text>
+                <Text style={styles.centered}>{LanguagesActions.label74(languages.selectedLanguage)}</Text>
                 <QRCodeCard/>
             </View>
         );

@@ -36,14 +36,14 @@ export default class SignUP extends React.Component {
 
     async onPressSignUp1(password1,password2) {
         Keyboard.dismiss();
-        const { gasParam, togethers, wallet } = this.props;
+        const { gasParam, togethers, wallet, languages } = this.props;
         const overrides = {
             gasLimit: gasParam[gas.setUser].limit,
             gasPrice: gasParam[gas.setUser].price * conversions.gigaWeiToWei,
             };
         try {
             if (password1 !== password2) {
-              GeneralActions.notify("Passwords not equals", 'long');
+              GeneralActions.notify(LanguagesActions.label47(languages.selectedLanguage), 'long');
             }
             else {
               const hashPassword = sha256(password1)
@@ -66,11 +66,11 @@ export default class SignUP extends React.Component {
                 let result = "OK"
                 if (password1 !== password2) {
                   result = "KO"
-                  GeneralActions.notify("Passwords not equals", 'long');
+                  GeneralActions.notify(LanguagesActions.label47(languages.selectedLanguage), 'long');
                 }
                 if ( parseInt(await togethers.verifyUserAvailability(pseudo),10) !== 1 ) {
                   result = "KO"
-                  GeneralActions.notify("pseudonyme already exists", 'long');
+                  GeneralActions.notify(LanguagesActions.label48(languages.selectedLanguage), 'long');
                 }
                 if (result === "OK") {
                   const hashPassword = sha256(password1)
@@ -113,7 +113,7 @@ export default class SignUP extends React.Component {
             }
 
         renderCase1() {
-          const { gasParam } = this.props;
+          const { gasParam, languages } = this.props;
           const maxPrice =  gasParam[gas.setUser].limit * gasParam[gas.setUser].price * conversions.gigaWeiToWei
           const ethPrice = (maxPrice / conversions.weiToEthereum) / 2
 
@@ -136,30 +136,30 @@ export default class SignUP extends React.Component {
                 <Fragment>
             <View style={styles.container}>
               <View style={styles.body}>
-                <Text style={styles.message}>Password</Text>
+                <Text style={styles.message}>{LanguagesActions.label49(languages.selectedLanguage)}</Text>
                 <TextInput
                   style={styles.input}
                   value={values.password1}
                   secureTextEntry
                   onChangeText={handleChange('password1')}
-                  placeholder="password"
+                  placeholder={LanguagesActions.label49(languages.selectedLanguage)}
                   />
-                <Text style={styles.message}>Confirm Password</Text>
+                <Text style={styles.message}>{LanguagesActions.label50(languages.selectedLanguage)}</Text>
                 <TextInput
                   style={styles.input}
                   value={values.password2}
                   secureTextEntry
                   onChangeText={handleChange('password2')}
-                  placeholder="password"
+                  placeholder={LanguagesActions.label49(languages.selectedLanguage)}
                   />
               </View>
           <View style={styles.buttonsContainer}>
               <Button
-                  children="Next"
+                  children={LanguagesActions.label51(languages.selectedLanguage)}
                   disabled={!isValid}
                   onPress={handleSubmit}/>
           </View>
-          <Text style={styles.detail}>Approximatly {ethPrice} ETH</Text>
+          <Text style={styles.detail}>{LanguagesActions.label52(languages.selectedLanguage)} {ethPrice} ETH</Text>
       </View>
       </Fragment>
     )}
@@ -168,7 +168,7 @@ export default class SignUP extends React.Component {
     }
 
     renderCase2() {
-      const { gasParam } = this.props;
+      const { gasParam, languages } = this.props;
       const maxPrice =  gasParam[gas.setUser].limit * gasParam[gas.setUser].price * conversions.gigaWeiToWei
       const ethPrice = (maxPrice / conversions.weiToEthereum) / 2
 
@@ -196,37 +196,37 @@ export default class SignUP extends React.Component {
             <Fragment>
         <View style={styles.container}>
           <View style={styles.body}>
-            <Text style={styles.message}>Username</Text>
+            <Text style={styles.message}>{LanguagesActions.label53(languages.selectedLanguage)}</Text>
             <TextInput
               style={styles.input}
               value={values.pseudo}
               onChangeText={handleChange('pseudo')}
-              placeholder="pseudo"
+              placeholder={LanguagesActions.label53(languages.selectedLanguage)}
               />
-            <Text style={styles.message}>Password</Text>
+            <Text style={styles.message}>{LanguagesActions.label49(languages.selectedLanguage)}</Text>
             <TextInput
               style={styles.input}
               value={values.password1}
               secureTextEntry
               onChangeText={handleChange('password1')}
-              placeholder="password"
+              placeholder={LanguagesActions.label49(languages.selectedLanguage)}
               />
-            <Text style={styles.message}>Confirm Password</Text>
+            <Text style={styles.message}>{LanguagesActions.label50(languages.selectedLanguage)}</Text>
             <TextInput
               style={styles.input}
               value={values.password2}
               secureTextEntry
               onChangeText={handleChange('password2')}
-              placeholder="password"
+              placeholder={LanguagesActions.label49(languages.selectedLanguage)}
               />
           </View>
       <View style={styles.buttonsContainer}>
           <Button
-              children="Next"
+              children={LanguagesActions.label51(languages.selectedLanguage)}
               disabled={!isValid}
               onPress={handleSubmit}/>
       </View>
-      <Text style={styles.detail}>Approximatly {ethPrice} ETH</Text>
+      <Text style={styles.detail}>{LanguagesActions.label52(languages.selectedLanguage)} {ethPrice} ETH</Text>
   </View>
   </Fragment>
 )}

@@ -35,6 +35,8 @@ export class ChangePassword extends React.Component {
 
     render() {
 
+      const { languages } = this.props
+
       return (
         <Formik
           initialValues={{ password1: '', password2: '', oldPassword: '' }}
@@ -67,23 +69,23 @@ export class ChangePassword extends React.Component {
               value={values.oldPassword}
               onChangeText={handleChange('oldPassword')}
               secureTextEntry
-              placeholder="old password"
+              placeholder={ LanguagesActions.label16(languages.selectedLanguage) }
               />
-            <Text style={styles.message}>New Password</Text>
+            <Text style={styles.message}>{ LanguagesActions.label18(languages.selectedLanguage) }</Text>
             <TextInput
               style={styles.input}
               value={values.password1}
               secureTextEntry
               onChangeText={handleChange('password1')}
-              placeholder="password"
+              placeholder={ LanguagesActions.label17(languages.selectedLanguage) }
               />
-            <Text style={styles.message}>Confirm Password</Text>
+            <Text style={styles.message}>{ LanguagesActions.label19(languages.selectedLanguage) }</Text>
             <TextInput
               style={styles.input}
               value={values.password2}
               secureTextEntry
               onChangeText={handleChange('password2')}
-              placeholder="password"
+              placeholder={ LanguagesActions.label17(languages.selectedLanguage) }
               />
           </View>
       <View style={styles.buttonsContainer}>

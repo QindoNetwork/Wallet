@@ -56,6 +56,8 @@ this.setState({ show: true,
 
   render() {
 
+    const { languages } = this.props
+
     if (this.props.navigation.state.params.user.owner == false){
       return(
         <View style={styles.container}>
@@ -73,12 +75,12 @@ You must be owner of the group
               <View style={styles.body}>
               <View style={styles.buttonsContainer}>
                   <Button
-                    children="Transfer ownership"
+                    children={ LanguagesActions.label12(languages.selectedLanguage) }
                     onPress={() => this.onPressTransferGroupOwnership()}/>
               </View>
               <View style={styles.buttonsContainer}>
                   <Button
-                    children="Remove user"
+                    children={ LanguagesActions.label13(languages.selectedLanguage) }
                     onPress={() => this.onPressRemove()}/>
               </View>
               {this.renderModal()}

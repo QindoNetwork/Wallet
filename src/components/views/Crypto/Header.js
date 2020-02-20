@@ -1,17 +1,22 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors, measures } from '@common/styles';
+import { inject, observer } from 'mobx-react';
+import { Languages as LanguagesActions } from '@common/actions';
 
+@inject('languages')
+@observer
 export default class Header extends React.Component {
 
     render() {
+      const { languages } = this.props
         return (
             <View style={styles.container}>
                 <View style={styles.leftColumn}>
-                    <Text style={styles.title}>Send Cryptos</Text>
+                    <Text style={styles.title}>{LanguagesActions.label65(languages.selectedLanguage)}</Text>
                 </View>
                 <View style={styles.rightColumn}>
-                    <Text style={styles.balance}>Balances</Text>
+                    <Text style={styles.balance}>{LanguagesActions.label66(languages.selectedLanguage)}</Text>
                 </View>
             </View>
         );

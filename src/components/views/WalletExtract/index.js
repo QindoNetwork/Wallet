@@ -28,7 +28,7 @@ export class WalletExtract extends React.Component {
 
     renderBody = ({ item, history, loading, pendingTransactions }) =>  (!history.length && !loading) ? (<View style={styles.container}>
         <Text style={styles.message}>
-            There are still no transactions involving this wallet.
+            {LanguagesActions.label91(this.props.languages.selectedLanguage)}
         </Text>
     </View>) : (
         <View>

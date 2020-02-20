@@ -42,14 +42,16 @@ export class CreateMnemonics extends React.Component {
     }
 
     render() {
+      const { languages } = this.props
+
         return (
             <View style={styles.container}>
                 <View />
-                <Text style={styles.message}>Save carefully your sequence of mnemonics:</Text>
+                <Text style={styles.message}>{LanguagesActions.label33(languages.selectedLanguage)}</Text>
                 {this.renderBody()}
                 <View style={styles.buttonsContainer}>
                     {this.state.mnemonics && (
-                        <Button onPress={() => this.onPressProceed()}>Proceed</Button>
+                        <Button onPress={() => this.onPressProceed()}>{LanguagesActions.label34(languages.selectedLanguage)}</Button>
                     )}
                 </View>
             </View>

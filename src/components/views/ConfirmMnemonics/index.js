@@ -32,10 +32,11 @@ export class ConfirmMnemonics extends React.Component {
           } catch (e) {
             GeneralActions.notify(e.message, 'long');
           }
-        } else GeneralActions.notify("uncorrect", 'long');
+        } else GeneralActions.notify(LanguagesActions.label24(languages.selectedLanguage), 'long');
     }
 
     render() {
+      const { languages } = this.props
         return (
             <View style={styles.container}>
                 <View />

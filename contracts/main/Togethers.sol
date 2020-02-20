@@ -31,16 +31,6 @@ contract Togethers is Administration {
     uint Out;
   }
 
-    struct test
-  {
-    uint groupID;
-    address _publicKey;
-    uint mappAllowCryptoForCategory;
-    uint amount;
-    uint result;
-  }
-
-
   uint public groupNumber;
 
   constructor() public {
@@ -272,6 +262,7 @@ contract Togethers is Administration {
 
   function getProfiles(uint _group) view public returns (address[] memory)
   {
+    require(mappProfileInGroup[_group][msg.sender].isMember == true);
     return mappUsersInGroup[_group];
   }
 

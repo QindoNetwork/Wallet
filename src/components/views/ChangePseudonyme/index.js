@@ -33,6 +33,8 @@ export class ChangePseudonyme extends React.Component {
 
     render() {
 
+      const { languages } = this.props
+
       return (
         <Formik
           initialValues={{ userName: '' }}
@@ -49,17 +51,17 @@ export class ChangePseudonyme extends React.Component {
             <Fragment>
         <View style={styles.container}>
           <View style={styles.body}>
-            <Text style={styles.message}>New user name</Text>
+            <Text style={styles.message}>{ LanguagesActions.label20(languages.selectedLanguage) }</Text>
             <TextInput
               style={styles.input}
               value={values.userName}
               onChangeText={handleChange('userName')}
-              placeholder="new name"
+              placeholder={ LanguagesActions.label21(languages.selectedLanguage) }
               />
           </View>
       <View style={styles.buttonsContainer}>
           <Button
-              children="Next"
+              children={ LanguagesActions.label22(languages.selectedLanguage) }
               disabled={!isValid}
               onPress={handleSubmit}/>
       </View>

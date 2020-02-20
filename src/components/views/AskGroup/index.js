@@ -33,6 +33,8 @@ export class AskGroup extends Component {
 
   render() {
 
+    const { languages } = this.props
+
     return (
         <Formik
           initialValues={{ groupID: '' }}
@@ -52,11 +54,11 @@ export class AskGroup extends Component {
                   value={values.groupID}
                   onChangeText={handleChange('groupID')}
                   onBlur={() => setFieldTouched('groupID')}
-                  placeholder="Group ID"
+                  placeholder={ LanguagesActions.label14(languages.selectedLanguage) }
                   />
             <View style={styles.buttonsContainer}>
                 <Button
-                    children="Apply"
+                    children={ LanguagesActions.label15(languages.selectedLanguage) }
                     disabled={!isValid}
                     onPress={handleSubmit}/>
             </View>

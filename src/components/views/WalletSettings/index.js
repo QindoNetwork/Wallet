@@ -22,12 +22,13 @@ export class WalletSettings extends React.Component {
     }
 
     confirmRemoveWallet() {
+      const { languages } = this.props
         Alert.alert(
-            'Remove wallet',
-            'This action cannot be undone. Are you sure?',
+            LanguagesActions.label103(languages.selectedLanguage),
+            LanguagesActions.label104(languages.selectedLanguage),
             [
-                { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                { text: 'Remove', onPress: () => this.removeWallet() }
+                { text: LanguagesActions.label105(languages.selectedLanguage), onPress: () => {}, style: 'cancel' },
+                { text: LanguagesActions.label106(languages.selectedLanguage), onPress: () => this.removeWallet() }
             ],
             { cancelable: false }
         );
@@ -41,7 +42,7 @@ export class WalletSettings extends React.Component {
                         <View style={styles.icon}>
                             <Icon name='trash' />
                         </View>
-                        <Text style={styles.itemTitle}>Remove wallet</Text>
+                        <Text style={styles.itemTitle}>{LanguagesActions.label107(languages.selectedLanguage)}</Text>
                     </View>
                 </ListItem>
                 <ListItem onPress={() => this.props.navigation.navigate('ChangePassword', { ...this.props })}>
@@ -49,7 +50,7 @@ export class WalletSettings extends React.Component {
                         <View style={styles.icon}>
                             <Icon name='finger-print' />
                         </View>
-                        <Text style={styles.itemTitle}>Password</Text>
+                        <Text style={styles.itemTitle}>{LanguagesActions.label108(languages.selectedLanguage)}</Text>
                     </View>
                 </ListItem>
                 <ListItem onPress={() => this.props.navigation.navigate('ChangePseudonyme', { ...this.props })}>
@@ -57,7 +58,7 @@ export class WalletSettings extends React.Component {
                         <View style={styles.icon}>
                             <Icon name='shirt' />
                         </View>
-                        <Text style={styles.itemTitle}>User name</Text>
+                        <Text style={styles.itemTitle}>{LanguagesActions.label109(languages.selectedLanguage)}</Text>
                     </View>
                 </ListItem>
             </View>

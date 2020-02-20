@@ -45,6 +45,7 @@ export class Groups extends React.Component {
 
     render() {
 
+      const { languages } = this.props
       const { togethers, gasParam, wallet  } = this.props;
 
       if (this.state.loading === 0){
@@ -79,7 +80,7 @@ export class Groups extends React.Component {
         />
         <View style={styles.buttonsContainer}>
                 <Button
-                  children="Add group"
+                  children={LanguagesActions.label39(languages.selectedLanguage)}
                   onPress={() => this.props.navigation.navigate('AddGroup', { gasParam, togethers })}/>
               </View>
         </ScrollView>)

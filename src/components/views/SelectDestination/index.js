@@ -17,6 +17,7 @@ export class SelectDestination extends React.Component {
     async componentDidMount() {
       const { address, togethers, groupID } = this.props.navigation.state.params
       const { item } = this.props.wallet
+      const { languages } = this.props
 
        let profiles = []
        let temp = []
@@ -64,7 +65,7 @@ export class SelectDestination extends React.Component {
                   ref="input"
                   autoFocus
                   icon="qr-scanner"
-                  placeholder="Destination address"
+                  placeholder={LanguagesActions.label75(languages.selectedLanguage)}
                   onChangeText={(address) => this.setState({ address })}
                   onPressIcon={() => this.refs.camera.show()} />
               <Camera
@@ -92,7 +93,7 @@ export class SelectDestination extends React.Component {
                     <ActivityIndicator size="large" color="darkslategray"/>
                   </View>
                   <View style={styles.buttonsContainer}>
-                          <Button children="Continue" onPress={() => this.onPressContinue(this.state.address)} />
+                          <Button children={LanguagesActions.label73(languages.selectedLanguage)} onPress={() => this.onPressContinue(this.state.address)} />
                         </View>
           </View>
 
@@ -117,7 +118,7 @@ export class SelectDestination extends React.Component {
                       )}
                   />
                   <View style={styles.buttonsContainer}>
-                          <Button children="Continue" onPress={() => this.onPressContinue(this.state.address)} />
+                          <Button children={LanguagesActions.label73(languages.selectedLanguage)} onPress={() => this.onPressContinue(this.state.address)} />
                         </View>
             </View>
         );

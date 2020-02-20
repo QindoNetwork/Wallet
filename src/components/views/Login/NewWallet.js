@@ -19,9 +19,10 @@ import { QRCodeCard } from '@components/widgets';
 export default class NewWallet extends React.Component {
 
     render() {
+      const { languages } = this.props
       return (
         <View style={styles.container1}>
-        <Text style={styles.centered}>Low balance, you need ether to register, show the code below to receive ethers and enter to the community!</Text>
+        <Text style={styles.centered}>{LanguagesActions.label43(languages.selectedLanguage)}</Text>
         <QRCodeCard/>
       </View>
       )

@@ -15,6 +15,7 @@ export class LoadMnemonics extends React.Component {
     state = { mnemonics: [] };
 
     async onPressOpenWallet() {
+      const { languages } = this.props
         if (!this.state.mnemonics.length) return;
         Keyboard.dismiss();
         try {
@@ -24,7 +25,7 @@ export class LoadMnemonics extends React.Component {
             await WalletsActions.addWallet(walletName, wallet, mnemonics);
             this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
             await WalletsActions.saveWallets();
-            GeneralActions.notify("new wallet saved", 'long');
+            GeneralActions.notify(LanguagesActions.label40(languages.selectedLanguage), 'long');
         } catch (e) {
             GeneralActions.notify(e.message, 'long');
         }
@@ -45,6 +46,7 @@ export class LoadMnemonics extends React.Component {
     );
 
     render() {
+      const { languages } = this.props
         return (
             <View style={styles.container}>
                 <View style={styles.body}>
@@ -54,12 +56,12 @@ export class LoadMnemonics extends React.Component {
                     </View>
                     <InputWithIcon
                         icon='send'
-                        placeholder='Type the mnemonic here'
+                        placeholder={LanguagesActions.label41(languages.selectedLanguage)}
                         onPressIcon={text => this.setState({ mnemonics: this.state.mnemonics.concat([text]) })} />
                 </View>
                 <View style={styles.buttonsContainer}>
                     <Button
-                        children='Open wallet'
+                        children={LanguagesActions.label42(languages.selectedLanguage)}
                         onPress={() => this.onPressOpenWallet()} />
                 </View>
             </View>

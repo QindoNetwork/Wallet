@@ -42,7 +42,7 @@ export class SecureTransaction extends React.Component {
           }
           else {
             this.hide()
-            GeneralActions.notify("Password not good", 'long');
+            GeneralActions.notify(LanguagesActions.label110(languages.selectedLanguage), 'long');
           }
         } catch (e) {
           this.hide()
@@ -65,37 +65,37 @@ export class SecureTransaction extends React.Component {
       if (gasLimit * gasPrice < wallet.item.balance) {
         switch (type) {
                 case gas.createGroup:
-                    tx = await ContractActions.createGroup(togethers,values,overrides,languages)
+                    tx = await ContractActions.createGroup(togethers,values,overrides,languages.selectedLanguage)
                     break;
                 case gas.ask:
-                    tx = await ContractActions.ask(togethers,values,address,overrides,languages)
+                    tx = await ContractActions.ask(togethers,values,address,overrides,languages.selectedLanguage)
                     break;
                 case gas.createProfile:
-                    tx = await ContractActions.createProfile(togethers,values,overrides,languages)
+                    tx = await ContractActions.createProfile(togethers,values,overrides,languages.selectedLanguage)
                     break;
                 case gas.changePassword:
-                    tx = await ContractActions.changePassword(togethers,values,overrides,languages)
+                    tx = await ContractActions.changePassword(togethers,values,overrides,languages.selectedLanguage)
                     break;
                 case gas.changeUserName:
-                    tx = await ContractActions.changeUserName(togethers,values,address,overrides,languages)
+                    tx = await ContractActions.changeUserName(togethers,values,address,overrides,languages.selectedLanguage)
                     break;
                 case gas.withdrawFunds:
-                    tx = await ContractActions.withdrawFunds(togethers,values,overrides,languages)
+                    tx = await ContractActions.withdrawFunds(togethers,values,overrides,languages.selectedLanguage)
                     break;
                 case gas.askForFunds:
-                    tx = await ContractActions.askForFunds(togethers,values,overrides,languages)
+                    tx = await ContractActions.askForFunds(togethers,values,overrides,languages.selectedLanguage)
                     break;
                 case gas.quitGroup:
-                    tx = await ContractActions.quitGroup(togethers,values,address,overrides,languages)
+                    tx = await ContractActions.quitGroup(togethers,values,address,overrides,languages.selectedLanguage)
                     break;
                 case gas.transferGroupOwnership:
-                    tx = await ContractActions.transferGroupOwnership(togethers,values,overrides,languages)
+                    tx = await ContractActions.transferGroupOwnership(togethers,values,overrides,languages.selectedLanguage)
                     break;
                 case gas.removeMember:
-                    tx = await ContractActions.removeMember(togethers,values,overrides,languages)
+                    tx = await ContractActions.removeMember(togethers,values,overrides,languages.selectedLanguage)
                     break;
             default:
-                GeneralActions.notify('unknown function', 'long');
+                GeneralActions.notify(LanguagesActions.label111(languages.selectedLanguage), 'long');
                 break;
         }
         if (tx === "KO") {
@@ -104,10 +104,10 @@ export class SecureTransaction extends React.Component {
         else {
           this.setState({show: false})
           navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 0 });
-          GeneralActions.notify('Success, wait for confirmation in historic', 'short');
+          GeneralActions.notify(LanguagesActions.label112(languages.selectedLanguage), 'short');
         }
       }else {
-        GeneralActions.notify('Low balance', 'long');
+        GeneralActions.notify(LanguagesActions.label113(languages.selectedLanguage), 'long');
         }
     }
 
@@ -119,7 +119,7 @@ export class SecureTransaction extends React.Component {
     renderDescription(ethPrice) {
       const { languages } = this.props
       return(
-          <Text style={styles.detail}>Approximatly {ethPrice} ETH</Text>)
+          <Text style={styles.detail}>{LanguagesActions.label114(languages.selectedLanguage)} {ethPrice} ETH</Text>)
     }
 
     renderButtons() {
@@ -128,13 +128,13 @@ export class SecureTransaction extends React.Component {
         <View style={styles.body}>
           <View style={styles.buttonsContainer}>
             <Button
-              children="Continue"
+              children={LanguagesActions.label115(languages.selectedLanguage)}
               onPress={() => this.onPressContinue()}
               />
           </View>
           <View style={styles.buttonsContainer}>
             <Button
-              children="Cancel"
+              children={LanguagesActions.label116(languages.selectedLanguage)}
               onPress={() => this.hide()}
               />
           </View>
@@ -164,11 +164,11 @@ export class SecureTransaction extends React.Component {
     }
     return(
       <View style={styles.container}>
-      <Text style={styles.message}>Enter password</Text>
+      <Text style={styles.message}>{LanguagesActions.label118(languages.selectedLanguage)}</Text>
         <TextInput
             style={styles.input}
             secureTextEntry
-            placeholder="password"
+            placeholder={LanguagesActions.label117(languages.selectedLanguage)}
             underlineColorAndroid="transparent"
             onChangeText={password => this.setState({ password })} />
         {this.renderButtons()}

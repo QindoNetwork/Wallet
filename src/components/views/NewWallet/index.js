@@ -22,14 +22,15 @@ export class NewWallet extends React.Component {
     }
 
     render() {
+      const { languages } = this.props;
         return (
             <View style={styles.container}>
                 <View style={styles.contentContainer}>
-                    <Text style={styles.message}>Do you already have a wallet to configure?</Text>
+                    <Text style={styles.message}>{LanguagesActions.label54(languages.selectedLanguage)}</Text>
                 </View>
                 <View style={styles.buttonsContainer}>
-                    <Button onPress={() => this.onPressLoad()}>Yes, load it</Button>
-                    <Button onPress={() => this.onPressCreate()}>No, create new</Button>
+                    <Button onPress={() => this.onPressLoad()}>{LanguagesActions.label55(languages.selectedLanguage)}</Button>
+                    <Button onPress={() => this.onPressCreate()}>{LanguagesActions.label56(languages.selectedLanguage)}</Button>
                 </View>
             </View>
         );

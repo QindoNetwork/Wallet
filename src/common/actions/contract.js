@@ -22,12 +22,12 @@ export async function ask(togethers, args, address, overrides,languages) {
   if (await parseInt (togethers.groupNumber(),10) < groupID)
   {
     result = "KO"
-    GeneralActions.notify('this group does not exists', 'long');
+    GeneralActions.notify(LanguagesActions.label1(languages), 'long');
   }
   if (new Boolean (await togethers.mappAskForAdd(address,groupID)) == true)
   {
     result = "KO"
-    GeneralActions.notify('you already asked', 'long');
+    GeneralActions.notify(LanguagesActions.label2(languages), 'long');
   }
   if (result === "OK") {
     await togethers.ask(groupID,overrides)
@@ -45,14 +45,14 @@ export async function createProfile(togethers, args, overrides,languages) {
   try {
     if(await new Boolean(togethers.mappAskForAdd(value,groupID)) == false)
     {
-      GeneralActions.notify("this user did not ask to apply", 'long');
+      GeneralActions.notify(LanguagesActions.label3(languages), 'long');
       return "KO"
     }
     const profile = await togethers.getProfileInGroup(groupID,value)
     const isMember = new Boolean(profile.isMember)
     if(isMember == true)
     {
-      GeneralActions.notify("Is member already", 'long');
+      GeneralActions.notify(LanguagesActions.label4(languages), 'long');
       return "KO"
     }
     if (result === "OK")
@@ -73,7 +73,7 @@ export async function changePassword(togethers, args, overrides,languages) {
     if (parseInt (await togethers.connectUser(hashPassword),10) === 1)
     {
       result = "KO"
-      GeneralActions.notify('password not good', 'long');
+      GeneralActions.notify(LanguagesActions.label5(languages), 'long');
     }
     else await togethers.changePassword(value,overrides)
   }catch (e) {
@@ -90,7 +90,7 @@ export async function changeUserName(togethers, args, address, overrides,languag
     if (parseInt(await togethers.verifyUserAvailability(value),10) === 0 )
     {
       result = "KO"
-      GeneralActions.notify('Username unavailable', 'long');
+      GeneralActions.notify(LanguagesActions.label6(languages), 'long');
     }
     else {
       await togethers.changeUserName(value,overrides)
@@ -158,7 +158,7 @@ export async function removeMember(togethers, args, overrides,languages) {
     const active = new Boolean (await togethers.mappUsersInGroup(groupID).active)
     if (active == true)
     {
-      GeneralActions.notify("the user have to close his demand", 'long');
+      GeneralActions.notify(LanguagesActions.label6(languages), 'long');
       result = "KO"
     }
     else await togethers.removeMember(target,groupID,overrides)

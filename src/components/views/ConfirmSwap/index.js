@@ -40,22 +40,23 @@ export class ConfirmSwap extends React.Component {
       const { amount, cryptoOne, item, gasParam } = this.props.navigation.state.params;
       const maxPrice =  gasParam[gas.changeToken].limit * gasParam[gas.changeToken].price * conversions.gigaWeiToWei
       const ethPrice = (maxPrice / conversions.weiToEthereum) / 2
+      const { languages } = this.props
 
         return(
             <View>
               <View style={styles.buttonsContainer}>
                 <Button
-                  children="Continue"
+                  children={LanguagesActions.label25(languages.selectedLanguage)}
                   onPress={() => this.onPressContinue()}
                   />
               </View>
               <View style={styles.buttonsContainer}>
                 <Button
-                  children="Cancel"
+                  children={LanguagesActions.label26(languages.selectedLanguage)}
                   onPress={() => this.hide()}
                   />
               </View>
-              <Text style={styles.detail}>Approximatly {ethPrice} ETH</Text>
+              <Text style={styles.detail}>{LanguagesActions.label27(languages.selectedLanguage)} {ethPrice} ETH</Text>
             </View>)
       }
 

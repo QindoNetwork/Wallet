@@ -60,6 +60,7 @@ export class CloseDemand extends React.Component {
 
     const { gasParam, togethers, groupID, quit } = this.props.navigation.state.params;
     const gasType = (quit) ? gas.quitGroup : gas.withdrawFunds;
+    const { languages } = this.props
 
     if (this.state.show === true) {
     return (  <SecureTransaction
@@ -89,7 +90,7 @@ export class CloseDemand extends React.Component {
       <ScrollView style={styles.container}>
       <View style={styles.buttonsContainer}>
           <Button
-            children="Close"
+            children={ LanguagesActions.label23(languages.selectedLanguage) }
             onPress={() => this.setState({ show: true })}/>
       </View>
       <Text style={styles.message}>{this.props.navigation.state.params.profile.description}</Text>

@@ -32,7 +32,7 @@ export class OpenDemand extends Component {
   }
 
   render() {
-
+    const { languages } = this.props;
     return (
         <Formik
           initialValues={{ description: '' }}
@@ -54,13 +54,13 @@ export class OpenDemand extends Component {
                   value={values.description}
                   onChangeText={handleChange('description')}
                   onBlur={() => setFieldTouched('description')}
-                  placeholder="description"
+                  placeholder={LanguagesActions.label61(languages.selectedLanguage)}
                   multiline="true"
                   />
                   </View>
                   <View style={styles.buttonsContainer}>
                       <Button
-                          children="DEMAND"
+                          children={LanguagesActions.label62(languages.selectedLanguage)}
                           disabled={!isValid}
                           onPress={handleSubmit}/>
                   </View>

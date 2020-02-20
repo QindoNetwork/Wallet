@@ -59,12 +59,13 @@ export default class TransactionCard extends React.Component {
     }
 
     get transactionError() {
-        return Number(this.props.transaction.isError) > 0 ? 'Yes' : 'No';
+      const { languages } = this.props
+        return Number(this.props.transaction.isError) > 0 ? LanguagesActions.label92(languages.selectedLanguage) : LanguagesActions.label93(languages.selectedLanguage);
     }
 
     copyToClipboard(transaction) {
         Clipboard.setString(transaction);
-        GeneralActions.notify('Copied to clipboard', 'short');
+        GeneralActions.notify(LanguagesActions.label94(languages.selectedLanguage), 'short');
     }
 
     renderColumn = (icon, label, action) => (
@@ -89,7 +90,7 @@ export default class TransactionCard extends React.Component {
             style={styles.operatorLabel}
             ellipsizeMode="tail"
             numberOfLines={1}
-            children={this.isReceiving ? `From ${this.from}` : `To ${this.to}`} />
+            children={this.isReceiving ? `${LanguagesActions.label95(this.props.languages.selectedLanguage)} ${this.from}` : `${LanguagesActions.label96(this.props.languages.selectedLanguage)} ${this.to}`} />
     )
 
     renderBody = (transaction) => (
@@ -97,29 +98,29 @@ export default class TransactionCard extends React.Component {
             <View style={styles.header}>
                 <TouchableWithoutFeedback onPress={() => this.hide()}>
                     <View>
-                        <Icon name="close" size="large" />
+                        <Icon name={LanguagesActions.label97(this.props.languages.selectedLanguage)} size="large" />
                     </View>
                 </TouchableWithoutFeedback>
             </View>
             <View style={styles.row}>
-                <Text style={styles.label}>Amount (ETH):</Text>
+                <Text style={styles.label}>{LanguagesActions.label98(this.props.languages.selectedLanguage)} (ETH):</Text>
                 <Text style={styles.value}>{this.balance.toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
             </View>
             <View style={styles.row}>
-                <Text style={styles.label}>Gas used:</Text>
+                <Text style={styles.label}>{LanguagesActions.label99(this.props.languages.selectedLanguage)}:</Text>
                 <Text style={styles.value}>{transaction.gasUsed}</Text>
             </View>
             <View style={styles.row}>
-                <Text style={styles.label}>Error:</Text>
+                <Text style={styles.label}>{LanguagesActions.label100(this.props.languages.selectedLanguage)}:</Text>
                 <Text style={styles.value}>{this.transactionError}</Text>
             </View>
             <View style={styles.row}>
-                <Text style={styles.label}>Transaction hash:</Text>
+                <Text style={styles.label}>{LanguagesActions.label101(this.props.languages.selectedLanguage)}:</Text>
                 <Text style={styles.value}>{transaction.hash}</Text>
             </View>
             <View style={styles.actions}>
                     <View style={styles.actionsBar}>
-                        {this.renderColumn('copy', '', () => this.copyToClipboard(transaction.hash))}
+                        {this.renderColumn(LanguagesActions.label102(this.props.languages.selectedLanguage), '', () => this.copyToClipboard(transaction.hash))}
                     </View>
             </View>
         </View>

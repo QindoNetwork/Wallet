@@ -9,13 +9,14 @@ import { Languages as LanguagesActions } from '@common/actions';
 export default class Header extends React.Component {
 
     render() {
+      const { languages } = this.props
         return (
             <View style={styles.container}>
                 <View style={styles.leftColumn}>
-                    <Text style={styles.title}>Into</Text>
+                    <Text style={styles.title}>{LanguagesActions.label67(languages.selectedLanguage)}</Text>
                 </View>
                 <View style={styles.rightColumn}>
-                    <Text style={styles.balance}>Togethers balances</Text>
+                    <Text style={styles.balance}>{LanguagesActions.label68(languages.selectedLanguage)}</Text>
                 </View>
             </View>
         );

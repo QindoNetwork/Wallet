@@ -15,11 +15,12 @@ export class SendCoinsType1 extends React.Component {
   });
 
     onPressContinue(max) {
+      const { languages } = this.props
       const { togethers, gasParam, item, cryptoOne } = this.props.navigation.state.params;
       var { amount } = this.refs.calc;
         if (!amount || amount === 0 ) return;
         if (amount > max) {
-        GeneralActions.notify("You or contract don t have enough balance", 'long');
+        GeneralActions.notify(LanguagesActions.label78(languages.selectedLanguage), 'long');
         }
         else {
           this.props.navigation.navigate('ConfirmSwap', { togethers, gasParam, amount, item, cryptoOne });
