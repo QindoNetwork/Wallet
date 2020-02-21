@@ -3,12 +3,9 @@ import { Keyboard, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { inject, observer } from 'mobx-react';
-import { ethers } from 'ethers';
 import { Languages as LanguagesActions, General as GeneralActions } from '@common/actions';
-import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
-import { TogethersABI as togethersABI } from '@common/ABIs';
 
-@inject('languages','wallet')
+@inject('languages')
 @observer
 export class NewWalletName extends React.Component {
 
@@ -18,24 +15,14 @@ export class NewWalletName extends React.Component {
 
     state = { walletName: '' };
 
-    async onPressContinue() {
+    onPressContinue() {
       const { languages } = this.props;
         Keyboard.dismiss();
         const { walletName } = this.state;
         if (!walletName) return;
         try {
-          const mnemonics = this.props.wallet.item.mnemonics.toString()
-          const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
-          const contract = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
-          if (parseInt(await contract.verifyUserAvailability(walletName),10) === 0 )
-          {
-            GeneralActions.notify(LanguagesActions.label57(languages.selectedLanguage), 'long');
-          }
-          else
-          {
-            this.props.navigation.navigate('NewWallet', { walletName, title: LanguagesActions.title19(languages.selectedLanguage) });
-          }
-        } catch (e) {
+            this.props.navigation.navigate('NewWallet', { walletName, title: LanguagesActions.title19(languages.selectedLanguage) })
+          } catch (e) {
             GeneralActions.notify(e.message, 'long');
         }
     }

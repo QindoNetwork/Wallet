@@ -4,7 +4,7 @@ import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { Contracts as contractsAddress } from '@common/constants';
 import { HeaderIcon } from '@components/widgets';
-import { General as GeneralActions, Identity as IdentityAction } from '@common/actions';
+import { General as GeneralActions, Identity as IdentityAction, Languages as LanguagesActions } from '@common/actions';
 import { CryptoCard } from '@components/widgets';
 import { inject, observer } from 'mobx-react';
 import Header from './Header';
@@ -12,8 +12,6 @@ import Header from './Header';
 @inject('wallet','languages')
 @observer
 export class ProfileData extends React.Component {
-
-  item
 
   static navigationOptions = ({ navigation }) => ({
         title: navigation.getParam('item').name,
@@ -139,7 +137,7 @@ export class ProfileData extends React.Component {
 
       <View style={styles.container}>
         <View style={styles.body}>
-          <ActivityIndicator size="large"/>
+          <ActivityIndicator size="large" color="darkslategray"/>
         </View>
       </View>
 
@@ -152,7 +150,7 @@ export class ProfileData extends React.Component {
         <ScrollView style={styles.container}>
         <View style={styles.buttonsContainer}>
             <Button
-              children="Send"
+              children={LanguagesActions.label154(languages.selectedLanguage)}
               onPress={() => this.props.navigation.navigate('CryptoType1',
               { togethers, groupID, profile: item, gasParam, title: LanguagesActions.title20(languages.selectedLanguage) })}/>
         </View>

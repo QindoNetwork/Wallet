@@ -10,11 +10,11 @@ import { inject, observer } from 'mobx-react';
 export default class GroupsCard extends React.Component {
 
   get label2() {
-      return (this.props.group.active == true) ? 'Active' : 'Inactive';
+      return (this.props.group.active == true) ? LanguagesActions.label155(this.props.languages.selectedLanguage) : LanguagesActions.label156(this.props.languages.selectedLanguage);
   }
 
   get label3() {
-      return (this.props.group.owner == true) ? 'Owner' : 'Member';
+      return (this.props.group.owner == true) ? LanguagesActions.label157(this.props.languages.selectedLanguage) : LanguagesActions.label158(this.props.languages.selectedLanguage);
   }
 
     render() {

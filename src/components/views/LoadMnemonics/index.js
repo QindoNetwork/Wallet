@@ -5,6 +5,9 @@ import { colors, measures } from '@common/styles';
 import { Wallet as WalletUtils } from '@common/utils';
 import { General as GeneralActions, Wallets as WalletsActions, Languages as LanguagesActions, Contracts as ContractsActions } from '@common/actions';
 import { inject, observer } from 'mobx-react';
+import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
+import { TogethersABI as togethersABI } from '@common/ABIs';
+import { ethers } from 'ethers';
 
 @inject('languages')
 @observer
@@ -16,18 +19,46 @@ export class LoadMnemonics extends React.Component {
 
     state = { mnemonics: [] };
 
+    async createWallet(mnemonics, walletName) {
+      const { languages } = this.props
+      try {
+      const wallet = WalletUtils.loadWalletFromMnemonics(mnemonics);
+            const { walletName } = this.props.navigation.state.params;
+            await WalletsActions.addWallet(walletName, wallet, mnemonics);
+            this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
+            await WalletsActions.saveWallets();
+            GeneralActions.notify(LanguagesActions.label40(languages.selectedLanguage), 'long');
+        } catch (e) {
+            GeneralActions.notify(e.message, 'long');
+        }
+    }
+
     async onPressOpenWallet() {
       const { languages } = this.props
         if (!this.state.mnemonics.length) return;
         Keyboard.dismiss();
         try {
             const { mnemonics } = this.state;
-            const wallet = WalletUtils.loadWalletFromMnemonics(mnemonics);
+            mnemonics = mnemonics.toString()
+            const connection = ethers.Wallet.fromMnemonic(mnemonics.toString()).connect(EthereumNetworks.fallbackProvider);
+            const contract = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
             const { walletName } = this.props.navigation.state.params;
-            await WalletsActions.addWallet(walletName, wallet, mnemonics);
-            this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
-            await WalletsActions.saveWallets();
-            GeneralActions.notify(LanguagesActions.label40(languages.selectedLanguage), 'long');
+            if (parseInt(await contract.verifyRegistration(),10) === 0 )
+            {
+              if (parseInt(await contract.verifyUserAvailability(walletName),10) === 0 )
+              {
+                GeneralActions.notify(LanguagesActions.label57(languages.selectedLanguage), 'long')
+              }
+              else
+              {
+                this.createWallet(mnemonics,walletName)
+              }
+            }
+            else
+            {
+              walletName = await contract.mappAddressToUser()
+              this.createWallet(mnemonics,walletName)
+            }
         } catch (e) {
             GeneralActions.notify(e.message, 'long');
         }

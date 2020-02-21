@@ -35,10 +35,10 @@ export default class Header extends React.Component {
 
           <View style={styles.container}>
               <View style={styles.leftColumn}>
-                  <Text style={styles.title}>Your donnations</Text>
+                  <Text style={styles.title}>{LanguagesActions.label147(languages.selectedLanguage)}</Text>
               </View>
               <View style={styles.rightColumn}>
-                  <Text style={styles.balance}>Amount</Text>
+                  <Text style={styles.balance}>{LanguagesActions.label148(languages.selectedLanguage)}</Text>
               </View>
           </View>
 
@@ -50,10 +50,10 @@ export default class Header extends React.Component {
 
           <View style={styles.container}>
               <View style={styles.leftColumn}>
-                  <Text style={styles.title}>Global stats</Text>
+                  <Text style={styles.title}>{LanguagesActions.label149(languages.selectedLanguage)}</Text>
               </View>
               <View style={styles.rightColumn}>
-                  <Text style={styles.balance}>Output</Text>
+                  <Text style={styles.balance}>{LanguagesActions.label150(languages.selectedLanguage)}</Text>
               </View>
           </View>
 
@@ -64,10 +64,10 @@ export default class Header extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.leftColumn}>
-                    <Text style={styles.title}>Inbox</Text>
+                    <Text style={styles.title}>{LanguagesActions.label151(languages.selectedLanguage)}</Text>
                 </View>
                 <View style={styles.rightColumn}>
-                    <Text style={styles.balance}>Balances</Text>
+                    <Text style={styles.balance}>{LanguagesActions.label152(languages.selectedLanguage)}</Text>
                 </View>
             </View>
         );

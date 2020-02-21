@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, FlatList, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions, Identity as IdentityAction } from '@common/actions';
+import { General as GeneralActions, Identity as IdentityAction, Languages as LanguagesActions } from '@common/actions';
 import { Gas as gas } from '@common/constants';
 import { SecureTransaction } from '@components/widgets';
 import { CryptoCard } from '@components/widgets';
@@ -18,14 +18,13 @@ export class CloseDemand extends React.Component {
         title: navigation.getParam('title')
     })
 
-  state = { stats: [], show: false, loading: 0, profileStats: [] };
+  state = { stats: [], show: false, loading: 0, stats2: [] };
 
   async componentDidMount() {
     const { profile, profiles, togethers } = this.props.navigation.state.params;
     const { wallet } = this.props
     var stats = []
     var stats2 = []
-    var profileStats = []
     var idStats
     var myStats
     try {
@@ -41,18 +40,18 @@ export class CloseDemand extends React.Component {
       if ( profiles[k].id !== wallet.item.address && new Boolean(profiles[k].isMember) == true) {
       for ( var j = 0; j < contractsAddress.homeStablecoinsNumber; j++ ) {
         idStats =  await togethers.mappIdStats(profile.id,profile.demandID,profiles[k].id,j)
+        if ( idStats > 0 ) {
           stats2.push({  balance:  idStats,
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
                         decimals: contractsAddress.homeStablecoinDecimals,
+                        name: profiles[k].name,
                          })
       }
-      profileStats.push({ id:  profiles[k].id,
-                      name: profiles[k].name,
-                      stats: stats2 })
       }
       }
-      this.setState({ stats, profileStats, loading: 1 })
+      }
+      this.setState({ stats, stats2, loading: 1 })
     }catch (e) {
       GeneralActions.notify(e.message, 'long');
   }
@@ -62,7 +61,6 @@ export class CloseDemand extends React.Component {
 
     const { gasParam, togethers, groupID, quit } = this.props.navigation.state.params;
     const gasType = (quit) ? gas.quitGroup : gas.withdrawFunds;
-    const { languages } = this.props
 
     if (this.state.show === true) {
     return (  <SecureTransaction
@@ -75,6 +73,8 @@ export class CloseDemand extends React.Component {
   }
 
   render() {
+
+    const { languages } = this.props
 
     if(this.state.loading === 0)
     {
@@ -96,19 +96,22 @@ export class CloseDemand extends React.Component {
             onPress={() => this.setState({ show: true })}/>
       </View>
       <Text style={styles.message}>{this.props.navigation.state.params.profile.description}</Text>
-      <Header/>
+      <Header type='0'/>
       <FlatList
               style={styles.content}
               data={this.state.stats.sort((prev, next) => prev.name.localeCompare(next.name))}
               renderItem={({ item }) => (<CryptoCard crypto={item} />)} />
-            <Header/>
+            <Header type='1'/>
             <FlatList
                     style={styles.content}
-                    data={this.state.profileStats.sort((prev, next) => prev.name.localeCompare(next.name))}
-                    renderItem={({ item }) => (<FlatList
-                    style={styles.content}
-                    data={item.stats.sort((prev, next) => prev.name.localeCompare(next.name))}
-                    renderItem={({ item }) => (<View><Header/><CryptoCard crypto={item} /></View>)} />)} />
+                    data={this.state.stats2.sort((prev, next) => prev.name.localeCompare(next.name))}
+                    renderItem={({ item }) => (
+                      <View style={styles.body}>
+                      <Text style={styles.message}>
+                      {item.name}
+                      </Text>
+                      <CryptoCard crypto={item} />
+                    </View>)} />
       {this.renderModal()}
     </ScrollView>
   )

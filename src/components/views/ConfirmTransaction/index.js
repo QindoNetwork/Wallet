@@ -186,6 +186,7 @@ const { languages } = this.props
 
     render() {
         const { amount, target, loading, item, groupID } = this.props.navigation.state.params;
+        const { languages } = this.props;
         if(this.state.loading === 0)
         {
           return(

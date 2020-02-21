@@ -88,7 +88,7 @@ export function label9(language) {
       case 'en':
       return "Apply for an existing one"
       case 'fr':
-      return "Demander pour un groupe existant"
+      return "Entrer dans un groupe existant"
   }
 }
 
@@ -1328,6 +1328,114 @@ export function label146(language) {
       return "Confirm & open wallet"
       case 'fr':
       return "Confirmer"
+  }
+}
+
+export function label147(language) {
+  switch (language) {
+      case 'en':
+      return "Your donnation"
+      case 'fr':
+      return "Votre don actuel"
+  }
+}
+
+export function label148(language) {
+  switch (language) {
+      case 'en':
+      return "Amount"
+      case 'fr':
+      return "Montant"
+  }
+}
+
+export function label149(language) {
+  switch (language) {
+      case 'en':
+      return "Global stats"
+      case 'fr':
+      return "Statistiques"
+  }
+}
+
+export function label150(language) {
+  switch (language) {
+      case 'en':
+      return "Output"
+      case 'fr':
+      return "Sortant"
+  }
+}
+
+export function label151(language) {
+  switch (language) {
+      case 'en':
+      return "Inbox"
+      case 'fr':
+      return "Entrant"
+  }
+}
+
+export function label152(language) {
+  switch (language) {
+      case 'en':
+      return "Balances"
+      case 'fr':
+      return "Soldes"
+  }
+}
+
+export function label153(language) {
+  switch (language) {
+      case 'en':
+      return "Details"
+      case 'fr':
+      return "Details"
+  }
+}
+
+export function label154(language) {
+  switch (language) {
+      case 'en':
+      return "Send"
+      case 'fr':
+      return "Envoyer"
+  }
+}
+
+export function label155(language) {
+  switch (language) {
+      case 'en':
+      return "Active"
+      case 'fr':
+      return "Actif"
+  }
+}
+
+export function label156(language) {
+  switch (language) {
+      case 'en':
+      return "Inactive"
+      case 'fr':
+      return "Inactif"
+  }
+}
+
+export function label157(language) {
+  switch (language) {
+      case 'en':
+      return "Owner"
+      case 'fr':
+      return "Admin"
+  }
+}
+
+export function label158(language) {
+  switch (language) {
+      case 'en':
+      return "Member"
+      case 'fr':
+      return "Membre"
   }
 }
 

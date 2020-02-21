@@ -104,7 +104,7 @@ export class ConfirmSwap extends React.Component {
 
     async onPressContinue() {
         this.setState({ loading2: 0 })
-        const { wallet } = this.props
+        const { wallet, languages } = this.props
         const { instance, togethers, gasParam, amount, cryptoOne } = this.props.navigation.state.params;
         let overrides
         let result = 0
@@ -148,6 +148,7 @@ export class ConfirmSwap extends React.Component {
 
     render() {
         const { amount, cryptoOne, item } = this.props.navigation.state.params;
+        const { languages } = this.props
         const fees = (this.state.fees === 0) ? '0' : '1 / ' + this.state.fees
 
         if(this.state.loading === 0)
