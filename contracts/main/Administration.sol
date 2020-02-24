@@ -123,6 +123,7 @@ contract Administration is Ownable {
   {
     require(External1(crypto).decimals() == max);
     require(External1(crypto).totalSupplly() == 0);
+    require(External1(crypto).Escrow() == address(this));
     stablecoinType[homeStableList.length] = currency;
     homeStableList.push(crypto);
   }

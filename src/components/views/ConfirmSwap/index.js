@@ -69,48 +69,48 @@ export class ConfirmSwap extends React.Component {
       {
         return(
           <View style={styles.containerModal}>
-              <View style={styles.body}>
+              <View>
                 <ActivityIndicator size="large" color="darkslategray"/>
               </View>
             </View>
       )
       }
 
-      if(this.state.registered === 0)
+      if(this.state.registered === 1)
       {
         return(
             <View style={styles.containerModal}>
-            <View style={styles.body}>
-            <Text style={styles.message}>{LanguagesActions.label138(languages.selectedLanguage)}</Text>
-            </View>
-              {this.renderButtons()}
+            <View>
+            <Text style={styles.message}>{LanguagesActions.label126(languages.selectedLanguage)}</Text>
+            <TextInput
+                style={styles.input}
+                secureTextEntry
+                underlineColorAndroid="transparent"
+                onChangeText={password => this.setState({ password })} />
+                </View>
+            {this.renderButtons()}
             </View>)
       }
 
       return(
           <View style={styles.containerModal}>
           <View style={styles.body}>
-          <Text style={styles.message}>{LanguagesActions.label139(languages.selectedLanguage)}</Text>
-          <TextInput
-              style={styles.input}
-              secureTextEntry
-              underlineColorAndroid="transparent"
-              onChangeText={password => this.setState({ password })} />
-              </View>
-          {this.renderButtons()}
+          <Text style={styles.message}>{LanguagesActions.label125(languages.selectedLanguage)}</Text>
+          </View>
+            {this.renderButtons()}
           </View>)
-
     }
 
     async onPressContinue() {
         this.setState({ loading2: 0 })
         const { wallet, languages } = this.props
-        const { instance, togethers, gasParam, amount, cryptoOne } = this.props.navigation.state.params;
+        const { instance, togethers, gasParam, amount, cryptoOne, item } = this.props.navigation.state.params;
         let overrides
         let result = 0
+        let value
         let nonce
-        amount = (amount * (Math.pow(10,cryptoOne.decimals))).toString()
         try {
+        value = (amount * (Math.pow(10,cryptoOne.decimals))).toString()
         if (this.state.registered === 1) {
           const hashPassword = sha256(this.state.password)
           result = parseInt (await togethers.connectUser(hashPassword),10)
@@ -120,20 +120,20 @@ export class ConfirmSwap extends React.Component {
             return
           }
         }
-        nonce = await TransactionActions.nextNonce(wallet)
+        //nonce = await TransactionActions.nextNonce(wallet)
         overrides = {
                   gasLimit: gasParam[gas.eRC20allowance].limit,
                   gasPrice: gasParam[gas.eRC20allowance].price * conversions.gigaWeiToWei,
-                  nonce: nonce,
+          //        nonce: nonce,
                   };
-        TransactionActions.erc20approve(amount,cryptoOne.instance,overrides)
-        nonce = nonce + 1
+        await TransactionActions.erc20approve(value,cryptoOne.instance,overrides)
+        //nonce = nonce + 1
         overrides = {
                   gasLimit: gasParam[gas.changeToken].limit,
                   gasPrice: gasParam[gas.changeToken].price * conversions.gigaWeiToWei,
-                  nonce: nonce,
+          //        nonce: nonce,
                   };
-        await togethers.changeToken(amount,cryptoOne.address,item.address)
+        await togethers.changeToken(amount,cryptoOne.address,item.address, overrides)
             this.props.navigation.navigate('WalletDetails', { togethers, gasParam, replaceRoute: true, leave: 0 });
             GeneralActions.notify(LanguagesActions.label141(languages.selectedLanguage), 'short');
           }catch (e) {
@@ -155,7 +155,7 @@ export class ConfirmSwap extends React.Component {
         {
           return(
             <View style={styles.container}>
-                <View style={styles.body}>
+                <View>
                   <ActivityIndicator size="large" color="darkslategray"/>
                 </View>
               </View>
@@ -210,11 +210,6 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         justifyContent: 'space-between',
         backgroundColor: colors.defaultBackground,
-    },
-    body: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
     },
     content: {
         flex: 1,

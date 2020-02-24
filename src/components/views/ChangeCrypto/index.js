@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, Text, View, ActivityIndicator, RefreshControl} from 'react-native';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
 import { CryptoCard } from '@components/widgets';
 import Header from './Header';
 import { ERC20ABI as erc20ABI } from '@common/ABIs';
@@ -68,7 +68,7 @@ export class ChangeCrypto extends React.Component {
 
     render() {
 
-      const { togethers, groupID, gasParam, wallet, navigation } = this.props
+      const { togethers, groupID, gasParam, wallet, navigation, languages } = this.props
       const { erc20s1, erc20s2, loading } = this.state
 
       if (loading === 0){
@@ -111,7 +111,7 @@ export class ChangeCrypto extends React.Component {
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('CryptoType2', { erc20: erc20s2, cryptoOne: item, togethers, gasParam })}>
+                onPress={() => navigation.navigate('CryptoType2', { erc20: erc20s2, cryptoOne: item, togethers, gasParam, title: LanguagesActions.title2(languages.selectedLanguage) })}>
                 <CryptoCard crypto={item}/>
               </TouchableOpacity>
             )}

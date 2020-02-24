@@ -1643,9 +1643,9 @@ export function title19(language) {
 export function title20(language) {
   switch (language) {
       case 'en':
-      return 'Amount'
+      return 'Crypto choice'
       case 'fr':
-      return "Montant"
+      return "Choisir crypto"
   }
 }
 

@@ -10,6 +10,8 @@ interface External1 {
   function transferFrom(address from, address to, uint256 value) external returns (bool);
   function transfer(address to, uint256 value) external returns (bool);
   function setEscrowContract(address togethers) external returns (bool);
+  function Escrow() external returns (address);
+
 }
 
 interface External2 {

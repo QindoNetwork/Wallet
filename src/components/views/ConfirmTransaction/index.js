@@ -72,35 +72,35 @@ const { languages } = this.props
       {
         return(
           <View style={styles.containerModal}>
-              <View style={styles.body}>
+              <View>
                 <ActivityIndicator size="large" color="darkslategray"/>
               </View>
             </View>
       )
       }
 
-      if(this.state.registerd === 0)
+      if(this.state.registered === 1)
       {
         return(
             <View style={styles.containerModal}>
-            <View style={styles.body}>
-            <Text style={styles.message}>{LanguagesActions.label125(languages.selectedLanguage)}</Text>
-            </View>
-              {this.renderButtons()}
+            <View>
+            <Text style={styles.message}>{LanguagesActions.label126(languages.selectedLanguage)}</Text>
+            <TextInput
+                style={styles.input}
+                secureTextEntry
+                underlineColorAndroid="transparent"
+                onChangeText={password => this.setState({ password })} />
+                </View>
+            {this.renderButtons()}
             </View>)
       }
 
       return(
           <View style={styles.containerModal}>
-          <View style={styles.body}>
-          <Text style={styles.message}>{LanguagesActions.label126(languages.selectedLanguage)}</Text>
-          <TextInput
-              style={styles.input}
-              secureTextEntry
-              underlineColorAndroid="transparent"
-              onChangeText={password => this.setState({ password })} />
-              </View>
-          {this.renderButtons()}
+          <View>
+          <Text style={styles.message}>{LanguagesActions.label125(languages.selectedLanguage)}</Text>
+          </View>
+            {this.renderButtons()}
           </View>)
 
     }
@@ -189,7 +189,7 @@ const { languages } = this.props
         {
           return(
             <View style={styles.container}>
-                <View style={styles.body}>
+                <View>
                   <ActivityIndicator size="large" color="darkslategray"/>
                 </View>
               </View>

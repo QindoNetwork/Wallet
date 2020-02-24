@@ -8,7 +8,7 @@ import { CryptoCard } from '@components/widgets';
 import Header from './Header';
 import { inject, observer } from 'mobx-react';
 
-@inject('wallet')
+@inject('wallet','languages')
 @observer
 export class CryptoType2 extends React.Component {
 

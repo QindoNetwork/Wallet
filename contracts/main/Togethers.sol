@@ -39,8 +39,8 @@ contract Togethers is Administration {
     homeStableList.push(address(0));
     mappAllowCryptoForCategory[address(0)] = 0;
     stablecoinType[0] = 'NaN';
-    address ttusd = 0x6b96E3515D0D9b40ee51255D1560F7485BABD160;
-    address tteur = 0xdB65dcf5bd454226e80D246207d7c004C0297157;
+    address ttusd = 0x2cc0ceF3f0ABD4f1d7Ed6F057c30FF39c93c7958;
+    address tteur = 0x2394799D18E30EDCAE0296d03C590Facc9cf60cE;
     cryptoList.push(ttusd);
     cryptoList.push(tteur);
     enableCrypto(ttusd);
@@ -196,15 +196,8 @@ contract Togethers is Administration {
   {
     require(mappCryptoEnable[_crypto1] == true && mappCryptoEnable[_crypto2] == true);
     require(mappAllowCryptoForCategory[_crypto1] == mappAllowCryptoForCategory[_crypto2]);
-    External1(_crypto1).transferFrom(msg.sender,address(this),_tokenAmount);
-    if (External1(_crypto2).decimals() > External1(_crypto1).decimals())
-    {
-      _tokenAmount = _tokenAmount.mul(10**(External1(_crypto2).decimals() - (External1(_crypto1).decimals())));
-    }
-    if (External1(_crypto2).decimals() < External1(_crypto1).decimals())
-    {
-      _tokenAmount = _tokenAmount.div(10**(External1(_crypto1).decimals() - (External1(_crypto2).decimals())));
-    }
+    External1(_crypto1).transferFrom(msg.sender,address(this),_tokenAmount.mul(10**(External1(_crypto1).decimals())));
+    _tokenAmount = _tokenAmount.mul(10**(External1(_crypto2).decimals()));
     uint money;
     if (fees > 0)
     {
