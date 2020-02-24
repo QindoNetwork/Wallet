@@ -12,8 +12,9 @@ export class QRCodeCard extends React.Component {
 
     copyToClipboard() {
         const { item } = this.props.wallet;
+        const { languages } = this.props;
         Clipboard.setString(item.address);
-        GeneralActions.notify('Copied to clipboard', 'short');
+        GeneralActions.notify(LanguagesActions.label159(languages.selectedLanguage), 'short');
     }
 
     share() {
@@ -34,7 +35,7 @@ export class QRCodeCard extends React.Component {
     );
 
     render() {
-        const { wallet: { item } } = this.props;
+        const { wallet: { item }, languages } = this.props;
         return (
             <View style={styles.container}>
                 <View style={styles.centered}>
@@ -43,8 +44,8 @@ export class QRCodeCard extends React.Component {
                 <Text style={styles.centered}>{item.address}</Text>
                 <View style={styles.actions}>
                     <View style={styles.actionsBar}>
-                        {this.renderColumn('copy', 'Copy', () => this.copyToClipboard())}
-                        {this.renderColumn('share', 'Share', () => this.share())}
+                        {this.renderColumn('copy', LanguagesActions.label160(languages.selectedLanguage), () => this.copyToClipboard())}
+                        {this.renderColumn('share', LanguagesActions.label161(languages.selectedLanguage), () => this.share())}
                     </View>
                 </View>
             </View>

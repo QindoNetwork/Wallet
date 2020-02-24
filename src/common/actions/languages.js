@@ -1439,6 +1439,34 @@ export function label158(language) {
   }
 }
 
+
+export function label159(language) {
+  switch (language) {
+      case 'en':
+      return "Copied to clipboard"
+      case 'fr':
+      return "Copié"
+  }
+}
+
+export function label160(language) {
+  switch (language) {
+      case 'en':
+      return "Copy"
+      case 'fr':
+      return "Copier"
+  }
+}
+
+export function label161(language) {
+  switch (language) {
+      case 'en':
+      return "Share"
+      case 'fr':
+      return "Partager"
+  }
+}
+
 //
 
 export function title1(language) {

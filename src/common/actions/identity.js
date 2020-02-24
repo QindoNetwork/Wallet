@@ -25,9 +25,9 @@ export function getIdentity(transaction) {
 
 export function getHomeStableName(i) {
   switch (i) {
-      case 1:
-      return 'Togethers-EUR'
       case 2:
+      return 'Togethers-EUR'
+      case 1:
       return 'Togethers-USD'
       default:
       return 'Ethers'
@@ -36,9 +36,9 @@ export function getHomeStableName(i) {
 
 export function getHomeStableSymbol(i) {
   switch (i) {
-      case 1:
-      return 'TGTE'
       case 2:
+      return 'TGTE'
+      case 1:
       return 'TGTU'
       default:
       return 'ETH'

@@ -111,14 +111,12 @@ const { languages } = this.props
         const { item, togethers, gasParam, amount, target, groupID } = this.props.navigation.state.params;
         const { utils } = ethers;
         let overrides
-        let result = 0
         let value
         let instance
         try {
-        let nonce
         if (this.state.registered === 1) {
           const hashPassword = sha256(this.state.password)
-          result = parseInt (await togethers.connectUser(hashPassword),10)
+          const result = parseInt (await togethers.connectUser(hashPassword),10)
           if (result === 0) {
             this.hide()
             GeneralActions.notify(LanguagesActions.label127(languages.selectedLanguage), 'long');
@@ -132,21 +130,21 @@ const { languages } = this.props
         value = (amount * (Math.pow(10,item.decimals))).toString()
         }
         if(groupID !== '0') {
-          nonce = await TransactionActions.nextNonce(wallet)
+          //let nonce = await TransactionActions.nextNonce(wallet)
               if(item.name !== IdentityAction.getHomeStableName(0)) {
                 overrides = {
                     gasLimit: gasParam[gas.eRC20allowance].limit,
                     gasPrice: gasParam[gas.eRC20allowance].price * conversions.gigaWeiToWei,
-                    nonce: nonce,
+                //    nonce: nonce,
                     };
                 await TransactionActions.erc20approve(value,item.instance,overrides)
-                nonce = nonce + 1
                 overrides = {
                     gasLimit: gasParam[gas.payForFunds].limit,
                     gasPrice: gasParam[gas.payForFunds].price * conversions.gigaWeiToWei,
-                    nonce: nonce,
+                    //nonce: nonce + 1,
                     };
                     await togethers.payForFunds(target,groupID,value,item.address,overrides);
+                    GeneralActions.notify(target + ' ' + groupID + ' ' + value + ' ' + item.address , 'long');
               }
               else {
                 overrides = {
@@ -165,7 +163,7 @@ const { languages } = this.props
                   };
                   await item.instance.transfer(target,value,overrides)
             }
-            else {
+        else {
                   const gasLimit = gasParam[gas.defaultTransaction].limit
                   const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
                   const txn = TransactionUtils.createTransaction(target, value, gasLimit, gasPrice);

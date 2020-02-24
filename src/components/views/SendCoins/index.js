@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Calculator } from '@components/widgets';
 import { colors } from '@common/styles';
 import { General as GeneralActions, Languages as LanguagesActions, Identity as IdentityAction } from '@common/actions';
-import { Conversions as conversions, Contracts as contractsAddress } from '@common/constants';
+import { Conversions as conversions } from '@common/constants';
 import { inject, observer } from 'mobx-react';
 
 @inject('wallet','languages')
@@ -25,7 +25,7 @@ export class SendCoins extends React.Component {
           isOK = false
           }
         }else {
-          if (amount * (Math.pow(10,contractsAddress.homeStablecoinDecimals)) > item.balance) {
+          if (amount * (Math.pow(10,item.decimals)) > item.balance) {
           isOK = false
           }
         }

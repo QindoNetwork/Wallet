@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, ActivityIndicator, RefreshControl } from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions  } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
 import { Contracts as contractsAddress } from '@common/constants';
 import { CryptoCard } from '@components/widgets';
 import Header from './Header';

@@ -60,6 +60,7 @@ export class SelectDestination extends React.Component {
 
     renderInput() {
 
+      const { languages } = this.props
         return(
 
           <View>
@@ -84,6 +85,7 @@ export class SelectDestination extends React.Component {
 
     render() {
       const { profiles } = this.state
+      const { languages } = this.props
 
       if (this.state.loading === 0){
 
