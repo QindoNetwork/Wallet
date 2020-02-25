@@ -234,6 +234,15 @@ export const TogethersABI = [
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [],
+    "name": "getMoney",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "fees",
@@ -705,8 +714,8 @@ export const TogethersABI = [
     ],
     "name": "changeToken",
     "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
+    "payable": true,
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -956,6 +965,27 @@ export const TogethersABI = [
         "internalType": "struct Togethers.profile",
         "name": "",
         "type": "tuple"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "groupID",
+        "type": "uint256"
+      }
+    ],
+    "name": "getMyProfileGroup",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "payable": false,

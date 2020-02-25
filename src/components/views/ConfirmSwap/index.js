@@ -11,6 +11,7 @@ import { sha256 } from 'react-native-sha256';
 import { ERC20ABI as erc20ABI } from '@common/ABIs';
 import { Contracts as contractsAddress } from '@common/constants';
 import { ethers } from 'ethers';
+import { Wallet as WalletUtils } from '@common/utils';
 
 @inject('wallet','languages')
 @observer
@@ -20,7 +21,7 @@ export class ConfirmSwap extends React.Component {
         title: navigation.getParam('title')
     })
 
-    state = { show: false, password: '', fees: 0, registered: 0, loading: 0, loading2: 1, price: 0 };
+    state = { show: false, password: '', registered: 0, loading: 0, loading2: 1, price: 0 };
 
     async componentDidMount() {
 
@@ -28,7 +29,6 @@ export class ConfirmSwap extends React.Component {
 
       try {
         this.setState({
-                        fees:  parseInt (await togethers.fees(),10),
                         registered: parseInt (await togethers.verifyRegistration(),10),
                         loading: 1
                       })
@@ -40,8 +40,8 @@ export class ConfirmSwap extends React.Component {
     renderButtons() {
 
       const { amount, cryptoOne, item, gasParam } = this.props.navigation.state.params;
-      const maxPrice =  gasParam[gas.changeToken].limit * gasParam[gas.changeToken].price * conversions.gigaWeiToWei
-      const ethPrice = (maxPrice / conversions.weiToEthereum) / 2
+      const maxPrice = gasParam[gas.changeToken].limit * gasParam[gas.changeToken].price * conversions.gigaWeiToWei
+      const ethPrice = Number((((maxPrice / conversions.weiToEthereum) / 2))).toFixed(3)
       const { languages } = this.props
 
         return(
@@ -131,9 +131,11 @@ export class ConfirmSwap extends React.Component {
         overrides = {
                   gasLimit: gasParam[gas.changeToken].limit,
                   gasPrice: gasParam[gas.changeToken].price * conversions.gigaWeiToWei,
+                  value: parseInt (await togethers.fees(),10),
           //        nonce: nonce,
                   };
-        await togethers.changeToken(amount,cryptoOne.address,item.address, overrides)
+        value = (amount * (Math.pow(10,contractsAddress.homeStablecoinDecimals))).toString()
+        await togethers.changeToken(value,cryptoOne.address,item.address, overrides)
             this.props.navigation.navigate('WalletDetails', { togethers, gasParam, replaceRoute: true, leave: 0 });
             GeneralActions.notify(LanguagesActions.label141(languages.selectedLanguage), 'short');
           }catch (e) {
@@ -149,7 +151,6 @@ export class ConfirmSwap extends React.Component {
     render() {
         const { amount, cryptoOne, item } = this.props.navigation.state.params;
         const { languages } = this.props
-        const fees = (this.state.fees === 0) ? '0' : '1 / ' + this.state.fees
 
         if(this.state.loading === 0)
         {
@@ -177,11 +178,7 @@ export class ConfirmSwap extends React.Component {
                     </View>
                     <View style={styles.textColumn}>
                         <Text style={styles.title}>{LanguagesActions.label143(languages.selectedLanguage)} ({cryptoOne.symbol} -> {item.symbol}) </Text>
-                        <Text style={styles.value}>{amount}</Text>
-                    </View>
-                    <View style={styles.textColumn}>
-                        <Text style={styles.title}>{LanguagesActions.label144(languages.selectedLanguage)}</Text>
-                        <Text style={styles.value}>{fees}</Text>
+                        <Text style={styles.value}>{Number(((((amount))))).toFixed(3)}</Text>
                     </View>
                 </View>
                 <View style={styles.buttonsContainer}>

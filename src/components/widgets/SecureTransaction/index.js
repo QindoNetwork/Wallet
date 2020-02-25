@@ -7,6 +7,7 @@ import Modal from 'react-native-modal';
 import { Gas as gas, Conversions as conversions } from '@common/constants';
 import { sha256 } from 'react-native-sha256';
 import { inject, observer } from 'mobx-react';
+import { Wallet as WalletUtils } from '@common/utils';
 
 @inject('wallet','languages')
 @observer
@@ -119,7 +120,7 @@ export class SecureTransaction extends React.Component {
     renderDescription(ethPrice) {
       const { languages } = this.props
       return(
-          <Text style={styles.detail}>{LanguagesActions.label114(languages.selectedLanguage)} {ethPrice} ETH</Text>)
+          <Text style={styles.detail}>{LanguagesActions.label114(languages.selectedLanguage)} {Number(ethPrice).toFixed(3)} ETH</Text>)
     }
 
     renderButtons() {

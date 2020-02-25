@@ -39,8 +39,8 @@ contract Togethers is Administration {
     homeStableList.push(address(0));
     mappAllowCryptoForCategory[address(0)] = 0;
     stablecoinType[0] = 'NaN';
-    address ttusd = 0x2cc0ceF3f0ABD4f1d7Ed6F057c30FF39c93c7958;
-    address tteur = 0x2394799D18E30EDCAE0296d03C590Facc9cf60cE;
+    address ttusd = 0xc7c3612793551da1B99C51424681D30c5A8663e2;
+    address tteur = 0x52BfEf4E4D4392e2935046D3d4D75dBe1C571377;
     cryptoList.push(ttusd);
     cryptoList.push(tteur);
     enableCrypto(ttusd);
@@ -192,23 +192,16 @@ contract Togethers is Administration {
     }
   }
 
-  function changeToken(uint _tokenAmount, address _crypto1, address _crypto2) public
+  function changeToken(uint _tokenAmount, address _crypto1, address _crypto2) public payable
   {
     require(mappCryptoEnable[_crypto1] == true && mappCryptoEnable[_crypto2] == true);
     require(mappAllowCryptoForCategory[_crypto1] == mappAllowCryptoForCategory[_crypto2]);
-    External1(_crypto1).transferFrom(msg.sender,address(this),_tokenAmount.mul(10**(External1(_crypto1).decimals())));
-    _tokenAmount = _tokenAmount.mul(10**(External1(_crypto2).decimals()));
-    uint money;
-    if (fees > 0)
-    {
-      money = _tokenAmount.div(fees);
-      External1(_crypto2).transfer(owner,money);
-    }
-    else
-    {
-      money = 0;
-    }
-    External1(_crypto2).transfer(msg.sender,_tokenAmount.sub(money));
+    require(msg.value >= fees);
+    money += msg.value;
+    uint decimals = max - (External1(_crypto1).decimals());
+    External1(_crypto1).transferFrom(msg.sender,address(this),_tokenAmount.div(10**(decimals)));
+    decimals = max - (External1(_crypto2).decimals());
+    External1(_crypto2).transfer(msg.sender,_tokenAmount.div(10**(decimals)));
   }
 
   function removeMember(address _publicKey, uint groupID) public
@@ -288,6 +281,11 @@ contract Togethers is Administration {
   {
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     return mappProfileInGroup[groupID][_user];
+  }
+
+  function getMyProfileGroup(uint groupID) view public returns (bool)
+  {
+    return mappProfileInGroup[groupID][msg.sender].isMember;
   }
 
 }

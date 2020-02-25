@@ -4,7 +4,7 @@ import { Button, TextBullet } from '@components/widgets';
 import { Wallet as WalletUtils } from '@common/utils';
 import { colors, measures } from '@common/styles';
 import { inject, observer } from 'mobx-react';
-import { Languages as LanguagesActions } from '@common/actions';
+import { Languages as LanguagesActions, Wallets as WalletsActions } from '@common/actions';
 
 @inject('languages')
 @observer
@@ -20,7 +20,10 @@ export class CreateMnemonics extends React.Component {
         const { mnemonics } = this.state;
         const { languages } = this.props;
         const { walletName } = this.props.navigation.state.params;
-        this.props.navigation.navigate('ConfirmMnemonics', { mnemonics, walletName, title: LanguagesActions.title14(languages.selectedLanguage) });
+        const wallet = WalletUtils.loadWalletFromMnemonics(mnemonics);
+        await WalletsActions.addWallet(walletName, wallet, mnemonics);
+        this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
+        await WalletsActions.saveWallets();
     }
 
     onPressReveal() {
@@ -36,7 +39,7 @@ export class CreateMnemonics extends React.Component {
 
     renderBody() {
         const { mnemonics } = this.state;
-        if (!mnemonics) return <Button onPress={() => this.onPressReveal()}>Reveal</Button>;
+        if (!mnemonics) return <Button onPress={() => this.onPressReveal()}>Reveal{LanguagesActions.label162(languages.selectedLanguage)}</Button>;
         return (
             <View style={styles.mnemonicsContainer}>
                 {mnemonics.map(this.renderMnemonic)}

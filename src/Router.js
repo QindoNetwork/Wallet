@@ -11,7 +11,6 @@ export const INITIAL_ROUTE = 'WalletsOverview';
 
 const navigator = createStackNavigator(
   {
-    ConfirmMnemonics: { screen: Views.ConfirmMnemonics },
     ConfirmTransaction: { screen: Views.ConfirmTransaction },
     CreateMnemonics: { screen: Views.CreateMnemonics },
     CreateWallet: { screen: Views.CreateWallet },

@@ -33,7 +33,7 @@ export class Profiles extends React.Component {
         )
     })
 
-      state = { show: false, loading: 0, profiles: [], profilesName: [] };
+      state = { show: false, loading: 0, profiles: [] };
 
       renderModal() {
 
@@ -59,7 +59,6 @@ export class Profiles extends React.Component {
         const { wallet } = this.props;
         const groupID = profile.id
         let profiles = []
-        let profilesName = []
         try {
           const req = await togethers.getProfiles(groupID)
           let currentAddress
@@ -67,28 +66,26 @@ export class Profiles extends React.Component {
             for ( var i = 0; i < req.length; i++ ) {
               this.setState({ length: req.length })
               currentAddress = req[i]
-              profilesName[currentAddress] = await togethers.mappAddressToUser(currentAddress)
               temp = await togethers.getProfileInGroup(groupID,currentAddress)
               if ( currentAddress !== wallet.item.address && new Boolean(temp.isMember) == true) {
                 profiles.push({ id:  currentAddress,
-                                name: profilesName[currentAddress],
+                                name: await togethers.mappAddressToUser(currentAddress),
                                 owner: new Boolean(temp.owner),
                                 active: new Boolean(temp.open),
                                 description: temp.description
                                 })
               }
           }
-          this.setState({ profiles, profilesName, loading: 1 })
+          this.setState({ profiles, loading: 1 })
         } catch (e) {
         GeneralActions.notify(e.message, 'long');
         }
       }
 
       demand(groupID, togethers, gasParam, profile, profiles) {
-        const { profilesName } = this.state
         const { languages } = this.props
         if (this.props.navigation.state.params.profile.active == true){
-          this.props.navigation.navigate('CloseDemand',{ groupID, togethers, gasParam, profiles, profile, profilesName, title: LanguagesActions.title12(languages.selectedLanguage)  })
+          this.props.navigation.navigate('CloseDemand',{ groupID, togethers, gasParam, profiles, profile, title: LanguagesActions.title12(languages.selectedLanguage)  })
         }
         else this.props.navigation.navigate('OpenDemand',{ groupID, togethers, gasParam, title: LanguagesActions.title13(languages.selectedLanguage)  })
       }
@@ -98,6 +95,7 @@ export class Profiles extends React.Component {
         const { wallet, navigation, languages } = this.props
         const { gasParam, togethers, profile } = this.props.navigation.state.params
         const groupID = profile.id
+        const active = profile.active
 
         if (this.state.loading === 0){
 
@@ -137,7 +135,7 @@ export class Profiles extends React.Component {
         <View style={styles.buttonsContainer}>
             <Button
               children={LanguagesActions.label121(languages.selectedLanguage)}
-              onSubmit={() => (profile.active) ? this.props.navigation.navigate('CloseDemand',{ profiles, groupID, togethers, gasParam, profile, quit: true, title: LanguagesActions.title12(languages.selectedLanguage) }) : this.setState({ show: true })}/>
+              onSubmit={(active) => active ? this.props.navigation.navigate('CloseDemand',{ profiles, groupID, togethers, gasParam, profile, quit: true, title: LanguagesActions.title12(languages.selectedLanguage) }) : this.setState({ show: true })}/>
         </View>
         {this.renderModal()}
         </ScrollView>

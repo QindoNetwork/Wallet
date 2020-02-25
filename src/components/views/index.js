@@ -1,4 +1,3 @@
-export * from './ConfirmMnemonics';
 export * from './ConfirmTransaction';
 export * from './CreateMnemonics';
 export * from './CreateWallet';

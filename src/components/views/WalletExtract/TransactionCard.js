@@ -27,10 +27,6 @@ export default class TransactionCard extends React.Component {
         return this.props.transaction.to === this.props.walletAddress.toLowerCase();
     }
 
-    get isConfirmed() {
-        return this.props.transaction.confirmations > 0;
-    }
-
     get from() {
       if ( this.state.pseudoFrom !== '' ){
         return this.state.pseudoFrom;
@@ -105,7 +101,7 @@ export default class TransactionCard extends React.Component {
             </View>
             <View style={styles.row}>
                 <Text style={styles.label}>{LanguagesActions.label98(this.props.languages.selectedLanguage)} (ETH):</Text>
-                <Text style={styles.value}>{this.balance.toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+                <Text style={styles.value}>{this.balance.toFixed(3)}</Text>
             </View>
             <View style={styles.row}>
                 <Text style={styles.label}>{LanguagesActions.label99(this.props.languages.selectedLanguage)}:</Text>
@@ -130,26 +126,6 @@ export default class TransactionCard extends React.Component {
     render() {
         const { transaction, walletAddress } = this.props;
 
-        if (this.balance > 0) {
-        return (
-            <TouchableOpacity onPress={() => this.show()}>
-                <View style={styles.container}>
-                    <View style={styles.leftColumn}>
-                        <Icon name={this.iconName} type="fe" />
-                    </View>
-                    <View style={styles.centerColumn}>
-                        {this.renderTransactionOperator()}
-                        <Text>{this.timestamp}</Text>
-                    </View>
-                    <Modal
-                        isVisible={this.state.show}
-                        onBackButtonPress={() => this.hide()}
-                        onBackdropPress={() => this.hide()}
-                        children={this.renderBody(transaction)} />
-                </View>
-            </TouchableOpacity>
-        );
-        }
         return (
             <TouchableOpacity onPress={() => this.show()}>
                 <View style={styles.container}>

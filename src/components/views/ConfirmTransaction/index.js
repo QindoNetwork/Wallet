@@ -10,6 +10,7 @@ import { inject, observer } from 'mobx-react';
 import { sha256 } from 'react-native-sha256';
 import { ERC20ABI as erc20ABI } from '@common/ABIs';
 import { ethers } from 'ethers';
+import { Wallet as WalletUtils } from '@common/utils';
 
 @inject('wallet','languages')
 @observer
@@ -45,7 +46,7 @@ export class ConfirmTransaction extends React.Component {
 
       const { gasParam } = this.props.navigation.state.params;
       const maxPrice =  gasParam[gas.eRC20transfer].limit * gasParam[gas.eRC20transfer].price * conversions.gigaWeiToWei
-      const ethPrice = ((maxPrice / conversions.weiToEthereum) / 2) * 3
+      const ethPrice =  Number(((((maxPrice / conversions.weiToEthereum) / 2) * 3))).toFixed(3)
       const { languages } = this.props
 
         return(
@@ -217,7 +218,7 @@ const { languages } = this.props
                     </View>
                     <View style={styles.textColumn}>
                         <Text style={styles.title}>{LanguagesActions.label131(languages.selectedLanguage)} ({item.symbol}) </Text>
-                        <Text style={styles.value}>{amount}</Text>
+                        <Text style={styles.value}>{Number(((((amount))))).toFixed(3)}</Text>
                     </View>
                 </View>
                 <View style={styles.buttonsContainer}>
@@ -251,7 +252,7 @@ const { languages } = this.props
                   </View>
                   <View style={styles.textColumn}>
                       <Text style={styles.title}>{LanguagesActions.label134(languages.selectedLanguage)} ({item.symbol}) </Text>
-                      <Text style={styles.value}>{amount}</Text>
+                      <Text style={styles.value}>{number(amount).toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
                   </View>
                   <View style={styles.textColumn}>
                       <Text style={styles.title}>{LanguagesActions.label135(languages.selectedLanguage)}</Text>

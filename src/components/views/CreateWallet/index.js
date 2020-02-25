@@ -4,9 +4,6 @@ import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { inject, observer } from 'mobx-react';
 import { Languages as LanguagesActions } from '@common/actions';
-import { Contracts as contractsAddress, Network as EthereumNetworks } from '@common/constants';
-import { TogethersABI as togethersABI } from '@common/ABIs';
-import { ethers } from 'ethers';
 
 @inject('languages')
 @observer
@@ -19,18 +16,7 @@ export class CreateWallet extends React.Component {
     async onPressProceed() {
         const { languages } = this.props
         const { walletName } = this.props.navigation.state.params;
-        const { mnemonics } = this.state;
-        const connection = ethers.Wallet.fromMnemonic(mnemonics.toString()).connect(EthereumNetworks.fallbackProvider);
-        const contract = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
-        if (parseInt(await contract.verifyUserAvailability(walletName),10) === 0 )
-          {
-            this.props.navigation.pop()
-            GeneralActions.notify(LanguagesActions.label57(languages.selectedLanguage), 'long')
-          }
-          else
-            {
-              this.props.navigation.navigate('CreateMnemonics', { walletName, title: LanguagesActions.title15(languages.selectedLanguage) });
-            }
+        this.props.navigation.navigate('CreateMnemonics', { walletName, title: LanguagesActions.title15(languages.selectedLanguage) });
     }
 
     render() {

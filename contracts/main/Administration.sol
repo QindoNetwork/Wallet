@@ -8,6 +8,7 @@ contract Administration is Ownable {
   using SafeMath for uint256;
 
   uint public fees;
+  uint money;
 
   mapping (address => uint8) public mappAllowCryptoForCategory;
   mapping (address => bool) public mappCryptoEnable;
@@ -116,6 +117,7 @@ contract Administration is Ownable {
   {
     require(category != 0);
     require(mappCryptoEnable[crypto] == true);
+    require(External1(crypto).decimals() <= max);
     mappAllowCryptoForCategory[crypto] = category;
   }
 
@@ -141,6 +143,12 @@ contract Administration is Ownable {
   function getStableCoinList() view public returns (address[] memory)
   {
     return homeStableList;
+  }
+
+  function getMoney() public onlyOwner
+  {
+    msg.sender.transfer(money);
+    money = 0;
   }
 
 }

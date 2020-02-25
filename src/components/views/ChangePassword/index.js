@@ -47,17 +47,17 @@ export class ChangePassword extends React.Component {
             oldPassword: yup
               .string()
               .min(restrictions.minPassword)
-              .max(restrictions.minPassword)
+              .max(restrictions.maxPassword)
               .required('Required'),
               password1: yup
                 .string()
                 .min(restrictions.minPassword)
-                .max(restrictions.minPassword)
+                .max(restrictions.maxPassword)
                 .required('Required'),
                 password2: yup
                   .string()
                   .min(restrictions.minPassword)
-                  .max(restrictions.minPassword)
+                  .max(restrictions.maxPassword)
                   .required('Required')
           })}
         >
@@ -65,7 +65,7 @@ export class ChangePassword extends React.Component {
             <Fragment>
         <View style={styles.container}>
           <View style={styles.body}>
-            <Text style={styles.message}>Old password</Text>
+            <Text style={styles.message}>{ LanguagesActions.label16(languages.selectedLanguage) }</Text>
             <TextInput
               style={styles.input}
               value={values.oldPassword}

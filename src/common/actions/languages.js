@@ -332,7 +332,7 @@ export function label36(language) {
       case 'en':
       return "Write it somewhere safe so you can make sure you won't lose it, or you may lose permanently all your coins. There is no way to recover it later."
       case 'fr':
-      return "Ecrivez le quelque part ou vous ne le perderz pas sous rique de perdre vos coins"
+      return "Ecrivez le quelque part ou vous ne le perderez pas sous rique de perdre vos coins"
   }
 }
 
@@ -594,7 +594,7 @@ export function label65(language) {
       case 'en':
       return "Send Cryptos"
       case 'fr':
-      return "Envoyer des cryptos"
+      return "Envoyer"
   }
 }
 
@@ -1464,6 +1464,24 @@ export function label161(language) {
       return "Share"
       case 'fr':
       return "Partager"
+  }
+}
+
+export function label162(language) {
+  switch (language) {
+      case 'en':
+      return "Reveal"
+      case 'fr':
+      return "Révéler"
+  }
+}
+
+export function label163(language) {
+  switch (language) {
+      case 'en':
+      return "Click on the words in the correct order:"
+      case 'fr':
+      return "Cliquez sur les mots dans le bon ordre:"
   }
 }
 

@@ -95,9 +95,12 @@ export class WalletsOverview extends React.Component {
             <View style={styles.container}>
               <View style={styles.body}>
               <Text style={styles.message}>
-                  HELLO!
+                  WELCOME TO TOGETHERS
               </Text>
                 <ActivityIndicator size="large" color="darkslategray"/>
+                <Text style={styles.message}>
+                    The safe, easy, private and secure crypto social network
+                </Text>
               </View>
             </View>
 

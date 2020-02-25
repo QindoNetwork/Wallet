@@ -143,7 +143,7 @@ export async function transferGroupOwnership(togethers, args, overrides,language
   const { target, groupID } = args
   let result = "OK"
   try {
-    await togethers.transferGroupOwnership(target,groupID,overrides)
+    await togethers.transferGroupOwnership(groupID,target,overrides)
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
     result = "KO"
@@ -155,7 +155,7 @@ export async function removeMember(togethers, args, overrides,languages) {
   const { target, groupID } = args
   let result = "OK"
   try {
-    const active = new Boolean (await togethers.mappUsersInGroup(groupID).active)
+    const active = new Boolean (await (togethers.getProfiles(groupID)).active)
     if (active == true)
     {
       GeneralActions.notify(LanguagesActions.label6(languages), 'long');
