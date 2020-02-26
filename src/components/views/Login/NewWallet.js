@@ -1,15 +1,7 @@
 import React, { Fragment } from 'react'
-import { Clipboard, Share, TouchableWithoutFeedback, Keyboard, StyleSheet, Text, TextInput, View, Alert, ActivityIndicator} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions } from '@common/actions';
-import QRCode from 'react-native-qrcode-svg';
-import { Gas as gas, Restrictions as restrictions, Conversions as conversions } from '@common/constants';
-import { Icon } from '@components/widgets';
-import { Wallet as WalletUtils } from '@common/utils';
-import * as yup from 'yup'
-import { Formik } from 'formik'
-import { sha256 } from 'react-native-sha256';
 import { Languages as LanguagesActions } from '@common/actions';
 import { inject, observer } from 'mobx-react';
 import { QRCodeCard } from '@components/widgets';

@@ -218,7 +218,7 @@ const { languages } = this.props
                     </View>
                     <View style={styles.textColumn}>
                         <Text style={styles.title}>{LanguagesActions.label131(languages.selectedLanguage)} ({item.symbol}) </Text>
-                        <Text style={styles.value}>{Number(((((amount))))).toFixed(3)}</Text>
+                        <Text style={styles.value}>{amount}</Text>
                     </View>
                 </View>
                 <View style={styles.buttonsContainer}>
@@ -252,7 +252,7 @@ const { languages } = this.props
                   </View>
                   <View style={styles.textColumn}>
                       <Text style={styles.title}>{LanguagesActions.label134(languages.selectedLanguage)} ({item.symbol}) </Text>
-                      <Text style={styles.value}>{number(amount).toFixed(3).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}</Text>
+                      <Text style={styles.value}>{amount}</Text>
                   </View>
                   <View style={styles.textColumn}>
                       <Text style={styles.title}>{LanguagesActions.label135(languages.selectedLanguage)}</Text>

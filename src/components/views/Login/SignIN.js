@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Clipboard, Share, TouchableWithoutFeedback, Keyboard, StyleSheet, Text, TextInput, View, Alert, ActivityIndicator} from 'react-native';
+import { Keyboard, StyleSheet, Text, TextInput, View, Alert, ActivityIndicator} from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions } from '@common/actions';
