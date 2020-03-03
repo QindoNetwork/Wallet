@@ -20,8 +20,9 @@ export class CreateMnemonics extends React.Component {
         const { mnemonics } = this.state;
         const { languages } = this.props;
         const { walletName } = this.props.navigation.state.params;
-        const wallet = WalletUtils.loadWalletFromMnemonics(mnemonics);
-        await WalletsActions.addWallet(walletName, wallet, mnemonics);
+        const m = mnemonics.join(' ');
+        const wallet = WalletUtils.loadWalletFromMnemonics(m);
+        await WalletsActions.addWallet(walletName, wallet, m);
         this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
         await WalletsActions.saveWallets();
     }
@@ -38,8 +39,9 @@ export class CreateMnemonics extends React.Component {
     );
 
     renderBody() {
+      const { languages } = this.props
         const { mnemonics } = this.state;
-        if (!mnemonics) return <Button onPress={() => this.onPressReveal()}>Reveal{LanguagesActions.label162(languages.selectedLanguage)}</Button>;
+        if (!mnemonics) return <Button onPress={() => this.onPressReveal()}>{LanguagesActions.label162(languages.selectedLanguage)}</Button>;
         return (
             <View style={styles.mnemonicsContainer}>
                 {mnemonics.map(this.renderMnemonic)}

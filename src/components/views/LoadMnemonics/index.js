@@ -39,10 +39,10 @@ export class LoadMnemonics extends React.Component {
         Keyboard.dismiss();
         try {
             const { mnemonics } = this.state;
-            mnemonics = mnemonics.toString()
-            const connection = ethers.Wallet.fromMnemonic(mnemonics.toString()).connect(EthereumNetworks.fallbackProvider);
+            const m = mnemonics.join(' ');
+            const connection = ethers.Wallet.fromMnemonic(m.toString()).connect(EthereumNetworks.fallbackProvider);
             const contract = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
-            const { walletName } = this.props.navigation.state.params;
+            var { walletName } = this.props.navigation.state.params;
             if (parseInt(await contract.verifyRegistration(),10) === 0 )
             {
               if (parseInt(await contract.verifyUserAvailability(walletName),10) === 0 )
@@ -51,13 +51,14 @@ export class LoadMnemonics extends React.Component {
               }
               else
               {
-                this.createWallet(mnemonics,walletName)
+                this.createWallet(m,walletName)
               }
             }
             else
             {
-              walletName = await contract.mappAddressToUser()
-              this.createWallet(mnemonics,walletName)
+              const wallet = WalletUtils.loadWalletFromMnemonics(m);
+              walletName = await contract.mappAddressToUser(wallet.address)
+              this.createWallet(m,walletName)
             }
         } catch (e) {
             GeneralActions.notify(e.message, 'long');

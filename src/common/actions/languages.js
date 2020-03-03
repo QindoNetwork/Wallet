@@ -375,9 +375,9 @@ export function label40(language) {
 export function label41(language) {
   switch (language) {
       case 'en':
-      return 'Type the mnemonic here'
+      return 'Type the mnemonic here in one line'
       case 'fr':
-      return "Entrez le mnemonic"
+      return "Entrez le mnemonic en une seule ligne"
   }
 }
 

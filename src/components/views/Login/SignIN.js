@@ -12,10 +12,23 @@ import { Formik } from 'formik'
 import { sha256 } from 'react-native-sha256';
 import { Languages as LanguagesActions } from '@common/actions';
 import { inject, observer } from 'mobx-react';
+import { wallets as WalletsStore } from '@common/stores';
 
 @inject('wallet','languages')
 @observer
 export default class SignIN extends React.Component {
+
+  async componentDidMount() {
+
+    const { togethers, wallet } = this.props;
+
+    try {
+      const walletName = await togethers.mappAddressToUser(wallet.item.address)
+      WalletsStore.setWalletName(wallet.item.address, walletName);
+    } catch (e) {
+        GeneralActions.notify(e.message, 'long');
+    }
+  }
 
     async onPressContinueLogin() {
         Keyboard.dismiss();
@@ -26,6 +39,7 @@ export default class SignIN extends React.Component {
           this.setState({
                           result : parseInt (await togethers.connectUser(hashPassword),10)
                         })
+
         } catch (e) {
             GeneralActions.notify(e.message, 'long');
         }
