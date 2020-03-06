@@ -39,15 +39,16 @@ export class Profiles extends React.Component {
 
         const { gasParam, togethers, profile  } = this.props.navigation.state.params;
         const groupID = profile.id
+        const active = profile.active
 
-        if (this.state.show === true) {
-            return (  <SecureTransaction
-              togethers={togethers}
-              values={{groupID}}
-              gasParam={gasParam}
-              navigation={this.props.navigation}
-              type={gas.quitGroup}/> )
-            }
+            if (this.state.show === true) {
+                return (  <SecureTransaction
+                  togethers={togethers}
+                  values={{groupID}}
+                  gasParam={gasParam}
+                  navigation={this.props.navigation}
+                  type={gas.quitGroup}/> )
+                }
       }
 
       componentDidMount() {
@@ -95,7 +96,6 @@ export class Profiles extends React.Component {
         const { wallet, navigation, languages } = this.props
         const { gasParam, togethers, profile } = this.props.navigation.state.params
         const groupID = profile.id
-        const active = profile.active
 
         if (this.state.loading === 0){
 
@@ -109,6 +109,32 @@ export class Profiles extends React.Component {
 
         )
 
+        }
+
+if (active == true){
+        return(
+          <ScrollView style={styles.container}>
+          <Header length={this.state.profiles.length}/>
+          <View style={styles.buttonsContainer}>
+              <Button
+                children={LanguagesActions.label120(languages.selectedLanguage)}
+                onPress={() => this.demand(groupID, togethers, gasParam, profile, profiles )}/>
+          </View>
+          <FlatList
+              data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
+              refreshControl={<RefreshControl refreshing={wallet.loading} onRefresh={() => this.updateData()} />}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                style={styles.content}
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate('ProfileData',{ item, user: profile, togethers, gasParam, groupID, title: item.name })
+                }>
+                  <ProfileCard profile={item} togethers={togethers}/>
+                </TouchableOpacity>
+              )}
+          />
+          </ScrollView>
+          )
         }
 
       return(
@@ -135,7 +161,7 @@ export class Profiles extends React.Component {
         <View style={styles.buttonsContainer}>
             <Button
               children={LanguagesActions.label121(languages.selectedLanguage)}
-              onSubmit={(active) => active ? this.props.navigation.navigate('CloseDemand',{ profiles, groupID, togethers, gasParam, profile, quit: true, title: LanguagesActions.title12(languages.selectedLanguage) }) : this.setState({ show: true })}/>
+              onSubmit={this.setState({ show: true })}/>
         </View>
         {this.renderModal()}
         </ScrollView>

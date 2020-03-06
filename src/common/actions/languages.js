@@ -1100,9 +1100,9 @@ export function label120(language) {
 export function label121(language) {
   switch (language) {
       case 'en':
-      return 'Quit'
+      return 'Quit group'
       case 'fr':
-      return "Quitter"
+      return "Quitter ce groupe"
   }
 }
 

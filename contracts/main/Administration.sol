@@ -20,7 +20,7 @@ contract Administration is Ownable {
   address[] cryptoList;
   address[] homeStableList;
 
-  uint32 constant max = 18;
+  uint8 constant max = 18;
 
   struct erc20
   {

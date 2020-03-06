@@ -199,6 +199,7 @@ contract Togethers is Administration {
     require(msg.value >= fees);
     money += msg.value;
     uint decimals = max - (External1(_crypto1).decimals());
+    require(_tokenAmount.div(10**(decimals)) > 0);
     External1(_crypto1).transferFrom(msg.sender,address(this),_tokenAmount.div(10**(decimals)));
     decimals = max - (External1(_crypto2).decimals());
     External1(_crypto2).transfer(msg.sender,_tokenAmount.div(10**(decimals)));
