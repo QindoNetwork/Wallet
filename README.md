@@ -6,9 +6,6 @@ This project is a Ethereum Wallet built on top of ReactNative.
 
 * [Available Scripts](#available-scripts)
   * [npm start](#npm-start)
-  * [npm test](#npm-test)
-  * [npm test:ci](#npm-test-ci)
-  * [npm test:watch](#npm-test-watch)
   * [npm run ios](#npm-run-ios)
   * [npm run android](#npm-run-android)
   * [npm run android:build](#npm-run-android-build)
@@ -17,7 +14,6 @@ This project is a Ethereum Wallet built on top of ReactNative.
   * [npm run android:logcat](#npm-run-android-logcat)
 * [Writing and Running Tests](#writing-and-running-tests)
 * [License](#license)
-* [Contribute](#contribute)
 
 ## Available Scripts
 
@@ -28,18 +24,6 @@ Installs all dependencies and prepares the app to run.
 ### `npm start`
 
 Runs Packager to provide your app in development mode.
-
-#### `npm test`
-
-Runs the [jest](https://github.com/facebook/jest) test runner on your tests.
-
-#### `npm run test:ci`
-
-Runs all the tests in CI mode, which does some optimizations and optputs code coverage information.
-
-#### `npm run test:watch`
-
-Runs the tests in watch mode, so whenever you change your code the involved tests will run again.
 
 #### `npm run ios`
 
@@ -69,15 +53,6 @@ Clean the Android generated build files.
 
 Outputs the Android logcat to the cli, so you can see native the logs in runtime.
 
-## Writing and Running Tests
-
-This project is set up to use [jest](https://facebook.github.io/jest/) for tests. You can configure whatever testing strategy you like, but jest works out of the box. Create test files in directories called `__tests__` or with the `.test` extension to have the files loaded by jest. See [the template project](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/App.test.js) for an example test. The [jest documentation](https://facebook.github.io/jest/docs/getting-started.html) is also a wonderful resource, as is the [React Native testing tutorial](https://facebook.github.io/jest/docs/tutorial-react-native.html).
-
 ## License
 
 [MIT](./LICENSE)
-
-
-## Contribute
-
-TODO

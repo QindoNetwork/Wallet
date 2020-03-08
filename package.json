@@ -4,9 +4,6 @@
   "license": "MIT",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest",
-    "test:ci": "jest --ci --coverage --detectOpenHandles",
-    "test:watch": "jest --watch",
     "android:build": "cd android && ./gradlew assembleDebug && cd .. && cp android/app/build/outputs/apk/debug/app-debug.apk EthereumWallet.apk",
     "android:bundle": "react-native bundle --dev false --platform android --entry-file index.js --bundle-output ./android/app/build/intermediates/assets/debug/index.android.bundle --assets-dest ./android/app/build/intermediates/res/merged/debug",
     "android:clean": "cd android && ./gradlew clean && cd ..",
@@ -47,37 +44,13 @@
     "@babel/plugin-transform-runtime": "7.5.5",
     "@babel/runtime": "7.5.5",
     "babel-core": "7.0.0-bridge.0",
-    "babel-jest": "24.8.0",
     "babel-plugin-module-resolver": "3.2.0",
     "babel-preset-react-native": "4.0.1",
     "enzyme": "3.10.0",
     "enzyme-adapter-react-16": "1.14.0",
     "eslint-config-rallycoding": "3.2.0",
-    "jest": "24.8.0",
     "metro-react-native-babel-preset": "0.55.0",
     "react-native-mock-render": "0.1.5",
     "react-test-renderer": "16.8.6"
-  },
-  "jest": {
-    "preset": "react-native",
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.js"
-    ],
-    "coverageDirectory": "./coverage",
-    "collectCoverageFrom": [
-      "src/**/*.js"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/node_modules/",
-      "setupTests.js",
-      "common/actions/index.js",
-      "common/services/index.js",
-      "common/stores/index.js",
-      "common/utils/index.js",
-      "common/constants",
-      "common/styles",
-      "components/views/index.js",
-      "components/widgets/index.js"
-    ]
   }
 }
