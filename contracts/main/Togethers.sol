@@ -159,7 +159,7 @@ contract Togethers is Administration {
     }
     else
     {
-      require(mappCryptoEnable[_crypto] == true);
+      require(mappCryptoEnable[_crypto] == true && _tokenAmount > 0);
       amount = _tokenAmount;
       External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
       if (External1(_crypto).decimals() < max)
@@ -199,6 +199,7 @@ contract Togethers is Administration {
     require(msg.value >= fees);
     money += msg.value;
     uint decimals = max - (External1(_crypto1).decimals());
+    // _tokenAmount est converti en 18 décimales en amont via le front
     require(_tokenAmount.div(10**(decimals)) > 0);
     External1(_crypto1).transferFrom(msg.sender,address(this),_tokenAmount.div(10**(decimals)));
     decimals = max - (External1(_crypto2).decimals());
