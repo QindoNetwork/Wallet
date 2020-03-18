@@ -39,7 +39,13 @@ const navigator = createStackNavigator(
     ChangePassword: { screen: Views.ChangePassword },
     ChangeLanguage: { screen: Views.ChangeLanguage },
     AdminProfile: { screen: Views.AdminProfile },
-    ConfirmSwap: { screen: Views.ConfirmSwap }
+    ConfirmSwap: { screen: Views.ConfirmSwap },
+    MainHistory: { screen: Views.MainHistory },
+    MainSwap: { screen: Views.MainSwap },
+    MainNetwork: { screen: Views.MainNetwork },
+    MainSend: { screen: Views.MainSend },
+    MainReceive: { screen: Views.MainReceive },
+    MainSettings: { screen: Views.MainSettings }
   },
   {
     initialRouteName: INITIAL_ROUTE,

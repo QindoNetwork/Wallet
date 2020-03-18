@@ -111,7 +111,7 @@ export class Profiles extends React.Component {
 
         }
 
-if (active == true){
+if (this.props.navigation.state.params.profile.active == true){
         return(
           <ScrollView style={styles.container}>
           <Header length={this.state.profiles.length}/>
@@ -161,7 +161,7 @@ if (active == true){
         <View style={styles.buttonsContainer}>
             <Button
               children={LanguagesActions.label121(languages.selectedLanguage)}
-              onSubmit={this.setState({ show: true })}/>
+              onSubmit={() => this.setState({ show: true })}/>
         </View>
         {this.renderModal()}
         </ScrollView>

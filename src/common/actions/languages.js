@@ -868,7 +868,7 @@ export function label95(language) {
       case 'en':
       return 'From'
       case 'fr':
-      return "Depuis"
+      return "De"
   }
 }
 

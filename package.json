@@ -25,6 +25,7 @@
     "react": "16.8.6",
     "react-native": "0.59.9",
     "react-native-camera": "2.10.1",
+    "react-native-dashboard": "0.0.4",
     "react-native-gesture-handler": "1.2.1",
     "react-native-modal": "11.0.1",
     "react-native-permissions": "1.1.1",
