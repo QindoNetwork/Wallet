@@ -76,7 +76,7 @@ export class CryptoType2 extends React.Component {
 
           <View style={styles.container}>
               <Text style={styles.message}>
-                  There is no token available in the contract.
+                  {LanguagesActions.label164(languages.selectedLanguage)}
               </Text>
           </View>
 

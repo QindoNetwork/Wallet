@@ -39,34 +39,8 @@ contract Togethers is Administration {
     homeStableList.push(address(0));
     mappAllowCryptoForCategory[address(0)] = 0;
     stablecoinType[0] = 'NaN';
-    address ttusd = 0x9E25794909DAfA1850663b0D5c24eDFFeCd05BA4;
-    address tteur = 0x07DFb8356Ba3344cf36CaCC202F9cC0a37A3aefB;
-    cryptoList.push(ttusd);
-    cryptoList.push(tteur);
-    enableCrypto(ttusd);
-    enableCrypto(tteur);
     stablecoinType[1] = 'USD';
     stablecoinType[2] = 'EUR';
-    address dai = 0xb3162F1d3E9071001c5286cc0Cd533C3958dc65f;
-    address Gemini = 0x6a36989540818bd8686873A2f36E39Ac9Da2e102;
-    address Tether = 0x92EB10B521fd63D0a2df10B36f284C150b1Ca17F;
-    address Stasis = 0xc3249b1240e44b19c42d8a6d27e15f80376e542d;
-    cryptoList.push(dai);
-    cryptoList.push(Gemini);
-    cryptoList.push(Tether);
-    cryptoList.push(Stasis);
-    enableCrypto(dai);
-    enableCrypto(Gemini);
-    enableCrypto(Tether);
-    enableCrypto(Stasis);
-    homeStableList.push(ttusd);
-    homeStableList.push(tteur);
-    allowCryptoForCategory(dai,1);
-    allowCryptoForCategory(Gemini,1);
-    allowCryptoForCategory(Tether,1);
-    allowCryptoForCategory(Stasis,2);
-    allowCryptoForCategory(ttusd,1);
-    allowCryptoForCategory(tteur,2);
   }
 
   function ask(uint _groupID) public

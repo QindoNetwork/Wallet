@@ -13,11 +13,11 @@ export class CryptoCard extends React.Component {
 
   renderIcon(symbol) {
     switch (symbol) {
-        case 'DAI': return <Image style={styles.avatar} source={require('../../widgets/Logos/MCDDai_32.png')} />
-        case 'USDT': return <Image style={styles.avatar} source={require('../../widgets/Logos/tether28_2.png')} />
-        case 'GUSD': return <Image style={styles.avatar} source={require('../../widgets/Logos/gemini_28.png')} />
+        case 'DAI': return <Image style={styles.avatar} source={require('../../widgets/Logos/multi-collateral-dai-dai-logo.png')} />
+        case 'USDT': return <Image style={styles.avatar} source={require('../../widgets/Logos/tether-usdt-logo.png')} />
+        case 'GUSD': return <Image style={styles.avatar} source={require('../../widgets/Logos/gemini-dollar-gusd-logo.png')} />
         case 'EURS': return <Image style={styles.avatar} source={require('../../widgets/Logos/statiseuro_28.png')} />
-        case 'ETH': return <Image style={styles.avatar} source={require('../../widgets/Logos/1027.png')} />
+        case 'ETH': return <Image style={styles.avatar} source={require('../../widgets/Logos/ethereum-eth-logo.png')} />
         case 'SAI': return <Image style={styles.avatar} source={require('../../widgets/Logos/13dai_stablecoin.png')} />
         case 'TUSD': return <Image style={styles.avatar} source={require('../../widgets/Logos/trueusd-tusd-logo.png')} />
         case 'USDC': return <Image style={styles.avatar} source={require('../../widgets/Logos/usd-coin-usdc-logo.png')} />

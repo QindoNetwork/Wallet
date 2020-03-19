@@ -1485,6 +1485,15 @@ export function label163(language) {
   }
 }
 
+export function label164(language) {
+  switch (language) {
+      case 'en':
+      return "There is no token available in the contract."
+      case 'fr':
+      return "Pas de token disponible"
+  }
+}
+
 //
 
 export function title1(language) {
