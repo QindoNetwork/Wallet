@@ -168,7 +168,7 @@ contract Togethers is Administration {
   {
     require(mappCryptoEnable[_crypto1] == true && mappCryptoEnable[_crypto2] == true);
     require(mappAllowCryptoForCategory[_crypto1] == mappAllowCryptoForCategory[_crypto2]);
-    require(msg.value >= fees);
+    require(msg.value == fees);
     money += msg.value;
     uint decimals = max - (External1(_crypto1).decimals());
     External1(_crypto1).transferFrom(msg.sender,address(this),_tokenAmount.div(10**(decimals)));

@@ -109,21 +109,6 @@ export const ControlABI = [
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "blockStartNotifications",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [
 			{
@@ -213,21 +198,6 @@ export const ControlABI = [
 			}
 		],
 		"name": "setGasPrice",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_block",
-				"type": "uint256"
-			}
-		],
-		"name": "setBlockStartNotifications",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",

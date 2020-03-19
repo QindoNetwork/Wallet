@@ -1494,6 +1494,24 @@ export function label164(language) {
   }
 }
 
+export function label165(language) {
+  switch (language) {
+      case 'en':
+      return "WELCOME TO TOGETHERS"
+      case 'fr':
+      return "BIENVENUE"
+  }
+}
+
+export function label166(language) {
+  switch (language) {
+      case 'en':
+      return "The safe, easy, private crypto social network"
+      case 'fr':
+      return "Dans le réseau social TOGETHERS"
+  }
+}
+
 //
 
 export function title1(language) {
