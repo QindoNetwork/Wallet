@@ -18,6 +18,10 @@ export class CryptoCard extends React.Component {
         case 'GUSD': return <Image style={styles.avatar} source={require('../../widgets/Logos/gemini_28.png')} />
         case 'EURS': return <Image style={styles.avatar} source={require('../../widgets/Logos/statiseuro_28.png')} />
         case 'ETH': return <Image style={styles.avatar} source={require('../../widgets/Logos/1027.png')} />
+        case 'SAI': return <Image style={styles.avatar} source={require('../../widgets/Logos/13dai_stablecoin.png')} />
+        case 'TUSD': return <Image style={styles.avatar} source={require('../../widgets/Logos/trueusd-tusd-logo.png')} />
+        case 'USDC': return <Image style={styles.avatar} source={require('../../widgets/Logos/usd-coin-usdc-logo.png')} />
+        case 'PAX': return <Image style={styles.avatar} source={require('../../widgets/Logos/paxos-standard-pax-logo.png')} />
         default:
         return(  <Icon name='cash' size='large'/>)
     }

@@ -16,6 +16,14 @@ export function getIdentity(transaction) {
       return 'Tether stablecoin'
       case contractsAddress.Stasis.toLowerCase():
       return 'Stasis stablecoin'
+      case contractsAddress.TrueUSD.toLowerCase():
+      return 'TrueUSD stablecoin'
+      case contractsAddress.Paxos.toLowerCase():
+      return 'Paxos stablecoin'
+      case contractsAddress.USDCoin.toLowerCase():
+      return 'USDCoin stablecoin'
+      case contractsAddress.Sai.toLowerCase():
+      return 'Sai stablecoin'
       case '':
       return 'Other contract'
       default:

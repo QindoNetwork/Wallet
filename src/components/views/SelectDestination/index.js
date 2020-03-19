@@ -97,7 +97,7 @@ export class SelectDestination extends React.Component {
                     <ActivityIndicator size="large" color="darkslategray"/>
                   </View>
                   <View style={styles.buttonsContainer}>
-                          <Button children={LanguagesActions.label73(languages.selectedLanguage)} onPress={() => this.onPressContinue(this.state.address)} />
+                          <Button children={LanguagesActions.label138(languages.selectedLanguage)} onPress={() => this.onPressContinue(this.state.address)} />
                         </View>
           </View>
 
@@ -122,7 +122,7 @@ export class SelectDestination extends React.Component {
                       )}
                   />
                   <View style={styles.buttonsContainer}>
-                          <Button children={LanguagesActions.label73(languages.selectedLanguage)} onPress={() => this.onPressContinue(this.state.address)} />
+                          <Button children={LanguagesActions.label138(languages.selectedLanguage)} onPress={() => this.onPressContinue(this.state.address)} />
                         </View>
             </View>
         );

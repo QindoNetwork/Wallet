@@ -95,7 +95,7 @@ contract Administration is Ownable {
   function addCryptoToList(address crypto) public onlyOwner
   {
     require(crypto != address(0));
-    require(checkCryptoToList(crypto) == false);
+    require(checkCryptoToList(crypto) == true);
     cryptoList.push(crypto);
   }
 
