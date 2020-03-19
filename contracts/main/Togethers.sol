@@ -39,8 +39,6 @@ contract Togethers is Administration {
     homeStableList.push(address(0));
     mappAllowCryptoForCategory[address(0)] = 0;
     stablecoinType[0] = 'NaN';
-    stablecoinType[1] = 'USD';
-    stablecoinType[2] = 'EUR';
   }
 
   function ask(uint _groupID) public
