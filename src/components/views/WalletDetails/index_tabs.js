@@ -12,7 +12,7 @@ export class WalletDetails extends React.Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
           title: "Togethers",
-          headerRight: (
+          headerLeft: (
               <HeaderIcon
                   name='log-out'
                   size='large'

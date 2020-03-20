@@ -160,6 +160,21 @@ export const TogethersABI = [
     "type": "function"
   },
   {
+    "constant": true,
+    "inputs": [],
+    "name": "money",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "constant": false,
     "inputs": [],
     "name": "resetPassword",
@@ -192,6 +207,21 @@ export const TogethersABI = [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "homeStableListLength",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
       }
     ],
     "payable": false,
@@ -826,6 +856,16 @@ export const TogethersABI = [
             "internalType": "uint8",
             "name": "category",
             "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "balance",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "balanceContract",
+            "type": "uint256"
           }
         ],
         "internalType": "struct Administration.erc20",

@@ -11,7 +11,7 @@ export class WalletDetails extends Component {
 
   static navigationOptions = ({ navigation, screenProps }) => ({
         title: "Togethers",
-        headerRight: (
+        headerLeft: (
             <HeaderIcon
                 name='log-out'
                 size='large'

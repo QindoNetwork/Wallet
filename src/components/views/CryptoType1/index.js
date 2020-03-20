@@ -18,7 +18,8 @@ export class CryptoType1 extends React.Component {
                 togethers = { togethers }
                 groupID = { groupID }
                 profile = { profile }
-                gasParam = { gasParam }/>
+                gasParam = { gasParam }
+                type = '1'/>
 
       )
 

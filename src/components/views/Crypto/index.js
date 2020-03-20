@@ -21,8 +21,17 @@ export class Crypto extends React.Component {
     this.updateData()
   }
 
+  pressCard(profile, groupID, item, togethers, gasParam) {
+    if (item.balance > 0){
+    this.props.navigation.navigate('SendCoins', { profile, groupID, item, togethers, gasParam, title: LanguagesActions.title2(this.props.languages.selectedLanguage) } )
+    }
+    else {
+      return
+    }
+  }
+
   async updateData() {
-    const { togethers, groupID, wallet, gasParam } = this.props
+    const { togethers, groupID, wallet, gasParam, type } = this.props
 
     const gasLimit = gasParam[gas.defaultTransaction].limit
     const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
@@ -47,15 +56,23 @@ export class Crypto extends React.Component {
         info = await togethers.getCryptoInfo(currentAddress)
         if ( (groupID === '0' && new Boolean(info.status) == true) || (parseInt(info.category,10) !== 0))
         {
+          var isOK = true
+          if ( type === '1'){
+          for ( var j = 0; j < contractsAddress.homeStablecoinsNumber; j++ ) {
+            if ( info.symbol === IdentityAction.getHomeStableSymbol(j)){
+              isOK = false
+              break
+            }
+          }
+          }
+            if ( isOK === true){
           instance = new ethers.Contract(currentAddress, erc20ABI, connection)
-          balance = parseInt (await instance.balanceOf(wallet.item.address),10)
-          if ( balance > 0) {
             erc20s.push({ name: info.name,
                       symbol: info.symbol,
                       decimals: parseInt (info.decimals,10),
                       instance: instance,
                       address: currentAddress,
-                      balance: balance })
+                      balance: parseInt (info.balance,10) })
                     }
         }
       }
@@ -113,7 +130,7 @@ export class Crypto extends React.Component {
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('SendCoins', { profile, groupID, item, togethers, gasParam, title: LanguagesActions.title2(languages.selectedLanguage) })}>
+                onPress={() => this.pressCard( profile, groupID, item, togethers, gasParam )}>
                   <CryptoCard crypto={item}/>
               </TouchableOpacity>
             )}

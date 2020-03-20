@@ -3,7 +3,6 @@ import { TouchableOpacity, FlatList, ScrollView, StyleSheet, Text, View, Activit
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
-import { Contracts as contractsAddress } from '@common/constants';
 import { CryptoCard } from '@components/widgets';
 import Header from './Header';
 import { inject, observer } from 'mobx-react';
@@ -30,14 +29,13 @@ export class CryptoType2 extends React.Component {
     var erc20s2 = []
       for ( var i = 0; i < erc20.length; i++ ) {
         currentAddress = erc20[i].address
-        info = await togethers.getCryptoInfo(currentAddress)
-        if ( parseInt(info.category,10) === cryptoOne.category && currentAddress !== cryptoOne.address ) {
-              balance = parseInt (await erc20[i].instance.balanceOf(contractsAddress.togethersAddress),10)
+        if ( erc20[i].category === cryptoOne.category && currentAddress !== cryptoOne.address ) {
+              balance = erc20[i].balanceContract
               if ( balance > 0 ) {
               erc20s2.push({
-                      name: info.name,
-                      symbol: info.symbol,
-                      decimals: parseInt (info.decimals,10),
+                      name: erc20[i].name,
+                      symbol: erc20[i].symbol,
+                      decimals: erc20[i].decimals,
                       address: currentAddress,
                       balance
                      })

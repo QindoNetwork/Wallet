@@ -14,10 +14,19 @@ import { Gas as gas, Conversions as conversions } from '@common/constants';
 @observer
 export class ChangeCrypto extends React.Component {
 
-  state = { loading: 0, erc20s1: [], erc20s2: [] };
+  state = { loading: 0, erc20s: [] };
 
   componentDidMount() {
     this.updateData()
+  }
+
+  pressCard(erc20, cryptoOne, togethers, gasParam) {
+    if (cryptoOne.balance > 0){
+    this.props.navigation.navigate('CryptoType2', { erc20, cryptoOne, togethers, gasParam, title: LanguagesActions.title2(this.props.languages.selectedLanguage) })
+    }
+    else {
+      return
+    }
   }
 
   async updateData() {
@@ -25,8 +34,7 @@ export class ChangeCrypto extends React.Component {
     try {
     const mnemonics = wallet.item.mnemonics.toString()
     const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
-    var erc20s1 = []
-    var erc20s2 = []
+    var erc20s = []
     var currentAddress
     var info
     var instance
@@ -39,28 +47,18 @@ export class ChangeCrypto extends React.Component {
         category = parseInt(info.category,10)
         if(category !== 0 && new Boolean(info.status) == true ){
           instance = new ethers.Contract(currentAddress, erc20ABI, connection)
-          balance = parseInt (await instance.balanceOf(wallet.item.address),10)
-          if ( balance > 0) {
-            erc20s1.push({ name: info.name,
+            erc20s.push({ name: info.name,
                       symbol: info.symbol,
                       decimals: parseInt (info.decimals,10),
                       instance: instance,
                       address: currentAddress,
-                      balance: balance,
+                      balance: parseInt (info.balance,10),
                       category: category,
+                      balanceContract: parseInt (info.balanceContract,10)
                     })
-                    }
-                    erc20s2.push({ name: info.name,
-                              symbol: info.symbol,
-                              decimals: parseInt (info.decimals,10),
-                              instance: instance,
-                              address: currentAddress,
-                              balance: balance,
-                              category: category,
-                            })
+            }
         }
-      }
-      this.setState({ erc20s1, erc20s2, loading: 1 })
+      this.setState({ erc20s, loading: 1 })
     } catch (e) {
     GeneralActions.notify(e.message, 'long');
     }
@@ -68,8 +66,8 @@ export class ChangeCrypto extends React.Component {
 
     render() {
 
-      const { togethers, groupID, gasParam, wallet, navigation, languages } = this.props
-      const { erc20s1, erc20s2, loading } = this.state
+      const { togethers, groupID, gasParam, wallet, navigation } = this.props
+      const { erc20s, loading } = this.state
 
       if (loading === 0){
 
@@ -85,33 +83,19 @@ export class ChangeCrypto extends React.Component {
 
       }
 
-      if (erc20s1.length === 0){
-
-        return(
-
-          <View style={styles.container}>
-              <Text style={styles.message}>
-                  There is no token you can swap.
-              </Text>
-          </View>
-
-      )
-
-      }
-
       return(
 
         <View style={styles.container}>
           <Header/>
 
             <FlatList
-              data={erc20s1.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
+              data={erc20s.sort((prev, next) => prev.symbol.localeCompare(next.symbol))}
               refreshControl={<RefreshControl refreshing={wallet.loading} onRefresh={() => this.updateData()} />}
               renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate('CryptoType2', { erc20: erc20s2, cryptoOne: item, togethers, gasParam, title: LanguagesActions.title2(languages.selectedLanguage) })}>
+                onPress={() => this.pressCard(erc20s,item, togethers, gasParam)}>
                 <CryptoCard crypto={item}/>
               </TouchableOpacity>
             )}

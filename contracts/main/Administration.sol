@@ -8,7 +8,7 @@ contract Administration is Ownable {
   using SafeMath for uint256;
 
   uint public fees;
-  uint money;
+  uint public money;
 
   mapping (address => uint8) public mappAllowCryptoForCategory;
   mapping (address => bool) public mappCryptoEnable;
@@ -29,6 +29,8 @@ contract Administration is Ownable {
     uint decimals;
     bool status;
     uint8 category;
+    uint balance;
+    uint balanceContract;
   }
 
   function createPassword(string memory _password) internal
@@ -96,6 +98,7 @@ contract Administration is Ownable {
   {
     require(crypto != address(0));
     require(checkCryptoToList(crypto) == true);
+    require(External1(crypto).decimals() != 0);
     cryptoList.push(crypto);
   }
 
@@ -115,16 +118,24 @@ contract Administration is Ownable {
 
   function allowCryptoForCategory(address crypto, uint8 category) public onlyOwner
   {
-    require(category != 0);
+    require(category != 0 && category < homeStableList.length);
     require(mappCryptoEnable[crypto] == true);
     require(External1(crypto).decimals() <= max);
+    for(uint i = 0 ; i < homeStableList.length ; i++)
+    {
+      if(homeStableList[i] == crypto)
+      {
+        require(i == category);
+        break;
+      }
+    }
     mappAllowCryptoForCategory[crypto] = category;
   }
 
   function createNewHomeStable(address crypto, string memory currency) public onlyOwner
   {
     require(External1(crypto).decimals() == max);
-    require(External1(crypto).totalSupplly() == 0);
+    require(External1(crypto).totalSupply() == 0);
     require(External1(crypto).Escrow() == address(this));
     stablecoinType[homeStableList.length] = currency;
     homeStableList.push(crypto);

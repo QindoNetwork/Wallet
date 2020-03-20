@@ -132,6 +132,10 @@ contract Togethers is Administration {
     else
     {
       require(mappCryptoEnable[_crypto] == true);
+      for(uint i = 0 ; i < homeStableList.length ; i++)
+      {
+        require(homeStableList[i] != _crypto);
+      }
       amount = _tokenAmount;
       External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
       if (External1(_crypto).decimals() < max)
@@ -231,7 +235,9 @@ contract Togethers is Administration {
     string memory name = External1(_crypto).name();
     bool status = mappCryptoEnable[_crypto];
     uint8 category = mappAllowCryptoForCategory[_crypto];
-    return erc20(symbol,name,decimals,status,category);
+    uint balance = External1(_crypto).balanceOf(msg.sender);
+    uint balanceContract = External1(_crypto).balanceOf(address(this));
+    return erc20(symbol,name,decimals,status,category,balance,balanceContract);
   }
 
   function getStats(address to, uint8 crypto) view public returns (stats memory)

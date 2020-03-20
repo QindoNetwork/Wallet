@@ -1,26 +1,26 @@
-export const togethersAddress = "0x6154103e85fE3d2D7c16E1f1ed201C027f6F2E2b";
+export const togethersAddress = "0x121A9C853B10113ECD7ef418F16486352A30095C";
 
 export const controlAddress = "0x2a2627bdf9F10125542120E1E31507D5Ed08E2e0";
 
-export const  ttusd = "0x9E25794909DAfA1850663b0D5c24eDFFeCd05BA4";
+export const  ttusd = "0x96507334b258f27c7D271E15395e07A95b582f40";
 
-export const  tteur = "0x07DFb8356Ba3344cf36CaCC202F9cC0a37A3aefB";
+export const  tteur = "0x1317ddE9F2a53a8d741cDB7E5D749358bddFbBC6";
 
 export const  dai = "0xb3162F1d3E9071001c5286cc0Cd533C3958dc65f";
 
-export const  Gemini = "0x6a36989540818bd8686873A2f36E39Ac9Da2e102";
+export const  Gemini = "0x64852A4d068DA59BD44ca2C905Fd8Fcd4Bd83Ee1";
 
-export const  Tether = "0x92EB10B521fd63D0a2df10B36f284C150b1Ca17F";
+export const  Tether = "0xC7Cd4Fa9ddC85430451D8D688d212C24B02c182a";
 
-export const  Stasis = "0xc3249b1240e44b19c42d8a6d27e15f80376e542d";
+export const  Stasis = "0x119B5A343Af48b19fb2F9b7A70E6102E0b3878DF";
 
-export const  TrueUSD = "0x201ab7606286a02b1DeB0C0f1Cb30eB61296057d";
+export const  TrueUSD = "0xc7dCaFe0C91468C029e7b6F27aF3b508acBB11aE";
 
-export const  Paxos = "0xF338a6BE1D6dA4D7fdd27aF5852e52106189fFc1";
+export const  Paxos = "0xDcc8d9c0727545812a3e5C69e5D7f5F4fdd23946";
 
-export const  USDCoin = "0x196BA83B7952f943B189798661c275497C9eD453";
+export const  USDCoin = "0xc848Ec72E5F3B78B040F26562e1516CA92e1e2Cd";
 
-export const  Sai = "0xf8c0f0c13FB291944A848191b82b4bDcAbF26FB0";
+export const  Sai = "0xFa126Be040d31A262CDcBf1152Eab52084E0afE5";
 
 export const nullAddress = "0x0000000000000000000000000000000000000000";
 
