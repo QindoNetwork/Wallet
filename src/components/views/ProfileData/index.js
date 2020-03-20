@@ -18,7 +18,7 @@ export class ProfileData extends React.Component {
         headerRight: (
             <HeaderIcon
                 name='key'
-                size='medium'
+                size='large'
                 color={colors.white}
                 onPress={() => navigation.navigate('AdminProfile',
                 {

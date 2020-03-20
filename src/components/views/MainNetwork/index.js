@@ -1,6 +1,6 @@
 import React from 'react';
 import { TabView } from '@components/widgets';
-import { ReceiveCoins, WalletExtract, WalletSettings, Groups, Crypto, ChangeCrypto } from '..';
+import { Groups } from '..';
 import { HeaderIcon } from '@components/widgets';
 import { colors } from '@common/styles';
 import { Languages as LanguagesActions } from '@common/actions';
@@ -11,14 +11,13 @@ import { inject, observer } from 'mobx-react';
 export class MainNetwork extends React.Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
-          title: "Togethers",
+          title: navigation.getParam('title'),
           headerRight: (
               <HeaderIcon
-                  name='log-out'
-                  size='medium'
+                  name='add'
+                  size='large'
                   color={colors.white}
-                  onPress={() => navigation.navigate('WalletsOverview',
-                    { replaceRoute: true }
+                  onPress={() => navigation.navigate('AddGroup', { gasParam: navigation.getParam('gasParam'), togethers: navigation.getParam('togethers'), title: navigation.getParam('title2') }
                   )
                   }/>),
       })
@@ -26,7 +25,7 @@ export class MainNetwork extends React.Component {
       render() {
 
         return (
-          <WalletExtract togethers = {this.props.navigation.getParam('togethers')} />
+          <Groups navigation = {this.props.navigation} gasParam = {this.props.navigation.getParam('gasParam')} togethers = {this.props.navigation.getParam('togethers')} mode = '1' />
           );
         }
 }

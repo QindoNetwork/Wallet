@@ -17,7 +17,7 @@ export class WalletsOverview extends React.Component {
 
     static navigationOptions = ({ navigation, screenProps }) => ({
             title: 'Welcome',
-            headerLeft: (
+            headerRight: (
                 <HeaderIcon
                     name='add'
                     size='large'
@@ -25,14 +25,6 @@ export class WalletsOverview extends React.Component {
                     onPress={() => navigation.navigate('NewWalletName')
                   } />
             ),
-            headerRight: (
-                <HeaderIcon
-                    name='settings'
-                    size='medium'
-                    type='md'
-                    color={colors.white}
-                    onPress={() => navigation.navigate('Settings')} />
-            )
         });
 
     async componentDidMount() {
@@ -68,11 +60,9 @@ export class WalletsOverview extends React.Component {
 
     renderItem = ({ item }) => <WalletCard wallet={item} onPress={() => this.onPressWallet(item)} />
 
-    renderBody = (list) => (!list.length) ? (<View style={styles.container}>
-        <Text style={styles.message}>
-            There are no wallets configured. Click on the + button to add a new one.
-        </Text>
-    </View>) : (<View>
+    renderBody = (list) => (!list.length) ? (
+    this.props.navigation.navigate('NewWalletName', { replaceRoute: true })
+    ) : (<View>
         <FlatList
             style={styles.content}
             data={list.sort((prev, next) => prev.name.localeCompare(next.name))}
@@ -95,11 +85,11 @@ export class WalletsOverview extends React.Component {
             <View style={styles.container}>
               <View style={styles.body}>
               <Text style={styles.message}>
-                  {LanguagesActions.label165(languages.selectedLanguage)}
+                  {LanguagesActions.label165(this.props.languages.selectedLanguage)}
               </Text>
                 <ActivityIndicator size="large" color="darkslategray"/>
                 <Text style={styles.message}>
-                    {LanguagesActions.label166(languages.selectedLanguage)}
+                    {LanguagesActions.label166(this.props.languages.selectedLanguage)}
                 </Text>
               </View>
             </View>

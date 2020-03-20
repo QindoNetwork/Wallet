@@ -62,6 +62,14 @@ export class WalletSettings extends React.Component {
                         <Text style={styles.itemTitle}>{LanguagesActions.label109(languages.selectedLanguage)}</Text>
                     </View>
                 </ListItem>
+                <ListItem onPress={() => this.props.navigation.navigate('ChangeLanguage', { title: LanguagesActions.title9(languages.selectedLanguage) })}>
+                    <View style={styles.itemContainer}>
+                        <View style={styles.icon}>
+                            <Icon name='flag' />
+                        </View>
+                        <Text style={styles.itemTitle}>{LanguagesActions.label84(languages.selectedLanguage)}</Text>
+                    </View>
+                </ListItem>
             </View>
         );
     }

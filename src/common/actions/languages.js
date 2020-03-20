@@ -1711,3 +1711,57 @@ export function title22(language) {
       return "Confirmer échange"
   }
 }
+
+export function title23(language) {
+  switch (language) {
+      case 'en':
+      return 'Historic'
+      case 'fr':
+      return "Historique"
+  }
+}
+
+export function title24(language) {
+  switch (language) {
+      case 'en':
+      return 'Receive'
+      case 'fr':
+      return "Rcevoir"
+  }
+}
+
+export function title25(language) {
+  switch (language) {
+      case 'en':
+      return 'Send'
+      case 'fr':
+      return "Envoyer"
+  }
+}
+
+export function title26(language) {
+  switch (language) {
+      case 'en':
+      return 'Network'
+      case 'fr':
+      return "Reseau"
+  }
+}
+
+export function title27(language) {
+  switch (language) {
+      case 'en':
+      return 'Change'
+      case 'fr':
+      return "Echange"
+  }
+}
+
+export function title28(language) {
+  switch (language) {
+      case 'en':
+      return 'Settings'
+      case 'fr':
+      return "Options"
+  }
+}

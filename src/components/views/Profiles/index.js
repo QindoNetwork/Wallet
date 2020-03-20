@@ -19,7 +19,7 @@ export class Profiles extends React.Component {
         headerRight: (
             <HeaderIcon
                 name='person-add'
-                size='medium'
+                size='large'
                 color={colors.white}
                 onPress={() => navigation.navigate('AddProfile',
                 {

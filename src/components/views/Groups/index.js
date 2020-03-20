@@ -45,8 +45,7 @@ export class Groups extends React.Component {
 
     render() {
 
-      const { languages } = this.props
-      const { togethers, gasParam, wallet  } = this.props;
+      const { togethers, gasParam, wallet, mode, languages  } = this.props;
 
       if (this.state.loading === 0){
 
@@ -57,6 +56,31 @@ export class Groups extends React.Component {
             <ActivityIndicator size="large" color="darkslategray"/>
           </View>
         </View>
+
+      )
+
+      }
+
+      if (mode === '1'){
+
+        return(
+
+          <ScrollView style={styles.container}>
+          <Header length={this.state.groups.length}/>
+          <FlatList
+            data={this.state.groups.sort((prev, next) => prev.name.localeCompare(next.name))}
+            refreshControl={<RefreshControl refreshing={wallet.loading} onRefresh={() => this.updateData()} />}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+              style={styles.content}
+              activeOpacity={0.8}
+              onPress={() => this.props.navigation.navigate('Profiles',{ profile: item, gasParam, togethers, title: LanguagesActions.title5(languages.selectedLanguage)
+             })}>
+                <GroupCard  group={item} togethers={togethers} />
+              </TouchableOpacity>
+            )}
+        />
+        </ScrollView>
 
       )
 
@@ -82,7 +106,7 @@ export class Groups extends React.Component {
         <View style={styles.buttonsContainer}>
                 <Button
                   children={LanguagesActions.label39(languages.selectedLanguage)}
-                  onPress={() => this.props.navigation.navigate('AddGroup', { gasParam, togethers, title: LanguagesActions.title6(languages.selectedLanguage) })}/>
+                  onPress={() => this.props.navigation.navigate('AddGroup', { gasParam, togethers, title2: LanguagesActions.title6(languages.selectedLanguage) })}/>
               </View>
         </ScrollView>)
 
