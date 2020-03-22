@@ -63,7 +63,6 @@ export class SecureTransaction extends React.Component {
           };
 
       var tx = "KO"
-      if (gasLimit * gasPrice < wallet.item.balance) {
         switch (type) {
                 case gas.createGroup:
                     tx = await ContractActions.createGroup(togethers,values,overrides,languages.selectedLanguage)
@@ -106,9 +105,6 @@ export class SecureTransaction extends React.Component {
           this.setState({show: false})
           navigation.navigate('WalletDetails', { ...this.props, replaceRoute: true, leave: 0 });
           GeneralActions.notify(LanguagesActions.label112(languages.selectedLanguage), 'short');
-        }
-      }else {
-        GeneralActions.notify(LanguagesActions.label113(languages.selectedLanguage), 'long');
         }
     }
 

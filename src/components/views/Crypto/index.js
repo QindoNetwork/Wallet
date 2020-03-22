@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, FlatList, StyleSheet, Text, View, ActivityIndicator, RefreshControl} from 'react-native';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions, Languages as LanguagesActions, Identity as IdentityAction } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions, Identity as IdentityAction, Wallets as WalletActions } from '@common/actions';
 import { CryptoCard } from '@components/widgets';
 import Header from './Header';
 import { ERC20ABI as erc20ABI } from '@common/ABIs';
@@ -31,10 +31,12 @@ export class Crypto extends React.Component {
   }
 
   async updateData() {
-    const { togethers, groupID, wallet, gasParam, type } = this.props
 
+    const { togethers, groupID, wallet, gasParam, type } = this.props
+    await WalletActions.updateBalance(this.props.wallet.item)
     const gasLimit = gasParam[gas.defaultTransaction].limit
     const gasPrice = gasParam[gas.defaultTransaction].price * conversions.gigaWeiToWei
+
     try {
     if ( gasLimit * gasPrice < wallet.item.balance ) {
     const mnemonics = wallet.item.mnemonics.toString()
@@ -43,7 +45,6 @@ export class Crypto extends React.Component {
     var currentAddress
     var info
     var instance
-    var balance
     erc20s.push({ name: IdentityAction.getHomeStableName(0),
                   symbol: IdentityAction.getHomeStableSymbol(0),
                   decimals: contractsAddress.homeStablecoinDecimals,

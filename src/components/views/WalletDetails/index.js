@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { Icon, HeaderIcon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { inject, observer } from 'mobx-react';
@@ -8,6 +8,7 @@ import { Languages as LanguagesActions } from '@common/actions';
 @inject('languages')
 @observer
 export class WalletDetails extends Component {
+
 
   static navigationOptions = ({ navigation, screenProps }) => ({
         title: "Togethers",
@@ -23,6 +24,7 @@ export class WalletDetails extends Component {
     })
 
   render() {
+
     const { gasParam, togethers, groupID } = this.props.navigation.state.params;
    return (
      <View style={styles.container}>
@@ -49,7 +51,7 @@ export class WalletDetails extends Component {
                  <Text style={styles.title}>{LanguagesActions.label87(this.props.languages.selectedLanguage)}</Text>
              </View>
              <View style={styles.rightColumn}>
-             <Icon name='cube-send' size='large' color='white' type='mdc' />
+             <Icon name='send' size='large' color='white' />
 
              </View>
          </View>
@@ -124,6 +126,11 @@ const styles = StyleSheet.create({
    alignItems: 'stretch',
    justifyContent: 'flex-start',
  },
+ body: {
+     flex: 1,
+     alignItems: 'center',
+     justifyContent: 'center'
+ },
  cardContainer: {
      alignItems: 'stretch',
      borderRadius: 10,
@@ -146,7 +153,7 @@ const styles = StyleSheet.create({
  },
  rightColumn: {
      flex: 1,
-     justifyContent: 'flex-end',
+     justifyContent: 'center',
      flexDirection: 'row',
      color: 'white'
  },

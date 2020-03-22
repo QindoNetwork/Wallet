@@ -1,10 +1,10 @@
-export const togethersAddress = "0xe134e99A57A90671B25c1B4Ec1F699c89F153F41";
+export const togethersAddress = "0x8E36798887182863A5251e69dd275f7828E22F0A";
 
 export const controlAddress = "0x2a2627bdf9F10125542120E1E31507D5Ed08E2e0";
 
-export const  ttusd = "0x19ef7474b7976F51B35A2f74d9008CF4253bB2cb";
+export const  ttusd = "0x6167313725192C08E473b752F24D73627cE67DC5";
 
-export const  tteur = "0x72d64062A72e11A084C1913E67Bb1178A85D2E76";
+export const  tteur = "0x3B09f7bBe1BC541191B6Be7098A18b12fd5197f2";
 
 export const  dai = "0xb3162F1d3E9071001c5286cc0Cd533C3958dc65f";
 

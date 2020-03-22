@@ -17,6 +17,7 @@ export class WalletExtract extends React.Component {
     }
     async updateHistory() {
       try {
+          await WalletActions.updateBalance(this.props.wallet.item)
           await WalletActions.updateHistory(this.props.wallet.item);
           this.setState({ loading: 1 })
       } catch (e) {

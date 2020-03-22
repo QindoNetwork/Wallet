@@ -19,12 +19,17 @@ export async function loadWallets() {
 }
 
 export async function updateBalance(wallet) {
+    WalletStore.isLoading(true);
     const balance = await wallet.getBalance();
     WalletsStore.setBalance(wallet.address, balance);
+    saveWallets();
+    selectWallet(wallet);
+    WalletStore.isLoading(false);
 }
 
 export async function changeWalletName(address,name) {
     WalletsStore.setWalletName(address,name);
+    saveWallets();
 }
 
 export async function removeWallet(wallet) {

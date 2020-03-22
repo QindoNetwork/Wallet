@@ -94,7 +94,7 @@ export async function changeUserName(togethers, args, address, overrides,languag
     }
     else {
       await togethers.changeUserName(value,overrides)
-      await WalletsActions.changeWalletName(address, value);
+      WalletsActions.changeWalletName(address, value);
     }
   }catch (e) {
     GeneralActions.notify(e.message, 'long');

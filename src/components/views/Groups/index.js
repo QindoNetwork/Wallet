@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, TouchableOpacity, RefreshControl, FlatList, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { Button } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions, Languages as LanguagesActions } from '@common/actions';
+import { General as GeneralActions, Languages as LanguagesActions, Wallets as WalletActions } from '@common/actions';
 import GroupCard from './GroupCard';
 import Header from './Header';
 import { inject, observer } from 'mobx-react';
@@ -19,6 +19,7 @@ export class Groups extends React.Component {
 
     async updateData() {
       const { togethers, wallet } = this.props
+      await WalletActions.updateBalance(this.props.wallet.item)
       let groups = []
       let profile
       let groupID

@@ -55,7 +55,7 @@ export class WalletsOverview extends React.Component {
     onPressWallet(wallet) {
       const { languages } = this.props
         WalletActions.selectWallet(wallet)
-        this.props.navigation.navigate('Login', { wallet, gasParam: this.state.gasParam, title: LanguagesActions.title1(languages.selectedLanguage)  });
+        this.props.navigation.navigate('Login', { gasParam: this.state.gasParam, title: LanguagesActions.title1(languages.selectedLanguage)  });
     }
 
     renderItem = ({ item }) => <WalletCard wallet={item} onPress={() => this.onPressWallet(item)} />

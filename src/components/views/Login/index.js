@@ -1,9 +1,8 @@
 import React from 'react'
 import { StyleSheet, View, ActivityIndicator} from 'react-native';
 import { colors, measures } from '@common/styles';
-import { General as GeneralActions, Wallets as WalletActions } from '@common/actions';
 import { Gas as gas, Conversions as conversions } from '@common/constants';
-import { Languages as LanguagesActions } from '@common/actions';
+import { Languages as LanguagesActions, Wallets as WalletActions, General as GeneralActions } from '@common/actions';
 import { inject, observer } from 'mobx-react';
 import NewWallet from './NewWallet'
 import SignIN from './SignIN'
@@ -25,7 +24,8 @@ export class Login extends React.Component {
     async componentDidMount() {
 
       try {
-        const mnemonics = this.props.navigation.state.params.wallet.mnemonics.toString()
+        await WalletActions.updateBalance(this.props.wallet.item)
+        const mnemonics = this.props.wallet.item.mnemonics.toString()
         const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);
 
           const togethers = new ethers.Contract(contractsAddress.togethersAddress, togethersABI, connection);
