@@ -5,17 +5,52 @@ import "./Administration.sol";
 
 contract Togethers is Administration {
 
+  /**
+  * @notice Each group is mapped to a unique number
+   */
   mapping (uint => string) public mappGroupIDToGroupName;
+  /**
+   * @notice each user address have info in group
+   */
   mapping (uint => mapping (address => profile)) private mappProfileInGroup;
+  /**
+   * @notice the list of groups numbers for a user address
+   */
   mapping (address => uint[]) private mappGroupsForAddress;
+  /**
+   * @notice the list of user address in a group
+   */
   mapping (uint => address[]) private mappUsersInGroup;
+  /**
+   * @notice flag telling if a user have asked to be part of group
+   */
   mapping (address => mapping (uint => bool)) public mappAskForAdd;
+  /**
+   * @notice global exchange of crypto between peers
+   */
   mapping (address => mapping (address => mapping (uint8 => uint))) private mappPeerToPeerStats;
+  /**
+   * @notice crypto there are in a box
+   */
   mapping (uint => mapping (address => mapping (uint8 => uint))) public mappProfileStats;
+  /**
+   * @notice crypto a user has given in a box
+   */
   mapping (uint => mapping (address => mapping (uint8 => uint))) public mappIdStats;
 
+  /**
+   * @notice iterating box number
+   */
   uint public id;
 
+  /**
+   * @notice state of a user in a group
+   * @notice id: number of the demand
+   * @notice isMember: the address is member of the group
+   * @notice open: the box demand is open
+   * @notice description: the description of the demand
+   * @notice owner: the user is the administrator of the group
+   */
   struct profile
   {
     bool isMember;
@@ -25,14 +60,25 @@ contract Togethers is Administration {
     uint id;
   }
 
+  /**
+   * @notice struct used for stats
+   */
     struct stats
   {
     uint In;
     uint Out;
   }
 
+  /**
+   * @notice iterating groupID
+   */
   uint public groupNumber;
 
+  /**
+   * @notice iterating groupID
+   * @notice "Togethers" user name is app property
+   * @notice ethers are special crypto category
+   */
   constructor() public {
     owner = msg.sender;
     checkNameUnicity[returnHash("Togethers")] = address(this);
@@ -41,6 +87,10 @@ contract Togethers is Administration {
     stablecoinType[0] = 'NaN';
   }
 
+  /**
+   * @notice a user have to ask a group to allow the admin of the group to add him
+   * @param _groupID the group number to ask
+   */
   function ask(uint _groupID) public
   {
     require(mappUsersInGroup[_groupID].length > 0);
@@ -49,6 +99,12 @@ contract Togethers is Administration {
     mappAskForAdd[msg.sender][_groupID] = true;
   }
 
+  /**
+   * @notice an admin of a group can give his power to an other member of the group
+   * @notice an admin of a group can add or remove a member of a group
+   * @param _groupID the group number concerned
+   * @param newOwner the address of the new owner
+   */
   function transferGroupOwnership(uint _groupID, address newOwner) public
   {
     require(mappProfileInGroup[_groupID][msg.sender].owner == true);
@@ -57,6 +113,12 @@ contract Togethers is Administration {
     mappProfileInGroup[_groupID][newOwner].owner = true;
   }
 
+  /**
+   * @notice registering a user address with his username and app password
+   * @notice the user name is hashed to be unique
+   * @param _pseudo user name choosen
+   * @param _password password choosen
+   */
   function setUser(string memory _pseudo, string memory _password) public
   {
     uint currentID = returnHash(_pseudo);
@@ -66,6 +128,10 @@ contract Togethers is Administration {
     mappAddressToUser[msg.sender] = _pseudo;
   }
 
+  /**
+   * @notice a user can change is username in the network
+   * @param _pseudo new pseudo choosen
+   */
   function changeUserName(string memory _pseudo) public
   {
     require(userPassword[msg.sender] != 0);
@@ -76,6 +142,12 @@ contract Togethers is Administration {
     mappAddressToUser[msg.sender] = _pseudo;
   }
 
+  /**
+   * @notice a user can create groups whithout any restriction
+   * @notice the group ID is iterating and unique
+   * @notice the creator is member and admin of a group
+   * @param _groupName new group name choosen by the creator
+   */
   function createGroup(string memory _groupName) public
   {
     groupNumber += 1;
@@ -85,6 +157,13 @@ contract Togethers is Administration {
     addMember(groupNumber,msg.sender);
   }
 
+  /**
+   * @notice private function used by createGroup and createProfile
+   * @notice add a member to a group by adding user to group list and group to user list
+   * @notice the member is added once, then just the flag is used to make add and remove cheaper
+   * @param _groupID group member concerned
+   * @param _key new member address
+   */
   function addMember(uint _groupID, address _key) private
   {
     require(mappProfileInGroup[_groupID][msg.sender].owner == true);
@@ -105,6 +184,9 @@ contract Togethers is Administration {
     mappProfileInGroup[_groupID][_key].isMember = true;
   }
 
+  /**
+   * @notice add a user to a group by admin if the user has asked
+   */
   function createProfile(uint groupID, address _key) public
   {
     require(mappProfileInGroup[groupID][_key].isMember == false);
@@ -112,6 +194,9 @@ contract Togethers is Administration {
     addMember(groupID,_key);
   }
 
+  /**
+   * @notice opening of a box demand by a user in a group
+   */
   function askForFunds(uint groupID, string memory _description) public
   {
     require(mappProfileInGroup[groupID][msg.sender].open == false);
@@ -122,6 +207,11 @@ contract Togethers is Administration {
     mappProfileInGroup[groupID][msg.sender].id = id;
   }
 
+  /**
+   * @notice a member of a group can pay an open box in ether or stablecoin
+   * @notice the stats are made
+   * @notice the stablecoins amounts are converted id homestablecoin amonunt
+   */
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, address _crypto) public payable
   {
     uint amount;
@@ -148,6 +238,12 @@ contract Togethers is Administration {
     mappIdStats[mappProfileInGroup[groupID][_publicKey].id][msg.sender][mappAllowCryptoForCategory[_crypto]] += amount;
   }
 
+  /**
+   * @notice a member can close his opened box in a group
+   * @notice the member withdraw ethers and homestablecoins
+   * @notice the stablecoins amounts are converted id homestablecoin amonunt
+   * @notice global box stats are initialized
+   */
   function withdrawFunds(uint groupID) public
   {
     mappProfileInGroup[groupID][msg.sender].open = false;
@@ -168,6 +264,12 @@ contract Togethers is Administration {
     }
   }
 
+  /**
+   * @notice stablecoins can be changed here by category
+   * @notice the stablecoin have to be enable
+   * @notice fees are applied here
+   * @notice input amount have to be converted in 18 decimals
+   */
   function changeToken(uint _tokenAmount, address _crypto1, address _crypto2) public payable
   {
     require(mappCryptoEnable[_crypto1] == true && mappCryptoEnable[_crypto2] == true);
