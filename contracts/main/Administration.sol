@@ -111,8 +111,8 @@ contract Administration is Ownable {
 
   /**
    * @notice Change user password
-   * @param NewPassword
-   * @param oldPassword
+   * @param NewPassword new password
+   * @param oldPassword old password
    */
   function changePassword(string memory NewPassword, string memory oldPassword) public
   {
