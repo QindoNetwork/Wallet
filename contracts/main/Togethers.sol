@@ -116,12 +116,6 @@ contract Togethers is Administration {
     }
   }
 
-  function removeAsk(uint _groupID, address _user) public
-  {
-    require(mappUsersInGroup[_groupID].length > 0);
-    mappAskForAdd[msg.sender][_groupID] = false;
-  }
-
   /**
    * @notice an admin of a group can give his power to an other member of the group
    * @notice an admin of a group can add or remove a member of a group
