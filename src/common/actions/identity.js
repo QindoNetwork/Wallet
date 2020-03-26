@@ -22,8 +22,8 @@ export function getIdentity(transaction) {
       return 'Paxos stablecoin'
       case contractsAddress.USDCoin.toLowerCase():
       return 'USDCoin stablecoin'
-      case contractsAddress.Sai.toLowerCase():
-      return 'Sai stablecoin'
+      case contractsAddress.Augmint.toLowerCase():
+      return 'Augmint stablecoin'
       case '':
       return 'Other contract'
       default:

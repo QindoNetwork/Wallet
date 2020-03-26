@@ -6,7 +6,7 @@ const NETWORK_KEY = 'ropsten';
 const INFURA_API_KEY = 'e2e065db32194d41a918e9f953789317';
 
 const INFURA_URL = 'http://ropsten.infura.io/v3/';
-//const INFURA_URL = 'http://infura.io/v3/';
+//const INFURA_URL = 'https://mainnet.infura.io/v3/';
 
 const infuraProvider = new ethers.providers.InfuraProvider(NETWORK_KEY);
 

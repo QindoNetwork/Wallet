@@ -422,21 +422,6 @@ export const TogethersABI = [
     "type": "function"
   },
   {
-    "constant": true,
-    "inputs": [],
-    "name": "getEthersBalance",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "constant": false,
     "inputs": [
       {
@@ -1026,6 +1011,27 @@ export const TogethersABI = [
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "groupID",
+        "type": "uint256"
+      }
+    ],
+    "name": "getAskMembershipList",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
       }
     ],
     "payable": false,

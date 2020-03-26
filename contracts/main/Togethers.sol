@@ -37,6 +37,10 @@ contract Togethers is Administration {
    * @notice crypto a user has given in a box
    */
   mapping (uint => mapping (address => mapping (uint8 => uint))) public mappIdStats;
+  /**
+   * @notice list of membership demand in a group
+   */
+  mapping (uint => address[]) private mappAskMembershipList;
 
   /**
    * @notice iterating box number
@@ -97,6 +101,25 @@ contract Togethers is Administration {
     require(mappProfileInGroup[_groupID][msg.sender].isMember == false);
     require(mappAskForAdd[msg.sender][_groupID] == false);
     mappAskForAdd[msg.sender][_groupID] = true;
+    bool isInList;
+    for (uint i = 0; i < mappAskMembershipList[_groupID].length; i++)
+    {
+      if (mappAskMembershipList[_groupID][i] == msg.sender)
+      {
+        isInList = true;
+        break;
+      }
+    }
+    if (isInList == false)
+    {
+      mappAskMembershipList[_groupID].push(msg.sender);
+    }
+  }
+
+  function removeAsk(uint _groupID, address _user) public
+  {
+    require(mappUsersInGroup[_groupID].length > 0);
+    mappAskForAdd[msg.sender][_groupID] = false;
   }
 
   /**
@@ -366,6 +389,13 @@ contract Togethers is Administration {
   function getMyProfileGroup(uint groupID) view public returns (bool)
   {
     return mappProfileInGroup[groupID][msg.sender].isMember;
+  }
+
+  function getAskMembershipList(uint groupID) view public returns (address[] memory)
+  {
+    require(mappProfileInGroup[groupID][msg.sender].isMember == true);
+    require(mappProfileInGroup[groupID][msg.sender].owner == true);
+    return mappAskMembershipList[groupID];
   }
 
 }

@@ -31,7 +31,6 @@ export class CryptoType2 extends React.Component {
         currentAddress = erc20[i].address
         if ( erc20[i].category === cryptoOne.category && currentAddress !== cryptoOne.address ) {
               balance = erc20[i].balanceContract
-              if ( balance > 0 ) {
               erc20s2.push({
                       name: erc20[i].name,
                       symbol: erc20[i].symbol,
@@ -39,7 +38,6 @@ export class CryptoType2 extends React.Component {
                       address: currentAddress,
                       balance
                      })
-              }
         }
       }
       this.setState({ erc20s2, loading: 1 })
@@ -63,20 +61,6 @@ export class CryptoType2 extends React.Component {
             <ActivityIndicator size="large" color="darkslategray"/>
           </View>
         </View>
-
-      )
-
-      }
-
-      if (erc20s2.length === 0){
-
-        return(
-
-          <View style={styles.container}>
-              <Text style={styles.message}>
-                  {LanguagesActions.label164(languages.selectedLanguage)}
-              </Text>
-          </View>
 
       )
 

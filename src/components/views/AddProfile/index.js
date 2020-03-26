@@ -2,12 +2,13 @@ import { General as GeneralActions  } from '@common/actions';
 import React, { Component } from 'react'
 import { Gas as gas } from '@common/constants';
 import { colors, measures } from '@common/styles';
-import { FlatList, TouchableOpacity, View, StyleSheet, Text, ActivityIndicator } from 'react-native'
+import { FlatList, TouchableOpacity, View, StyleSheet, Text, ActivityIndicator, RefreshControl } from 'react-native'
 import { SecureTransaction } from '@components/widgets';
 import { Button, Camera, InputWithIcon } from '@components/widgets';
 import { inject, observer } from 'mobx-react';
 import { Languages as LanguagesActions } from '@common/actions';
 import ProfileCard from '../SelectDestination/ProfileCard';
+import Header from './Header';
 
 @inject('languages','wallet')
 @observer
@@ -19,42 +20,21 @@ export class AddProfile extends Component {
 
   state = { show: false, address: '', loading: 0, profiles: [] };
 
-  async componentDidMount() {
-    const { address, togethers, groupID } = this.props.navigation.state.params
-    const { item } = this.props.wallet
+  async updateData() {
+    const { address, togethers, groupID, owner } = this.props.navigation.state.params
 
      let profiles = []
      let temp = []
      try {
-       const no = await togethers.getProfiles(groupID)
-       const groups = await togethers.getGroups()
-         for ( var i = 0; i < groups.length; i++ ) {
-           if ( parseInt (groups[i],10) !== groupID ) {
-           temp = await togethers.getProfiles(parseInt (groups[i],10))
-             for ( var j = 0; j < temp.length; j++ ) {
-                var ok = 1
-                var ok2 = 1
-                var currentAddress = temp[j]
-                if ( currentAddress !== item.address ) {
-                 for ( var k = 0; k < profiles.length; k++ ) {
-                      if ( profiles[k].id === currentAddress) {
-                        ok = 0
-                        break
-                      }
-                      for ( var i = 0; i < no.length; i++ ) {
-                           if ( no[i].id === profiles[k].id) {
-                             ok2 = 0
-                             break
-                           }
-                       }
-                  }
-                  if ( ok === 1 && ok2 === 1 ) {
-                    profiles.push({   id:  currentAddress,
-                                     name:  await togethers.mappAddressToUser(currentAddress)  })
-                  }
-                }
+       if (owner == true) {
+       const list = await togethers.getAskMembershipList(groupID)
+         for ( var i = 0; i < list.length; i++ ) {
+           if ( new Boolean (await togethers.getProfileInGroup(groupID,list[i]).isMember) == false && new Boolean (await togethers.mappAskForAdd(list[i],groupID)) == true ) {
+           profiles.push({   id:  list[i],
+                                     name:  await togethers.mappAddressToUser(list[i])
+                                   })
               }
-       }
+            }
        }
        this.setState({ profiles, loading: 1})
      } catch (e) {
@@ -62,16 +42,9 @@ export class AddProfile extends Component {
      }
    }
 
-
-
-   onPressContinue(target) {
-
-       this.setState({ address: target })
-       this.setState({ show: true })
-
-   }
-
-
+   componentDidMount() {
+     this.updateData()
+    }
 
   renderModal(value) {
 
@@ -105,27 +78,27 @@ export class AddProfile extends Component {
 
     if (this.state.loading === 0){
       return(
-          <View style={styles.container}>
-          <InputWithIcon
-              ref="input"
-              autoFocus
-              icon="qr-scanner"
-              placeholder={ LanguagesActions.label10(languages.selectedLanguage) }
-              onChangeText={(address) => this.setState({ address })}
-              onPressIcon={() => this.refs.camera.show()} />
-          <Camera
-              ref="camera"
-              modal
-              onClose={() => this.refs.camera.hide()}
-              onBarCodeRead={address => this.refs.input.onChangeText(address)} />
-              <Text style={styles.message}>___________________________</Text>
-              <View style={styles.body}>
-                <ActivityIndicator size="large" color="darkslategray"/>
-              </View>
-            <View style={styles.buttonsContainer}>
-                    <Button children={ LanguagesActions.label11(languages.selectedLanguage) } onPress={() => this.setState({ show: true })} />
-                  </View>
-          {this.renderModal(this.state.address)}
+        <View style={styles.container}>
+        <InputWithIcon
+            ref="input"
+            autoFocus
+            icon="qr-scanner"
+            placeholder={ LanguagesActions.label10(languages.selectedLanguage) }
+            onChangeText={(address) => this.setState({ address })}
+            onPressIcon={() => this.refs.camera.show()} />
+        <Camera
+            ref="camera"
+            modal
+            onClose={() => this.refs.camera.hide()}
+            onBarCodeRead={address => this.refs.input.onChangeText(address)} />
+            <Text style={styles.message}>___________________________</Text>
+          <View style={styles.buttonsContainer}>
+                  <Button children={ LanguagesActions.label11(languages.selectedLanguage) } onPress={() => this.setState({ show: true })} />
+                </View>
+        {this.renderModal(this.state.address)}
+          <View style={styles.body}>
+            <ActivityIndicator size="large" color="darkslategray"/>
+          </View>
           </View>
 
     )
@@ -138,7 +111,7 @@ export class AddProfile extends Component {
           ref="input"
           autoFocus
           icon="qr-scanner"
-          placeholder="Destination address"
+          placeholder={ LanguagesActions.label10(languages.selectedLanguage) }
           onChangeText={(address) => this.setState({ address })}
           onPressIcon={() => this.refs.camera.show()} />
       <Camera
@@ -147,20 +120,23 @@ export class AddProfile extends Component {
           onClose={() => this.refs.camera.hide()}
           onBarCodeRead={address => this.refs.input.onChangeText(address)} />
           <Text style={styles.message}>___________________________</Text>
-          <FlatList
-            data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-              style={styles.content}
-              activeOpacity={0.8}
-              onPress={() => this.onPressContinue(item.id)}>
-                <ProfileCard profile={item} />
-              </TouchableOpacity>
-            )}
-        />
         <View style={styles.buttonsContainer}>
-                <Button children="Continue" onPress={() => this.onPressContinue(this.state.address)} />
+                <Button children={ LanguagesActions.label11(languages.selectedLanguage) } onPress={() => this.setState({ show: true })} />
               </View>
+      <Header length={this.state.profiles.length}/>
+      <FlatList
+          data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
+          refreshControl={<RefreshControl refreshing={this.props.wallet.loading} onRefresh={() => this.updateData()} />}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+            style={styles.content}
+            activeOpacity={0.8}
+            onPress={() => {this.refs.input.onChangeText(item.id)} }
+            >
+              <ProfileCard profile={item}/>
+            </TouchableOpacity>
+          )}
+      />
       {this.renderModal(this.state.address)}
       </View>
       );

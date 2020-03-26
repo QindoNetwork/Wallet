@@ -1512,6 +1512,24 @@ export function label166(language) {
   }
 }
 
+export function label167(language) {
+  switch (language) {
+      case 'en':
+      return 'No demander'
+      case 'fr':
+      return "Aucune demande"
+  }
+}
+
+export function label168(language) {
+  switch (language) {
+      case 'en':
+      return 'Select a user'
+      case 'fr':
+      return "Selectionner un nouveau membre"
+  }
+}
+
 //
 
 export function title1(language) {

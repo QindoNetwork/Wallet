@@ -21,7 +21,7 @@ struct gasParameters
 constructor() public {
     mappFunctionToGasParameters[0].functionName = "ask";
     mappFunctionToGasParameters[0].gasPrice = 5;
-    mappFunctionToGasParameters[0].gasLimit = 50000;
+    mappFunctionToGasParameters[0].gasLimit = 100000;
     mappFunctionToGasParameters[1].functionName = "transferGroupOwnership";
     mappFunctionToGasParameters[1].gasPrice = 5;
     mappFunctionToGasParameters[1].gasLimit = 40000;
@@ -63,7 +63,7 @@ constructor() public {
     mappFunctionToGasParameters[13].gasLimit = 50000;
     mappFunctionToGasParameters[14].functionName = "ERC20transfer";
     mappFunctionToGasParameters[14].gasPrice = 5;
-    mappFunctionToGasParameters[14].gasLimit = 40000;
+    mappFunctionToGasParameters[14].gasLimit = 100000;
     mappFunctionToGasParameters[15].functionName = "ChangeToken";
     mappFunctionToGasParameters[15].gasPrice = 5;
     mappFunctionToGasParameters[15].gasLimit = 100000;
