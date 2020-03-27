@@ -204,6 +204,8 @@ contract Togethers is Administration {
 
   /**
    * @notice add a user to a group by admin if the user has asked
+   * @param groupID the number of the group where ethe user will be added
+   * @param _key is the address of the new user
    */
   function createProfile(uint groupID, address _key) public
   {
@@ -214,6 +216,8 @@ contract Togethers is Administration {
 
   /**
    * @notice opening of a box demand by a user in a group
+   * @param groupID the number of the group where the box is open
+   * @param _description a description reason of the opening
    */
   function askForFunds(uint groupID, string memory _description) public
   {
@@ -229,6 +233,10 @@ contract Togethers is Administration {
    * @notice a member of a group can pay an open box in ether or stablecoin
    * @notice the stats are made
    * @notice the stablecoins amounts are converted id homestablecoin amonunt
+   * @param _publicKey the address of box owner
+   * @param groupID the group of the box
+   * @param _tokenAmount the token amount if apply
+   * @param _crypto the token address if apply
    */
   function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, address _crypto) public payable
   {
@@ -261,6 +269,7 @@ contract Togethers is Administration {
    * @notice the member withdraw ethers and homestablecoins
    * @notice the stablecoins amounts are converted id homestablecoin amonunt
    * @notice global box stats are initialized
+   * @param groupID the group of the box
    */
   function withdrawFunds(uint groupID) public
   {
@@ -287,6 +296,9 @@ contract Togethers is Administration {
    * @notice the stablecoin have to be enable
    * @notice fees are applied here
    * @notice input amount have to be converted in 18 decimals
+   * @param _tokenAmount the aount of token exchange one to one (in 18 decimals)
+   * @param _crypto1 the address of the income token
+   * @param _crypto2 the address of the outcome token
    */
   function changeToken(uint _tokenAmount, address _crypto1, address _crypto2) public payable
   {
@@ -300,6 +312,11 @@ contract Togethers is Administration {
     External1(_crypto2).transfer(msg.sender,_tokenAmount.div(10**(decimals)));
   }
 
+  /**
+   * @notice remove a user from a group by the owner
+   * @param _publicKey the address of the user to remove
+   * @param groupID the number of the concerned group
+   */
   function removeMember(address _publicKey, uint groupID) public
   {
     require(_publicKey != msg.sender);
@@ -308,6 +325,10 @@ contract Togethers is Administration {
     deleteProfile(groupID,_publicKey);
   }
 
+  /**
+   * @notice a user can quit a group when he wants
+   * @param _groupID the number of the concerned group
+   */
   function quitGroup(uint _groupID) public
   {
     if ( mappProfileInGroup[_groupID][msg.sender].open == true )
@@ -329,6 +350,11 @@ contract Togethers is Administration {
     deleteProfile(_groupID,msg.sender);
   }
 
+  /**
+   * @notice private function to quit a group or remove user
+   * @param _groupID the number of the concerned group
+   * @param _publicKey the address of the concerned user
+   */
   function deleteProfile(uint _groupID, address _publicKey) private
   {
     require(mappProfileInGroup[_groupID][_publicKey].isMember == true);
@@ -336,17 +362,31 @@ contract Togethers is Administration {
     mappProfileInGroup[_groupID][_publicKey].isMember = false;
   }
 
+  /**
+   * @notice returns the list of groups of a user
+   * @return a uint list
+   */
   function getGroups() view public returns (uint[] memory)
   {
     return mappGroupsForAddress[msg.sender];
   }
 
+  /**
+   * @notice returns the list of members in a group
+   * @param _group the number of the concerned group
+   * @return a address list
+   */
   function getProfiles(uint _group) view public returns (address[] memory)
   {
     require(mappProfileInGroup[_group][msg.sender].isMember == true);
     return mappUsersInGroup[_group];
   }
 
+  /**
+   * @notice returns the linformation of a erc20 token
+   * @param _crypto the address of the concerned ERC20
+   * @return a erc20 struct
+   */
   function getCryptoInfo(address _crypto) view public returns (erc20 memory)
   {
     uint decimals = External1(_crypto).decimals();
@@ -359,6 +399,12 @@ contract Togethers is Administration {
     return erc20(symbol,name,decimals,status,category,balance,balanceContract);
   }
 
+  /**
+   * @notice returns global exchange betwwen peers for one crypto
+   * @param to the address of the user the sender want see the stats
+   * @param crypto the address of ERC20
+   * @return a stats struct
+   */
   function getStats(address to, uint8 crypto) view public returns (stats memory)
   {
     uint Out = mappPeerToPeerStats[msg.sender][to][crypto];
@@ -366,6 +412,13 @@ contract Togethers is Administration {
     return stats(In,Out);
   }
 
+  /**
+   * @notice returns the state of a box for one crypto with the current donation of the sender
+   * @param groupID the number of group of the box
+   * @param _user the address of the user of the box
+   * @param crypto the address of ERC20 token
+   * @return a stats struct
+   */
   function getProfileStats(uint groupID, address _user, uint8 crypto) view public returns (stats memory)
   {
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
@@ -374,17 +427,34 @@ contract Togethers is Administration {
     return stats(In,Out);
   }
 
+  /**
+   * @notice returns the information of a user in a group
+   * @param groupID the number of group
+   * @param _user the address of the user
+   * @notice you have to be a member of the group to know these info
+   * @return a profile struct
+   */
   function getProfileInGroup(uint groupID, address _user) view public returns (profile memory)
   {
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     return mappProfileInGroup[groupID][_user];
   }
 
+  /**
+   * @notice returns a flag to authorize a sender to access group info
+   * @param groupID the number of group
+   * @return a boolean according to membership
+   */
   function getMyProfileGroup(uint groupID) view public returns (bool)
   {
     return mappProfileInGroup[groupID][msg.sender].isMember;
   }
 
+  /**
+   * @notice the list of pending membership demand to a group
+   * @param groupID the number of group of the box
+   * @return an address list
+   */
   function getAskMembershipList(uint groupID) view public returns (address[] memory)
   {
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
