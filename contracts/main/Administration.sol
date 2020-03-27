@@ -52,7 +52,7 @@ contract Administration is Ownable {
   /**
    * @notice the required decimal value of a homestablecoin
    */
-  uint8 constant max = 18;
+  uint8 public constant max = 18;
 
   /**
    * @notice struct of a ERC20 object

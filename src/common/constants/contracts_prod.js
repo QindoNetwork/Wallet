@@ -1,18 +1,12 @@
 //main contracts
 
 export const togethersAddress = "";
-
 export const controlAddress = "";
 
 //home stablecoins
 
-var homeStablecoinsNumber = 0
-
 export const  ttusd = "";
-homeStablecoinsNumber = homeStablecoinsNumber + 1
-
 export const  tteur = "";
-homeStablecoinsNumber = homeStablecoinsNumber + 1
 
 //stablecoins
 
@@ -28,5 +22,3 @@ export const  Augmint = "x";
 //technical
 
 export const nullAddress = "0x0000000000000000000000000000000000000000";
-export homeStablecoinsNumber
-export const homeStablecoinDecimals = 18

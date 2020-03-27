@@ -1,10 +1,10 @@
-export const togethersAddress = "0xFeddf2Fa2557e4F23a1a4786E210E5cEDFB9457E";
+export const togethersAddress = "0xB643dB6E8543cB7818cD1099099d7488867e2bAF";
 
 export const controlAddress = "0x18b3bd42faca6039fB1789FCEBdb539f69318DF8";
 
-export const  ttusd = "0xfAFE11Bb9Af8750D0669ECe724Ea35c1AA518758";
+export const  ttusd = "0x8849e819a4c6c842FF12097Be7fEf8D2963F4e37";
 
-export const  tteur = "0xfAFE11Bb9Af8750D0669ECe724Ea35c1AA518758";
+export const  tteur = "0x220914124094Cf3a8Ae5764B58554E2075e03c36";
 
 export const  dai = "0xb3162F1d3E9071001c5286cc0Cd533C3958dc65f";
 
@@ -20,12 +20,6 @@ export const  Paxos = "0xDcc8d9c0727545812a3e5C69e5D7f5F4fdd23946";
 
 export const  USDCoin = "0xc848Ec72E5F3B78B040F26562e1516CA92e1e2Cd";
 
-export const  Sai = "x";
-
 export const  Augmint = "0x02cfbA577508804841F6474b130344f13f41e8cF";
 
 export const nullAddress = "0x0000000000000000000000000000000000000000";
-
-export const homeStablecoinsNumber = 3
-
-export const homeStablecoinDecimals = 18

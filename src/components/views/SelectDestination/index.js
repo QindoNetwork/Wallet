@@ -109,6 +109,9 @@ export class SelectDestination extends React.Component {
         return (
             <View style={styles.container}>
             {this.renderInput()}
+            <View style={styles.buttonsContainer}>
+                    <Button children={LanguagesActions.label138(languages.selectedLanguage)} onPress={() => this.onPressContinue(this.state.address)} />
+                  </View>
                     <Text style={styles.message}>___________________________</Text>
                     <FlatList
                       data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
@@ -121,9 +124,6 @@ export class SelectDestination extends React.Component {
                         </TouchableOpacity>
                       )}
                   />
-                  <View style={styles.buttonsContainer}>
-                          <Button children={LanguagesActions.label138(languages.selectedLanguage)} onPress={() => this.onPressContinue(this.state.address)} />
-                        </View>
             </View>
         );
     }

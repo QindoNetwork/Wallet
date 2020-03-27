@@ -29,6 +29,11 @@ export async function ask(togethers, args, address, overrides,languages) {
     result = "KO"
     GeneralActions.notify(LanguagesActions.label2(languages), 'long');
   }
+  if (new Boolean (await togethers.getProfileInGroup(groupID,address).isMember) == true)
+  {
+    result = "KO"
+    GeneralActions.notify(LanguagesActions.label169(languages), 'long');
+  }
   if (result === "OK") {
     await togethers.ask(groupID,overrides)
   }

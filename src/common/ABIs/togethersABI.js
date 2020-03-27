@@ -201,6 +201,21 @@ export const TogethersABI = [
   {
     "constant": true,
     "inputs": [],
+    "name": "max",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
     "name": "groupNumber",
     "outputs": [
       {

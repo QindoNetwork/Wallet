@@ -119,10 +119,10 @@ export class AddProfile extends Component {
           modal
           onClose={() => this.refs.camera.hide()}
           onBarCodeRead={address => this.refs.input.onChangeText(address)} />
+          <View style={styles.buttonsContainer}>
+                  <Button children={ LanguagesActions.label11(languages.selectedLanguage) } onPress={() => this.setState({ show: true })} />
+                </View>
           <Text style={styles.message}>___________________________</Text>
-        <View style={styles.buttonsContainer}>
-                <Button children={ LanguagesActions.label11(languages.selectedLanguage) } onPress={() => this.setState({ show: true })} />
-              </View>
       <Header length={this.state.profiles.length}/>
       <FlatList
           data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}

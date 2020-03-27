@@ -28,12 +28,13 @@ export class CloseDemand extends React.Component {
     var idStats
     var myStats
     try {
-      for ( var i = 0; i < contractsAddress.homeStablecoinsNumber; i++ ) {
+      const decimals = parseInt(await togethers.max(),10)
+      for ( var i = 0; i < (await togethers.getStableCoinList()).length; i++ ) {
         myStats =  await togethers.mappProfileStats(profile.id,wallet.item.address,i)
           stats.push({  balance:  myStats,
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
-                        decimals: contractsAddress.homeStablecoinDecimals,
+                        decimals
                          })
       }
 

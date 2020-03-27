@@ -41,19 +41,20 @@ export class ProfileData extends React.Component {
       let peerToPeerStats
       let profileStats
       try {
-        for ( var i = 0; i < contractsAddress.homeStablecoinsNumber; i++ ) {
+        const decimals = parseInt(await togethers.max(),10)
+        for ( var i = 0; i < (await togethers.getStableCoinList()).length; i++ ) {
         peerToPeerStats = await togethers.getStats(item.id,i)
         stats2.push({
                         balance: parseInt(peerToPeerStats.In,10),
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
-                        decimals: contractsAddress.homeStablecoinDecimals,
+                        decimals
                        })
                        stats3.push({
                                        balance: parseInt(peerToPeerStats.Out,10),
                                        name: IdentityAction.getHomeStableName(i),
                                        symbol: IdentityAction.getHomeStableSymbol(i),
-                                       decimals: contractsAddress.homeStablecoinDecimals,
+                                       decimals
                                       })
 
         if ( item.active == true ) {
@@ -62,13 +63,13 @@ export class ProfileData extends React.Component {
                         balance: parseInt(profileStats.In,10),
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
-                        decimals: contractsAddress.homeStablecoinDecimals,
+                        decimals
                        })
           stats.push({
                           balance: parseInt(profileStats.Out,10),
                           name: IdentityAction.getHomeStableName(i),
                           symbol: IdentityAction.getHomeStableSymbol(i),
-                          decimals: contractsAddress.homeStablecoinDecimals,
+                          decimals
                          })
                        }
         }

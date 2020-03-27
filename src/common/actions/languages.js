@@ -1530,6 +1530,15 @@ export function label168(language) {
   }
 }
 
+export function label169(language) {
+  switch (language) {
+      case 'en':
+      return 'You already are a member of this group'
+      case 'fr':
+      return "Vous êtes déjà membre de ce groupe"
+  }
+}
+
 //
 
 export function title1(language) {

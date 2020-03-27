@@ -97,7 +97,7 @@ contract Togethers is Administration {
    */
   function ask(uint _groupID) public
   {
-    require(mappUsersInGroup[_groupID].length > 0);
+    require(_groupID <= groupNumber);
     require(mappProfileInGroup[_groupID][msg.sender].isMember == false);
     require(mappAskForAdd[msg.sender][_groupID] == false);
     mappAskForAdd[msg.sender][_groupID] = true;
@@ -199,6 +199,7 @@ contract Togethers is Administration {
       mappUsersInGroup[_groupID].push(_key);
     }
     mappProfileInGroup[_groupID][_key].isMember = true;
+    mappAskForAdd[_key][_groupID] = false;
   }
 
   /**
@@ -333,7 +334,6 @@ contract Togethers is Administration {
     require(mappProfileInGroup[_groupID][_publicKey].isMember == true);
     require(mappProfileInGroup[_groupID][_publicKey].open == false);
     mappProfileInGroup[_groupID][_publicKey].isMember = false;
-    mappAskForAdd[_publicKey][_groupID] = false;
   }
 
   function getGroups() view public returns (uint[] memory)

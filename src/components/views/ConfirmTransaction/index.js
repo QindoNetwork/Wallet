@@ -131,18 +131,15 @@ const { languages } = this.props
         value = (amount * (Math.pow(10,item.decimals))).toString()
         }
         if(groupID !== '0') {
-          //let nonce = await TransactionActions.nextNonce(wallet)
               if(item.name !== IdentityAction.getHomeStableName(0)) {
                 overrides = {
                     gasLimit: gasParam[gas.eRC20allowance].limit,
                     gasPrice: gasParam[gas.eRC20allowance].price * conversions.gigaWeiToWei,
-                //    nonce: nonce,
                     };
                 await TransactionActions.erc20approve(value,item.instance,overrides)
                 overrides = {
                     gasLimit: gasParam[gas.payForFunds].limit,
                     gasPrice: gasParam[gas.payForFunds].price * conversions.gigaWeiToWei,
-                    //nonce: nonce + 1,
                     };
                     await togethers.payForFunds(target,groupID,value,item.address,overrides);
                     GeneralActions.notify(target + ' ' + groupID + ' ' + value + ' ' + item.address , 'long');

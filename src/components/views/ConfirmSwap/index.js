@@ -120,21 +120,17 @@ export class ConfirmSwap extends React.Component {
             return
           }
         }
-        //nonce = await TransactionActions.nextNonce(wallet)
         overrides = {
                   gasLimit: gasParam[gas.eRC20allowance].limit,
                   gasPrice: gasParam[gas.eRC20allowance].price * conversions.gigaWeiToWei,
-          //        nonce: nonce,
                   };
         await TransactionActions.erc20approve(value,cryptoOne.instance,overrides)
-        //nonce = nonce + 1
         overrides = {
                   gasLimit: gasParam[gas.changeToken].limit,
                   gasPrice: gasParam[gas.changeToken].price * conversions.gigaWeiToWei,
                   value: parseInt (await togethers.fees(),10),
-          //        nonce: nonce,
                   };
-        value = (amount * (Math.pow(10,contractsAddress.homeStablecoinDecimals))).toString()
+        value = (amount * (Math.pow(10,parseInt((await togethers.max()),10)))).toString()
         await togethers.changeToken(value,cryptoOne.address,item.address, overrides)
             this.props.navigation.navigate('WalletDetails', { togethers, gasParam, replaceRoute: true, leave: 0 });
             GeneralActions.notify(LanguagesActions.label141(languages.selectedLanguage), 'short');
