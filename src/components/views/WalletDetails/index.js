@@ -4,6 +4,7 @@ import { Icon, HeaderIcon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { inject, observer } from 'mobx-react';
 import { Languages as LanguagesActions } from '@common/actions';
+import LinearGradient from 'react-native-linear-gradient';
 
 @inject('languages')
 @observer
@@ -29,7 +30,11 @@ export class WalletDetails extends Component {
    return (
      <View style={styles.container}>
      <TouchableOpacity onPress={() => this.props.navigation.navigate('MainReceive',{ togethers, title: LanguagesActions.title24(this.props.languages.selectedLanguage) })}>
-         <View style={styles.cardContainer} backgroundColor='darkslateblue'>
+         <LinearGradient
+  start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}
+  locations={[0,0.5,0.6]}
+  colors={['#4c669f', '#3b5998', 'darkslateblue']}
+  style={styles.cardContainer}>
          <View style={styles.leftColumn}>
          <Icon name='play' size='large' color='white' />
          </View>
@@ -40,10 +45,14 @@ export class WalletDetails extends Component {
              <Icon name='qrcode' size='large' color='white' type='fa' />
 
              </View>
-         </View>
+         </LinearGradient>
      </TouchableOpacity>
      <TouchableOpacity onPress={() => this.props.navigation.navigate('MainSend',{ groupID, togethers, gasParam, title: LanguagesActions.title25(this.props.languages.selectedLanguage)  })}>
-         <View style={styles.cardContainer} backgroundColor='darkred'>
+     <LinearGradient
+start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}
+locations={[0,0.5,0.6]}
+colors={['#4c669f', '#3b5998', 'darkred']}
+style={styles.cardContainer}>
          <View style={styles.leftColumn}>
          <Icon name='play' size='large' color='white'/>
          </View>
@@ -54,10 +63,14 @@ export class WalletDetails extends Component {
              <Icon name='send' size='large' color='white' />
 
              </View>
-         </View>
+         </LinearGradient>
      </TouchableOpacity>
      <TouchableOpacity onPress={() => this.props.navigation.navigate('MainNetwork',{ togethers, gasParam, title: LanguagesActions.title26(this.props.languages.selectedLanguage), title2: LanguagesActions.title6(this.props.languages.selectedLanguage) })}>
-         <View style={styles.cardContainer} backgroundColor='darkslategray'>
+     <LinearGradient
+start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}
+locations={[0,0.5,0.6]}
+colors={['#4c669f', '#3b5998', 'darkslategray']}
+style={styles.cardContainer}>
          <View style={styles.leftColumn}>
          <Icon name='play' size='large' color='white' />
          </View>
@@ -68,10 +81,14 @@ export class WalletDetails extends Component {
              <Icon name='contacts' size='large' color='white' />
 
              </View>
-         </View>
+         </LinearGradient>
      </TouchableOpacity>
      <TouchableOpacity onPress={() => this.props.navigation.navigate('MainSwap',{ togethers, gasParam, title: LanguagesActions.title27(this.props.languages.selectedLanguage) })}>
-         <View style={styles.cardContainer} backgroundColor='darkblue'>
+     <LinearGradient
+     start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}
+     locations={[0,0.5,0.6]}
+     colors={['#4c669f', '#3b5998', 'darkblue']}
+     style={styles.cardContainer}>
          <View style={styles.leftColumn}>
          <Icon name='play' size='large' color='white' />
          </View>
@@ -82,10 +99,14 @@ export class WalletDetails extends Component {
              <Icon name='flask' size='large' color='white' />
 
              </View>
-         </View>
+         </LinearGradient>
      </TouchableOpacity>
      <TouchableOpacity onPress={() => this.props.navigation.navigate('MainHistory',{ togethers, title: LanguagesActions.title23(this.props.languages.selectedLanguage) })}>
-         <View style={styles.cardContainer} backgroundColor='darkmagenta'>
+     <LinearGradient
+start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}
+locations={[0,0.5,0.6]}
+colors={['#4c669f', '#3b5998', 'darkmagenta']}
+style={styles.cardContainer}>
          <View style={styles.leftColumn}>
          <Icon name='play' size='large' color='white' />
          </View>
@@ -96,10 +117,14 @@ export class WalletDetails extends Component {
              <Icon name='list' size='large' color='white' />
 
              </View>
-         </View>
+         </LinearGradient>
      </TouchableOpacity>
      <TouchableOpacity onPress={() => this.props.navigation.navigate('MainSettings',{ togethers, gasParam, title: LanguagesActions.title28(this.props.languages.selectedLanguage) })}>
-         <View style={styles.cardContainer} backgroundColor='darkcyan'>
+     <LinearGradient
+start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}
+locations={[0,0.5,0.6]}
+colors={['#4c669f', '#3b5998', 'darkcyan']}
+style={styles.cardContainer}>
          <View style={styles.leftColumn}>
          <Icon name='play' size='large' color='white' />
          </View>
@@ -110,7 +135,7 @@ export class WalletDetails extends Component {
              <Icon name='settings' size='large' color='white' />
 
              </View>
-         </View>
+         </LinearGradient>
      </TouchableOpacity>
      </View>
 

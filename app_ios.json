@@ -1,0 +1,17 @@
+{
+  "name": "EthereumWallet",
+  "displayName": "EthereumWallet",
+  "expo": {
+            "name": "Togethers",
+            "icon": "./src/components/widgets/Logos/XXXX.png",
+            "version": "1.0.0",
+            "slug": "app-slug",
+            "sdkVersion": "35.0.0",
+            "ios": {
+            "bundleIdentifier": "com.advancod.togethers"
+        },
+        "android": {
+        "package": "com.advancod.togethers"
+        }
+        }
+}

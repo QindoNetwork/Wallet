@@ -5,6 +5,7 @@ import { colors, measures } from '@common/styles';
 import { Wallet as WalletUtils } from '@common/utils';
 import { Wallets as WalletActions } from '@common/actions';
 import { Image as ImageUtils } from '@common/utils';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 export default class WalletCard extends React.Component {
@@ -17,7 +18,11 @@ export default class WalletCard extends React.Component {
         const { onPress, wallet } = this.props;
         return (
             <TouchableOpacity onPress={onPress}>
-                <View style={styles.container}>
+            <LinearGradient
+     start={{x: 0.0, y: 0.25}} end={{x: 0.5, y: 1.0}}
+     locations={[0,0.5,0.6]}
+     colors={['darkslategray', '#3b5998', '#4c669f']}
+     style={styles.container}>
                 <View style={styles.leftColumn}>
                 <Icon name='wallet' size='large' type='ent' color='white' />
                 </View>
@@ -28,7 +33,7 @@ export default class WalletCard extends React.Component {
                     <Image style={styles.avatar}
                         source={{ uri: ImageUtils.generateAvatar(wallet.address,50) }} />
                     </View>
-                </View>
+                </LinearGradient>
             </TouchableOpacity>
         );
     }
@@ -37,7 +42,6 @@ export default class WalletCard extends React.Component {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'stretch',
-        backgroundColor: 'darkslategray',
         borderRadius: 10,
         flexDirection: 'row',
         alignItems: 'center',
