@@ -22,6 +22,8 @@ export class CryptoCard extends React.Component {
         case 'USDC': return <Image style={styles.avatar} source={require('../../widgets/Logos/usd-coin-usdc-logo.png')} />
         case 'PAX': return <Image style={styles.avatar} source={require('../../widgets/Logos/paxos-standard-pax-logo.png')} />
         case 'AEUR': return <Image style={styles.avatar} source={require('../../widgets/Logos/Augmint.png')} />
+        case 'TGTU': return <Image style={styles.avatar} source={require('../../widgets/Logos/TGTU.png')} />
+        case 'TGTE': return <Image style={styles.avatar} source={require('../../widgets/Logos/TGTE.png')} />
         default:
         return(  <Icon name='cash' size='large'/>)
     }
