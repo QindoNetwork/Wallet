@@ -52,7 +52,3 @@ Clean the Android generated build files.
 #### `npm run android:logcat`
 
 Outputs the Android logcat to the cli, so you can see native the logs in runtime.
-
-## License
-
-[MIT](./LICENSE)

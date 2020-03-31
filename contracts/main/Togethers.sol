@@ -462,4 +462,36 @@ contract Togethers is Administration {
     return mappAskMembershipList[groupID];
   }
 
+  function cleanDemandPending(uint _groupID) public onlyOwner
+  {
+    for(uint i = 0 ; i < mappAskMembershipList[_groupID].length ; i++)
+    {
+      if (mappAskForAdd[mappAskMembershipList[_groupID][i]][_groupID] == false)
+      {
+        for (uint k = i; k < mappAskMembershipList[_groupID].length-1; k++){
+            mappAskMembershipList[_groupID][k] = mappAskMembershipList[_groupID][k+1];
+        }
+        delete mappAskMembershipList[_groupID][mappAskMembershipList[_groupID].length-1];
+        mappAskMembershipList[_groupID].length --;
+        break;
+      }
+    }
+  }
+
+  function cleanSpecialDemandPending(uint _groupID, address _target) public onlyOwner
+  {
+    for(uint i = 0 ; i < mappAskMembershipList[_groupID].length ; i++)
+    {
+      if (mappAskMembershipList[_groupID][i] == _target)
+      {
+        for (uint k = i; k < mappAskMembershipList[_groupID].length-1; k++){
+            mappAskMembershipList[_groupID][k] = mappAskMembershipList[_groupID][k+1];
+        }
+        delete mappAskMembershipList[_groupID][mappAskMembershipList[_groupID].length-1];
+        mappAskMembershipList[_groupID].length --;
+        break;
+      }
+    }
+  }
+
 }
