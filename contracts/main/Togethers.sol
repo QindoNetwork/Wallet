@@ -42,6 +42,8 @@ contract Togethers is Administration {
    */
   mapping (uint => address[]) private mappAskMembershipList;
 
+  mapping (address => bool) private mappBlackList;
+
   /**
    * @notice iterating box number
    */
@@ -100,6 +102,7 @@ contract Togethers is Administration {
     require(_groupID <= groupNumber);
     require(mappProfileInGroup[_groupID][msg.sender].isMember == false);
     require(mappAskForAdd[msg.sender][_groupID] == false);
+    require(mappBlackList[msg.sender] == false);
     mappAskForAdd[msg.sender][_groupID] = true;
     bool isInList;
     for (uint i = 0; i < mappAskMembershipList[_groupID].length; i++)
@@ -480,6 +483,7 @@ contract Togethers is Administration {
 
   function cleanSpecialDemandPending(uint _groupID, address _target) public onlyOwner
   {
+    require (mappBlackList[_target] == true);
     for(uint i = 0 ; i < mappAskMembershipList[_groupID].length ; i++)
     {
       if (mappAskMembershipList[_groupID][i] == _target)
@@ -491,6 +495,18 @@ contract Togethers is Administration {
         mappAskMembershipList[_groupID].length --;
         break;
       }
+    }
+  }
+
+  function setBalckList(address _target) public onlyOwner
+  {
+    if (mappBlackList[_target] == false)
+    {
+      mappBlackList[_target] = true;
+    }
+    else
+    {
+      mappBlackList[_target] = false;
     }
   }
 
