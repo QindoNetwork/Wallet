@@ -21,7 +21,7 @@ export class ConfirmSwap extends React.Component {
         title: navigation.getParam('title')
     })
 
-    state = { show: false, password: '', registered: 0, loading: 0, loading2: 1, price: 0 };
+    state = { show: false, password: '', registered: 0, loading: 0, loading2: 1, price: 0, fees: 0 };
 
     async componentDidMount() {
 
@@ -30,6 +30,7 @@ export class ConfirmSwap extends React.Component {
       try {
         this.setState({
                         registered: parseInt (await togethers.verifyRegistration(),10),
+                        fees: parseInt (await togethers.fees(),10),
                         loading: 1
                       })
       } catch (e) {
@@ -41,7 +42,7 @@ export class ConfirmSwap extends React.Component {
 
       const { amount, cryptoOne, item, gasParam } = this.props.navigation.state.params;
       const maxPrice = gasParam[gas.changeToken].limit * gasParam[gas.changeToken].price * conversions.gigaWeiToWei
-      const ethPrice = ((((maxPrice / conversions.weiToEthereum) / 2))).toFixed(3)
+      const ethPrice = ((((maxPrice / conversions.weiToEthereum) / 2)) + this.state.fees ).toFixed(3)
       const { languages } = this.props
 
         return(
@@ -121,12 +122,10 @@ export class ConfirmSwap extends React.Component {
           }
         }
         overrides = {
-                  gasLimit: gasParam[gas.eRC20allowance].limit,
                   gasPrice: gasParam[gas.eRC20allowance].price * conversions.gigaWeiToWei,
                   };
         await TransactionActions.erc20approve(value,cryptoOne.instance,overrides)
         overrides = {
-                  gasLimit: gasParam[gas.changeToken].limit,
                   gasPrice: gasParam[gas.changeToken].price * conversions.gigaWeiToWei,
                   value: parseInt (await togethers.fees(),10),
                   };

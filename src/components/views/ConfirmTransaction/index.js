@@ -133,12 +133,10 @@ const { languages } = this.props
         if(groupID !== '0') {
               if(item.name !== IdentityAction.getHomeStableName(0)) {
                 overrides = {
-                    gasLimit: gasParam[gas.eRC20allowance].limit,
                     gasPrice: gasParam[gas.eRC20allowance].price * conversions.gigaWeiToWei,
                     };
                 await TransactionActions.erc20approve(value,item.instance,overrides)
                 overrides = {
-                    gasLimit: gasParam[gas.payForFunds].limit,
                     gasPrice: gasParam[gas.payForFunds].price * conversions.gigaWeiToWei,
                     value: parseInt (await togethers.fees(),10)
                     };
@@ -147,7 +145,6 @@ const { languages } = this.props
               }
               else {
                 overrides = {
-                    gasLimit: gasParam[gas.payForFunds].limit,
                     gasPrice: gasParam[gas.payForFunds].price * conversions.gigaWeiToWei,
                     value,
                     };

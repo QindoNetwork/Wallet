@@ -56,10 +56,9 @@ export class SecureTransaction extends React.Component {
 
       const { togethers, type, navigation, values, gasParam, wallet, languages } = this.props
       const address = wallet.item.address
-      const gasLimit = gasParam[type].limit
       const gasPrice = gasParam[type].price * conversions.gigaWeiToWei
       const overrides = {
-          gasLimit,gasPrice
+          gasPrice
           };
 
       var tx = "KO"
