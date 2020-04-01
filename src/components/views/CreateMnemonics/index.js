@@ -23,8 +23,8 @@ export class CreateMnemonics extends React.Component {
         const m = mnemonics.join(' ');
         const wallet = WalletUtils.loadWalletFromMnemonics(m);
         await WalletsActions.addWallet(walletName, wallet, m);
-        this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
         await WalletsActions.saveWallets();
+        this.props.navigation.navigate('WalletsOverview');
     }
 
     onPressReveal() {

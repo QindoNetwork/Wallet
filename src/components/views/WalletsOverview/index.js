@@ -13,7 +13,7 @@ import { ControlABI as controlABI } from '@common/ABIs';
 @observer
 export class WalletsOverview extends React.Component {
 
-    state = { loading: 0, gasParam: [] };
+    state = { loading: 0, gasParam: [], wallets: [] };
 
     static navigationOptions = ({ navigation, screenProps }) => ({
             title: 'Welcome',
@@ -29,10 +29,8 @@ export class WalletsOverview extends React.Component {
 
     async componentDidMount() {
       try {
-        await Promise.all([
-              WalletActions.loadWallets(),
-              LanguagesActions.loadLanguage()
-          ]);
+        await WalletActions.loadWallets()
+        await LanguagesActions.loadLanguage()
           var gasParam = []
           const control = new ethers.Contract(contractsAddress.controlAddress, controlABI, EthereumNetworks.fallbackProvider);
           var gasTemp
@@ -46,7 +44,8 @@ export class WalletsOverview extends React.Component {
                             price: parseInt(gasTemp.gasPrice,10)
                           })
   }
-          this.setState({ loading: 1, gasParam })
+          const { list } = this.props.wallets;
+          this.setState({ loading: 1, gasParam, wallets: list })
       } catch (e) {
           GeneralActions.notify(e.message, 'long');
       }
@@ -76,7 +75,7 @@ export class WalletsOverview extends React.Component {
 
     render() {
 
-      const { list } = this.props.wallets;
+      const list = this.state.wallets;
 
         if (this.state.loading === 0){
 

@@ -1,6 +1,6 @@
 export const togethersAddress = "0x749416e652BA84Eb25901Adcb63Da568f92F56EB";
 
-export const controlAddress = "0x18b3bd42faca6039fB1789FCEBdb539f69318DF8";
+export const controlAddress = "0xa5BfBDa0fa735F50f22784e0f2c7Ab36e4fF9474";
 
 export const  ttusd = "0xfB8eb02D528b91029c6f441BbB49a12B21882b63";
 

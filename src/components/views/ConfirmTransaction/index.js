@@ -140,6 +140,7 @@ const { languages } = this.props
                 overrides = {
                     gasLimit: gasParam[gas.payForFunds].limit,
                     gasPrice: gasParam[gas.payForFunds].price * conversions.gigaWeiToWei,
+                    value: parseInt (await togethers.fees(),10)
                     };
                     await togethers.payForFunds(target,groupID,value,item.address,overrides);
                     GeneralActions.notify(target + ' ' + groupID + ' ' + value + ' ' + item.address , 'long');

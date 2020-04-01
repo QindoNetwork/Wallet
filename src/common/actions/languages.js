@@ -2543,6 +2543,21 @@ export function label169(language) {
   }
 }
 
+export function label170(language) {
+  switch (language) {
+      case 'en':
+      return 'This wallet is in the list already'
+      case 'fr':
+      return "Cette addresse est déja dans la liste"
+      case 'es':
+      return ""
+      case 'po':
+      return ""
+      case 'it':
+      return ""
+  }
+}
+
 //
 
 export function title1(language) {

@@ -14,8 +14,8 @@ export class WalletSettings extends React.Component {
         try {
             const { wallet } = this.props;
             await WalletsActions.removeWallet(wallet.item);
-            this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
             await WalletsActions.saveWallets();
+            this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
         } catch (e) {
             GeneralActions.notify(e.message, 'long');
         }

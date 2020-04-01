@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback, View, ActivityIndicator } from 'react-native';
 import { Button, InputWithIcon, TextBullet } from '@components/widgets';
 import { colors, measures } from '@common/styles';
 import { Wallet as WalletUtils } from '@common/utils';
@@ -9,7 +9,7 @@ import { Contracts as contractsAddress, Network as EthereumNetworks } from '@com
 import { TogethersABI as togethersABI } from '@common/ABIs';
 import { ethers } from 'ethers';
 
-@inject('languages')
+@inject('languages','wallets')
 @observer
 export class LoadMnemonics extends React.Component {
 
@@ -17,23 +17,37 @@ export class LoadMnemonics extends React.Component {
         title: navigation.getParam('title')
     })
 
-    state = { mnemonics: [] };
+    state = { mnemonics: [], loading: 1 };
 
     async createWallet(mnemonics, walletName) {
-      const { languages } = this.props
+      const { languages, wallets } = this.props
       try {
       const wallet = WalletUtils.loadWalletFromMnemonics(mnemonics);
+      const { list } = wallets
+      let isOK = true;
+      for (let i = 0; i < list.length; i++){
+        if (list[i].address === wallet.address ){
+          isOK = false
+          break
+          }
+        }
+        if ( isOK == true ){
             const { walletName } = this.props.navigation.state.params;
             await WalletsActions.addWallet(walletName, wallet, mnemonics);
-            this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
             await WalletsActions.saveWallets();
+            this.props.navigation.navigate('WalletsOverview');
             GeneralActions.notify(LanguagesActions.label40(languages.selectedLanguage), 'long');
+            }
+            else {
+              GeneralActions.notify(LanguagesActions.label170(languages.selectedLanguage), 'long');
+              }
         } catch (e) {
             GeneralActions.notify(e.message, 'long');
         }
     }
 
     async onPressOpenWallet() {
+      this.setState({ loading: 0 })
       const { languages } = this.props
         if (!this.state.mnemonics.length) return;
         Keyboard.dismiss();
@@ -63,6 +77,7 @@ export class LoadMnemonics extends React.Component {
         } catch (e) {
             GeneralActions.notify(e.message, 'long');
         }
+        this.setState({ loading: 1 })
     }
 
     removeMnemonic(mnemonic) {
@@ -81,10 +96,21 @@ export class LoadMnemonics extends React.Component {
 
     render() {
       const { languages } = this.props
+
+      if(this.state.loading === 0)
+      {
+        return (
+        <View style={styles.container}>
+          <View style={styles.body}>
+            <ActivityIndicator size="large" color="darkslategray"/>
+          </View>
+        </View>
+        );
+      }
+
         return (
             <View style={styles.container}>
                 <View style={styles.body}>
-                    <Text style={styles.message}>Type the mnemonics</Text>
                     <View style={styles.mnemonics}>
                         {this.state.mnemonics.map(this.renderMnemonic)}
                     </View>
