@@ -46,6 +46,16 @@ export class CryptoType2 extends React.Component {
     }
   }
 
+  pressCard(item) {
+    const { togethers, cryptoOne, gasParam } = this.props.navigation.state.params
+    if (item.balance > 0){
+      this.props.navigation.navigate('SendCoinsType1', { cryptoOne, item, togethers, gasParam, title: LanguagesActions.title16(languages.selectedLanguage) })
+    }
+    else {
+      return
+    }
+}
+
     render() {
 
       const { togethers, gasParam, cryptoOne } = this.props.navigation.state.params
@@ -77,7 +87,7 @@ export class CryptoType2 extends React.Component {
               <TouchableOpacity
                 style={styles.content}
                 activeOpacity={0.8}
-                onPress={() => this.props.navigation.navigate('SendCoinsType1', { cryptoOne, item, togethers, gasParam, title: LanguagesActions.title16(languages.selectedLanguage) })}>
+                onPress={() => this.pressCard(item)}>
                   <CryptoCard crypto={item}/>
               </TouchableOpacity>
             )}

@@ -47,11 +47,12 @@ export class Crypto extends React.Component {
     var instance
     erc20s.push({ name: IdentityAction.getHomeStableName(0),
                   symbol: IdentityAction.getHomeStableSymbol(0),
-                  decimals: parseInt(await togethers.max(),10),
+                  decimals: 18,
                   instance: null,
                   balance: wallet.item.balance,
                   address: contractsAddress.nullAddress})
     const req = await togethers.getCryptoList()
+    const length = (await togethers.getStableCoinList()).length
       for ( var i = 0; i < req.length; i++ ) {
         currentAddress = req[i]
         info = await togethers.getCryptoInfo(currentAddress)
@@ -59,7 +60,7 @@ export class Crypto extends React.Component {
         {
           var isOK = true
           if ( type === '1'){
-          for ( var j = 0; j < (await togethers.getStableCoinList()).length; j++ ) {
+          for ( var j = 0; j < length; j++ ) {
             if ( info.symbol === IdentityAction.getHomeStableSymbol(j)){
               isOK = false
               break

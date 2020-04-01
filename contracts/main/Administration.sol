@@ -266,4 +266,5 @@ contract Administration is Ownable {
     money = 0;
   }
 
+
 }

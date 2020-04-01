@@ -26,12 +26,14 @@ export class AddProfile extends Component {
      let profiles = []
      let temp = []
      try {
+       let profile = []
        if (owner == true) {
        const list = await togethers.getAskMembershipList(groupID)
          for ( var i = 0; i < list.length; i++ ) {
-           if ( new Boolean (await togethers.getProfileInGroup(groupID,list[i]).isMember) == false && new Boolean (await togethers.mappAskForAdd(list[i],groupID)) == true ) {
+           profile = await togethers.getProfileInGroup(groupID,list[i])
+           if ( new Boolean (profile.isMember) == false && new Boolean (profile.ask) == true ) {
            profiles.push({   id:  list[i],
-                                     name:  await togethers.mappAddressToUser(list[i])
+                                     name:  profile.name
                                    })
               }
             }

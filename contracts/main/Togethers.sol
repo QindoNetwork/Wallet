@@ -22,10 +22,6 @@ contract Togethers is Administration {
    */
   mapping (uint => address[]) private mappUsersInGroup;
   /**
-   * @notice flag telling if a user have asked to be part of group
-   */
-  mapping (address => mapping (uint => bool)) public mappAskForAdd;
-  /**
    * @notice global exchange of crypto between peers
    */
   mapping (address => mapping (address => mapping (uint8 => uint))) private mappPeerToPeerStats;
@@ -38,11 +34,13 @@ contract Togethers is Administration {
    */
   mapping (uint => mapping (address => mapping (uint8 => uint))) public mappIdStats;
   /**
+   * @notice flag telling if a user have asked to be part of group
+   */
+  mapping (address => mapping (uint => bool)) private mappAskForAdd;
+  /**
    * @notice list of membership demand in a group
    */
   mapping (uint => address[]) private mappAskMembershipList;
-
-  mapping (address => bool) private mappBlackList;
 
   /**
    * @notice iterating box number
@@ -62,14 +60,16 @@ contract Togethers is Administration {
     bool isMember;
     bool open;
     bool owner;
+    bool ask;
     string description;
+    string name;
     uint id;
   }
 
   /**
    * @notice struct used for stats
    */
-    struct stats
+  struct stats
   {
     uint In;
     uint Out;
@@ -101,9 +101,8 @@ contract Togethers is Administration {
   {
     require(_groupID <= groupNumber);
     require(mappProfileInGroup[_groupID][msg.sender].isMember == false);
-    require(mappAskForAdd[msg.sender][_groupID] == false);
-    require(mappBlackList[msg.sender] == false);
-    mappAskForAdd[msg.sender][_groupID] = true;
+    require(mappProfileInGroup[_groupID][msg.sender].ask == false);
+    mappProfileInGroup[_groupID][msg.sender].ask = true;
     bool isInList;
     for (uint i = 0; i < mappAskMembershipList[_groupID].length; i++)
     {
@@ -172,8 +171,8 @@ contract Togethers is Administration {
   {
     groupNumber += 1;
     mappProfileInGroup[groupNumber][msg.sender].owner = true;
+    mappProfileInGroup[groupNumber][msg.sender].ask = true;
     mappGroupIDToGroupName[groupNumber] = _groupName;
-    mappAskForAdd[msg.sender][groupNumber] = true;
     addMember(groupNumber,msg.sender);
   }
 
@@ -202,7 +201,7 @@ contract Togethers is Administration {
       mappUsersInGroup[_groupID].push(_key);
     }
     mappProfileInGroup[_groupID][_key].isMember = true;
-    mappAskForAdd[_key][_groupID] = false;
+    mappProfileInGroup[_groupID][_key].ask = false;
   }
 
   /**
@@ -213,7 +212,7 @@ contract Togethers is Administration {
   function createProfile(uint groupID, address _key) public
   {
     require(mappProfileInGroup[groupID][_key].isMember == false);
-    require(mappAskForAdd[_key][groupID] == true);
+    require(mappProfileInGroup[groupID][_key].ask == true);
     addMember(groupID,_key);
   }
 
@@ -439,18 +438,13 @@ contract Togethers is Administration {
    */
   function getProfileInGroup(uint groupID, address _user) view public returns (profile memory)
   {
-    require(mappProfileInGroup[groupID][msg.sender].isMember == true);
-    return mappProfileInGroup[groupID][_user];
-  }
-
-  /**
-   * @notice returns a flag to authorize a sender to access group info
-   * @param groupID the number of group
-   * @return a boolean according to membership
-   */
-  function getMyProfileGroup(uint groupID) view public returns (bool)
-  {
-    return mappProfileInGroup[groupID][msg.sender].isMember;
+    return profile(mappProfileInGroup[groupID][_user].isMember,
+      mappProfileInGroup[groupID][_user].open,
+      mappProfileInGroup[groupID][_user].owner,
+      mappProfileInGroup[groupID][_user].ask,
+      mappProfileInGroup[groupID][_user].description,
+      mappAddressToUser[_user],
+      mappProfileInGroup[groupID][_user].id);
   }
 
   /**
@@ -463,51 +457,6 @@ contract Togethers is Administration {
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     require(mappProfileInGroup[groupID][msg.sender].owner == true);
     return mappAskMembershipList[groupID];
-  }
-
-  function cleanDemandPending(uint _groupID) public onlyOwner
-  {
-    for(uint i = 0 ; i < mappAskMembershipList[_groupID].length ; i++)
-    {
-      if (mappAskForAdd[mappAskMembershipList[_groupID][i]][_groupID] == false)
-      {
-        for (uint k = i; k < mappAskMembershipList[_groupID].length-1; k++){
-            mappAskMembershipList[_groupID][k] = mappAskMembershipList[_groupID][k+1];
-        }
-        delete mappAskMembershipList[_groupID][mappAskMembershipList[_groupID].length-1];
-        mappAskMembershipList[_groupID].length --;
-        break;
-      }
-    }
-  }
-
-  function cleanSpecialDemandPending(uint _groupID, address _target) public onlyOwner
-  {
-    require (mappBlackList[_target] == true);
-    for(uint i = 0 ; i < mappAskMembershipList[_groupID].length ; i++)
-    {
-      if (mappAskMembershipList[_groupID][i] == _target)
-      {
-        for (uint k = i; k < mappAskMembershipList[_groupID].length-1; k++){
-            mappAskMembershipList[_groupID][k] = mappAskMembershipList[_groupID][k+1];
-        }
-        delete mappAskMembershipList[_groupID][mappAskMembershipList[_groupID].length-1];
-        mappAskMembershipList[_groupID].length --;
-        break;
-      }
-    }
-  }
-
-  function setBalckList(address _target) public onlyOwner
-  {
-    if (mappBlackList[_target] == false)
-    {
-      mappBlackList[_target] = true;
-    }
-    else
-    {
-      mappBlackList[_target] = false;
-    }
   }
 
 }

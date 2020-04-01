@@ -24,12 +24,13 @@ export async function ask(togethers, args, address, overrides,languages) {
     result = "KO"
     GeneralActions.notify(LanguagesActions.label1(languages), 'long');
   }
-  if (new Boolean (await togethers.mappAskForAdd(address,groupID)) == true)
+  const profile = await togethers.getProfileInGroup(groupID,address)
+  if (new Boolean (profile.ask) == true)
   {
     result = "KO"
     GeneralActions.notify(LanguagesActions.label2(languages), 'long');
   }
-  if (new Boolean (await togethers.getProfileInGroup(groupID,address).isMember) == true)
+  if (new Boolean (profile.isMember) == true)
   {
     result = "KO"
     GeneralActions.notify(LanguagesActions.label169(languages), 'long');
@@ -48,14 +49,13 @@ export async function createProfile(togethers, args, overrides,languages) {
   const { groupID, value } = args
   let result = "OK"
   try {
-    if(await new Boolean(togethers.mappAskForAdd(value,groupID)) == false)
+    const profile = await togethers.getProfileInGroup(groupID,value)
+    if(new Boolean(profile.ask) == false)
     {
       GeneralActions.notify(LanguagesActions.label3(languages), 'long');
       return "KO"
     }
-    const profile = await togethers.getProfileInGroup(groupID,value)
-    const isMember = new Boolean(profile.isMember)
-    if(isMember == true)
+    if(new Boolean(profile.isMember) == true)
     {
       GeneralActions.notify(LanguagesActions.label4(languages), 'long');
       return "KO"

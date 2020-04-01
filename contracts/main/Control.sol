@@ -9,7 +9,7 @@ contract Control is Ownable {
   mapping (address => string) public mappCryptoToIPFSImage;
   mapping (uint => string) public mappGroupToIPFSImage;
 
-uint public listLength;
+  uint public listLength;
 
 struct gasParameters
 {

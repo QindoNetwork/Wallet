@@ -70,7 +70,7 @@ export class Profiles extends React.Component {
               temp = await togethers.getProfileInGroup(groupID,currentAddress)
               if ( currentAddress !== wallet.item.address && new Boolean(temp.isMember) == true) {
                 profiles.push({ id:  currentAddress,
-                                name: await togethers.mappAddressToUser(currentAddress),
+                                name: temp.name,
                                 owner: new Boolean(temp.owner),
                                 active: new Boolean(temp.open),
                                 description: temp.description

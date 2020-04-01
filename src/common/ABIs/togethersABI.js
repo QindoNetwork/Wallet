@@ -288,32 +288,6 @@ export const TogethersABI = [
     "type": "function"
   },
   {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "mappAskForAdd",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "constant": false,
     "inputs": [
       {
@@ -992,8 +966,18 @@ export const TogethersABI = [
             "type": "bool"
           },
           {
+            "internalType": "bool",
+            "name": "ask",
+            "type": "bool"
+          },
+          {
             "internalType": "string",
             "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
             "type": "string"
           },
           {
@@ -1005,27 +989,6 @@ export const TogethersABI = [
         "internalType": "struct Togethers.profile",
         "name": "",
         "type": "tuple"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "groupID",
-        "type": "uint256"
-      }
-    ],
-    "name": "getMyProfileGroup",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
       }
     ],
     "payable": false,
