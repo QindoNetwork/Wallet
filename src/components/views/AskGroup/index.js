@@ -19,14 +19,14 @@ export class AskGroup extends Component {
 
   state = { show: false };
 
-  renderModal(groupID) {
+  renderModal(groupID,groupName) {
 
     const { gasParam, togethers  } = this.props.navigation.state.params;
 
     if (this.state.show === true) {
     return (  <SecureTransaction
           togethers={togethers}
-          values={{groupID}}
+          values={{groupID,groupName}}
           gasParam={gasParam}
           navigation={this.props.navigation}
           type={gas.ask}/> )
@@ -39,7 +39,7 @@ export class AskGroup extends Component {
 
     return (
         <Formik
-          initialValues={{ groupID: '' }}
+          initialValues={{ groupID: '', groupName: '' }}
           onSubmit={() => this.setState({ show: true })}
           validationSchema={yup.object().shape({
             groupID: yup
@@ -51,6 +51,7 @@ export class AskGroup extends Component {
             <Fragment>
               <View style={styles.container}>
               <View style={styles.body}>
+                <Text style={styles.message}>{LanguagesActions.label14(languages.selectedLanguage)}</Text>
                 <TextInput
                   style={styles.input}
                   value={values.groupID}
@@ -58,6 +59,14 @@ export class AskGroup extends Component {
                   onBlur={() => setFieldTouched('groupID')}
                   placeholder={ LanguagesActions.label14(languages.selectedLanguage) }
                   />
+                  <Text style={styles.message}>{LanguagesActions.label171(languages.selectedLanguage)}</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={values.groupName}
+                    onChangeText={handleChange('groupName')}
+                    onBlur={() => setFieldTouched('groupName')}
+                    placeholder={ LanguagesActions.label171(languages.selectedLanguage) }
+                    />
             <View style={styles.buttonsContainer}>
                 <Button
                     children={ LanguagesActions.label15(languages.selectedLanguage) }
@@ -65,7 +74,7 @@ export class AskGroup extends Component {
                     onPress={handleSubmit}/>
             </View>
             </View>
-            {this.renderModal(values.groupID)}
+            {this.renderModal(values.groupID,values.groupName)}
             </View>
             </Fragment>
           )}

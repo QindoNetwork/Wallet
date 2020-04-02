@@ -135,7 +135,7 @@ export class Profiles extends React.Component {
         <View style={styles.buttonsContainer}>
             <Button
               children={LanguagesActions.label121(languages.selectedLanguage)}
-              onSubmit={() => this.setState({ show: true })}/>
+              onPress={() => this.setState({ show: true })}/>
         </View>
         </View>
         )

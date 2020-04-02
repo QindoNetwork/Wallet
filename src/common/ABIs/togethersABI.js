@@ -214,21 +214,6 @@ export const TogethersABI = [
     "type": "function"
   },
   {
-    "constant": true,
-    "inputs": [],
-    "name": "groupNumber",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "constant": false,
     "inputs": [
       {
@@ -530,6 +515,11 @@ export const TogethersABI = [
   {
     "constant": false,
     "inputs": [
+      {
+        "internalType": "string",
+        "name": "_groupName",
+        "type": "string"
+      },
       {
         "internalType": "uint256",
         "name": "_groupID",

@@ -207,7 +207,7 @@ export function label13(language) {
 }
 
 export function label14(language) {
-  switch (language) {
+  switch (language){
       case 'en':
       return "Group ID"
       case 'fr':
@@ -2549,6 +2549,21 @@ export function label170(language) {
       return 'This wallet is in the list already'
       case 'fr':
       return "Cette addresse est déja dans la liste"
+      case 'es':
+      return ""
+      case 'po':
+      return ""
+      case 'it':
+      return ""
+  }
+}
+
+export function label171(language) {
+  switch (language) {
+      case 'en':
+      return "Group name"
+      case 'fr':
+      return "Nom du groupe"
       case 'es':
       return ""
       case 'po':

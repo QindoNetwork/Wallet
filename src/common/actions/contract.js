@@ -16,15 +16,16 @@ export async function createGroup(togethers, args, overrides,languages) {
 }
 
 export async function ask(togethers, args, address, overrides,languages) {
-  const { groupID } = args
+  let { groupID, groupName } = args
   let result = "OK"
   try {
-  if (await parseInt (togethers.groupNumber(),10) < groupID)
+  const profile = await togethers.getProfileInGroup(groupID,address)
+  const tempName = await togethers.mappGroupIDToGroupName(groupID)
+  if (tempName !== groupName)
   {
     result = "KO"
     GeneralActions.notify(LanguagesActions.label1(languages), 'long');
   }
-  const profile = await togethers.getProfileInGroup(groupID,address)
   if (new Boolean (profile.ask) == true)
   {
     result = "KO"
@@ -36,7 +37,7 @@ export async function ask(togethers, args, address, overrides,languages) {
     GeneralActions.notify(LanguagesActions.label169(languages), 'long');
   }
   if (result === "OK") {
-    await togethers.ask(groupID,overrides)
+    await togethers.ask(groupName,groupID,overrides)
   }
 }catch (e) {
   GeneralActions.notify(e.message, 'long');

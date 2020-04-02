@@ -78,7 +78,7 @@ contract Togethers is Administration {
   /**
    * @notice iterating groupID
    */
-  uint public groupNumber;
+  uint groupNumber;
 
   /**
    * @notice iterating groupID
@@ -91,16 +91,16 @@ contract Togethers is Administration {
     homeStableList.push(address(0));
     mappAllowCryptoForCategory[address(0)] = 0;
     stablecoinType[0] = 'NaN';
-    extraStats = true;
   }
 
   /**
    * @notice a user have to ask a group to allow the admin of the group to add him
-   * @param _groupID the group number to ask
+   * @param _groupName the group number to ask
    */
-  function ask(uint _groupID) public
+  function ask(string memory _groupName, uint _groupID) public
   {
     require(_groupID <= groupNumber);
+    require(returnHash(mappGroupIDToGroupName[_groupID]) == returnHash(_groupName));
     require(mappProfileInGroup[_groupID][msg.sender].isMember == false);
     require(mappProfileInGroup[_groupID][msg.sender].ask == false);
     mappProfileInGroup[_groupID][msg.sender].ask = true;
@@ -241,7 +241,7 @@ contract Togethers is Administration {
    * @param _tokenAmount the token amount if apply
    * @param _crypto the token address if apply
    */
-  function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, address _crypto, bool _stats) public payable
+  function payForFunds(address _publicKey,  uint groupID, uint _tokenAmount, address _crypto) public payable
   {
     uint amount;
     if (msg.value > 0)
@@ -250,9 +250,7 @@ contract Togethers is Administration {
     }
     else
     {
-      require(msg.value == fees);
       require(mappCryptoEnable[_crypto] == true);
-      money += msg.value;
       for(uint i = 0 ; i < homeStableList.length ; i++)
       {
         require(homeStableList[i] != _crypto);
@@ -267,7 +265,6 @@ contract Togethers is Administration {
     mappProfileStats[groupID][_publicKey][mappAllowCryptoForCategory[_crypto]] += amount;
     mappPeerToPeerStats[msg.sender][_publicKey][mappAllowCryptoForCategory[_crypto]] += amount;
     mappIdStats[mappProfileInGroup[groupID][_publicKey].id][msg.sender][mappAllowCryptoForCategory[_crypto]] += amount;
-    }
   }
 
   /**
