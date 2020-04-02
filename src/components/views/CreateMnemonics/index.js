@@ -4,15 +4,24 @@ import { Button, TextBullet } from '@components/widgets';
 import { Wallet as WalletUtils } from '@common/utils';
 import { colors, measures } from '@common/styles';
 import { inject, observer } from 'mobx-react';
+import { HeaderIcon } from '@components/widgets';
 import { Languages as LanguagesActions, Wallets as WalletsActions } from '@common/actions';
 
 @inject('languages')
 @observer
 export class CreateMnemonics extends React.Component {
 
-  static navigationOptions = ({ navigation }) => ({
-        title: navigation.getParam('title')
-    })
+    static navigationOptions = ({ navigation, screenProps }) => ({
+            title: navigation.getParam('title'),
+            headerRight: (
+                <HeaderIcon
+                    name='log-out'
+                    size='large'
+                    color={colors.white}
+                    onPress={() => navigation.navigate('WalletsOverview', { replaceRoute: true })
+                  } />
+            ),
+        });
 
     state = { mnemonics: null };
 
@@ -23,8 +32,7 @@ export class CreateMnemonics extends React.Component {
         const m = mnemonics.join(' ');
         const wallet = WalletUtils.loadWalletFromMnemonics(m);
         await WalletsActions.addWallet(walletName, wallet, m);
-        await WalletsActions.saveWallets();
-        this.props.navigation.navigate('WalletsOverview');
+        this.props.navigation.navigate('WalletsOverview', { replaceRoute: true })
     }
 
     onPressReveal() {

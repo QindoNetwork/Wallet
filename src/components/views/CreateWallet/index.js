@@ -16,7 +16,7 @@ export class CreateWallet extends React.Component {
     async onPressProceed() {
         const { languages } = this.props
         const { walletName } = this.props.navigation.state.params;
-        this.props.navigation.navigate('CreateMnemonics', { walletName, title: LanguagesActions.title15(languages.selectedLanguage) });
+        this.props.navigation.navigate('CreateMnemonics', { walletName, title: LanguagesActions.title15(languages.selectedLanguage), replaceRoute: true });
     }
 
     render() {

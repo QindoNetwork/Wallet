@@ -24,6 +24,7 @@ export class Login extends React.Component {
     async componentDidMount() {
 
       try {
+        await WalletActions.loadWallets()
         await WalletActions.updateBalance(this.props.wallet.item)
         const mnemonics = this.props.wallet.item.mnemonics.toString()
         const connection = ethers.Wallet.fromMnemonic(mnemonics).connect(EthereumNetworks.fallbackProvider);

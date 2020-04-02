@@ -39,7 +39,6 @@ export class Profiles extends React.Component {
 
         const { gasParam, togethers, profile  } = this.props.navigation.state.params;
         const groupID = profile.id
-        const active = profile.active
 
             if (this.state.show === true) {
                 return (  <SecureTransaction
@@ -111,35 +110,10 @@ export class Profiles extends React.Component {
 
         }
 
-if (this.props.navigation.state.params.profile.active == true){
-        return(
-          <ScrollView style={styles.container}>
-          <Header length={this.state.profiles.length}/>
-          <View style={styles.buttonsContainer}>
-              <Button
-                children={LanguagesActions.label120(languages.selectedLanguage)}
-                onPress={() => this.demand(groupID, togethers, gasParam, profile, profiles )}/>
-          </View>
-          <FlatList
-              data={profiles.sort((prev, next) => prev.name.localeCompare(next.name))}
-              refreshControl={<RefreshControl refreshing={wallet.loading} onRefresh={() => this.updateData()} />}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                style={styles.content}
-                activeOpacity={0.8}
-                onPress={() => navigation.navigate('ProfileData',{ item, user: profile, togethers, gasParam, groupID, title: item.name })
-                }>
-                  <ProfileCard profile={item} togethers={togethers}/>
-                </TouchableOpacity>
-              )}
-          />
-          </ScrollView>
-          )
-        }
-
       return(
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
         <Header length={this.state.profiles.length}/>
+        {this.renderModal()}
         <View style={styles.buttonsContainer}>
             <Button
               children={LanguagesActions.label120(languages.selectedLanguage)}
@@ -163,8 +137,7 @@ if (this.props.navigation.state.params.profile.active == true){
               children={LanguagesActions.label121(languages.selectedLanguage)}
               onSubmit={() => this.setState({ show: true })}/>
         </View>
-        {this.renderModal()}
-        </ScrollView>
+        </View>
         )
 
 }
