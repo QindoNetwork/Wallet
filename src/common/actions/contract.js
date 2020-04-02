@@ -19,28 +19,9 @@ export async function ask(togethers, args, address, overrides,languages) {
   let { groupID, groupName } = args
   let result = "OK"
   try {
-  const profile = await togethers.getProfileInGroup(groupID,address)
-  const tempName = await togethers.mappGroupIDToGroupName(groupID)
-  if (tempName !== groupName)
-  {
-    result = "KO"
-    GeneralActions.notify(LanguagesActions.label1(languages), 'long');
-  }
-  if (new Boolean (profile.ask) == true)
-  {
-    result = "KO"
-    GeneralActions.notify(LanguagesActions.label2(languages), 'long');
-  }
-  if (new Boolean (profile.isMember) == true)
-  {
-    result = "KO"
-    GeneralActions.notify(LanguagesActions.label169(languages), 'long');
-  }
-  if (result === "OK") {
     await togethers.ask(groupName,groupID,overrides)
-  }
 }catch (e) {
-  GeneralActions.notify(e.message, 'long');
+  GeneralActions.notify(LanguagesActions.label172(languages), 'long');
   result = "KO"
 }
   return result
@@ -50,21 +31,7 @@ export async function createProfile(togethers, args, overrides,languages) {
   const { groupID, value } = args
   let result = "OK"
   try {
-    const profile = await togethers.getProfileInGroup(groupID,value)
-    if(new Boolean(profile.ask) == false)
-    {
-      GeneralActions.notify(LanguagesActions.label3(languages), 'long');
-      return "KO"
-    }
-    if(new Boolean(profile.isMember) == true)
-    {
-      GeneralActions.notify(LanguagesActions.label4(languages), 'long');
-      return "KO"
-    }
-    if (result === "OK")
-    {
     await togethers.createProfile(groupID,value,overrides)
-    }
   }catch (e) {
     GeneralActions.notify(e.message, 'long');
     result = "KO"

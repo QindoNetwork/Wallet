@@ -129,7 +129,7 @@ export class ConfirmSwap extends React.Component {
                   gasPrice: gasParam[gas.changeToken].price * conversions.gigaWeiToWei,
                   value: parseInt (await togethers.fees(),10),
                   };
-        value = (amount * (Math.pow(10,parseInt((await togethers.max()),10)))).toString()
+        value = (amount * (Math.pow(10,18))).toString()
         await togethers.changeToken(value,cryptoOne.address,item.address, overrides)
             this.props.navigation.navigate('WalletDetails', { togethers, gasParam, replaceRoute: true, leave: 0 });
             GeneralActions.notify(LanguagesActions.label141(languages.selectedLanguage), 'short');

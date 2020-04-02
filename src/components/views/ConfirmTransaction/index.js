@@ -20,11 +20,11 @@ export class ConfirmTransaction extends React.Component {
         title: navigation.getParam('title')
     })
 
-    state = { show: false, user: '', groupID: '', password: '', registered: 0, loading: 0, loading2: 1 };
+    state = { show: false, user: '', password: '', registered: 0, loading: 0, loading2: 1 };
 
     async componentDidMount() {
 
-              const { togethers, target, groupID } = this.props.navigation.state.params;
+              const { togethers, target } = this.props.navigation.state.params;
               const { languages } = this.props
       try {
         let name = await togethers.mappAddressToUser(target)
@@ -34,7 +34,6 @@ export class ConfirmTransaction extends React.Component {
         this.setState({
                         registered: parseInt (await togethers.verifyRegistration(),10),
                         user: name,
-                        groupID: await togethers.mappGroupIDToGroupName(groupID),
                         loading: 1
                       })
       } catch (e) {
@@ -251,7 +250,7 @@ const { languages } = this.props
                   </View>
                   <View style={styles.textColumn}>
                       <Text style={styles.title}>{LanguagesActions.label135(languages.selectedLanguage)}</Text>
-                      <Text style={styles.value}>{this.state.groupID}</Text>
+                      <Text style={styles.value}>{groupID}</Text>
                   </View>
               </View>
               <View style={styles.buttonsContainer}>

@@ -41,8 +41,9 @@ export class ProfileData extends React.Component {
       let peerToPeerStats
       let profileStats
       try {
-        const decimals = parseInt(await togethers.max(),10)
-        for ( var i = 0; i < (await togethers.getStableCoinList()).length; i++ ) {
+        const decimals = 18
+        const length = (await togethers.getStableCoinList()).length
+        for ( var i = 0; i < length; i++ ) {
         peerToPeerStats = await togethers.getStats(item.id,i)
         stats2.push({
                         balance: parseInt(peerToPeerStats.In,10),

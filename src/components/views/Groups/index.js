@@ -30,7 +30,7 @@ export class Groups extends React.Component {
           profile = await togethers.getProfileInGroup(groupID,wallet.item.address)
          if (new Boolean(profile.isMember) == true){
             groups.push({   id:  groupID,
-                            name: await togethers.mappGroupIDToGroupName(groupID),
+                            name: await togethers.getGroupIDToGroupeName(groupID),
                             owner:   new Boolean(profile.owner),
                             active:  new Boolean(profile.open),
                             description: profile.description,

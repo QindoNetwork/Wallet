@@ -8,7 +8,7 @@ contract Togethers is Administration {
   /**
   * @notice Each group is mapped to a unique number
    */
-  mapping (uint => string) public mappGroupIDToGroupName;
+  mapping (uint => string) private mappGroupIDToGroupName;
   /**
    * @notice each user address have info in group
    */
@@ -28,11 +28,11 @@ contract Togethers is Administration {
   /**
    * @notice crypto there are in a box
    */
-  mapping (uint => mapping (address => mapping (uint8 => uint))) public mappProfileStats;
+  mapping (uint => mapping (address => mapping (uint8 => uint))) private mappProfileStats;
   /**
    * @notice crypto a user has given in a box
    */
-  mapping (uint => mapping (address => mapping (uint8 => uint))) public mappIdStats;
+  mapping (uint => mapping (address => mapping (uint8 => uint))) private mappIdStats;
   /**
    * @notice flag telling if a user have asked to be part of group
    */
@@ -439,6 +439,7 @@ contract Togethers is Administration {
    */
   function getProfileInGroup(uint groupID, address _user) view public returns (profile memory)
   {
+    require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     return profile(mappProfileInGroup[groupID][_user].isMember,
       mappProfileInGroup[groupID][_user].open,
       mappProfileInGroup[groupID][_user].owner,
@@ -458,6 +459,12 @@ contract Togethers is Administration {
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     require(mappProfileInGroup[groupID][msg.sender].owner == true);
     return mappAskMembershipList[groupID];
+  }
+
+  function getGroupIDToGroupeName(uint groupID) view public returns (string memory)
+  {
+    require(mappProfileInGroup[groupID][msg.sender].isMember == true);
+    return mappGroupIDToGroupName[groupID];
   }
 
 }

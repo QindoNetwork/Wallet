@@ -2573,6 +2573,21 @@ export function label171(language) {
   }
 }
 
+export function label172(language) {
+  switch (language) {
+      case 'en':
+      return "Not autorized or asked already"
+      case 'fr':
+      return "Non autorisé ou déjà demandé"
+      case 'es':
+      return ""
+      case 'po':
+      return ""
+      case 'it':
+      return ""
+  }
+}
+
 //
 
 export function title1(language) {
