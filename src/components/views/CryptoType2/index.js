@@ -48,6 +48,7 @@ export class CryptoType2 extends React.Component {
 
   pressCard(item) {
     const { togethers, cryptoOne, gasParam } = this.props.navigation.state.params
+    const { languages } = this.props
     if (item.balance > 0){
       this.props.navigation.navigate('SendCoinsType1', { cryptoOne, item, togethers, gasParam, title: LanguagesActions.title16(languages.selectedLanguage) })
     }

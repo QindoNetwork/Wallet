@@ -67,12 +67,12 @@ export class AskGroup extends Component {
                     onBlur={() => setFieldTouched('groupName')}
                     placeholder={ LanguagesActions.label171(languages.selectedLanguage) }
                     />
+            </View>
             <View style={styles.buttonsContainer}>
                 <Button
                     children={ LanguagesActions.label15(languages.selectedLanguage) }
                     disabled={!isValid}
                     onPress={handleSubmit}/>
-            </View>
             </View>
             {this.renderModal(values.groupID,values.groupName)}
             </View>
@@ -110,6 +110,8 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '90%',
+        borderBottomWidth: 1,
+        borderBottomColor: colors.black,
         padding: 4,
         paddingLeft: 0,
         marginRight: 2,

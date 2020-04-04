@@ -21,17 +21,15 @@ export class CloseDemand extends React.Component {
   state = { stats: [], show: false, loading: 0 };
 
   async componentDidMount() {
-    const { profile, profiles, togethers } = this.props.navigation.state.params;
+    const { togethers, groupID } = this.props.navigation.state.params;
     const { wallet } = this.props
     var stats = []
-    var stats2 = []
-    var idStats
     var myStats
     try {
       const length = (await togethers.getStableCoinList()).length
       for ( var i = 0; i < length; i++ ) {
-        myStats =  await togethers.getProfileStats(profile.id,wallet.item.address,i)
-          stats.push({  balance:  parseInt(myStats.out,10),
+        myStats =  await togethers.getProfileStats(groupID,wallet.item.address,i)
+          stats.push({  balance:  parseInt(myStats.In,10),
                         name: IdentityAction.getHomeStableName(i),
                         symbol: IdentityAction.getHomeStableSymbol(i),
                         decimals: 18

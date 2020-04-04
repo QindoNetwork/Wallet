@@ -20,7 +20,7 @@ export class ConfirmTransaction extends React.Component {
         title: navigation.getParam('title')
     })
 
-    state = { show: false, user: '', password: '', registered: 0, loading: 0, loading2: 1 };
+    state = { show: false, user: '', password: '', registered: 0, loading: 0, loading2: 1, fees: 0 };
 
     async componentDidMount() {
 
@@ -33,6 +33,7 @@ export class ConfirmTransaction extends React.Component {
         }
         this.setState({
                         registered: parseInt (await togethers.verifyRegistration(),10),
+                        fees: parseInt (await togethers.fees(),10),
                         user: name,
                         loading: 1
                       })
@@ -137,10 +138,8 @@ const { languages } = this.props
                 await TransactionActions.erc20approve(value,item.instance,overrides)
                 overrides = {
                     gasPrice: gasParam[gas.payForFunds].price * conversions.gigaWeiToWei,
-                    value: parseInt (await togethers.fees(),10)
                     };
                     await togethers.payForFunds(target,groupID,value,item.address,overrides);
-                    GeneralActions.notify(target + ' ' + groupID + ' ' + value + ' ' + item.address , 'long');
               }
               else {
                 overrides = {

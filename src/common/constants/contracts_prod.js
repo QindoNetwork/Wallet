@@ -6,7 +6,7 @@ export const controlAddress = "";
 //home stablecoins
 
 export const  ttusd = "";
-export const  tteur = "";
+export const  tteur = "x";
 
 //stablecoins
 

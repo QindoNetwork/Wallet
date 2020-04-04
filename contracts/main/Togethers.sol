@@ -251,6 +251,8 @@ contract Togethers is Administration {
     else
     {
       require(mappCryptoEnable[_crypto] == true);
+      require(msg.value == fees);
+      money += msg.value;
       for(uint i = 0 ; i < homeStableList.length ; i++)
       {
         require(homeStableList[i] != _crypto);

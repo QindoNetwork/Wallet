@@ -8,7 +8,7 @@ export class CryptoCard extends React.Component {
 
   balance(value) {
       const { crypto } = this.props
-      return Number(value/(Math.pow(10,crypto.decimals))).toFixed(3)
+      return Number(value/(Math.pow(10,crypto.decimals))).toFixed(4)
   }
 
   renderIcon(symbol) {
