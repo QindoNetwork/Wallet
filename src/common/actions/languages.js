@@ -23,6 +23,24 @@ export function label1(language) {
       return ""
       case 'it':
       return ""
+      case 'ge':
+      return ""
+      case 'chi':
+      return ""
+      case 'jap':
+      return ""
+      case 'ar':
+      return ""
+      case 'ko':
+      return ""
+      case 'ru':
+      return ""
+      case 'th':
+      return ""
+      case 'pol':
+      return ""
+      case 'ro':
+      return ""
   }
 }
 

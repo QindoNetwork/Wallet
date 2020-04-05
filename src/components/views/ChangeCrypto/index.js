@@ -116,19 +116,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.defaultBackground,
         padding: measures.defaultPadding
     },
-    leftColumn: {
-        width: 40,
-        alignItems: 'flex-start',
-        justifyContent: 'center'
-    },
-    middleColumn: {
-        flex: 2
-    },
-    rightColumn: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        flexDirection: 'row'
-    },
     content: {
         marginTop: measures.defaultMargin
     },
@@ -136,12 +123,5 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    message: {
-        color: colors.black,
-        fontSize: 16,
-        textAlign: 'center',
-        marginVertical: measures.defaultMargin,
-        marginHorizontal: 32
     }
 });

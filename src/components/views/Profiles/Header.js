@@ -44,19 +44,5 @@ const styles = StyleSheet.create({
     title: {
         fontSize: measures.fontSizeLarge,
         color: colors.black
-    },
-    balance: {
-        fontSize: measures.fontSizeMedium + 2,
-        fontWeight: 'bold',
-        color: colors.black
-    },
-    fiatBalance: {
-        fontSize: measures.fontSizeMedium - 3,
-        color: colors.black
-    },
-    rightColumn: {
-        flex: 1,
-        alignItems: 'flex-end',
-        justifyContent: 'center'
     }
 });

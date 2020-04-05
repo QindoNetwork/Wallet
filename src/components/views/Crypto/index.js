@@ -153,19 +153,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.defaultBackground,
         padding: measures.defaultPadding
     },
-    leftColumn: {
-        width: 40,
-        alignItems: 'flex-start',
-        justifyContent: 'center'
-    },
-    middleColumn: {
-        flex: 2
-    },
-    rightColumn: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        flexDirection: 'row'
-    },
     content: {
         marginTop: measures.defaultMargin
     },

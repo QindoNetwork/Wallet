@@ -203,9 +203,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         height: 52
     },
-    buttonDisabled: {
-        opacity: 0.5,
-    },
     input: {
         width: '90%',
         borderBottomWidth: 1,

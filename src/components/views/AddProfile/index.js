@@ -93,10 +93,10 @@ export class AddProfile extends Component {
             modal
             onClose={() => this.refs.camera.hide()}
             onBarCodeRead={address => this.refs.input.onChangeText(address)} />
+            <View style={styles.buttonsContainer}>
+                    <Button children={ LanguagesActions.label11(languages.selectedLanguage) } onPress={() => this.setState({ show: true })} />
+                  </View>
             <Text style={styles.message}>___________________________</Text>
-          <View style={styles.buttonsContainer}>
-                  <Button children={ LanguagesActions.label11(languages.selectedLanguage) } onPress={() => this.setState({ show: true })} />
-                </View>
         {this.renderModal(this.state.address)}
           <View style={styles.body}>
             <ActivityIndicator size="large" color="darkslategray"/>

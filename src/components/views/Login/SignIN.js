@@ -74,14 +74,7 @@ export default class SignIN extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container1: {
-      flex: 1,
-      alignItems: 'stretch',
-      justifyContent: 'space-between',
-      backgroundColor: colors.defaultBackground,
-      padding: measures.defaultPadding
-  },
-    container: {
+  container: {
         flex: 1,
         alignItems: 'stretch',
         justifyContent: 'space-between',
@@ -100,34 +93,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginVertical: measures.defaultMargin,
         marginHorizontal: 32
-    },
-    detail: {
-        color: 'black',
-        fontSize: 10,
-        textAlign: 'center',
-        marginVertical: measures.defaultMargin/2,
-        marginHorizontal: 32
-    },
-    buttonsContainer: {
-        width: '100%',
-        justifyContent: 'space-between',
-        height: 52
-    },
-    actions: {
-        height: 56
-    },
-    actionsBar: {
-        flexDirection: 'row',
-        flex: 3
-    },
-    actionColumn: {
-        flexDirection: 'column',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    centered: {
-        alignSelf: 'center'
     },
     input: {
         width: '90%',

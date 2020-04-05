@@ -90,9 +90,6 @@ const styles = StyleSheet.create({
         color: colors.gray,
         marginLeft: measures.defaultMargin
     },
-    next: {
-        color: colors.lightGray
-    },
     avatar: {
         width: 50,
         height: 50

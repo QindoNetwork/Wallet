@@ -142,15 +142,5 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-between',
         height: 52
-    },
-    input: {
-        width: '90%',
-        borderBottomWidth: 1,
-        borderBottomColor: colors.black,
-        padding: 4,
-        paddingLeft: 0,
-        marginRight: 2,
-        textAlign: 'center',
-        color: colors.black
     }
 });

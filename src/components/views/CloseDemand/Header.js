@@ -57,10 +57,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: colors.black
     },
-    fiatBalance: {
-        fontSize: measures.fontSizeMedium - 3,
-        color: colors.black
-    },
     rightColumn: {
         flex: 1,
         alignItems: 'flex-end',

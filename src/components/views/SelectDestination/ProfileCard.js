@@ -43,38 +43,10 @@ const styles = StyleSheet.create({
     middleColumn: {
         flex: 2
     },
-    rightColumn: {
-        flex: 1,
-        justifyContent: 'flex-end',
-        flexDirection: 'row'
-    },
     title: {
         fontSize: measures.fontSizeMedium,
         color: colors.gray,
         fontWeight: 'bold'
-    },
-    description: {
-        fontSize: measures.fontSizeMedium - 2,
-        color: colors.gray,
-    },
-    balanceContainer: {
-        alignItems: 'flex-end',
-        justifyContent: 'space-between',
-        flexDirection: 'column'
-    },
-    balance: {
-        fontSize: measures.fontSizeMedium - 1,
-        color: colors.gray,
-        marginLeft: measures.defaultMargin,
-        fontWeight: 'bold'
-    },
-    fiatbalance: {
-        fontSize: measures.fontSizeMedium - 3,
-        color: colors.gray,
-        marginLeft: measures.defaultMargin
-    },
-    next: {
-        color: colors.lightGray
     },
     avatar: {
         width: 50,

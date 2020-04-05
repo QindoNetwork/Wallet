@@ -30,19 +30,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         padding: measures.defaultPadding
     },
-    actions: {
-        height: 56
-    },
-    actionsBar: {
-        flexDirection: 'row',
-        flex: 3
-    },
-    actionColumn: {
-        flexDirection: 'column',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
     centered: {
         alignSelf: 'center'
     }

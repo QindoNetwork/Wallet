@@ -89,8 +89,5 @@ const styles = StyleSheet.create({
         fontSize: measures.fontSizeMedium - 3,
         color: colors.darkGray,
         marginLeft: measures.defaultMargin
-    },
-    next: {
-        color: colors.lightGray
     }
 });

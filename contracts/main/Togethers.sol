@@ -103,11 +103,20 @@ contract Togethers is Administration {
     require(returnHash(mappGroupIDToGroupName[_groupID]) == returnHash(_groupName));
     require(mappProfileInGroup[_groupID][msg.sender].isMember == false);
     require(mappProfileInGroup[_groupID][msg.sender].ask == false);
-    mappProfileInGroup[_groupID][msg.sender].ask = true;
     bool isInList;
-    for (uint i = 0; i < mappAskMembershipList[_groupID].length; i++)
+    bool groupOpen;
+    for (uint i = 0; i < mappUsersInGroup[_groupID].length; i++)
     {
-      if (mappAskMembershipList[_groupID][i] == msg.sender)
+      if (mappProfileInGroup[_groupID][mappUsersInGroup[_groupID][i]].owner == true)
+      {
+        groupOpen = true;
+        break;
+      }
+    }
+    require(groupOpen == true);
+    for (uint j = 0; j < mappAskMembershipList[_groupID].length; j++)
+    {
+      if (mappAskMembershipList[_groupID][j] == msg.sender)
       {
         isInList = true;
         break;
@@ -117,6 +126,7 @@ contract Togethers is Administration {
     {
       mappAskMembershipList[_groupID].push(msg.sender);
     }
+    mappProfileInGroup[_groupID][msg.sender].ask = true;
   }
 
   /**
@@ -325,7 +335,7 @@ contract Togethers is Administration {
   function removeMember(address _publicKey, uint groupID) public
   {
     require(_publicKey != msg.sender);
-    require(mappProfileInGroup[groupID][msg.sender].isMember == true);
+    require(mappProfileInGroup[groupID][_publicKey].isMember == true);
     require(mappProfileInGroup[groupID][msg.sender].owner == true);
     deleteProfile(groupID,_publicKey);
   }
