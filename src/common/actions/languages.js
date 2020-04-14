@@ -18,7 +18,7 @@ export function label1(language) {
       case 'fr':
       return "Ce groupe n'existe pas"
       case 'es':
-      return ""
+      return "Este grupo no existe"
       case 'po':
       return ""
       case 'it':

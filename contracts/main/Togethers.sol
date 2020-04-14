@@ -468,11 +468,15 @@ contract Togethers is Administration {
    */
   function getAskMembershipList(uint groupID) view public returns (address[] memory)
   {
-    require(mappProfileInGroup[groupID][msg.sender].isMember == true);
     require(mappProfileInGroup[groupID][msg.sender].owner == true);
     return mappAskMembershipList[groupID];
   }
 
+  /**
+   * @notice only member of a group can know the name of the group
+   * @param groupID the number of the group
+   * @return the name of the groupe
+   */
   function getGroupIDToGroupeName(uint groupID) view public returns (string memory)
   {
     require(mappProfileInGroup[groupID][msg.sender].isMember == true);

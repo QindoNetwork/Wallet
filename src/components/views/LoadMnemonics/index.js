@@ -110,14 +110,14 @@ export class LoadMnemonics extends React.Component {
 
         return (
             <View style={styles.container}>
+            <InputWithIcon
+                icon='send'
+                placeholder={LanguagesActions.label41(languages.selectedLanguage)}
+                onPressIcon={text => this.setState({ mnemonics: this.state.mnemonics.concat([text]) })} />
                 <View style={styles.body}>
                     <View style={styles.mnemonics}>
                         {this.state.mnemonics.map(this.renderMnemonic)}
                     </View>
-                    <InputWithIcon
-                        icon='send'
-                        placeholder={LanguagesActions.label41(languages.selectedLanguage)}
-                        onPressIcon={text => this.setState({ mnemonics: this.state.mnemonics.concat([text]) })} />
                 </View>
                 <View style={styles.buttonsContainer}>
                     <Button
