@@ -20,6 +20,20 @@ buildscript {
     }
 }
 
+dependencies {
+    implementation project(':react-native-linear-gradient')
+    implementation project(':react-native-sha256')
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-svg')
+    implementation project(':react-native-snackbar')
+    implementation project(':react-native-sensitive-info')
+    implementation project(':react-native-gesture-handler')
+    implementation project(':react-native-camera')
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    implementation "com.facebook.react:react-native:+"  // From node_modules
+}
+
 allprojects {
     repositories {
         mavenLocal()
