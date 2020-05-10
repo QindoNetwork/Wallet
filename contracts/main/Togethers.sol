@@ -268,10 +268,10 @@ contract Togethers is Administration {
         require(homeStableList[i] != _crypto);
       }
       amount = _tokenAmount;
-      External1(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
-      if (External1(_crypto).decimals() < max)
+      External(_crypto).transferFrom(msg.sender,address(this),_tokenAmount);
+      if (External(_crypto).decimals() < max)
       {
-        amount = amount.mul(10**(max - (External1(_crypto).decimals())));
+        amount = amount.mul(10**(max - (External(_crypto).decimals())));
       }
     }
     mappProfileStats[groupID][_publicKey][mappAllowCryptoForCategory[_crypto]] += amount;
@@ -299,7 +299,7 @@ contract Togethers is Administration {
       }
       else
       {
-        External1(homeStableList[i]).mintExternal(msg.sender,mappProfileStats[groupID][msg.sender][i]);
+        External(homeStableList[i]).mintExternal(msg.sender,mappProfileStats[groupID][msg.sender][i]);
       }
       mappProfileStats[groupID][msg.sender][i] = 0;
     }
@@ -321,10 +321,10 @@ contract Togethers is Administration {
     require(mappAllowCryptoForCategory[_crypto1] == mappAllowCryptoForCategory[_crypto2]);
     require(msg.value == fees);
     money += msg.value;
-    uint decimals = max - (External1(_crypto1).decimals());
-    External1(_crypto1).transferFrom(msg.sender,address(this),_tokenAmount.div(10**(decimals)));
-    decimals = max - (External1(_crypto2).decimals());
-    External1(_crypto2).transfer(msg.sender,_tokenAmount.div(10**(decimals)));
+    uint decimals = max - (External(_crypto1).decimals());
+    External(_crypto1).transferFrom(msg.sender,address(this),_tokenAmount.div(10**(decimals)));
+    decimals = max - (External(_crypto2).decimals());
+    External(_crypto2).transfer(msg.sender,_tokenAmount.div(10**(decimals)));
   }
 
   /**
@@ -404,13 +404,13 @@ contract Togethers is Administration {
    */
   function getCryptoInfo(address _crypto) view public returns (erc20 memory)
   {
-    uint decimals = External1(_crypto).decimals();
-    string memory symbol = External1(_crypto).symbol();
-    string memory name = External1(_crypto).name();
+    uint decimals = External(_crypto).decimals();
+    string memory symbol = External(_crypto).symbol();
+    string memory name = External(_crypto).name();
     bool status = mappCryptoEnable[_crypto];
     uint8 category = mappAllowCryptoForCategory[_crypto];
-    uint balance = External1(_crypto).balanceOf(msg.sender);
-    uint balanceContract = External1(_crypto).balanceOf(address(this));
+    uint balance = External(_crypto).balanceOf(msg.sender);
+    uint balanceContract = External(_crypto).balanceOf(address(this));
     return erc20(symbol,name,decimals,status,category,balance,balanceContract);
   }
 

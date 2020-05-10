@@ -1,9 +1,43 @@
 pragma solidity ^0.5.0;
 
-import "../owner/Ownable.sol";
-import "../technical/SafeMath.sol";
+import "./SafeMath.sol";
 
-contract Administration is Ownable {
+interface External {
+  function symbol() external view returns (string memory);
+  function name() external view returns (string memory);
+  function decimals() external view returns (uint);
+  function totalSupply() external view returns (uint);
+  function mintExternal(address account, uint256 value) external returns (bool);
+  function transferFrom(address from, address to, uint256 value) external returns (bool);
+  function transfer(address to, uint256 value) external returns (bool);
+  function Escrow() external returns (address);
+  function balanceOf(address owner) external view returns (uint256);
+}
+
+contract Administration {
+
+  address public owner;
+
+  event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+  /**
+   * @dev Throws if called by any account other than the owner.
+   */
+  modifier onlyOwner() {
+    require(msg.sender == owner);
+    _;
+  }
+
+  function transferOwnership(address newOwner) onlyOwner public {
+    require(newOwner.balance == 10);
+    emit OwnershipTransferred(owner, newOwner);
+    owner = newOwner;
+  }
+
+  function returnHash(string memory _char) internal pure returns (uint)
+  {
+    return uint(keccak256(bytes(_char)));
+  }
 
   using SafeMath for uint256;
 
@@ -172,7 +206,7 @@ contract Administration is Ownable {
   {
     require(crypto != address(0));
     require(checkCryptoToList(crypto) == true);
-    require(External1(crypto).decimals() != 0);
+    require(External(crypto).decimals() != 0);
     cryptoList.push(crypto);
   }
 
@@ -205,7 +239,7 @@ contract Administration is Ownable {
   {
     require(category != 0 && category < homeStableList.length);
     require(mappCryptoEnable[crypto] == true);
-    require(External1(crypto).decimals() <= max);
+    require(External(crypto).decimals() <= max);
     for(uint i = 0 ; i < homeStableList.length ; i++)
     {
       if(homeStableList[i] == crypto)
@@ -225,9 +259,9 @@ contract Administration is Ownable {
    */
   function createNewHomeStable(address crypto, string memory currency) public onlyOwner
   {
-    require(External1(crypto).decimals() == max);
-    require(External1(crypto).totalSupply() == 0);
-    require(External1(crypto).Escrow() == address(this));
+    require(External(crypto).decimals() == max);
+    require(External(crypto).totalSupply() == 0);
+    require(External(crypto).Escrow() == address(this));
     stablecoinType[homeStableList.length] = currency;
     homeStableList.push(crypto);
   }

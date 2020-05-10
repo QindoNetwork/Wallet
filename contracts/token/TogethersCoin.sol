@@ -3,6 +3,11 @@ pragma solidity ^0.5.0;
 import "../technical/SafeMath.sol";
 import "../owner/Ownable.sol";
 
+interface External2 {
+  function transferFrom(address from, address to, uint256 tokenId) external;
+  function getApproved(uint256 tokenId) external view returns (address);
+}
+
 contract TogethersCoin is Ownable {
 
   using SafeMath for uint256;
